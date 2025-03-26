@@ -105,7 +105,7 @@ const Blog = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Get unique categories for filter
+  // Get unique categories for filter - ensure each category has a valid string value
   const categories = ['all', ...Array.from(new Set(blogPosts.map(post => post.category.toLowerCase())))];
 
   return (
