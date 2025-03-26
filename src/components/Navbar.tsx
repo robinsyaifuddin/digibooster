@@ -28,8 +28,8 @@ const Navbar = () => {
   };
 
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-      scrolled ? 'bg-white shadow-md py-2' : 'bg-white/90 backdrop-blur-md py-4'
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+      scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
     }`}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
@@ -40,43 +40,43 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <div className="relative dropdown group">
-              <button className="nav-link flex items-center">
-                Layanan <ChevronDown className="ml-1 w-4 h-4" />
+              <button className="nav-link flex items-center hover:text-diginavy transition-colors duration-300">
+                Layanan <ChevronDown className="ml-1 w-4 h-4 transition-transform group-hover:rotate-180 duration-300" />
               </button>
-              <div className="dropdown-content w-64 animate-fade-in">
-                <Link to="/layanan/jasa-digital" className="block px-4 py-2 hover:bg-gray-50">
+              <div className="dropdown-content w-64 rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-scale-in">
+                <Link to="/layanan/jasa-digital" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
                   Layanan Jasa Digital
                 </Link>
-                <Link to="/layanan/motivasi-edukasi" className="block px-4 py-2 hover:bg-gray-50">
+                <Link to="/layanan/motivasi-edukasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
                   Motivasi dan Edukasi Digital
                 </Link>
-                <Link to="/layanan/sharing-konsultasi" className="block px-4 py-2 hover:bg-gray-50">
+                <Link to="/layanan/sharing-konsultasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
                   Sharing dan Konsultasi Bisnis Digital
                 </Link>
-                <Link to="/layanan/kelas" className="block px-4 py-2 hover:bg-gray-50">
+                <Link to="/layanan/kelas" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
                   Short Class dan Mini Bootcamp Digital
                 </Link>
               </div>
             </div>
-            <Link to="/blog" className="nav-link">Blog</Link>
-            <Link to="/portofolio" className="nav-link">Portofolio</Link>
-            <Link to="/tentang" className="nav-link">Tentang</Link>
+            <Link to="/blog" className="nav-link hover:text-diginavy transition-colors duration-300">Blog</Link>
+            <Link to="/portofolio" className="nav-link hover:text-diginavy transition-colors duration-300">Portofolio</Link>
+            <Link to="/tentang" className="nav-link hover:text-diginavy transition-colors duration-300">Tentang</Link>
 
             {user ? (
               <div className="relative dropdown group">
                 <button className="flex items-center space-x-2 text-diginavy">
                   <User className="w-5 h-5" />
                   <span>{user.email}</span>
-                  <ChevronDown className="w-4 h-4" />
+                  <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180 duration-300" />
                 </button>
-                <div className="dropdown-content w-48 right-0 animate-fade-in">
-                  <Link to="/profil" className="block px-4 py-2 hover:bg-gray-50">Profil</Link>
+                <div className="dropdown-content w-48 right-0 rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-scale-in">
+                  <Link to="/profil" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">Profil</Link>
                   {user.email === "digibooster@123" && (
-                    <Link to="/admin" className="block px-4 py-2 hover:bg-gray-50">Admin Dashboard</Link>
+                    <Link to="/admin" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">Admin Dashboard</Link>
                   )}
                   <button 
                     onClick={logout} 
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-50 text-red-600"
+                    className="block w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 text-red-600"
                   >
                     Keluar
                   </button>
@@ -85,10 +85,10 @@ const Navbar = () => {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link to="/login">
-                  <Button variant="outline" className="border-diginavy text-diginavy">Masuk</Button>
+                  <Button variant="outline" className="border-diginavy text-diginavy hover:bg-diginavy hover:text-white transition-colors duration-300">Masuk</Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="bg-diginavy text-white hover:bg-diginavy-800">Daftar</Button>
+                  <Button className="bg-diginavy text-white hover:bg-diginavy-800 transition-colors duration-300">Daftar</Button>
                 </Link>
               </div>
             )}
