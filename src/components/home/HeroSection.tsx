@@ -46,7 +46,7 @@ const HeroSection = ({ generalInfo, hero }: HeroSectionProps) => {
               </Button>
             </Link>
             <Link to="/register">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 group">
+              <Button size="lg" variant="outline" className="border-white/80 bg-transparent text-white hover:bg-white/10 hover:border-white group">
                 Mulai Sekarang
                 <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </Button>
