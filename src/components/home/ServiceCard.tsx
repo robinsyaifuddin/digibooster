@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { ArrowRight, Code, Lightbulb, Users, PenTool, DollarSign, Shield, Gift, LayoutGrid, Image, Camera, Megaphone, FileText, FileCog } from 'lucide-react';
+import { ArrowRight, Code, Lightbulb, Users, PenTool, DollarSign, Shield, Gift, LayoutGrid, Megaphone, FileText, FileCog, BookOpen, MessagesSquare, GraduationCap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ServiceItem } from '@/types/websiteTypes';
 
@@ -20,21 +20,22 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
       case 'Shield': return <Shield className="h-6 w-6 text-white" />;
       case 'Gift': return <Gift className="h-6 w-6 text-white" />;
       case 'LayoutGrid': return <LayoutGrid className="h-6 w-6 text-white" />;
-      case 'Image': return <Image className="h-6 w-6 text-white" />;
-      case 'Camera': return <Camera className="h-6 w-6 text-white" />;
       case 'Megaphone': return <Megaphone className="h-6 w-6 text-white" />;
       case 'FileText': return <FileText className="h-6 w-6 text-white" />;
       case 'FileCog': return <FileCog className="h-6 w-6 text-white" />;
+      case 'BookOpen': return <BookOpen className="h-6 w-6 text-white" />;
+      case 'MessagesSquare': return <MessagesSquare className="h-6 w-6 text-white" />;
+      case 'GraduationCap': return <GraduationCap className="h-6 w-6 text-white" />;
       default: return <Code className="h-6 w-6 text-white" />;
     }
   };
 
   return (
     <div 
-      className="bg-purple-600/50 backdrop-blur-md rounded-xl p-7 text-white transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 scroll-animation"
+      className="bg-digiblue-600/50 backdrop-blur-md rounded-xl p-7 text-white transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 scroll-animation"
       style={{ 
         animationDelay: `${index * 100}ms`,
-        background: "linear-gradient(145deg, rgba(147, 51, 234, 0.6), rgba(126, 34, 206, 0.75))" 
+        background: "linear-gradient(145deg, rgba(78, 36, 235, 0.6), rgba(26, 27, 122, 0.75))" 
       }}
     >
       <div className="flex flex-col h-full">
@@ -46,7 +47,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
         
         <h3 className="text-xl font-bold mb-3">{service.title}</h3>
         
-        <p className="text-purple-100 mb-6 flex-grow">{service.description}</p>
+        <p className="text-digiblue-100 mb-6 flex-grow">{service.description}</p>
         
         <Link to={service.link} className="text-white font-medium flex items-center hover:underline group mt-auto">
           Selengkapnya 

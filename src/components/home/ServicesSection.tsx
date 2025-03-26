@@ -11,7 +11,7 @@ interface ServicesSectionProps {
 
 const ServicesSection = ({ services }: ServicesSectionProps) => {
   return (
-    <section className="py-24 md:py-32 bg-gradient-to-tr from-purple-800 to-purple-600 overflow-hidden relative">
+    <section className="py-24 md:py-32 bg-gradient-to-tr from-digiblue-800 to-digiblue-600 overflow-hidden relative">
       {/* Decorative elements */}
       <div className="absolute top-20 left-0 w-64 h-64 rounded-full bg-white/5 blur-3xl"></div>
       <div className="absolute bottom-20 right-0 w-64 h-64 rounded-full bg-white/5 blur-3xl"></div>
@@ -20,15 +20,15 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
         <div className="max-w-3xl mx-auto text-center mb-16 scroll-animation">
           <span className="inline-block py-1 px-3 text-xs font-medium text-white bg-white/10 rounded-full mb-3 backdrop-blur-sm">PROGRAM KAMI</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
-            Solusi Digital <span className="text-purple-300">Komprehensif</span> untuk Bisnis Anda
+            Solusi Digital <span className="text-digiblue-300">Komprehensif</span> untuk Bisnis Anda
           </h2>
           <p className="text-gray-200 max-w-2xl mx-auto text-lg">
-            Kami menawarkan berbagai layanan digital terintegrasi untuk membantu bisnis Anda berkembang di era digital dengan strategi yang terukur dan berkelanjutan.
+            Kami menawarkan berbagai program digital terintegrasi untuk membantu bisnis Anda berkembang di era digital dengan strategi yang terukur dan berkelanjutan.
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.slice(0, 3).map((service, index) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {services.map((service, index) => (
             <ServiceCard 
               key={service.id} 
               service={service} 
@@ -37,7 +37,7 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
           ))}
         </div>
 
-        {services.length > 3 && (
+        {services.length > 4 && (
           <div className="mt-10 text-center">
             <Link to="/program/jasa-digital" className="inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white rounded-full transition-all group">
               Lihat Semua Program 

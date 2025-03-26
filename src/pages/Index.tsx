@@ -29,54 +29,40 @@ const Index = () => {
   if (isLoading || !homeContent) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-digiblue-600"></div>
       </div>
     );
   }
 
-  // Updated services data with more specific digital agency service descriptions
-  const updatedServices = [
+  // Updated program data with more specific descriptions
+  const updatedPrograms = [
     {
       id: '1',
-      title: 'Pengembangan Website & Aplikasi',
-      description: 'Desain dan pengembangan website dan aplikasi yang responsif, user-friendly, dan optimal untuk mendukung tujuan bisnis Anda.',
+      title: 'Bantuan Layanan Digital',
+      description: 'Jasa pembuatan website, desain grafis, branding, konten, dan kebutuhan digital lainnya untuk mendukung transformasi digital bisnis Anda.',
       icon: 'Code',
       link: '/program/jasa-digital',
     },
     {
       id: '2',
-      title: 'Desain Grafis & Visual',
-      description: 'Desain visual yang menarik untuk brand identity, marketing materials, dan assets digital lainnya sesuai dengan identitas brand Anda.',
-      icon: 'PenTool',
-      link: '/program/jasa-digital',
+      title: 'Motivasi dan Edukasi Digital',
+      description: 'Program seminar, webinar, dan workshop yang menginspirasi dan memberi pengetahuan praktis tentang dunia digital dan peluangnya.',
+      icon: 'BookOpen',
+      link: '/program/motivasi-edukasi',
     },
     {
       id: '3',
-      title: 'Digital Marketing & Branding',
-      description: 'Strategi pemasaran digital terintegrasi, pengelolaan media sosial, SEO, dan kampanye iklan untuk meningkatkan awareness brand Anda.',
-      icon: 'Megaphone',
-      link: '/program/jasa-digital',
+      title: 'Sharing dan Konsultasi Bisnis',
+      description: 'Layanan konsultasi dan sharing session untuk membantu menyelesaikan tantangan bisnis digital Anda dengan solusi yang terukur.',
+      icon: 'MessagesSquare',
+      link: '/program/sharing-konsultasi',
     },
     {
       id: '4',
-      title: 'Manajemen Konten',
-      description: 'Pembuatan dan pengelolaan konten berkualitas untuk website, blog, dan media sosial yang relevan dengan audiens target Anda.',
-      icon: 'FileText',
-      link: '/program/jasa-digital',
-    },
-    {
-      id: '5',
-      title: 'Fotografi & Videografi',
-      description: 'Jasa pembuatan dan pengeditan foto serta video profesional untuk kebutuhan pemasaran dan komunikasi digital Anda.',
-      icon: 'Camera',
-      link: '/program/jasa-digital',
-    },
-    {
-      id: '6',
-      title: 'Administrasi Digital',
-      description: 'Pengelolaan sistem digital, database, dan automasi untuk meningkatkan efisiensi operasional bisnis Anda.',
-      icon: 'FileCog',
-      link: '/program/jasa-digital',
+      title: 'Short Class dan Mini Bootcamp',
+      description: 'Program pelatihan intensif untuk mengembangkan keterampilan digital praktis dalam waktu singkat dengan pendekatan yang terstruktur.',
+      icon: 'GraduationCap',
+      link: '/program/kelas',
     },
   ];
 
@@ -89,7 +75,7 @@ const Index = () => {
         />
         
         <ServicesSection 
-          services={updatedServices} 
+          services={updatedPrograms} 
         />
         
         <BenefitsSection 

@@ -64,17 +64,18 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
                 digiblue: {
-                    50: '#eaeaff',
-                    100: '#d6d5ff',
-                    200: '#b8b6ff',
-                    300: '#9997ff',
+                    50: '#eaf2ff',
+                    100: '#d8e5ff',
+                    200: '#b8ccff',
+                    300: '#99a9ff',
                     400: '#7e79ff',
                     500: '#685dff',
-                    600: '#5d46ff',
-                    700: '#5234ff',
-                    800: '#4824eb',
+                    600: '#3b46e0',
+                    700: '#2c34cc',
+                    800: '#2427ad',
                     900: '#1a1b7a',
-                    950: '#161759'
+                    950: '#161759',
+                    DEFAULT: '#1a1b7a',
                 },
                 diginavy: {
                     DEFAULT: '#161759',

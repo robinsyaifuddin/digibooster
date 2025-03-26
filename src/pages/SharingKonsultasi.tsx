@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 const SharingKonsultasi = () => {
   const services = [
     {
-      icon: <MessageCircle className="h-8 w-8 text-purple-600" />,
+      icon: <MessageCircle className="h-8 w-8 text-digiblue-600" />,
       title: 'Konsultasi Bisnis Digital',
       description: 'Konsultasi one-on-one dengan pakar bisnis digital untuk solusi permasalahan spesifik bisnis Anda.',
       items: [
@@ -19,7 +19,7 @@ const SharingKonsultasi = () => {
       ]
     },
     {
-      icon: <LineChart className="h-8 w-8 text-purple-600" />,
+      icon: <LineChart className="h-8 w-8 text-digiblue-600" />,
       title: 'Analisis Performa Digital',
       description: 'Analisis mendalam tentang performa digital bisnis Anda dan rekomendasi untuk peningkatan.',
       items: [
@@ -32,7 +32,7 @@ const SharingKonsultasi = () => {
       ]
     },
     {
-      icon: <Globe className="h-8 w-8 text-purple-600" />,
+      icon: <Globe className="h-8 w-8 text-digiblue-600" />,
       title: 'Strategi Go Digital',
       description: 'Pendampingan transformasi digital untuk bisnis tradisional yang ingin merambah pasar online.',
       items: [
@@ -45,7 +45,7 @@ const SharingKonsultasi = () => {
       ]
     },
     {
-      icon: <Briefcase className="h-8 w-8 text-purple-600" />,
+      icon: <Briefcase className="h-8 w-8 text-digiblue-600" />,
       title: 'Mentoring Startup Digital',
       description: 'Program mentoring khusus untuk startup digital dengan pendampingan berkelanjutan.',
       items: [
@@ -58,7 +58,7 @@ const SharingKonsultasi = () => {
       ]
     },
     {
-      icon: <Users className="h-8 w-8 text-purple-600" />,
+      icon: <Users className="h-8 w-8 text-digiblue-600" />,
       title: 'Sharing Session Komunitas',
       description: 'Forum diskusi dan sharing knowledge antar pelaku bisnis digital dalam komunitas eksklusif.',
       items: [
@@ -71,7 +71,7 @@ const SharingKonsultasi = () => {
       ]
     },
     {
-      icon: <Clock className="h-8 w-8 text-purple-600" />,
+      icon: <Clock className="h-8 w-8 text-digiblue-600" />,
       title: 'Sesi Quick Consultation',
       description: 'Konsultasi singkat namun efektif untuk masalah spesifik yang membutuhkan solusi cepat.',
       items: [
@@ -105,9 +105,9 @@ const SharingKonsultasi = () => {
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
-          <span className="inline-block py-1 px-3 text-xs font-medium text-purple-600 bg-purple-100 rounded-full mb-3">PROGRAM KAMI</span>
+          <span className="inline-block py-1 px-3 text-xs font-medium text-digiblue-600 bg-digiblue-100 rounded-full mb-3">PROGRAM KAMI</span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900">
-            Sharing & <span className="text-purple-600">Konsultasi</span> Bisnis
+            Sharing & <span className="text-digiblue-600">Konsultasi</span> Bisnis
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Dapatkan panduan dan solusi dari para ahli untuk mengembangkan bisnis digital Anda
@@ -128,7 +128,7 @@ const SharingKonsultasi = () => {
               variants={item}
               className="bg-white rounded-xl p-7 shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
             >
-              <div className="bg-purple-50 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+              <div className="bg-digiblue-50 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
                 {service.icon}
               </div>
               
@@ -138,7 +138,7 @@ const SharingKonsultasi = () => {
               <ul className="space-y-2">
                 {service.items.map((item, idx) => (
                   <li key={idx} className="flex items-start">
-                    <span className="text-purple-600 mr-2">•</span>
+                    <span className="text-digiblue-600 mr-2">•</span>
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
@@ -148,15 +148,15 @@ const SharingKonsultasi = () => {
         </motion.div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-purple-800 to-purple-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
+        <div className="bg-gradient-to-r from-digiblue-800 to-digiblue-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Butuh Solusi untuk Bisnis Digital Anda?</h2>
-          <p className="text-purple-100 max-w-2xl mx-auto mb-8">
+          <p className="text-digiblue-100 max-w-2xl mx-auto mb-8">
             Konsultasikan masalah dan tantangan digital Anda dengan tim ahli kami dan dapatkan
             solusi terbaik untuk pengembangan bisnis Anda.
           </p>
           <a 
             href="/kontak" 
-            className="inline-flex items-center px-6 py-3 bg-white text-purple-700 rounded-full hover:bg-purple-50 transition-colors font-medium"
+            className="inline-flex items-center px-6 py-3 bg-white text-digiblue-700 rounded-full hover:bg-digiblue-50 transition-colors font-medium"
           >
             Hubungi Kami
           </a>
