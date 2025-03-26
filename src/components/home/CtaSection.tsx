@@ -11,7 +11,7 @@ interface CtaSectionProps {
 const CtaSection = ({ companyName }: CtaSectionProps) => {
   return (
     <section className="py-20 relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-r from-diginavy to-digiblue-800"></div>
+      <div className="absolute inset-0 bg-gradient-to-r from-digiblue-800 to-digiblue-600"></div>
       
       {/* Decorative elements */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-white rounded-full filter blur-3xl opacity-5"></div>
@@ -35,7 +35,7 @@ const CtaSection = ({ companyName }: CtaSectionProps) => {
                 <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-            <Link to="/layanan/kelas">
+            <Link to="/program/kelas">
               <Button size="lg" variant="outline" className="border-white/40 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 hover:border-white/60 group transition-all duration-300">
                 Lihat Kelas
                 <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />

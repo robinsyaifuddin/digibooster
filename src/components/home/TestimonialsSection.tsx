@@ -18,7 +18,7 @@ const TestimonialsSection = ({ companyName, testimonials }: TestimonialsSectionP
   const extendedTestimonials = [...testimonials, ...testimonials];
 
   return (
-    <section className="py-16 md:py-24 bg-gradient-to-b from-diginavy-950 to-diginavy-900 text-white overflow-hidden">
+    <section className="py-16 md:py-24 bg-gradient-to-b from-digiblue-900 to-digiblue-800 text-white overflow-hidden">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10 md:mb-14 scroll-animation">
           <span className="inline-block py-1 px-3 text-xs font-medium text-white bg-white/10 rounded-full mb-3">TESTIMONI</span>
@@ -40,8 +40,8 @@ const TestimonialsSection = ({ companyName, testimonials }: TestimonialsSectionP
             <CarouselContent className="-ml-4">
               {extendedTestimonials.map((testimonial, index) => (
                 <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                  <div className="bg-gradient-to-br from-diginavy-800 to-diginavy-900 rounded-xl p-6 border border-diginavy-700/30 h-full shadow-lg">
-                    <Quote className="text-digiblue-400 w-8 h-8 mb-3 opacity-50" />
+                  <div className="bg-gradient-to-br from-digiblue-700 to-digiblue-900 rounded-xl p-6 border border-digiblue-600/30 h-full shadow-lg">
+                    <Quote className="text-digiblue-300 w-8 h-8 mb-3 opacity-50" />
                     
                     <div className="flex mb-4">
                       {[...Array(5)].map((_, i) => (

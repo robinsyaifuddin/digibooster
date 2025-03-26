@@ -12,7 +12,7 @@ interface HeroSectionProps {
 
 const HeroSection = ({ generalInfo, hero }: HeroSectionProps) => {
   return (
-    <section className="relative bg-gradient-to-br from-diginavy to-digiblue-700 text-white overflow-hidden">
+    <section className="relative bg-gradient-to-br from-digiblue-800 to-digiblue-600 text-white overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center opacity-20"></div>
       
       {/* Decorative shapes */}
