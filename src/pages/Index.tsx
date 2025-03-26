@@ -22,7 +22,7 @@ const Index = () => {
   }
 
   return (
-    <div className="pt-16">
+    <div className="w-full overflow-hidden">
       <ScrollAnimation>
         <HeroSection 
           generalInfo={websiteData.generalInfo} 
