@@ -29,7 +29,7 @@ const Navbar = () => {
 
   return (
     <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-      scrolled ? 'bg-white shadow-md py-2' : 'bg-transparent py-4'
+      scrolled ? 'bg-white/80 backdrop-blur-md shadow-md py-2' : 'bg-transparent py-4'
     }`}>
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
@@ -40,7 +40,7 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
             <div className="relative dropdown group">
-              <button className="nav-link flex items-center hover:text-diginavy transition-colors duration-300">
+              <button className={`nav-link flex items-center ${scrolled ? 'text-diginavy' : 'text-white'} hover:text-digiblue-300 transition-colors duration-300`}>
                 Layanan <ChevronDown className="ml-1 w-4 h-4 transition-transform group-hover:rotate-180 duration-300" />
               </button>
               <div className="dropdown-content w-64 rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-scale-in">
@@ -58,13 +58,13 @@ const Navbar = () => {
                 </Link>
               </div>
             </div>
-            <Link to="/blog" className="nav-link hover:text-diginavy transition-colors duration-300">Blog</Link>
-            <Link to="/portofolio" className="nav-link hover:text-diginavy transition-colors duration-300">Portofolio</Link>
-            <Link to="/tentang" className="nav-link hover:text-diginavy transition-colors duration-300">Tentang</Link>
+            <Link to="/blog" className={`nav-link ${scrolled ? 'text-diginavy' : 'text-white'} hover:text-digiblue-300 transition-colors duration-300`}>Blog</Link>
+            <Link to="/portofolio" className={`nav-link ${scrolled ? 'text-diginavy' : 'text-white'} hover:text-digiblue-300 transition-colors duration-300`}>Portofolio</Link>
+            <Link to="/tentang" className={`nav-link ${scrolled ? 'text-diginavy' : 'text-white'} hover:text-digiblue-300 transition-colors duration-300`}>Tentang</Link>
 
             {user ? (
               <div className="relative dropdown group">
-                <button className="flex items-center space-x-2 text-diginavy">
+                <button className={`flex items-center space-x-2 ${scrolled ? 'text-diginavy' : 'text-white'}`}>
                   <User className="w-5 h-5" />
                   <span>{user.email}</span>
                   <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180 duration-300" />
@@ -85,7 +85,7 @@ const Navbar = () => {
             ) : (
               <div className="flex items-center space-x-4">
                 <Link to="/login">
-                  <Button variant="outline" className="border-diginavy text-diginavy hover:bg-diginavy hover:text-white transition-colors duration-300">Masuk</Button>
+                  <Button variant="outline" className={`${scrolled ? 'border-diginavy text-diginavy' : 'border-white text-white'} hover:bg-diginavy hover:text-white transition-colors duration-300`}>Masuk</Button>
                 </Link>
                 <Link to="/register">
                   <Button className="bg-diginavy text-white hover:bg-diginavy-800 transition-colors duration-300">Daftar</Button>
@@ -96,7 +96,7 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <button 
-            className="md:hidden text-gray-700 focus:outline-none" 
+            className={`md:hidden focus:outline-none ${scrolled ? 'text-diginavy' : 'text-white'}`}
             onClick={toggleMenu}
           >
             {isOpen ? (
@@ -110,7 +110,7 @@ const Navbar = () => {
 
       {/* Mobile Navigation */}
       {isOpen && (
-        <div className="md:hidden bg-white border-t mt-2 animate-fade-in">
+        <div className="md:hidden bg-white/95 backdrop-blur-sm border-t mt-2 animate-fade-in">
           <div className="py-2 space-y-1">
             <div className="block px-4 py-2 font-medium">Layanan</div>
             <Link to="/layanan/jasa-digital" className="block px-8 py-2 text-sm">

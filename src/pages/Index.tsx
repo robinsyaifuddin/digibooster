@@ -42,14 +42,6 @@ const Index = () => {
           hero={homeContent.hero} 
         />
         
-        <LogoMarquee 
-          logos={partnerLogos} 
-          direction="left" 
-          speed="medium"
-          title="Dipercaya Oleh"
-          description="DigiBooster telah dipercaya oleh perusahaan terkemuka di industri teknologi"
-        />
-        
         <ServicesSection 
           services={homeContent.services} 
         />
@@ -59,13 +51,6 @@ const Index = () => {
           benefits={homeContent.benefits} 
         />
         
-        <LogoMarquee 
-          logos={partnerLogos} 
-          direction="right" 
-          speed="slow"
-          bgColor="bg-gray-50"
-        />
-        
         <TestimonialsSection 
           companyName={websiteData.generalInfo.title} 
           testimonials={homeContent.testimonials} 
@@ -73,6 +58,13 @@ const Index = () => {
         
         <CtaSection 
           companyName={websiteData.generalInfo.title} 
+        />
+        
+        <LogoMarquee 
+          logos={partnerLogos} 
+          direction="right" 
+          speed="slow"
+          bgColor="bg-gray-50"
         />
         
         <ContactSection 
