@@ -1,3 +1,4 @@
+
 import { Link } from 'react-router-dom';
 import { 
   Phone, 
@@ -9,7 +10,6 @@ import {
 import { Button } from './ui/button';
 import { useState } from 'react';
 import { useToast } from '../hooks/use-toast';
-import LogoMarquee from './home/LogoMarquee';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
@@ -39,9 +39,17 @@ const Footer = () => {
     <footer className="bg-gray-50 text-gray-700 pt-12 pb-6">
       <div className="container mx-auto px-4">
         {/* Partner Logos */}
-        <div className="mb-12">
+        <div className="mb-12 overflow-hidden">
           <h4 className="text-xl font-semibold mb-6 text-center">Dipercaya oleh</h4>
-          <LogoMarquee logos={partnerLogos} />
+          <div className="relative overflow-hidden">
+            <div className="flex space-x-12 logo-marquee">
+              {[...partnerLogos, ...partnerLogos].map((logo, index) => (
+                <div key={index} className="flex items-center justify-center h-16">
+                  <img src={logo.image} alt={logo.name} className="h-full object-contain grayscale hover:grayscale-0 transition-all" />
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-gray-200">

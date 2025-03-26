@@ -2,42 +2,13 @@
 import React from 'react';
 import { ServiceItem } from '@/types/websiteTypes';
 import ServiceCard from './ServiceCard';
-import { useIsMobile } from '@/hooks/use-mobile';
 
 interface ServicesSectionProps {
   services: ServiceItem[];
 }
 
 const ServicesSection = ({ services }: ServicesSectionProps) => {
-  const isMobile = useIsMobile();
-  
-  // Tampilan mobile: semua layanan dalam satu container saja
-  if (isMobile) {
-    return (
-      <section className="py-12 bg-gradient-to-b from-white to-gray-50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-8 scroll-animation">
-            <h2 className="text-2xl md:text-4xl font-bold mb-4">Layanan Kami</h2>
-            <p className="text-gray-600 max-w-2xl mx-auto">
-              DigiBooster menyediakan berbagai layanan untuk membantu Anda dan bisnis Anda berkembang di era digital.
-            </p>
-          </div>
-          
-          <div className="space-y-4">
-            {services.map((service, index) => (
-              <ServiceCard 
-                key={service.id} 
-                service={service} 
-                index={index} 
-              />
-            ))}
-          </div>
-        </div>
-      </section>
-    );
-  }
-  
-  // Tampilan desktop: layanan ditampilkan dalam kelompok 3
+  // Pastikan layanan ditampilkan dalam kelompok 3
   const serviceGroups = [];
   for (let i = 0; i < services.length; i += 3) {
     serviceGroups.push(services.slice(i, i + 3));
