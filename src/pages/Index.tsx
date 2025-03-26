@@ -29,54 +29,54 @@ const Index = () => {
   if (isLoading || !homeContent) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-diginavy"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-purple-600"></div>
       </div>
     );
   }
 
-  // Updated services data to match the reference image
+  // Updated services data with more specific digital agency service descriptions
   const updatedServices = [
     {
       id: '1',
-      title: 'Layanan All in Request',
-      description: 'Tak hanya website, DigiBooster juga bisa membuatkan kamu video promosi & sekalian iklan di Google',
+      title: 'Website Development',
+      description: 'Dapatkan website profesional dengan desain modern, responsif, dan SEO-friendly untuk kebutuhan bisnis atau perusahaan Anda.',
       icon: 'Code',
-      link: '/layanan/jasa-digital',
+      link: '/layanan/website-development',
     },
     {
       id: '2',
-      title: 'Harga Bisa Request',
-      description: 'Suka sama DigiBooster tapi harga belum cocok? Santai, kamu bisa tentukan harga websitemu sendiri',
+      title: 'Digital Marketing',
+      description: 'Tingkatkan visibilitas online dan jangkauan bisnis Anda melalui strategi SEO, social media, dan kampanye iklan digital yang terukur.',
       icon: 'DollarSign',
-      link: '/layanan/harga',
+      link: '/layanan/digital-marketing',
     },
     {
       id: '3',
-      title: 'Ready to Customs',
-      description: 'Selain web company & toko online, DigiBooster juga siap untuk membuat website kompleks / custom',
+      title: 'UI/UX Design',
+      description: 'Wujudkan pengalaman pengguna yang intuitif melalui desain antarmuka yang menarik dan fungsional untuk website atau aplikasi Anda.',
       icon: 'PenTool',
-      link: '/layanan/custom',
+      link: '/layanan/ui-ux-design',
     },
     {
       id: '4',
-      title: 'Alur Pekerjaan Jelas',
-      description: 'Kami memiliki cara kerja yang efisien dan profesional untuk membuat websitemu go-online dengan sangat baik',
+      title: 'Konsultasi Digital',
+      description: 'Dapatkan arahan strategis untuk transformasi digital bisnis Anda melalui sesi konsultasi dengan pakar digital kami.',
       icon: 'Users',
-      link: '/layanan/workflow',
+      link: '/layanan/konsultasi-digital',
     },
     {
       id: '5',
-      title: 'Garansi Selamanya',
-      description: 'Tak perlu khawatir soal support atau maintenance, DigiBooster siap beri garansi website seumur hidup',
+      title: 'Maintenance & Support',
+      description: 'Jaga performa optimal website atau aplikasi Anda dengan layanan maintenance berkala dan dukungan teknis 24/7.',
       icon: 'Shield',
-      link: '/layanan/garansi',
+      link: '/layanan/maintenance-support',
     },
     {
       id: '6',
-      title: 'Ada Bonus Gratis',
-      description: 'Dapatkan paket website, DigiBooster akan memberikan bonus yang sangat berguna buat bisnismu',
+      title: 'Content Creation',
+      description: 'Tingkatkan engagement dengan konten berkualitas tinggi, termasuk copywriting, fotografi, dan video untuk kebutuhan digital Anda.',
       icon: 'Gift',
-      link: '/layanan/bonus',
+      link: '/layanan/content-creation',
     },
   ];
 

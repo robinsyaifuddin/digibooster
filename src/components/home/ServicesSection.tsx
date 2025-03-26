@@ -9,7 +9,7 @@ interface ServicesSectionProps {
 
 const ServicesSection = ({ services }: ServicesSectionProps) => {
   return (
-    <section className="py-24 md:py-32 bg-gradient-to-tr from-diginavy to-digiblue-700 overflow-hidden relative">
+    <section className="py-24 md:py-32 bg-gradient-to-tr from-purple-800 to-purple-600 overflow-hidden relative">
       {/* Decorative elements */}
       <div className="absolute top-20 left-0 w-64 h-64 rounded-full bg-white/5 blur-3xl"></div>
       <div className="absolute bottom-20 right-0 w-64 h-64 rounded-full bg-white/5 blur-3xl"></div>
@@ -18,10 +18,10 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
         <div className="max-w-3xl mx-auto text-center mb-16 scroll-animation">
           <span className="inline-block py-1 px-3 text-xs font-medium text-white bg-white/10 rounded-full mb-3 backdrop-blur-sm">LAYANAN KAMI</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
-            Keuntungan Menggunakan Layanan <span className="text-purple-300">DigiBooster</span>
+            Solusi Digital <span className="text-purple-300">Komprehensif</span> untuk Bisnis Anda
           </h2>
           <p className="text-gray-200 max-w-2xl mx-auto text-lg">
-            Karena website bukan hanya soal bagus atau tidaknya, tapi bagaimana cara maintenancenya untuk perkembangan bisnis kamu.
+            Kami menawarkan berbagai layanan digital terintegrasi untuk membantu bisnis Anda berkembang di era digital dengan strategi yang terukur dan berkelanjutan.
           </p>
         </div>
         

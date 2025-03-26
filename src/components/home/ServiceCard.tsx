@@ -23,34 +23,6 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
     }
   };
 
-  // Modern service titles that match the reference image
-  const getModernTitle = (originalTitle: string, index: number) => {
-    const modernTitles = [
-      "Layanan All in Request",
-      "Harga Bisa Request",
-      "Ready to Customs",
-      "Alur Pekerjaan Jelas",
-      "Garansi Selamanya",
-      "Ada Bonus Gratis"
-    ];
-    
-    return modernTitles[index % modernTitles.length];
-  };
-
-  // Modern descriptions that match the reference image
-  const getModernDescription = (originalDesc: string, index: number) => {
-    const modernDescriptions = [
-      "Tak hanya website, DigiBooster juga bisa membuatkan kamu video promosi & sekalian iklan di Google",
-      "Suka sama DigiBooster tapi harga belum cocok? Santai, kamu bisa tentukan harga websitemu sendiri",
-      "Selain web company & toko online, DigiBooster juga siap untuk membuat website kompleks / custom",
-      "Kami memiliki cara kerja yang efisien dan profesional untuk membuat websitemu go-online dengan sangat baik",
-      "Tak perlu khawatir soal support atau maintenance, DigiBooster siap beri garansi website seumur hidup",
-      "Dapatkan paket website, DigiBooster akan memberikan bonus yang sangat berguna buat bisnismu"
-    ];
-    
-    return modernDescriptions[index % modernDescriptions.length];
-  };
-
   return (
     <div 
       className="bg-purple-600 rounded-xl p-6 text-white transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1 scroll-animation"
@@ -66,9 +38,9 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
           </div>
         </div>
         
-        <h3 className="text-xl font-bold mb-3">{getModernTitle(service.title, index)}</h3>
+        <h3 className="text-xl font-bold mb-3">{service.title}</h3>
         
-        <p className="text-purple-100 mb-6 flex-grow">{getModernDescription(service.description, index)}</p>
+        <p className="text-purple-100 mb-6 flex-grow">{service.description}</p>
         
         <Link to={service.link} className="text-white font-medium flex items-center hover:underline group mt-auto">
           Selengkapnya 
