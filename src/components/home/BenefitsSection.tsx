@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -11,41 +11,45 @@ interface BenefitsSectionProps {
 
 const BenefitsSection = ({ companyName, benefits }: BenefitsSectionProps) => {
   return (
-    <section className="py-16 md:py-24 bg-gray-50">
+    <section className="py-20 md:py-28 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="md:flex md:items-center md:justify-between">
-          <div className="md:w-1/2 mb-10 md:mb-0 md:pr-10 scroll-animation">
+        <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-12 lg:gap-20">
+          <div className="md:w-5/12 lg:w-5/12 scroll-animation">
+            <span className="inline-block py-1 px-3 text-xs font-medium text-diginavy bg-diginavy/10 rounded-full mb-3">KEUNGGULAN KAMI</span>
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Mengapa {companyName}?</h2>
             <p className="text-gray-600 mb-8">
               {companyName} hadir sebagai solusi terpadu untuk kebutuhan digitalisasi Anda. Dengan pendekatan yang komprehensif, kami membantu baik individu maupun bisnis mencapai potensi maksimal di era digital.
             </p>
             
-            <ul className="space-y-4">
-              {benefits.map((benefit, index) => (
-                <li key={index} className="flex items-start">
-                  <CheckCircle className="h-6 w-6 text-diginavy shrink-0 mr-3" />
-                  <span className="text-gray-700">{benefit}</span>
-                </li>
-              ))}
-            </ul>
-            
-            <div className="mt-8">
-              <Link to="/tentang">
-                <Button className="bg-diginavy text-white hover:bg-diginavy-800">
-                  Pelajari Lebih Lanjut
-                </Button>
-              </Link>
-            </div>
+            <Link to="/tentang">
+              <Button className="bg-diginavy text-white hover:bg-diginavy-800 group mb-8">
+                Pelajari Lebih Lanjut
+                <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
           </div>
           
-          <div className="md:w-1/2 scroll-animation">
-            <div className="relative">
-              <div className="absolute -top-4 -left-4 bg-diginavy w-24 h-24 rounded-lg opacity-20"></div>
-              <div className="absolute -bottom-4 -right-4 bg-digiblue-700 w-24 h-24 rounded-lg opacity-20"></div>
+          <div className="md:w-6/12 scroll-animation">
+            <div className="bg-white p-8 rounded-xl shadow-sm">
+              <ul className="space-y-5">
+                {benefits.map((benefit, index) => (
+                  <li key={index} className="flex items-start">
+                    <CheckCircle2 className="h-6 w-6 text-diginavy shrink-0 mr-3 mt-0.5" />
+                    <div>
+                      <p className="text-gray-700">{benefit}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            
+            <div className="relative mt-10 rounded-xl overflow-hidden shadow-lg">
+              <div className="absolute -top-4 -left-4 bg-diginavy w-20 h-20 rounded-lg opacity-20"></div>
+              <div className="absolute -bottom-4 -right-4 bg-digiblue-700 w-20 h-20 rounded-lg opacity-20"></div>
               <img 
                 src="https://images.unsplash.com/photo-1531482615713-2afd69097998?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80" 
                 alt="Digital Transformation" 
-                className="w-full h-auto rounded-lg shadow-lg relative z-10" 
+                className="w-full h-auto rounded-lg relative z-10" 
               />
             </div>
           </div>

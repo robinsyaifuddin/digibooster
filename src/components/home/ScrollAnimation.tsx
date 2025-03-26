@@ -9,40 +9,44 @@ const ScrollAnimation = ({ children }: ScrollAnimationProps) => {
   const observerRef = useRef<IntersectionObserver | null>(null);
   
   useEffect(() => {
+    // Cleanup any existing observer first
+    if (observerRef.current) {
+      observerRef.current.disconnect();
+    }
+    
     const observerOptions = {
       root: null,
       rootMargin: '0px',
       threshold: 0.1
     };
 
-    // Membuat observer baru hanya sekali
     observerRef.current = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animate-fade-in');
-          entry.target.classList.remove('opacity-0');
+          entry.target.classList.remove('opacity-0', 'translate-y-8');
+          
+          // Unobserve after animation
           observerRef.current?.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
-    // Pilih semua elemen dengan class scroll-animation
-    const elements = document.querySelectorAll('.scroll-animation');
+    // Target all elements with scroll-animation class
+    const animatedElements = document.querySelectorAll('.scroll-animation');
     
-    // Setup observer untuk setiap elemen
-    elements.forEach(el => {
-      el.classList.add('opacity-0');
+    animatedElements.forEach(el => {
+      el.classList.add('opacity-0', 'translate-y-8', 'transition-all', 'duration-700');
       observerRef.current?.observe(el);
     });
 
-    // Cleanup pada unmount
+    // Cleanup on unmount
     return () => {
       if (observerRef.current) {
-        elements.forEach(el => observerRef.current?.unobserve(el));
-        observerRef.current = null;
+        observerRef.current.disconnect();
       }
     };
-  }, []); // Pastikan effect hanya berjalan sekali
+  }, []); // Only run once on mount
 
   return <>{children}</>;
 };

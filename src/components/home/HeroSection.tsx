@@ -2,6 +2,7 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { ChevronRight, ArrowRight } from 'lucide-react';
 import { WebsiteData } from '@/stores/websiteDataStore';
 
 interface HeroSectionProps {
@@ -11,27 +12,43 @@ interface HeroSectionProps {
 
 const HeroSection = ({ generalInfo, hero }: HeroSectionProps) => {
   return (
-    <section className="relative bg-gradient-to-br from-diginavy to-digiblue-700 text-white py-20 md:py-28">
+    <section className="relative bg-gradient-to-br from-diginavy to-digiblue-700 text-white overflow-hidden">
       <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center opacity-20"></div>
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl mx-auto text-center">
-          <h5 className="text-digiblue-200 mb-3 font-medium">{generalInfo.description}</h5>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+      
+      {/* Decorative shapes */}
+      <div className="absolute top-20 right-0 w-64 h-64 bg-digiblue-400 rounded-full filter blur-3xl opacity-20"></div>
+      <div className="absolute bottom-20 left-0 w-80 h-80 bg-digiblue-200 rounded-full filter blur-3xl opacity-20"></div>
+      
+      <div className="container mx-auto px-4 relative z-10 pt-24 pb-32 md:pt-32 md:pb-40">
+        <div className="max-w-4xl mx-auto">
+          <div className="mb-6 md:mb-8">
+            <span className="inline-block px-4 py-1 rounded-full bg-white/10 backdrop-blur-sm text-digiblue-200 font-medium text-sm mb-3 border border-white/10">
+              {generalInfo.description}
+            </span>
+          </div>
+          
+          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
             <span className="block mb-2">{hero.title.split('with')[0]}</span>
-            <span className="text-digiblue-300">with {generalInfo.title}</span>
+            <span className="bg-gradient-to-r from-white to-digiblue-300 bg-clip-text text-transparent">
+              with <span className="text-digiblue-300">{generalInfo.title}</span>
+            </span>
           </h1>
-          <p className="text-lg md:text-xl mb-8 text-gray-100">
+          
+          <p className="text-lg md:text-xl mb-8 text-gray-100 max-w-3xl">
             {hero.subtitle}
           </p>
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
+          
+          <div className="flex flex-col sm:flex-row gap-4">
             <Link to={hero.ctaLink}>
-              <Button size="lg" className="bg-white text-diginavy hover:bg-gray-100 shadow-lg">
+              <Button size="lg" className="bg-white text-diginavy hover:bg-gray-100 shadow-lg group">
                 {hero.ctaText}
+                <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/register">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 group">
                 Mulai Sekarang
+                <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
           </div>
