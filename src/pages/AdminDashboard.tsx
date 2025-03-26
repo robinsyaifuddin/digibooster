@@ -2,6 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { useIsMobile } from "../hooks/use-mobile";
 import {
   ArrowUpRight,
   BarChart3,
@@ -18,6 +19,11 @@ import {
   Pencil,
   Plus,
   Filter,
+  Menu,
+  X,
+  ChevronDown,
+  ChevronRight,
+  Bell,
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -26,13 +32,18 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { useToast } from '../hooks/use-toast';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import WebsiteSettings from '../components/admin/WebsiteSettings';
+import AdminProfile from '../components/admin/AdminProfile';
 
 const AdminDashboard = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const { toast } = useToast();
+  const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState('overview');
   const [selectedAction, setSelectedAction] = useState<string | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Sample data for demonstration
   const [userStats] = useState({
@@ -83,10 +94,17 @@ const AdminDashboard = () => {
   if (!user || user.email !== 'digibooster@123') {
     return null;
   }
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    if (isMobile) {
+      setMobileMenuOpen(false);
+    }
+  };
   
   return (
     <div className="flex min-h-screen bg-gray-50">
-      {/* Sidebar */}
+      {/* Desktop Sidebar */}
       <div className="hidden md:flex flex-col w-64 bg-white border-r border-gray-200">
         <div className="p-6">
           <img 
@@ -101,7 +119,7 @@ const AdminDashboard = () => {
           
           <button 
             className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'overview' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-            onClick={() => setActiveTab('overview')}
+            onClick={() => handleTabChange('overview')}
           >
             <LayoutDashboard className="w-5 h-5 mr-3" />
             <span>Dashboard</span>
@@ -109,7 +127,7 @@ const AdminDashboard = () => {
           
           <button 
             className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'users' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-            onClick={() => setActiveTab('users')}
+            onClick={() => handleTabChange('users')}
           >
             <Users className="w-5 h-5 mr-3" />
             <span>Pengguna</span>
@@ -117,7 +135,7 @@ const AdminDashboard = () => {
           
           <button 
             className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'content' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-            onClick={() => setActiveTab('content')}
+            onClick={() => handleTabChange('content')}
           >
             <FileText className="w-5 h-5 mr-3" />
             <span>Konten</span>
@@ -125,7 +143,7 @@ const AdminDashboard = () => {
           
           <button 
             className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'services' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-            onClick={() => setActiveTab('services')}
+            onClick={() => handleTabChange('services')}
           >
             <LayoutGrid className="w-5 h-5 mr-3" />
             <span>Layanan</span>
@@ -135,7 +153,7 @@ const AdminDashboard = () => {
           
           <button 
             className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'settings' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-            onClick={() => setActiveTab('settings')}
+            onClick={() => handleTabChange('settings')}
           >
             <Settings className="w-5 h-5 mr-3" />
             <span>Pengaturan Website</span>
@@ -143,7 +161,7 @@ const AdminDashboard = () => {
           
           <button 
             className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'profile' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
-            onClick={() => setActiveTab('profile')}
+            onClick={() => handleTabChange('profile')}
           >
             <User className="w-5 h-5 mr-3" />
             <span>Profil Admin</span>
@@ -162,10 +180,90 @@ const AdminDashboard = () => {
         </div>
       </div>
       
+      {/* Mobile menu sheet */}
+      <Sheet open={mobileMenuOpen} onOpenChange={setMobileMenuOpen}>
+        <SheetContent side="left" className="p-0 w-[260px]">
+          <div className="flex flex-col h-full">
+            <div className="p-6 border-b border-gray-200">
+              <img 
+                src="/lovable-uploads/eb7d859a-60c0-4007-afe4-522ffdd5afda.png" 
+                alt="DigiBooster Logo" 
+                className="h-8" 
+              />
+            </div>
+            
+            <nav className="flex-1 py-4">
+              <div className="px-4 mb-2 text-xs font-semibold text-gray-400 uppercase">Menu Utama</div>
+              
+              <button 
+                className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'overview' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
+                onClick={() => handleTabChange('overview')}
+              >
+                <LayoutDashboard className="w-5 h-5 mr-3" />
+                <span>Dashboard</span>
+              </button>
+              
+              <button 
+                className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'users' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
+                onClick={() => handleTabChange('users')}
+              >
+                <Users className="w-5 h-5 mr-3" />
+                <span>Pengguna</span>
+              </button>
+              
+              <button 
+                className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'content' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
+                onClick={() => handleTabChange('content')}
+              >
+                <FileText className="w-5 h-5 mr-3" />
+                <span>Konten</span>
+              </button>
+              
+              <button 
+                className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'services' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
+                onClick={() => handleTabChange('services')}
+              >
+                <LayoutGrid className="w-5 h-5 mr-3" />
+                <span>Layanan</span>
+              </button>
+              
+              <div className="px-4 mt-6 mb-2 text-xs font-semibold text-gray-400 uppercase">Pengaturan</div>
+              
+              <button 
+                className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'settings' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
+                onClick={() => handleTabChange('settings')}
+              >
+                <Settings className="w-5 h-5 mr-3" />
+                <span>Pengaturan Website</span>
+              </button>
+              
+              <button 
+                className={`flex items-center px-4 py-3 w-full text-left ${activeTab === 'profile' ? 'bg-diginavy text-white' : 'text-gray-700 hover:bg-gray-100'}`}
+                onClick={() => handleTabChange('profile')}
+              >
+                <User className="w-5 h-5 mr-3" />
+                <span>Profil Admin</span>
+              </button>
+            </nav>
+            
+            <div className="p-4 border-t border-gray-200">
+              <Button 
+                variant="outline" 
+                className="w-full flex items-center justify-center"
+                onClick={() => navigate('/')}
+              >
+                <Home className="w-4 h-4 mr-2" />
+                Kembali ke Website
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
+      
       {/* Mobile sidebar toggle */}
-      <div className="md:hidden fixed bottom-4 right-4 z-50">
-        <Button className="rounded-full w-14 h-14 shadow-lg bg-diginavy text-white" onClick={() => {}}>
-          <LayoutDashboard className="w-6 h-6" />
+      <div className="md:hidden fixed bottom-4 right-4 z-40">
+        <Button className="rounded-full w-14 h-14 shadow-lg bg-diginavy text-white" onClick={() => setMobileMenuOpen(true)}>
+          <Menu className="w-6 h-6" />
         </Button>
       </div>
       
@@ -173,22 +271,47 @@ const AdminDashboard = () => {
       <div className="flex-1 overflow-auto">
         {/* Header */}
         <header className="px-6 py-4 bg-white border-b border-gray-200 flex justify-between items-center sticky top-0 z-10">
-          <h1 className="text-xl font-bold text-gray-800 md:hidden">
-            DigiBooster Admin
-          </h1>
-          
           <div className="flex items-center">
-            <div className="hidden md:flex mr-4">
+            <button 
+              className="md:hidden text-gray-500 mr-3"
+              onClick={() => setMobileMenuOpen(true)}
+            >
+              <Menu className="w-6 h-6" />
+            </button>
+            <h1 className="text-xl font-bold text-gray-800">
+              {activeTab === 'overview' && 'Dashboard'}
+              {activeTab === 'users' && 'Kelola Pengguna'}
+              {activeTab === 'content' && 'Kelola Konten'}
+              {activeTab === 'services' && 'Kelola Layanan'}
+              {activeTab === 'settings' && 'Pengaturan Website'}
+              {activeTab === 'profile' && 'Profil Admin'}
+            </h1>
+          </div>
+          
+          <div className="flex items-center space-x-4">
+            <div className="hidden md:flex relative">
               <Input
                 placeholder="Cari..."
-                className="w-64"
+                className="w-64 pr-8"
               />
+              <Button variant="ghost" className="absolute right-0 top-0 h-full aspect-square p-0">
+                <Filter className="w-4 h-4 text-gray-400" />
+              </Button>
+            </div>
+            
+            <div className="relative">
+              <Button variant="ghost" size="icon" className="relative">
+                <Bell className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  3
+                </span>
+              </Button>
             </div>
             
             <div className="flex items-center">
               <Avatar className="h-8 w-8">
                 <AvatarImage src="" alt="Admin" />
-                <AvatarFallback>AD</AvatarFallback>
+                <AvatarFallback className="bg-diginavy text-white">AD</AvatarFallback>
               </Avatar>
               <span className="ml-2 font-medium text-sm hidden md:inline">Admin DigiBooster</span>
             </div>
@@ -196,14 +319,14 @@ const AdminDashboard = () => {
         </header>
         
         {/* Dashboard content */}
-        <main className="p-6">
+        <main className="p-4 md:p-6">
           {/* Overview tab */}
           {activeTab === 'overview' && (
             <div>
               <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">Dashboard</h1>
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800 hidden md:block">Ringkasan Website</h2>
                 <div className="flex gap-2">
-                  <Button variant="outline" size="sm">
+                  <Button variant="outline" size="sm" className="hidden md:flex">
                     <Filter className="w-4 h-4 mr-2" />
                     Filter
                   </Button>
@@ -214,7 +337,7 @@ const AdminDashboard = () => {
                 </div>
               </div>
               
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-6 md:mb-8">
                 <Card>
                   <CardHeader className="flex flex-row items-center justify-between pb-2">
                     <CardTitle className="text-sm font-medium">
@@ -290,7 +413,9 @@ const AdminDashboard = () => {
                         <div key={user.id} className="flex items-center justify-between border-b border-gray-100 pb-4 last:border-0 last:pb-0">
                           <div className="flex items-center">
                             <Avatar className="h-9 w-9">
-                              <AvatarFallback>{user.avatar}</AvatarFallback>
+                              <AvatarFallback className={user.role === 'premium' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'}>
+                                {user.avatar}
+                              </AvatarFallback>
                             </Avatar>
                             <div className="ml-3">
                               <p className="text-sm font-medium">{user.name}</p>
@@ -357,7 +482,7 @@ const AdminDashboard = () => {
           {activeTab === 'users' && (
             <div>
               <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">Kelola Pengguna</h1>
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800 hidden md:block">Kelola Pengguna</h2>
                 <Button>
                   <Plus className="w-4 h-4 mr-2" />
                   Tambah Pengguna
@@ -366,15 +491,15 @@ const AdminDashboard = () => {
               
               <Card>
                 <CardHeader>
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                     <CardTitle>Daftar Pengguna</CardTitle>
-                    <div className="flex gap-2">
+                    <div className="flex flex-col md:flex-row gap-2">
                       <Input
                         placeholder="Cari pengguna..."
-                        className="w-60"
+                        className="w-full md:w-60"
                       />
                       <Select>
-                        <SelectTrigger className="w-36">
+                        <SelectTrigger className="w-full md:w-36">
                           <SelectValue placeholder="Filter" />
                         </SelectTrigger>
                         <SelectContent>
@@ -411,7 +536,9 @@ const AdminDashboard = () => {
                             <td className="px-4 py-3 whitespace-nowrap">
                               <div className="flex items-center">
                                 <Avatar className="h-8 w-8">
-                                  <AvatarFallback>{user.avatar}</AvatarFallback>
+                                  <AvatarFallback className={user.role === 'premium' ? 'bg-yellow-100 text-yellow-800' : 'bg-blue-100 text-blue-800'}>
+                                    {user.avatar}
+                                  </AvatarFallback>
                                 </Avatar>
                                 <div className="ml-3">
                                   <div className="text-sm font-medium text-gray-900">{user.name}</div>
@@ -437,8 +564,8 @@ const AdminDashboard = () => {
                     </table>
                   </div>
                 </CardContent>
-                <CardFooter className="flex items-center justify-between">
-                  <p className="text-sm text-gray-500">Menampilkan 7 dari 1245 pengguna</p>
+                <CardFooter className="flex flex-col md:flex-row items-center justify-between">
+                  <p className="text-sm text-gray-500 mb-2 md:mb-0">Menampilkan 7 dari 1245 pengguna</p>
                   <div className="flex gap-2">
                     <Button variant="outline" size="sm" disabled>Sebelumnya</Button>
                     <Button variant="outline" size="sm">Selanjutnya</Button>
@@ -452,19 +579,19 @@ const AdminDashboard = () => {
           {activeTab === 'content' && (
             <div>
               <div className="flex items-center justify-between mb-6">
-                <h1 className="text-2xl font-bold text-gray-800">Kelola Konten</h1>
+                <h2 className="text-xl md:text-2xl font-bold text-gray-800 hidden md:block">Kelola Konten</h2>
               </div>
               
               <Tabs defaultValue="blog">
-                <TabsList className="mb-6">
+                <TabsList className="mb-6 overflow-x-auto flex whitespace-nowrap pb-2 scrollbar-none">
                   <TabsTrigger value="blog">Blog</TabsTrigger>
                   <TabsTrigger value="courses">Kelas</TabsTrigger>
                   <TabsTrigger value="portfolio">Portofolio</TabsTrigger>
                 </TabsList>
                 
                 <TabsContent value="blog">
-                  <div className="flex justify-between mb-4">
-                    <h2 className="text-lg font-semibold">Artikel Blog</h2>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                    <h3 className="text-lg font-semibold">Artikel Blog</h3>
                     <Button>
                       <Plus className="w-4 h-4 mr-2" />
                       Tambah Artikel
@@ -473,47 +600,49 @@ const AdminDashboard = () => {
                   
                   <Card>
                     <CardContent className="p-0">
-                      <table className="w-full">
-                        <thead>
-                          <tr className="border-b border-gray-200">
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penulis</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-                            <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                            <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-gray-200">
-                          {[...recentBlogs, 
-                            { id: 4, title: 'Tren Digital Marketing 2023', author: 'Admin', published: '2023-08-03', views: 145 },
-                            { id: 5, title: 'Pentingnya Website untuk Bisnis', author: 'Admin', published: '2023-07-28', views: 267 },
-                          ].map((blog, index) => (
-                            <tr key={blog.id} className="hover:bg-gray-50">
-                              <td className="px-4 py-3 text-sm text-gray-900">{blog.title}</td>
-                              <td className="px-4 py-3 text-sm text-gray-500">{['Marketing', 'Website', 'Content', 'SEO', 'Social Media'][index % 5]}</td>
-                              <td className="px-4 py-3 text-sm text-gray-500">{blog.author}</td>
-                              <td className="px-4 py-3 text-sm text-gray-500">{blog.published}</td>
-                              <td className="px-4 py-3">
-                                <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                  Dipublikasikan
-                                </span>
-                              </td>
-                              <td className="px-4 py-3 text-right text-sm font-medium">
-                                <Button variant="ghost" size="sm">Edit</Button>
-                                <Button variant="ghost" size="sm" className="text-red-600">Hapus</Button>
-                              </td>
+                      <div className="overflow-x-auto">
+                        <table className="w-full">
+                          <thead>
+                            <tr className="border-b border-gray-200">
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penulis</th>
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
+                              <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                              <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody className="divide-y divide-gray-200">
+                            {[...recentBlogs, 
+                              { id: 4, title: 'Tren Digital Marketing 2023', author: 'Admin', published: '2023-08-03', views: 145 },
+                              { id: 5, title: 'Pentingnya Website untuk Bisnis', author: 'Admin', published: '2023-07-28', views: 267 },
+                            ].map((blog, index) => (
+                              <tr key={blog.id} className="hover:bg-gray-50">
+                                <td className="px-4 py-3 text-sm text-gray-900">{blog.title}</td>
+                                <td className="px-4 py-3 text-sm text-gray-500">{['Marketing', 'Website', 'Content', 'SEO', 'Social Media'][index % 5]}</td>
+                                <td className="px-4 py-3 text-sm text-gray-500">{blog.author}</td>
+                                <td className="px-4 py-3 text-sm text-gray-500">{blog.published}</td>
+                                <td className="px-4 py-3">
+                                  <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Dipublikasikan
+                                  </span>
+                                </td>
+                                <td className="px-4 py-3 text-right text-sm font-medium">
+                                  <Button variant="ghost" size="sm">Edit</Button>
+                                  <Button variant="ghost" size="sm" className="text-red-600">Hapus</Button>
+                                </td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </CardContent>
                   </Card>
                 </TabsContent>
                 
                 <TabsContent value="courses">
-                  <div className="flex justify-between mb-4">
-                    <h2 className="text-lg font-semibold">Kelas</h2>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                    <h3 className="text-lg font-semibold">Kelas</h3>
                     <Button>
                       <Plus className="w-4 h-4 mr-2" />
                       Tambah Kelas
@@ -529,7 +658,7 @@ const AdminDashboard = () => {
                       { id: 5, title: 'Social Media Management', students: 203, lessons: 9, level: 'Menengah' },
                       { id: 6, title: 'UI/UX Design Basic', students: 178, lessons: 11, level: 'Pemula' },
                     ].map((course) => (
-                      <Card key={course.id}>
+                      <Card key={course.id} className="hover:shadow-md transition-shadow">
                         <CardHeader>
                           <CardTitle className="text-base">{course.title}</CardTitle>
                           <CardDescription>
@@ -558,8 +687,8 @@ const AdminDashboard = () => {
                 </TabsContent>
                 
                 <TabsContent value="portfolio">
-                  <div className="flex justify-between mb-4">
-                    <h2 className="text-lg font-semibold">Portofolio</h2>
+                  <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
+                    <h3 className="text-lg font-semibold">Portofolio</h3>
                     <Button>
                       <Plus className="w-4 h-4 mr-2" />
                       Tambah Portofolio
@@ -575,7 +704,7 @@ const AdminDashboard = () => {
                       { id: 5, title: 'Strategi SEO Toko Online', category: 'SEO', client: 'Online Shop RST' },
                       { id: 6, title: 'Content Marketing Startup', category: 'Content Marketing', client: 'Startup UVW' },
                     ].map((portfolio) => (
-                      <Card key={portfolio.id}>
+                      <Card key={portfolio.id} className="hover:shadow-md transition-shadow">
                         <div className="h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
                           <PenSquare className="w-8 h-8 text-gray-400" />
                         </div>
@@ -602,10 +731,16 @@ const AdminDashboard = () => {
             </div>
           )}
           
-          {/* If other tabs are selected, show a message */}
-          {['services', 'settings', 'profile'].includes(activeTab) && (
+          {/* Website Settings */}
+          {activeTab === 'settings' && <WebsiteSettings />}
+          
+          {/* Admin Profile */}
+          {activeTab === 'profile' && <AdminProfile />}
+          
+          {/* Services tab */}
+          {activeTab === 'services' && (
             <div className="flex flex-col items-center justify-center h-64 bg-gray-50 rounded-lg border border-dashed border-gray-300">
-              <h2 className="text-lg font-medium text-gray-600">Fitur {activeTab === 'services' ? 'Layanan' : activeTab === 'settings' ? 'Pengaturan Website' : 'Profil Admin'} Sedang Dikembangkan</h2>
+              <h2 className="text-lg font-medium text-gray-600">Fitur Layanan Sedang Dikembangkan</h2>
               <p className="mt-2 text-sm text-gray-500">Fitur ini akan segera tersedia dalam waktu dekat.</p>
               <Button 
                 className="mt-4"
@@ -622,3 +757,4 @@ const AdminDashboard = () => {
 };
 
 export default AdminDashboard;
+

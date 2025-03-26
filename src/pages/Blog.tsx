@@ -1,340 +1,223 @@
 
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { BookOpen, Calendar, Filter, Search, Tag, User } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
-import { useToast } from '../hooks/use-toast';
+import { useState } from 'react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { useIsMobile } from "../hooks/use-mobile";
+import { Search, ChevronRight, BookOpen, Clock, Tag, Filter } from "lucide-react";
 
-// Sample blog post data
-const blogPosts = [
-  {
-    id: 1,
-    title: 'Cara Memulai Bisnis Digital dari Nol',
-    excerpt: 'Panduan lengkap untuk memulai bisnis digital Anda dari nol, termasuk strategi pemasaran dan tips mengelola bisnis online.',
-    category: 'Bisnis Digital',
-    author: 'Tim DigiBooster',
-    date: '12 Agustus 2023',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&q=80&w=2426&ixlib=rb-4.0.3',
-    premium: false,
-    readTime: '8 menit',
-  },
-  {
-    id: 2,
-    title: 'Strategi SEO Terbaru untuk Meningkatkan Peringkat Website',
-    excerpt: 'Pelajari teknik SEO terbaru yang dapat membantu meningkatkan peringkat website Anda di mesin pencari Google.',
-    category: 'SEO',
-    author: 'Ahmad Fauzi',
-    date: '5 Agustus 2023',
-    image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3',
-    premium: true,
-    readTime: '12 menit',
-  },
-  {
-    id: 3,
-    title: 'Tips Membuat Konten yang Menarik untuk Media Sosial',
-    excerpt: 'Panduan praktis untuk membuat konten yang menarik dan viral di berbagai platform media sosial populer saat ini.',
-    category: 'Media Sosial',
-    author: 'Siti Nurhaliza',
-    date: '28 Juli 2023',
-    image: 'https://images.unsplash.com/photo-1611162617213-7d7a39e9b1d7?auto=format&fit=crop&q=80&w=2574&ixlib=rb-4.0.3',
-    premium: false,
-    readTime: '5 menit',
-  },
-  {
-    id: 4,
-    title: 'Pentingnya Data Analytics dalam Pengembangan Bisnis',
-    excerpt: 'Bagaimana data analytics dapat membantu Anda membuat keputusan bisnis yang lebih baik dan meningkatkan profitabilitas.',
-    category: 'Data Analytics',
-    author: 'Budi Santoso',
-    date: '20 Juli 2023',
-    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3',
-    premium: true,
-    readTime: '10 menit',
-  },
-  {
-    id: 5,
-    title: 'Membangun Brand yang Kuat di Era Digital',
-    excerpt: 'Langkah-langkah praktis untuk membangun dan memperkuat brand Anda di era digital yang kompetitif.',
-    category: 'Branding',
-    author: 'Tim DigiBooster',
-    date: '15 Juli 2023',
-    image: 'https://images.unsplash.com/photo-1559526324-593bc073d938?auto=format&fit=crop&q=80&w=2670&ixlib=rb-4.0.3',
-    premium: false,
-    readTime: '7 menit',
-  },
-  {
-    id: 6,
-    title: 'Teknik Copywriting yang Efektif untuk Meningkatkan Konversi',
-    excerpt: 'Pelajari teknik copywriting yang terbukti efektif untuk meningkatkan konversi dan penjualan pada website Anda.',
-    category: 'Copywriting',
-    author: 'Rina Wijaya',
-    date: '8 Juli 2023',
-    image: 'https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=80&w=2673&ixlib=rb-4.0.3',
-    premium: true,
-    readTime: '9 menit',
-  },
-];
+interface BlogPost {
+  id: number;
+  title: string;
+  excerpt: string;
+  category: string;
+  author: string;
+  date: string;
+  readTime: string;
+  image: string;
+  tags: string[];
+}
 
 const Blog = () => {
-  const { user } = useAuth();
-  const { toast } = useToast();
-  const [filter, setFilter] = useState('all');
-  const [searchTerm, setSearchTerm] = useState('');
-  const [categoryFilter, setCategoryFilter] = useState('');
+  const isMobile = useIsMobile();
+  const [searchQuery, setSearchQuery] = useState('');
+  const [activeCategory, setActiveCategory] = useState('all');
+
+  // Sample blog posts data
+  const blogPosts: BlogPost[] = [
+    {
+      id: 1,
+      title: "7 Tips Optimasi Website untuk Pemula",
+      excerpt: "Pelajari cara sederhana untuk meningkatkan performa website Anda agar lebih cepat dan ramah pengguna.",
+      category: "Website",
+      author: "Admin DigiBooster",
+      date: "20 Jul 2023",
+      readTime: "5 menit",
+      image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      tags: ["SEO", "Website", "Optimasi"]
+    },
+    {
+      id: 2,
+      title: "Cara Membuat Konten Digital yang Menarik",
+      excerpt: "Temukan rahasia membuat konten digital yang tidak hanya menarik tetapi juga bisa meningkatkan engagement.",
+      category: "Content",
+      author: "Tim DigiBooster",
+      date: "15 Jul 2023",
+      readTime: "8 menit",
+      image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      tags: ["Content", "Digital Marketing", "Engagement"]
+    },
+    {
+      id: 3,
+      title: "Strategi Marketing Digital di Era 2023",
+      excerpt: "Update terbaru tentang strategi marketing digital yang efektif di tahun 2023.",
+      category: "Marketing",
+      author: "Admin DigiBooster",
+      date: "10 Jul 2023",
+      readTime: "10 menit",
+      image: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      tags: ["Marketing", "Digital Strategy", "Trends"]
+    },
+    {
+      id: 4,
+      title: "Tren Digital Marketing 2023",
+      excerpt: "Pelajari tren digital marketing terbaru yang perlu Anda ketahui untuk tetap relevan di tahun 2023.",
+      category: "Marketing",
+      author: "Tim DigiBooster",
+      date: "5 Jul 2023",
+      readTime: "7 menit",
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      tags: ["Marketing", "Trends", "Digital"]
+    },
+    {
+      id: 5,
+      title: "Pentingnya Website untuk Bisnis",
+      excerpt: "Mengapa bisnis Anda membutuhkan website yang profesional di era digital saat ini.",
+      category: "Website",
+      author: "Admin DigiBooster",
+      date: "1 Jul 2023",
+      readTime: "6 menit",
+      image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      tags: ["Website", "Business", "Digital Presence"]
+    },
+    {
+      id: 6,
+      title: "Panduan SEO untuk Pemula",
+      excerpt: "Panduan lengkap SEO untuk pemula yang ingin meningkatkan peringkat website di mesin pencari.",
+      category: "SEO",
+      author: "Tim DigiBooster",
+      date: "25 Jun 2023",
+      readTime: "12 menit",
+      image: "https://images.unsplash.com/photo-1523726491678-bf852e717f6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
+      tags: ["SEO", "Website", "Search Engine"]
+    }
+  ];
   
-  useEffect(() => {
-    // Set page title
-    document.title = "Blog | DigiBooster";
-  }, []);
-  
-  // Filter and search posts
+  // Filter posts based on search query and active category
   const filteredPosts = blogPosts.filter(post => {
-    // Filter by premium status
-    if (filter === 'premium' && !post.premium) return false;
-    if (filter === 'free' && post.premium) return false;
+    const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
+                         post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     
-    // Filter by category
-    if (categoryFilter && post.category !== categoryFilter) return false;
+    const matchesCategory = activeCategory === 'all' || post.category.toLowerCase() === activeCategory.toLowerCase();
     
-    // Search by title or excerpt
-    if (searchTerm) {
-      const searchTermLower = searchTerm.toLowerCase();
-      return (
-        post.title.toLowerCase().includes(searchTermLower) ||
-        post.excerpt.toLowerCase().includes(searchTermLower)
-      );
-    }
-    
-    return true;
+    return matchesSearch && matchesCategory;
   });
-  
-  // Get unique categories
-  const categories = Array.from(new Set(blogPosts.map(post => post.category)));
-  
-  // Handle premium content access
-  const handlePremiumAccess = (post: typeof blogPosts[0]) => {
-    if (!user) {
-      toast({
-        title: "Login diperlukan",
-        description: "Silakan login untuk membaca konten premium.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    // If user is logged in but not admin or premium user
-    if (user.role !== 'admin' && user.email !== 'digibooster@123') {
-      toast({
-        title: "Konten Premium",
-        description: "Anda perlu berlangganan untuk mengakses konten premium.",
-        variant: "destructive",
-      });
-      return;
-    }
-    
-    // If admin or premium user, allow access
-    toast({
-      title: "Akses diberikan",
-      description: `Anda sekarang dapat membaca artikel ${post.title}.`,
-    });
-  };
-  
+
+  // Get unique categories for filter
+  const categories = ['all', ...Array.from(new Set(blogPosts.map(post => post.category.toLowerCase())))];
+
   return (
-    <div className="container mx-auto py-16 px-4 md:px-6 lg:px-8 mt-16">
-      <div className="text-center mb-12">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Blog DigiBooster</h1>
-        <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-          Dapatkan informasi terbaru, tips, dan trik seputar dunia digital untuk mengembangkan bisnis dan keterampilan Anda.
+    <div className="py-24 md:pt-32 px-4 md:px-8 max-w-7xl mx-auto">
+      {/* Blog Header */}
+      <div className="mb-12 text-center">
+        <h1 className="text-3xl md:text-5xl font-bold mb-3 text-diginavy">DigiBooster Blog</h1>
+        <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
+          Temukan berbagai artikel informatif tentang dunia digital untuk membantu Anda berkembang
         </p>
       </div>
-      
-      {/* Filters and search */}
-      <div className="mb-10 flex flex-col md:flex-row gap-4 justify-between">
-        <div className="flex flex-col sm:flex-row gap-3">
-          <div className="relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+
+      {/* Search and Filter */}
+      <div className="mb-12">
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-3 h-5 w-5 text-gray-400" />
             <Input
-              className="pl-10 w-full sm:w-80"
               placeholder="Cari artikel..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
+              className="pl-10"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
           </div>
-          
-          <Select value={categoryFilter} onValueChange={setCategoryFilter}>
-            <SelectTrigger className="w-full sm:w-48">
-              <SelectValue placeholder="Semua Kategori" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">Semua Kategori</SelectItem>
-              {categories.map(category => (
-                <SelectItem key={category} value={category}>{category}</SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
-        </div>
-        
-        <div className="flex gap-2">
-          <Button
-            variant={filter === 'all' ? 'default' : 'outline'}
-            className={filter === 'all' ? 'bg-diginavy text-white' : ''}
-            onClick={() => setFilter('all')}
-          >
-            Semua
-          </Button>
-          <Button
-            variant={filter === 'free' ? 'default' : 'outline'}
-            className={filter === 'free' ? 'bg-diginavy text-white' : ''}
-            onClick={() => setFilter('free')}
-          >
-            Gratis
-          </Button>
-          <Button
-            variant={filter === 'premium' ? 'default' : 'outline'}
-            className={filter === 'premium' ? 'bg-diginavy text-white' : ''}
-            onClick={() => setFilter('premium')}
-          >
-            Premium
-          </Button>
+          <div className="md:w-1/3">
+            <Tabs defaultValue="all" className="w-full">
+              <TabsList className="w-full overflow-x-auto flex whitespace-nowrap scrollbar-none">
+                {categories.map((category) => (
+                  <TabsTrigger 
+                    key={category} 
+                    value={category}
+                    onClick={() => setActiveCategory(category)}
+                    className="capitalize"
+                  >
+                    {category === 'all' ? 'Semua' : category}
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+            </Tabs>
+          </div>
         </div>
       </div>
-      
-      {/* Blog posts grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredPosts.length > 0 ? (
-          filteredPosts.map((post) => (
+
+      {/* Blog Posts Grid */}
+      {filteredPosts.length > 0 ? (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {filteredPosts.map((post) => (
             <Card key={post.id} className="overflow-hidden hover:shadow-lg transition-shadow duration-300">
-              <div className="relative h-48 overflow-hidden">
-                <img 
-                  src={post.image} 
-                  alt={post.title} 
-                  className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+              <div className="h-48 overflow-hidden">
+                <img
+                  src={post.image}
+                  alt={post.title}
+                  className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
                 />
-                {post.premium && (
-                  <div className="absolute top-0 right-0 bg-yellow-500 text-white px-3 py-1 text-xs font-bold">
-                    PREMIUM
-                  </div>
-                )}
               </div>
-              
-              <CardHeader className="p-4 pb-2">
-                <div className="flex items-center text-xs text-gray-500 mb-2">
-                  <Tag className="h-3 w-3 mr-1" />
-                  <span>{post.category}</span>
+              <CardHeader className="pb-2">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-xs font-medium bg-diginavy/10 text-diginavy px-2 py-1 rounded">
+                    {post.category}
+                  </span>
+                  <div className="flex items-center text-gray-500 text-xs">
+                    <Clock className="h-3 w-3 mr-1" />
+                    {post.readTime}
+                  </div>
                 </div>
-                <CardTitle className="text-lg">{post.title}</CardTitle>
+                <CardTitle className="text-xl font-bold text-diginavy hover:text-diginavy-800 transition-colors">
+                  {post.title}
+                </CardTitle>
               </CardHeader>
-              
-              <CardContent className="p-4 pt-0">
-                <CardDescription className="text-gray-600 line-clamp-3">
+              <CardContent>
+                <CardDescription className="text-gray-600">
                   {post.excerpt}
                 </CardDescription>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {post.tags.map((tag, index) => (
+                    <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                      #{tag}
+                    </span>
+                  ))}
+                </div>
               </CardContent>
-              
-              <CardFooter className="flex justify-between items-center p-4 border-t border-gray-100">
-                <div className="flex items-center text-xs text-gray-500">
-                  <User className="h-3 w-3 mr-1" />
-                  <span>{post.author}</span>
-                  <span className="mx-2">•</span>
-                  <Calendar className="h-3 w-3 mr-1" />
-                  <span>{post.date}</span>
-                </div>
-                <div className="flex items-center text-xs text-gray-500">
-                  <BookOpen className="h-3 w-3 mr-1" />
-                  <span>{post.readTime}</span>
-                </div>
+              <CardFooter className="flex justify-between items-center pt-2 border-t">
+                <div className="text-sm text-gray-500">{post.date}</div>
+                <Button variant="ghost" className="text-diginavy hover:text-diginavy-800 p-0">
+                  Baca Selengkapnya <ChevronRight className="h-4 w-4 ml-1" />
+                </Button>
               </CardFooter>
-              
-              {post.premium ? (
-                <div className="px-4 pb-4">
-                  <Button 
-                    className="w-full bg-diginavy text-white hover:bg-diginavy-800"
-                    onClick={() => handlePremiumAccess(post)}
-                  >
-                    Baca Artikel Premium
-                  </Button>
-                </div>
-              ) : (
-                <div className="px-4 pb-4">
-                  <Button 
-                    variant="outline" 
-                    className="w-full border-diginavy text-diginavy"
-                  >
-                    Baca Selengkapnya
-                  </Button>
-                </div>
-              )}
             </Card>
-          ))
-        ) : (
-          <div className="col-span-full text-center py-12">
-            <div className="text-gray-400 mb-4">
-              <Search className="w-12 h-12 mx-auto" />
-            </div>
-            <h3 className="text-xl font-medium text-gray-800 mb-2">Tidak ada artikel yang ditemukan</h3>
-            <p className="text-gray-600">
-              Coba ubah filter atau kata kunci pencarian Anda.
-            </p>
-            <Button 
-              className="mt-4 bg-diginavy text-white"
-              onClick={() => {
-                setSearchTerm('');
-                setFilter('all');
-                setCategoryFilter('');
-              }}
-            >
-              Reset Filter
-            </Button>
-          </div>
-        )}
-      </div>
-      
-      {/* Newsletter signup - visible to all but with different messaging based on auth status */}
-      <div className="mt-16 bg-gray-50 rounded-lg p-8 text-center">
-        <h2 className="text-2xl font-bold text-gray-900 mb-3">
-          {user ? 'Dapatkan Update Terbaru' : 'Daftar Newsletter Kami'}
-        </h2>
-        <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-          {user 
-            ? 'Kami akan mengirimkan artikel terbaru dan tips digital marketing ke email Anda.' 
-            : 'Dapatkan artikel terbaru dan tips digital marketing langsung ke inbox Anda. Daftar sekarang!'}
-        </p>
-        
-        {user ? (
-          <div className="max-w-md mx-auto">
-            <div className="flex gap-3">
-              <Input value={user.email} disabled className="bg-gray-100" />
-              <Button className="bg-diginavy text-white">Berlangganan</Button>
-            </div>
-            <p className="mt-2 text-sm text-gray-500">
-              Anda akan menerima newsletter dengan email {user.email}
-            </p>
-          </div>
-        ) : (
-          <div className="max-w-md mx-auto">
-            <div className="flex gap-3">
-              <Input placeholder="Masukkan email Anda" />
-              <Button 
-                className="bg-diginavy text-white"
-                onClick={() => {
-                  toast({
-                    title: "Silakan login terlebih dahulu",
-                    description: "Untuk berlangganan newsletter, Anda perlu login ke akun Anda.",
-                  });
-                }}
-              >
-                Berlangganan
-              </Button>
-            </div>
-            <p className="mt-2 text-sm text-gray-500">
-              <Link to="/login" className="text-diginavy hover:underline">Login</Link> atau <Link to="/register" className="text-diginavy hover:underline">daftar</Link> untuk berlangganan newsletter
-            </p>
-          </div>
-        )}
+          ))}
+        </div>
+      ) : (
+        <div className="text-center py-12">
+          <BookOpen className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+          <h3 className="text-xl font-semibold mb-2">Tidak ada artikel ditemukan</h3>
+          <p className="text-gray-500 mb-4">Coba gunakan kata kunci pencarian yang berbeda</p>
+          <Button onClick={() => {setSearchQuery(''); setActiveCategory('all');}}>
+            Lihat Semua Artikel
+          </Button>
+        </div>
+      )}
+
+      {/* Pagination */}
+      <div className="flex justify-center mt-12">
+        <Button variant="outline" className="mr-2" disabled>
+          Sebelumnya
+        </Button>
+        <Button variant="outline" className="bg-diginavy text-white">
+          1
+        </Button>
+        <Button variant="outline" className="ml-2">
+          Selanjutnya
+        </Button>
       </div>
     </div>
   );
