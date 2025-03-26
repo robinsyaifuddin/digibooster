@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -61,7 +62,34 @@ export default {
 					'accent-foreground': 'hsl(var(--sidebar-accent-foreground))',
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
-				}
+				},
+                digiblue: {
+                    50: '#eaeaff',
+                    100: '#d6d5ff',
+                    200: '#b8b6ff',
+                    300: '#9997ff',
+                    400: '#7e79ff',
+                    500: '#685dff',
+                    600: '#5d46ff',
+                    700: '#5234ff',
+                    800: '#4824eb',
+                    900: '#1a1b7a',
+                    950: '#161759'
+                },
+                diginavy: {
+                    DEFAULT: '#161759',
+                    50: '#f0f1ff',
+                    100: '#e2e5ff',
+                    200: '#c9ceff',
+                    300: '#a8adff',
+                    400: '#8281ff',
+                    500: '#6251fc',
+                    600: '#5234f5',
+                    700: '#4724e4',
+                    800: '#3820bc',
+                    900: '#1a1b7a',
+                    950: '#161759'
+                }
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
@@ -70,25 +98,37 @@ export default {
 			},
 			keyframes: {
 				'accordion-down': {
-					from: {
-						height: '0'
-					},
-					to: {
-						height: 'var(--radix-accordion-content-height)'
-					}
+					from: {height: '0'},
+					to: {height: 'var(--radix-accordion-content-height)'}
 				},
 				'accordion-up': {
-					from: {
-						height: 'var(--radix-accordion-content-height)'
-					},
-					to: {
-						height: '0'
-					}
-				}
+					from: {height: 'var(--radix-accordion-content-height)'},
+					to: {height: '0'}
+				},
+                'marquee': {
+                    '0%': { transform: 'translateX(0%)' },
+                    '100%': { transform: 'translateX(-100%)' }
+                },
+                'fade-in': {
+                    '0%': { opacity: '0', transform: 'translateY(10px)' },
+                    '100%': { opacity: '1', transform: 'translateY(0)' }
+                },
+                'fade-out': {
+                    '0%': { opacity: '1', transform: 'translateY(0)' },
+                    '100%': { opacity: '0', transform: 'translateY(10px)' }
+                },
+                'scale-in': {
+                    '0%': { transform: 'scale(0.95)', opacity: '0' },
+                    '100%': { transform: 'scale(1)', opacity: '1' }
+                }
 			},
 			animation: {
 				'accordion-down': 'accordion-down 0.2s ease-out',
-				'accordion-up': 'accordion-up 0.2s ease-out'
+				'accordion-up': 'accordion-up 0.2s ease-out',
+                'marquee': 'marquee 25s linear infinite',
+                'fade-in': 'fade-in 0.5s ease-out',
+                'fade-out': 'fade-out 0.5s ease-out',
+                'scale-in': 'scale-in 0.3s ease-out'
 			}
 		}
 	},
