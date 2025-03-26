@@ -1,6 +1,7 @@
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useToast } from '../hooks/use-toast';
+import { toast } from '../hooks/use-toast';
 
 interface User {
   id: string;
@@ -8,11 +9,13 @@ interface User {
   email: string;
   role: string;
   createdAt: Date;
+  photoURL?: string;
 }
 
 interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
@@ -76,6 +79,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     });
   };
 
+  const loginWithGoogle = async () => {
+    // Simulate Google OAuth API call
+    return new Promise<void>((resolve, reject) => {
+      setTimeout(() => {
+        // Mock Google login response with random Google email
+        const googleEmails = [
+          'user1@gmail.com',
+          'johndoe@gmail.com',
+          'janedoe@gmail.com',
+          'digiuser@gmail.com',
+          'booster@gmail.com'
+        ];
+        
+        const randomEmail = googleEmails[Math.floor(Math.random() * googleEmails.length)];
+        const username = randomEmail.split('@')[0];
+        
+        const newUser: User = {
+          id: `google-${Date.now()}`,
+          name: username.charAt(0).toUpperCase() + username.slice(1), // Capitalize first letter
+          email: randomEmail,
+          role: 'user',
+          createdAt: new Date(),
+          photoURL: `https://ui-avatars.com/api/?name=${username}&background=random&color=fff`
+        };
+        
+        setUser(newUser);
+        localStorage.setItem('digibooster_user', JSON.stringify(newUser));
+        
+        toast({
+          title: "Google login berhasil",
+          description: `Selamat datang, ${newUser.name}!`,
+        });
+        
+        resolve();
+      }, 1200);
+    });
+  };
+
   const register = async (email: string, password: string, name: string) => {
     // Simulate API call
     return new Promise<void>((resolve, reject) => {
@@ -107,6 +148,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const value = {
     user,
     login,
+    loginWithGoogle,
     register,
     logout,
     isAuthenticated: !!user,

@@ -13,6 +13,8 @@ import Index from "./pages/Index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import AdminDashboard from "./pages/AdminDashboard";
+import Blog from "./pages/Blog";
 
 // Layout component to wrap content with Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -56,6 +58,15 @@ const App = () => (
               }
             />
             
+            <Route
+              path="/blog"
+              element={
+                <Layout>
+                  <Blog />
+                </Layout>
+              }
+            />
+            
             {/* Auth pages without Navbar and Footer */}
             <Route
               path="/login"
@@ -70,6 +81,16 @@ const App = () => (
               element={
                 <AuthLayout>
                   <Register />
+                </AuthLayout>
+              }
+            />
+            
+            {/* Admin Dashboard */}
+            <Route
+              path="/admin"
+              element={
+                <AuthLayout>
+                  <AdminDashboard />
                 </AuthLayout>
               }
             />
