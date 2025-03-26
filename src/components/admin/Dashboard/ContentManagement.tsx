@@ -1,8 +1,14 @@
 
-import { Plus, PenSquare } from "lucide-react";
+import { useState } from "react";
+import { Plus, PenSquare, Save, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { useWebsiteDataStore } from "@/stores/websiteDataStore";
+import { useToast } from "@/hooks/use-toast";
 
 interface Blog {
   id: number;
@@ -12,26 +18,64 @@ interface Blog {
   views: number;
 }
 
-interface Course {
-  id: number;
-  title: string;
-  students: number;
-  lessons: number;
-  level: string;
-}
-
-interface Portfolio {
-  id: number;
-  title: string;
-  category: string;
-  client: string;
-}
-
 interface ContentManagementProps {
   blogs: Blog[];
 }
 
 const ContentManagement = ({ blogs }: ContentManagementProps) => {
+  const { toast } = useToast();
+  const websiteData = useWebsiteDataStore();
+  const [activeTab, setActiveTab] = useState("blog");
+  
+  // State untuk form editing
+  const [editingService, setEditingService] = useState<string | null>(null);
+  const [editingTestimonial, setEditingTestimonial] = useState<string | null>(null);
+  const [heroContent, setHeroContent] = useState({
+    title: websiteData.homeContent.hero.title,
+    subtitle: websiteData.homeContent.hero.subtitle,
+    ctaText: websiteData.homeContent.hero.ctaText,
+    ctaLink: websiteData.homeContent.hero.ctaLink,
+  });
+  
+  // Fungsi untuk handle perubahan
+  const handleHeroChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setHeroContent(prev => ({ ...prev, [name]: value }));
+  };
+  
+  const saveHeroChanges = () => {
+    websiteData.updateHomeContent({
+      hero: heroContent
+    });
+    
+    toast({
+      title: "Konten hero berhasil disimpan",
+      description: "Perubahan akan terlihat setelah dipublikasikan",
+    });
+  };
+  
+  const handleServiceChange = (id: string, field: string, value: string) => {
+    const updatedServices = websiteData.homeContent.services.map(service => {
+      if (service.id === id) {
+        return { ...service, [field]: value };
+      }
+      return service;
+    });
+    
+    websiteData.updateHomeServices(updatedServices);
+  };
+  
+  const handleTestimonialChange = (id: string, field: string, value: string) => {
+    const updatedTestimonials = websiteData.homeContent.testimonials.map(testimonial => {
+      if (testimonial.id === id) {
+        return { ...testimonial, [field]: value };
+      }
+      return testimonial;
+    });
+    
+    websiteData.updateHomeTestimonials(updatedTestimonials);
+  };
+  
   const courses = [
     { id: 1, title: 'Digital Marketing untuk Pemula', students: 156, lessons: 12, level: 'Pemula' },
     { id: 2, title: 'SEO Optimization', students: 89, lessons: 8, level: 'Menengah' },
@@ -50,17 +94,35 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
     { id: 6, title: 'Content Marketing Startup', category: 'Content Marketing', client: 'Startup UVW' },
   ];
 
+  const handlePublishContent = () => {
+    // Trigger publish event
+    const publishEvent = new CustomEvent('triggerPublish', {
+      detail: { source: 'contentManagement' }
+    });
+    window.dispatchEvent(publishEvent);
+    
+    toast({
+      title: "Konten siap dipublikasikan",
+      description: "Silakan akses menu Publikasi Website untuk mempublikasikan perubahan",
+    });
+  };
+
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl md:text-2xl font-bold text-gray-800 hidden md:block">Kelola Konten</h2>
+        <Button onClick={handlePublishContent} className="bg-green-600 hover:bg-green-700">
+          <Save className="w-4 h-4 mr-2" />
+          Siap Publikasi
+        </Button>
       </div>
       
-      <Tabs defaultValue="blog">
+      <Tabs defaultValue="blog" value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="mb-6 overflow-x-auto flex whitespace-nowrap pb-2 scrollbar-none">
           <TabsTrigger value="blog">Blog</TabsTrigger>
           <TabsTrigger value="courses">Kelas</TabsTrigger>
           <TabsTrigger value="portfolio">Portofolio</TabsTrigger>
+          <TabsTrigger value="home">Beranda</TabsTrigger>
         </TabsList>
         
         <TabsContent value="blog">
@@ -185,6 +247,238 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
                 </CardFooter>
               </Card>
             ))}
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="home">
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Hero Section</CardTitle>
+                <CardDescription>
+                  Edit konten utama di bagian atas halaman beranda
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  <div>
+                    <Label htmlFor="title">Judul Hero</Label>
+                    <Input 
+                      id="title" 
+                      name="title" 
+                      value={heroContent.title} 
+                      onChange={handleHeroChange}
+                      className="mt-1" 
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="subtitle">Subtitle Hero</Label>
+                    <Textarea 
+                      id="subtitle" 
+                      name="subtitle" 
+                      value={heroContent.subtitle} 
+                      onChange={handleHeroChange}
+                      className="mt-1" 
+                    />
+                  </div>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="ctaText">Teks Tombol CTA</Label>
+                      <Input 
+                        id="ctaText" 
+                        name="ctaText" 
+                        value={heroContent.ctaText} 
+                        onChange={handleHeroChange}
+                        className="mt-1" 
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="ctaLink">Link Tombol CTA</Label>
+                      <Input 
+                        id="ctaLink" 
+                        name="ctaLink" 
+                        value={heroContent.ctaLink} 
+                        onChange={handleHeroChange}
+                        className="mt-1" 
+                      />
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+              <CardFooter>
+                <Button onClick={saveHeroChanges}>
+                  <Save className="h-4 w-4 mr-2" />
+                  Simpan Perubahan
+                </Button>
+              </CardFooter>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Layanan</CardTitle>
+                <CardDescription>
+                  Edit layanan yang ditampilkan di halaman beranda
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {websiteData.homeContent.services.map(service => (
+                    <Card key={service.id} className="shadow-sm">
+                      <CardHeader className="py-3">
+                        <div className="flex justify-between items-start">
+                          <CardTitle className="text-base">{service.title}</CardTitle>
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            onClick={() => setEditingService(editingService === service.id ? null : service.id)}
+                          >
+                            {editingService === service.id ? "Tutup" : "Edit"}
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      
+                      {editingService === service.id && (
+                        <CardContent className="pb-3">
+                          <div className="space-y-3">
+                            <div>
+                              <Label htmlFor={`service-title-${service.id}`}>Judul Layanan</Label>
+                              <Input 
+                                id={`service-title-${service.id}`}
+                                value={service.title}
+                                onChange={(e) => handleServiceChange(service.id, 'title', e.target.value)}
+                                className="mt-1" 
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`service-desc-${service.id}`}>Deskripsi</Label>
+                              <Textarea 
+                                id={`service-desc-${service.id}`}
+                                value={service.description}
+                                onChange={(e) => handleServiceChange(service.id, 'description', e.target.value)}
+                                className="mt-1" 
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`service-link-${service.id}`}>Link</Label>
+                              <Input 
+                                id={`service-link-${service.id}`}
+                                value={service.link}
+                                onChange={(e) => handleServiceChange(service.id, 'link', e.target.value)}
+                                className="mt-1" 
+                              />
+                            </div>
+                            <div className="flex justify-end">
+                              <Button size="sm" onClick={() => setEditingService(null)}>
+                                <Save className="h-3 w-3 mr-2" />
+                                Simpan
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      )}
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+            
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Testimonial</CardTitle>
+                <CardDescription>
+                  Edit testimonial yang ditampilkan di halaman beranda
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-4">
+                  {websiteData.homeContent.testimonials.map(testimonial => (
+                    <Card key={testimonial.id} className="shadow-sm">
+                      <CardHeader className="py-3">
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center">
+                            <img 
+                              src={testimonial.image} 
+                              alt={testimonial.name}
+                              className="w-10 h-10 rounded-full mr-3"
+                            />
+                            <div>
+                              <CardTitle className="text-base">{testimonial.name}</CardTitle>
+                              <CardDescription>{testimonial.role}</CardDescription>
+                            </div>
+                          </div>
+                          <Button 
+                            size="sm" 
+                            variant="ghost" 
+                            onClick={() => setEditingTestimonial(editingTestimonial === testimonial.id ? null : testimonial.id)}
+                          >
+                            {editingTestimonial === testimonial.id ? "Tutup" : "Edit"}
+                          </Button>
+                        </div>
+                      </CardHeader>
+                      
+                      {editingTestimonial === testimonial.id && (
+                        <CardContent className="pb-3">
+                          <div className="space-y-3">
+                            <div>
+                              <Label htmlFor={`testimonial-name-${testimonial.id}`}>Nama</Label>
+                              <Input 
+                                id={`testimonial-name-${testimonial.id}`}
+                                value={testimonial.name}
+                                onChange={(e) => handleTestimonialChange(testimonial.id, 'name', e.target.value)}
+                                className="mt-1" 
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`testimonial-role-${testimonial.id}`}>Peran/Jabatan</Label>
+                              <Input 
+                                id={`testimonial-role-${testimonial.id}`}
+                                value={testimonial.role}
+                                onChange={(e) => handleTestimonialChange(testimonial.id, 'role', e.target.value)}
+                                className="mt-1" 
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`testimonial-content-${testimonial.id}`}>Testimoni</Label>
+                              <Textarea 
+                                id={`testimonial-content-${testimonial.id}`}
+                                value={testimonial.content}
+                                onChange={(e) => handleTestimonialChange(testimonial.id, 'content', e.target.value)}
+                                className="mt-1" 
+                              />
+                            </div>
+                            <div>
+                              <Label htmlFor={`testimonial-image-${testimonial.id}`}>URL Gambar</Label>
+                              <Input 
+                                id={`testimonial-image-${testimonial.id}`}
+                                value={testimonial.image}
+                                onChange={(e) => handleTestimonialChange(testimonial.id, 'image', e.target.value)}
+                                className="mt-1" 
+                              />
+                            </div>
+                            <div className="flex justify-end">
+                              <Button size="sm" onClick={() => setEditingTestimonial(null)}>
+                                <Save className="h-3 w-3 mr-2" />
+                                Simpan
+                              </Button>
+                            </div>
+                          </div>
+                        </CardContent>
+                      )}
+                    </Card>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+            
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={() => setActiveTab("blog")}>
+                Kembali ke Blog
+              </Button>
+              <Button onClick={handlePublishContent} className="bg-green-600 hover:bg-green-700">
+                <Save className="w-4 h-4 mr-2" />
+                Siap Publikasi
+              </Button>
+            </div>
           </div>
         </TabsContent>
       </Tabs>

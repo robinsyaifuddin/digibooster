@@ -2,10 +2,48 @@
 import { ArrowRight, Zap, Code, PenTool, Users, Lightbulb, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
+import { useWebsiteDataStore, WebsiteData } from '@/stores/websiteDataStore';
 
 const Index = () => {
-  // Helper function for scroll animation
+  const [animatedElements, setAnimatedElements] = useState<Element[]>([]);
+  // Gunakan state lokal untuk konten home, sehingga bisa diupdate saat ada perubahan
+  const [homeContent, setHomeContent] = useState<WebsiteData['homeContent'] | null>(null);
+  const websiteData = useWebsiteDataStore();
+
+  // Load data dari store saat komponen mount
+  useEffect(() => {
+    setHomeContent(websiteData.homeContent);
+    
+    // Listener untuk update data dari admin dashboard
+    const handleContentUpdate = (event: CustomEvent<WebsiteData>) => {
+      console.log('Content update event received:', event.detail);
+      if (event.detail && event.detail.homeContent) {
+        setHomeContent(event.detail.homeContent);
+      }
+    };
+    
+    window.addEventListener('websiteContentUpdated', handleContentUpdate as EventListener);
+    
+    // Cek jika ada data yang disimpan di localStorage
+    const storedData = localStorage.getItem('websiteData');
+    if (storedData) {
+      try {
+        const parsedData = JSON.parse(storedData);
+        if (parsedData.homeContent) {
+          setHomeContent(parsedData.homeContent);
+        }
+      } catch (error) {
+        console.error('Error parsing stored website data:', error);
+      }
+    }
+    
+    return () => {
+      window.removeEventListener('websiteContentUpdated', handleContentUpdate as EventListener);
+    };
+  }, [websiteData]);
+
+  // Helper function untuk scroll animation
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -23,73 +61,38 @@ const Index = () => {
       });
     }, observerOptions);
 
-    const animationElements = document.querySelectorAll('.scroll-animation');
-    animationElements.forEach(el => {
+    const elements = document.querySelectorAll('.scroll-animation');
+    setAnimatedElements(Array.from(elements));
+    
+    elements.forEach(el => {
       el.classList.add('opacity-0');
       observer.observe(el);
     });
 
     return () => {
-      animationElements.forEach(el => observer.unobserve(el));
+      animatedElements.forEach(el => observer.unobserve(el));
     };
-  }, []);
+  }, [homeContent, animatedElements]);
 
-  const services = [
-    {
-      title: "Layanan Jasa Digital",
-      description: "Tingkatkan presence digital Anda dengan layanan jasa design, web development, dan digital marketing kami.",
-      icon: <Code className="h-12 w-12 text-diginavy" />,
-      link: "/layanan/jasa-digital"
-    },
-    {
-      title: "Motivasi dan Edukasi Digital",
-      description: "Dapatkan inspirasi dan pengetahuan digital melalui seminar dan workshop yang kami selenggarakan.",
-      icon: <Lightbulb className="h-12 w-12 text-diginavy" />,
-      link: "/layanan/motivasi-edukasi"
-    },
-    {
-      title: "Sharing dan Konsultasi Bisnis Digital",
-      description: "Konsultasikan kebutuhan digital bisnis Anda dengan pakar kami untuk solusi terbaik.",
-      icon: <Users className="h-12 w-12 text-diginavy" />,
-      link: "/layanan/sharing-konsultasi"
-    },
-    {
-      title: "Short Class dan Mini Bootcamp",
-      description: "Pelajari keterampilan digital terbaru melalui kelas intensif dan bootcamp dari para ahli.",
-      icon: <PenTool className="h-12 w-12 text-diginavy" />,
-      link: "/layanan/kelas"
+  // Jika data homeContent belum tersedia, tampilkan loading state
+  if (!homeContent) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-diginavy"></div>
+      </div>
+    );
+  }
+
+  // Memetakan string icon ke komponen Lucide
+  const getIconComponent = (iconName: string) => {
+    switch (iconName) {
+      case 'Code': return <Code className="h-12 w-12 text-diginavy" />;
+      case 'Lightbulb': return <Lightbulb className="h-12 w-12 text-diginavy" />;
+      case 'Users': return <Users className="h-12 w-12 text-diginavy" />;
+      case 'PenTool': return <PenTool className="h-12 w-12 text-diginavy" />;
+      default: return <Code className="h-12 w-12 text-diginavy" />;
     }
-  ];
-
-  const testimonials = [
-    {
-      name: "Budi Santoso",
-      role: "Pemilik UMKM",
-      content: "DigiBooster membantu bisnis saya bertransformasi secara digital. Penjualan meningkat 300% hanya dalam 3 bulan!",
-      image: "https://randomuser.me/api/portraits/men/1.jpg"
-    },
-    {
-      name: "Siti Rahma",
-      role: "Freelancer",
-      content: "Bootcamp yang diselenggarakan sangat bermanfaat. Saya mendapatkan keterampilan baru yang langsung bisa diterapkan.",
-      image: "https://randomuser.me/api/portraits/women/2.jpg"
-    },
-    {
-      name: "Ahmad Fauzi",
-      role: "Startup Founder",
-      content: "Konsultasi dengan tim DigiBooster membuka wawasan tentang potensi digital marketing yang belum kami maksimalkan.",
-      image: "https://randomuser.me/api/portraits/men/3.jpg"
-    }
-  ];
-
-  const benefits = [
-    "Tingkatkan keterampilan digital Anda",
-    "Dapatkan konsultasi dari pakar bisnis digital",
-    "Akses ke komunitas digital enthusiast",
-    "Kesempatan kolaborasi dengan partner kami",
-    "Update teknologi terbaru dan implementasinya",
-    "Dukungan 24/7 untuk pertanyaan teknis"
-  ];
+  };
 
   return (
     <div className="pt-16">
@@ -98,18 +101,18 @@ const Index = () => {
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center opacity-20"></div>
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-3xl mx-auto text-center">
-            <h5 className="text-digiblue-200 mb-3 font-medium">Platform Agensi dan Pengembangan Digital</h5>
+            <h5 className="text-digiblue-200 mb-3 font-medium">{websiteData.generalInfo.description}</h5>
             <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-              <span className="block mb-2">Skill Up, Stand Out</span>
-              <span className="text-digiblue-300">with DigiBooster</span>
+              <span className="block mb-2">{homeContent.hero.title.split('with')[0]}</span>
+              <span className="text-digiblue-300">with {websiteData.generalInfo.title}</span>
             </h1>
             <p className="text-lg md:text-xl mb-8 text-gray-100">
-              Membantu masyarakat Indonesia mengoptimalkan digitalisasi untuk peningkatan kualitas hidup dan bisnis.
+              {homeContent.hero.subtitle}
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link to="/layanan">
+              <Link to={homeContent.hero.ctaLink}>
                 <Button size="lg" className="bg-white text-diginavy hover:bg-gray-100 shadow-lg">
-                  Lihat Layanan
+                  {homeContent.hero.ctaText}
                 </Button>
               </Link>
               <Link to="/register">
@@ -135,18 +138,18 @@ const Index = () => {
           <div className="text-center mb-12 scroll-animation">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Layanan Kami</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              DigiBooster menyediakan berbagai layanan untuk membantu Anda dan bisnis Anda berkembang di era digital.
+              {websiteData.generalInfo.title} menyediakan berbagai layanan untuk membantu Anda dan bisnis Anda berkembang di era digital.
             </p>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {services.map((service, index) => (
+            {homeContent.services.map((service, index) => (
               <div 
-                key={index} 
+                key={service.id} 
                 className="bg-white rounded-lg p-6 shadow-md hover:shadow-xl transition-all duration-300 scroll-animation"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
-                <div className="mb-4">{service.icon}</div>
+                <div className="mb-4">{getIconComponent(service.icon)}</div>
                 <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
                 <p className="text-gray-600 mb-4">{service.description}</p>
                 <Link to={service.link} className="text-diginavy font-medium flex items-center hover:underline">
@@ -165,7 +168,7 @@ const Index = () => {
             <Zap className="h-16 w-16 mx-auto mb-6 text-digiblue-300" />
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Siap Tingkatkan Keterampilan Digital Anda?</h2>
             <p className="text-lg text-gray-100 mb-8">
-              Bergabunglah dengan ribuan orang yang telah meningkatkan kemampuan digitalnya bersama DigiBooster.
+              Bergabunglah dengan ribuan orang yang telah meningkatkan kemampuan digitalnya bersama {websiteData.generalInfo.title}.
             </p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <Link to="/register">
@@ -188,13 +191,13 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="md:flex md:items-center md:justify-between">
             <div className="md:w-1/2 mb-10 md:mb-0 md:pr-10 scroll-animation">
-              <h2 className="text-3xl md:text-4xl font-bold mb-6">Mengapa DigiBooster?</h2>
+              <h2 className="text-3xl md:text-4xl font-bold mb-6">Mengapa {websiteData.generalInfo.title}?</h2>
               <p className="text-gray-600 mb-8">
-                DigiBooster hadir sebagai solusi terpadu untuk kebutuhan digitalisasi Anda. Dengan pendekatan yang komprehensif, kami membantu baik individu maupun bisnis mencapai potensi maksimal di era digital.
+                {websiteData.generalInfo.title} hadir sebagai solusi terpadu untuk kebutuhan digitalisasi Anda. Dengan pendekatan yang komprehensif, kami membantu baik individu maupun bisnis mencapai potensi maksimal di era digital.
               </p>
               
               <ul className="space-y-4">
-                {benefits.map((benefit, index) => (
+                {homeContent.benefits.map((benefit, index) => (
                   <li key={index} className="flex items-start">
                     <CheckCircle className="h-6 w-6 text-diginavy shrink-0 mr-3" />
                     <span className="text-gray-700">{benefit}</span>
@@ -232,14 +235,14 @@ const Index = () => {
           <div className="text-center mb-12 scroll-animation">
             <h2 className="text-3xl md:text-4xl font-bold mb-4">Apa Kata Mereka?</h2>
             <p className="text-gray-600 max-w-2xl mx-auto">
-              Cerita sukses dari para pengguna DigiBooster yang telah meningkatkan kemampuan digital mereka.
+              Cerita sukses dari para pengguna {websiteData.generalInfo.title} yang telah meningkatkan kemampuan digital mereka.
             </p>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {testimonials.map((testimonial, index) => (
+            {homeContent.testimonials.map((testimonial, index) => (
               <div 
-                key={index} 
+                key={testimonial.id} 
                 className="glass-card rounded-lg shadow-lg p-6 scroll-animation"
                 style={{ animationDelay: `${index * 150}ms` }}
               >
@@ -267,7 +270,7 @@ const Index = () => {
           <div className="max-w-3xl mx-auto text-center scroll-animation">
             <h2 className="text-3xl md:text-4xl font-bold mb-6">Ada pertanyaan?</h2>
             <p className="text-gray-600 mb-8">
-              Tim kami siap membantu Anda dengan segala pertanyaan tentang layanan DigiBooster.
+              Tim kami siap membantu Anda dengan segala pertanyaan tentang layanan {websiteData.generalInfo.title}.
             </p>
             <Link to="/kontak">
               <Button size="lg" className="bg-diginavy text-white hover:bg-diginavy-800">

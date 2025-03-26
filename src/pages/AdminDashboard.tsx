@@ -79,10 +79,25 @@ const AdminDashboard = () => {
       }
     };
     
+    // Mendengarkan event triggerPublish dari ContentManagement
+    const handleTriggerPublish = (event: CustomEvent) => {
+      if (event.detail && event.detail.source) {
+        toast({
+          title: "Perubahan siap dipublikasikan",
+          description: `Perubahan dari ${event.detail.source} telah disimpan dan siap dipublikasikan.`,
+        });
+        
+        // Otomatis pindah ke tab publikasi
+        setActiveTab('services');
+      }
+    };
+    
     window.addEventListener('switchToTab', handleSwitchTab as EventListener);
+    window.addEventListener('triggerPublish', handleTriggerPublish as EventListener);
     
     return () => {
       window.removeEventListener('switchToTab', handleSwitchTab as EventListener);
+      window.removeEventListener('triggerPublish', handleTriggerPublish as EventListener);
     };
   }, [user, navigate, toast]);
   
@@ -140,7 +155,7 @@ const AdminDashboard = () => {
           {/* Admin Profile */}
           {activeTab === 'profile' && <AdminProfile />}
           
-          {/* Services tab - sekarang berisi fitur publikasi website */}
+          {/* Services tab - untuk fitur publikasi website */}
           {activeTab === 'services' && <ServicesDevelopment onTabChange={handleTabChange} />}
         </main>
       </div>
