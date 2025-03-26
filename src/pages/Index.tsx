@@ -34,6 +34,52 @@ const Index = () => {
     );
   }
 
+  // Updated services data to match the reference image
+  const updatedServices = [
+    {
+      id: '1',
+      title: 'Layanan All in Request',
+      description: 'Tak hanya website, DigiBooster juga bisa membuatkan kamu video promosi & sekalian iklan di Google',
+      icon: 'Code',
+      link: '/layanan/jasa-digital',
+    },
+    {
+      id: '2',
+      title: 'Harga Bisa Request',
+      description: 'Suka sama DigiBooster tapi harga belum cocok? Santai, kamu bisa tentukan harga websitemu sendiri',
+      icon: 'DollarSign',
+      link: '/layanan/harga',
+    },
+    {
+      id: '3',
+      title: 'Ready to Customs',
+      description: 'Selain web company & toko online, DigiBooster juga siap untuk membuat website kompleks / custom',
+      icon: 'PenTool',
+      link: '/layanan/custom',
+    },
+    {
+      id: '4',
+      title: 'Alur Pekerjaan Jelas',
+      description: 'Kami memiliki cara kerja yang efisien dan profesional untuk membuat websitemu go-online dengan sangat baik',
+      icon: 'Users',
+      link: '/layanan/workflow',
+    },
+    {
+      id: '5',
+      title: 'Garansi Selamanya',
+      description: 'Tak perlu khawatir soal support atau maintenance, DigiBooster siap beri garansi website seumur hidup',
+      icon: 'Shield',
+      link: '/layanan/garansi',
+    },
+    {
+      id: '6',
+      title: 'Ada Bonus Gratis',
+      description: 'Dapatkan paket website, DigiBooster akan memberikan bonus yang sangat berguna buat bisnismu',
+      icon: 'Gift',
+      link: '/layanan/bonus',
+    },
+  ];
+
   return (
     <div className="w-full overflow-hidden">
       <ScrollAnimation>
@@ -43,7 +89,7 @@ const Index = () => {
         />
         
         <ServicesSection 
-          services={homeContent.services} 
+          services={updatedServices} 
         />
         
         <BenefitsSection 
