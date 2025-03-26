@@ -147,21 +147,14 @@
   }
 }
 
-.logo-marquee-left {
+.logo-marquee {
   white-space: nowrap;
   overflow: hidden;
   display: inline-block;
-  animation: marquee-left 30s linear infinite;
+  animation: marquee 30s linear infinite;
 }
 
-.logo-marquee-right {
-  white-space: nowrap;
-  overflow: hidden;
-  display: inline-block;
-  animation: marquee-right 30s linear infinite;
-}
-
-@keyframes marquee-left {
+@keyframes marquee {
   0% {
     transform: translateX(0%);
   }
@@ -170,16 +163,7 @@
   }
 }
 
-@keyframes marquee-right {
-  0% {
-    transform: translateX(-50%);
-  }
-  100% {
-    transform: translateX(0%);
-  }
-}
-
-.logo-marquee-left:hover, .logo-marquee-right:hover {
+.logo-marquee:hover {
   animation-play-state: paused;
 }
 

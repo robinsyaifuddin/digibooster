@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { 
   Phone, 
@@ -42,7 +41,7 @@ const Footer = () => {
         {/* Partner Logos */}
         <div className="mb-12">
           <h4 className="text-xl font-semibold mb-6 text-center">Dipercaya oleh</h4>
-          <LogoMarquee logos={partnerLogos} direction="left" bgColor="bg-gray-50" />
+          <LogoMarquee logos={partnerLogos} />
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8 pb-8 border-b border-gray-200">
