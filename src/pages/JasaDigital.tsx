@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 const JasaDigital = () => {
   const services = [
     {
-      icon: <Code className="h-8 w-8 text-purple-600" />,
+      icon: <Code className="h-8 w-8 text-digiblue-600" />,
       title: 'Pengembangan Website & Aplikasi',
       description: 'Kami mengembangkan website dan aplikasi yang responsif, cepat, dan SEO-friendly untuk berbagai kebutuhan bisnis.',
       items: [
@@ -19,7 +19,7 @@ const JasaDigital = () => {
       ]
     },
     {
-      icon: <PenTool className="h-8 w-8 text-purple-600" />,
+      icon: <PenTool className="h-8 w-8 text-digiblue-600" />,
       title: 'Desain Grafis',
       description: 'Tim desainer kami akan membuat visual menarik yang mencerminkan identitas brand Anda.',
       items: [
@@ -32,7 +32,7 @@ const JasaDigital = () => {
       ]
     },
     {
-      icon: <Megaphone className="h-8 w-8 text-purple-600" />,
+      icon: <Megaphone className="h-8 w-8 text-digiblue-600" />,
       title: 'Digital Marketing & Branding',
       description: 'Strategi pemasaran digital yang efektif untuk meningkatkan brand awareness dan penjualan.',
       items: [
@@ -45,7 +45,7 @@ const JasaDigital = () => {
       ]
     },
     {
-      icon: <FileText className="h-8 w-8 text-purple-600" />,
+      icon: <FileText className="h-8 w-8 text-digiblue-600" />,
       title: 'Manajemen Konten',
       description: 'Pembuatan dan pengelolaan konten berkualitas untuk website dan media sosial Anda.',
       items: [
@@ -58,7 +58,7 @@ const JasaDigital = () => {
       ]
     },
     {
-      icon: <Camera className="h-8 w-8 text-purple-600" />,
+      icon: <Camera className="h-8 w-8 text-digiblue-600" />,
       title: 'Edit Video dan Fotografi',
       description: 'Layanan profesional untuk kebutuhan visual media dan marketing Anda.',
       items: [
@@ -71,7 +71,7 @@ const JasaDigital = () => {
       ]
     },
     {
-      icon: <FileCog className="h-8 w-8 text-purple-600" />,
+      icon: <FileCog className="h-8 w-8 text-digiblue-600" />,
       title: 'Administrasi Digital',
       description: 'Pengelolaan sistem digital dan automasi untuk efisiensi operasional bisnis.',
       items: [
@@ -84,7 +84,7 @@ const JasaDigital = () => {
       ]
     },
     {
-      icon: <DatabaseIcon className="h-8 w-8 text-purple-600" />,
+      icon: <DatabaseIcon className="h-8 w-8 text-digiblue-600" />,
       title: 'Database Management',
       description: 'Pengelolaan dan optimasi database untuk kebutuhan bisnis dan aplikasi Anda.',
       items: [
@@ -97,7 +97,7 @@ const JasaDigital = () => {
       ]
     },
     {
-      icon: <Server className="h-8 w-8 text-purple-600" />,
+      icon: <Server className="h-8 w-8 text-digiblue-600" />,
       title: 'Hosting & Domain Management',
       description: 'Layanan hosting dan pengelolaan domain yang handal untuk website dan aplikasi.',
       items: [
@@ -110,7 +110,7 @@ const JasaDigital = () => {
       ]
     },
     {
-      icon: <LineChart className="h-8 w-8 text-purple-600" />,
+      icon: <LineChart className="h-8 w-8 text-digiblue-600" />,
       title: 'Analytics & Reporting',
       description: 'Analisis data dan pembuatan laporan untuk mengukur performa digital Anda.',
       items: [
@@ -123,7 +123,7 @@ const JasaDigital = () => {
       ]
     },
     {
-      icon: <Share2 className="h-8 w-8 text-purple-600" />,
+      icon: <Share2 className="h-8 w-8 text-digiblue-600" />,
       title: 'Social Media Management',
       description: 'Pengelolaan media sosial untuk meningkatkan engagement dan brand awareness.',
       items: [
@@ -157,9 +157,9 @@ const JasaDigital = () => {
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
-          <span className="inline-block py-1 px-3 text-xs font-medium text-purple-600 bg-purple-100 rounded-full mb-3">PROGRAM KAMI</span>
+          <span className="inline-block py-1 px-3 text-xs font-medium text-digiblue-600 bg-digiblue-100 rounded-full mb-3">PROGRAM KAMI</span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900">
-            Layanan Jasa <span className="text-purple-600">Digital</span>
+            Layanan Jasa <span className="text-digiblue-600">Digital</span>
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Kami menyediakan berbagai layanan jasa digital komprehensif untuk membantu bisnis Anda tumbuh dan berkembang di era digital. 
@@ -180,7 +180,7 @@ const JasaDigital = () => {
               variants={item}
               className="bg-white rounded-xl p-7 shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
             >
-              <div className="bg-purple-50 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+              <div className="bg-digiblue-50 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
                 {service.icon}
               </div>
               
@@ -190,7 +190,7 @@ const JasaDigital = () => {
               <ul className="space-y-2">
                 {service.items.map((item, idx) => (
                   <li key={idx} className="flex items-start">
-                    <span className="text-purple-600 mr-2">•</span>
+                    <span className="text-digiblue-600 mr-2">•</span>
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
@@ -200,14 +200,14 @@ const JasaDigital = () => {
         </motion.div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-purple-800 to-purple-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
+        <div className="bg-gradient-to-r from-digiblue-800 to-digiblue-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Siap Meningkatkan Bisnis Digital Anda?</h2>
-          <p className="text-purple-100 max-w-2xl mx-auto mb-8">
+          <p className="text-digiblue-100 max-w-2xl mx-auto mb-8">
             Konsultasikan kebutuhan digital Anda dengan tim ahli kami dan dapatkan solusi yang sesuai dengan bisnis Anda.
           </p>
           <a 
             href="/kontak" 
-            className="inline-flex items-center px-6 py-3 bg-white text-purple-700 rounded-full hover:bg-purple-50 transition-colors font-medium"
+            className="inline-flex items-center px-6 py-3 bg-white text-digiblue-700 rounded-full hover:bg-digiblue-50 transition-colors font-medium"
           >
             Hubungi Kami
           </a>

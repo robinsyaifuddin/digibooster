@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 const MotivasiEdukasi = () => {
   const services = [
     {
-      icon: <BookOpen className="h-8 w-8 text-purple-600" />,
+      icon: <BookOpen className="h-8 w-8 text-digiblue-600" />,
       title: 'E-Book dan Modul Digital',
       description: 'Panduan dan modul pembelajaran digital untuk berbagai topik bisnis dan teknologi digital.',
       items: [
@@ -19,7 +19,7 @@ const MotivasiEdukasi = () => {
       ]
     },
     {
-      icon: <Video className="h-8 w-8 text-purple-600" />,
+      icon: <Video className="h-8 w-8 text-digiblue-600" />,
       title: 'Webinar dan Workshop Online',
       description: 'Sesi pembelajaran interaktif dengan pakar industri digital tentang berbagai topik terkini.',
       items: [
@@ -32,7 +32,7 @@ const MotivasiEdukasi = () => {
       ]
     },
     {
-      icon: <Brain className="h-8 w-8 text-purple-600" />,
+      icon: <Brain className="h-8 w-8 text-digiblue-600" />,
       title: 'Podcast dan Audio Learning',
       description: 'Konten pembelajaran format audio yang bisa diakses kapan saja dan di mana saja.',
       items: [
@@ -45,7 +45,7 @@ const MotivasiEdukasi = () => {
       ]
     },
     {
-      icon: <Award className="h-8 w-8 text-purple-600" />,
+      icon: <Award className="h-8 w-8 text-digiblue-600" />,
       title: 'Sertifikasi Digital Skills',
       description: 'Program sertifikasi untuk memvalidasi keahlian digital dan meningkatkan kredibilitas profesional.',
       items: [
@@ -58,7 +58,7 @@ const MotivasiEdukasi = () => {
       ]
     },
     {
-      icon: <Lightbulb className="h-8 w-8 text-purple-600" />,
+      icon: <Lightbulb className="h-8 w-8 text-digiblue-600" />,
       title: 'Motivasi Bisnis Digital',
       description: 'Konten inspiratif dan motivasi untuk membangun mindset sukses di era digital.',
       items: [
@@ -71,7 +71,7 @@ const MotivasiEdukasi = () => {
       ]
     },
     {
-      icon: <Coffee className="h-8 w-8 text-purple-600" />,
+      icon: <Coffee className="h-8 w-8 text-digiblue-600" />,
       title: 'Coffee Talk Digital',
       description: 'Diskusi santai namun mendalam tentang berbagai aspek bisnis dan karir digital.',
       items: [
@@ -105,9 +105,9 @@ const MotivasiEdukasi = () => {
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
-          <span className="inline-block py-1 px-3 text-xs font-medium text-purple-600 bg-purple-100 rounded-full mb-3">PROGRAM KAMI</span>
+          <span className="inline-block py-1 px-3 text-xs font-medium text-digiblue-600 bg-digiblue-100 rounded-full mb-3">PROGRAM KAMI</span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900">
-            Motivasi & <span className="text-purple-600">Edukasi Digital</span>
+            Motivasi & <span className="text-digiblue-600">Edukasi Digital</span>
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Tingkatkan pengetahuan dan keterampilan digital Anda melalui berbagai program motivasi dan edukasi
@@ -128,7 +128,7 @@ const MotivasiEdukasi = () => {
               variants={item}
               className="bg-white rounded-xl p-7 shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
             >
-              <div className="bg-purple-50 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
+              <div className="bg-digiblue-50 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
                 {service.icon}
               </div>
               
@@ -138,7 +138,7 @@ const MotivasiEdukasi = () => {
               <ul className="space-y-2">
                 {service.items.map((item, idx) => (
                   <li key={idx} className="flex items-start">
-                    <span className="text-purple-600 mr-2">•</span>
+                    <span className="text-digiblue-600 mr-2">•</span>
                     <span className="text-gray-700">{item}</span>
                   </li>
                 ))}
@@ -148,15 +148,15 @@ const MotivasiEdukasi = () => {
         </motion.div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-purple-800 to-purple-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
+        <div className="bg-gradient-to-r from-digiblue-800 to-digiblue-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Tingkatkan Pengetahuan Digital Anda!</h2>
-          <p className="text-purple-100 max-w-2xl mx-auto mb-8">
+          <p className="text-digiblue-100 max-w-2xl mx-auto mb-8">
             Pelajari keterampilan digital terkini dari para ahli dan praktisi berpengalaman untuk 
             mengembangkan karir dan bisnis Anda di era digital.
           </p>
           <a 
             href="/kontak" 
-            className="inline-flex items-center px-6 py-3 bg-white text-purple-700 rounded-full hover:bg-purple-50 transition-colors font-medium"
+            className="inline-flex items-center px-6 py-3 bg-white text-digiblue-700 rounded-full hover:bg-digiblue-50 transition-colors font-medium"
           >
             Hubungi Kami
           </a>
