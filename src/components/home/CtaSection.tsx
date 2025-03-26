@@ -30,13 +30,13 @@ const CtaSection = ({ companyName }: CtaSectionProps) => {
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
             <Link to="/register">
-              <Button size="lg" className="bg-white text-diginavy hover:bg-gray-100 group">
+              <Button size="lg" className="bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white border-none shadow-lg shadow-blue-700/20 group">
                 Daftar Sekarang
                 <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/layanan/kelas">
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 group">
+              <Button size="lg" variant="outline" className="border-white/40 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 hover:border-white/60 group transition-all duration-300">
                 Lihat Kelas
                 <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>

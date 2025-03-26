@@ -114,7 +114,7 @@ const Navbar = () => {
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="bg-digiblue-600 text-white hover:bg-digiblue-700 transition-colors duration-300">
+                  <Button className="bg-gradient-to-r from-digiblue-500 to-diginavy hover:from-digiblue-600 hover:to-diginavy-800 text-white shadow-md hover:shadow-lg transition-all duration-300">
                     Daftar
                   </Button>
                 </Link>

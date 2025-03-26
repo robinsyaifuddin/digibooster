@@ -65,6 +65,8 @@ const Index = () => {
           direction="right" 
           speed="slow"
           bgColor="bg-gray-50"
+          title="Dipercaya oleh Perusahaan Teknologi Terkemuka"
+          description="Bermitra dengan berbagai perusahaan teknologi untuk menghadirkan solusi digital terbaik"
         />
         
         <ContactSection 

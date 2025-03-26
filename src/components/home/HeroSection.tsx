@@ -40,13 +40,13 @@ const HeroSection = ({ generalInfo, hero }: HeroSectionProps) => {
           
           <div className="flex flex-col sm:flex-row gap-4">
             <Link to={hero.ctaLink}>
-              <Button size="lg" className="bg-white text-diginavy hover:bg-gray-100 shadow-lg group">
+              <Button size="lg" className="bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white border-none shadow-lg shadow-blue-500/20 group">
                 {hero.ctaText}
                 <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/register">
-              <Button size="lg" variant="outline" className="border-white/80 bg-transparent text-white hover:bg-white/10 hover:border-white group">
+              <Button size="lg" variant="outline" className="border-white/40 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 hover:border-white/60 group transition-all duration-300">
                 Mulai Sekarang
                 <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </Button>
