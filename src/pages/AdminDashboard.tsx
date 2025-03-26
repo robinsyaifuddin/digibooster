@@ -71,6 +71,19 @@ const AdminDashboard = () => {
         description: "Anda tidak memiliki izin untuk mengakses halaman ini.",
       });
     }
+    
+    // Mendengarkan event untuk pindah tab dari komponen lain
+    const handleSwitchTab = (event: CustomEvent) => {
+      if (event.detail) {
+        setActiveTab(event.detail);
+      }
+    };
+    
+    window.addEventListener('switchToTab', handleSwitchTab as EventListener);
+    
+    return () => {
+      window.removeEventListener('switchToTab', handleSwitchTab as EventListener);
+    };
   }, [user, navigate, toast]);
   
   if (!user || user.email !== 'digibooster@123') {
@@ -127,7 +140,7 @@ const AdminDashboard = () => {
           {/* Admin Profile */}
           {activeTab === 'profile' && <AdminProfile />}
           
-          {/* Services tab */}
+          {/* Services tab - sekarang berisi fitur publikasi website */}
           {activeTab === 'services' && <ServicesDevelopment onTabChange={handleTabChange} />}
         </main>
       </div>

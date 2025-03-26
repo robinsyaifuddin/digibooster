@@ -10,13 +10,17 @@ import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { useToast } from "../../hooks/use-toast";
-import { Save, RefreshCw, Upload, Download, Code, PenLine, Layout, Globe, Database, UserCog, Shield, BarChart, Settings2, FileEdit, History, Palette, ArrowUpRight } from "lucide-react";
+import { Save, RefreshCw, Upload, Download, Code, PenLine, Layout, Globe, Database, Shield, Palette, ArrowUpRight, History, Send, Clock } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const WebsiteSettings = () => {
   const { toast } = useToast();
+  const navigate = useNavigate();
   const [saving, setSaving] = useState(false);
+  const [publishing, setPublishing] = useState(false);
   const [activeTheme, setActiveTheme] = useState("light");
   const [fontFamily, setFontFamily] = useState("inter");
+  const [lastPublished, setLastPublished] = useState<string | null>(null);
   const [editHistory] = useState([
     { id: 1, date: "2023-08-20 10:23", user: "Admin DigiBooster", action: "Update Header Section", status: "active" },
     { id: 2, date: "2023-08-19 15:45", user: "Admin DigiBooster", action: "Update Footer Contact Info", status: "available" },
@@ -31,9 +35,51 @@ const WebsiteSettings = () => {
       setSaving(false);
       toast({
         title: "Pengaturan berhasil disimpan",
-        description: "Perubahan pada website telah disimpan dan dipublikasikan.",
+        description: "Perubahan pada website telah disimpan dan siap dipublikasikan.",
       });
     }, 1500);
+  };
+  
+  const handlePublish = () => {
+    setPublishing(true);
+    // Simulasi proses publikasi
+    setTimeout(() => {
+      setPublishing(false);
+      const now = new Date().toLocaleString('id-ID', {
+        day: '2-digit',
+        month: '2-digit',
+        year: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+        second: '2-digit'
+      });
+      setLastPublished(now);
+      
+      // Tampilkan notifikasi bahwa website telah dipublikasikan
+      toast({
+        title: "Website berhasil dipublikasikan",
+        description: `Semua perubahan telah live dan dapat dilihat oleh publik pada ${now}`,
+        duration: 5000,
+      });
+      
+      // Simulasi pembaruan cache dan CDN
+      setTimeout(() => {
+        toast({
+          title: "Pembaruan CDN selesai",
+          description: "Perubahan telah didistribusikan ke semua server CDN",
+          duration: 3000,
+        });
+      }, 2000);
+    }, 3000);
+  };
+
+  const handleAdvancedPublish = () => {
+    navigate('/admin');
+    // Arahkan ke tab services yang kini berisi fitur publikasi website
+    setTimeout(() => {
+      const servicesTabEvent = new CustomEvent('switchToTab', { detail: 'services' });
+      window.dispatchEvent(servicesTabEvent);
+    }, 100);
   };
 
   const handleRestore = (id: number) => {
@@ -41,22 +87,50 @@ const WebsiteSettings = () => {
       title: "Versi berhasil dipulihkan",
       description: `Website telah dipulihkan ke versi dari ${editHistory.find(h => h.id === id)?.date}.`,
     });
+    
+    // Setelah pemulihan, beri tahu pengguna untuk publikasikan perubahan
+    setTimeout(() => {
+      toast({
+        title: "Publikasikan perubahan",
+        description: "Perubahan telah dipulihkan, tetapi belum dipublikasikan. Klik 'Publikasikan Sekarang' untuk memperbarui website publik.",
+      });
+    }, 1500);
   };
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-6 gap-4">
         <h1 className="text-2xl font-bold text-gray-800">Pengaturan Website</h1>
-        <Button onClick={handleSave} disabled={saving}>
-          {saving ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
-          {saving ? "Menyimpan..." : "Simpan & Publikasikan"}
-        </Button>
+        <div className="flex flex-col sm:flex-row gap-3">
+          <Button onClick={handleSave} disabled={saving} variant="outline">
+            {saving ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Save className="w-4 h-4 mr-2" />}
+            {saving ? "Menyimpan..." : "Simpan Draft"}
+          </Button>
+          <Button onClick={handlePublish} disabled={publishing} className="bg-green-600 hover:bg-green-700">
+            {publishing ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Globe className="w-4 h-4 mr-2" />}
+            {publishing ? "Mempublikasikan..." : "Publikasikan Sekarang"}
+          </Button>
+        </div>
       </div>
+      
+      {lastPublished && (
+        <div className="mb-6 p-3 bg-green-50 border border-green-200 rounded-md flex justify-between items-center">
+          <div className="flex items-center">
+            <Globe className="w-4 h-4 text-green-600 mr-2" />
+            <span className="text-sm text-green-800">
+              Terakhir dipublikasikan: <strong>{lastPublished}</strong>
+            </span>
+          </div>
+          <Button variant="link" size="sm" onClick={handleAdvancedPublish}>
+            Publikasi Lanjutan
+          </Button>
+        </div>
+      )}
 
       <Tabs defaultValue="general" className="mb-8">
         <TabsList className="mb-6 overflow-x-auto flex whitespace-nowrap pb-2 scrollbar-none">
           <TabsTrigger value="general" className="flex items-center">
-            <Settings2 className="w-4 h-4 mr-2" />
+            <Database className="w-4 h-4 mr-2" />
             Umum
           </TabsTrigger>
           <TabsTrigger value="appearance" className="flex items-center">
@@ -181,6 +255,12 @@ const WebsiteSettings = () => {
                   </div>
                 </div>
               </CardContent>
+              <CardFooter className="flex justify-end">
+                <Button variant="outline" onClick={handlePublish} disabled={publishing} className="bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700">
+                  {publishing ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Clock className="w-4 h-4 mr-2" />}
+                  Publikasikan Perubahan
+                </Button>
+              </CardFooter>
             </Card>
           </div>
         </TabsContent>
@@ -269,6 +349,12 @@ const WebsiteSettings = () => {
                   </Select>
                 </div>
               </CardContent>
+              <CardFooter className="flex justify-end">
+                <Button variant="outline" onClick={handlePublish} disabled={publishing} className="bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700">
+                  {publishing ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Clock className="w-4 h-4 mr-2" />}
+                  Publikasikan Perubahan
+                </Button>
+              </CardFooter>
             </Card>
 
             <Card>
@@ -309,6 +395,12 @@ const WebsiteSettings = () => {
                   </div>
                 </div>
               </CardContent>
+              <CardFooter className="flex justify-end">
+                <Button variant="outline" onClick={handlePublish} disabled={publishing} className="bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700 w-full">
+                  {publishing ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Clock className="w-4 h-4 mr-2" />}
+                  Publikasikan Perubahan
+                </Button>
+              </CardFooter>
             </Card>
           </div>
         </TabsContent>
@@ -450,10 +542,14 @@ const WebsiteSettings = () => {
                 </AccordionItem>
               </Accordion>
             </CardContent>
-            <CardFooter>
+            <CardFooter className="flex justify-between">
               <Button>
                 <PenLine className="w-4 h-4 mr-2" />
                 Tambah Halaman Baru
+              </Button>
+              <Button variant="outline" onClick={handlePublish} disabled={publishing} className="bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700">
+                {publishing ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Clock className="w-4 h-4 mr-2" />}
+                Publikasikan Perubahan
               </Button>
             </CardFooter>
           </Card>
@@ -522,6 +618,12 @@ const WebsiteSettings = () => {
                 </div>
               </div>
             </CardContent>
+            <CardFooter className="flex justify-end">
+              <Button variant="outline" onClick={handlePublish} disabled={publishing} className="bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700">
+                {publishing ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Clock className="w-4 h-4 mr-2" />}
+                Publikasikan Perubahan SEO
+              </Button>
+            </CardFooter>
           </Card>
         </TabsContent>
 
@@ -568,9 +670,15 @@ const WebsiteSettings = () => {
                 <Download className="w-4 h-4 mr-2" />
                 Ekspor Riwayat
               </Button>
-              <Button variant="outline">
-                Lihat Semua Riwayat
-              </Button>
+              <div className="flex gap-2">
+                <Button variant="outline">
+                  Lihat Semua Riwayat
+                </Button>
+                <Button variant="outline" onClick={handlePublish} disabled={publishing} className="bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700">
+                  {publishing ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Clock className="w-4 h-4 mr-2" />}
+                  Publikasikan
+                </Button>
+              </div>
             </CardFooter>
           </Card>
         </TabsContent>
@@ -654,19 +762,35 @@ const WebsiteSettings = () => {
                   </div>
                 </div>
                 
-                <Textarea
-                  placeholder="Tanyakan sesuatu kepada AI Assistant, misalnya: 'Bagaimana cara meningkatkan SEO website saya?'"
-                  className="h-20"
-                />
+                <div className="flex items-end gap-2">
+                  <Textarea
+                    placeholder="Tanyakan sesuatu kepada AI Assistant, misalnya: 'Bagaimana cara meningkatkan SEO website saya?'"
+                    className="h-20"
+                  />
+                  <Button size="icon" className="flex-shrink-0 h-10 w-10">
+                    <Send className="h-4 w-4" />
+                  </Button>
+                </div>
                 
-                <div className="flex justify-end">
-                  <Button>Kirim Pertanyaan</Button>
+                <div className="flex justify-between items-center">
+                  <span className="text-xs text-gray-500">AI akan menganalisis perubahan dan memberikan rekomendasi</span>
+                  <Button variant="outline" onClick={handlePublish} disabled={publishing} className="bg-green-50 text-green-600 border-green-200 hover:bg-green-100 hover:text-green-700">
+                    {publishing ? <RefreshCw className="w-4 h-4 mr-2 animate-spin" /> : <Shield className="w-4 h-4 mr-2" />}
+                    Publikasikan Perbaikan AI
+                  </Button>
                 </div>
               </div>
             </CardContent>
           </Card>
         </TabsContent>
       </Tabs>
+      
+      <div className="fixed bottom-6 right-6 z-50">
+        <Button onClick={handlePublish} disabled={publishing} size="lg" className="shadow-lg bg-green-600 hover:bg-green-700">
+          {publishing ? <RefreshCw className="w-5 h-5 mr-2 animate-spin" /> : <Globe className="w-5 h-5 mr-2" />}
+          {publishing ? "Mempublikasikan..." : "Publikasikan Sekarang"}
+        </Button>
+      </div>
     </div>
   );
 };
