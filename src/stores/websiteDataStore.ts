@@ -1,6 +1,5 @@
-
 import { create } from 'zustand';
-import { persist } from 'zustand/middleware';
+import { persist, PersistOptions } from 'zustand/middleware';
 
 // Definisi tipe untuk data website
 export interface WebsiteData {
@@ -62,6 +61,26 @@ export interface WebsiteData {
     benefits: string[];
   };
 }
+
+// Define the store's actions
+interface WebsiteDataActions {
+  updateGeneralInfo: (info: Partial<WebsiteData['generalInfo']>) => void;
+  updateAppearance: (appearance: Partial<WebsiteData['appearance']>) => void;
+  updatePage: (pageId: string, pageData: Partial<Omit<WebsiteData['pages'][0], 'id'>>) => void;
+  addPage: (pageData: Omit<WebsiteData['pages'][0], 'id'>) => void;
+  deletePage: (pageId: string) => void;
+  updateSeo: (seo: Partial<WebsiteData['seo']>) => void;
+  updateHomeContent: (content: Partial<WebsiteData['homeContent']>) => void;
+  updateHomeServices: (services: WebsiteData['homeContent']['services']) => void;
+  updateHomeTestimonials: (testimonials: WebsiteData['homeContent']['testimonials']) => void;
+  resetToDefault: () => void;
+}
+
+// Define the full store type
+type WebsiteStore = WebsiteData & WebsiteDataActions;
+
+// Define persist configuration
+type WebsiteDataPersist = PersistOptions<WebsiteStore, Partial<WebsiteStore>>;
 
 // Nilai default untuk data website
 const defaultWebsiteData: WebsiteData = {
@@ -189,19 +208,13 @@ const defaultWebsiteData: WebsiteData = {
   },
 };
 
-// Membuat store dengan Zustand dan persistensi
-export const useWebsiteDataStore = create<WebsiteData & {
-  updateGeneralInfo: (info: Partial<WebsiteData['generalInfo']>) => void;
-  updateAppearance: (appearance: Partial<WebsiteData['appearance']>) => void;
-  updatePage: (pageId: string, pageData: Partial<Omit<WebsiteData['pages'][0], 'id'>>) => void;
-  addPage: (pageData: Omit<WebsiteData['pages'][0], 'id'>) => void;
-  deletePage: (pageId: string) => void;
-  updateSeo: (seo: Partial<WebsiteData['seo']>) => void;
-  updateHomeContent: (content: Partial<WebsiteData['homeContent']>) => void;
-  updateHomeServices: (services: WebsiteData['homeContent']['services']) => void;
-  updateHomeTestimonials: (testimonials: WebsiteData['homeContent']['testimonials']) => void;
-  resetToDefault: () => void;
-}>(
+// Persist configuration
+const persistConfig: WebsiteDataPersist = {
+  name: 'website-data-storage',
+};
+
+// Create the store with proper typing
+export const useWebsiteDataStore = create<WebsiteStore>()(
   persist(
     (set) => ({
       ...defaultWebsiteData,
@@ -262,8 +275,6 @@ export const useWebsiteDataStore = create<WebsiteData & {
       
       resetToDefault: () => set(defaultWebsiteData),
     }),
-    {
-      name: 'website-data-storage',
-    }
+    persistConfig
   )
 );
