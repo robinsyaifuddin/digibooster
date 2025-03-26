@@ -33,22 +33,22 @@ const Tentang = () => {
 
   const values = [
     {
-      icon: <Target className="h-10 w-10 text-purple-600" />,
+      icon: <Target className="h-10 w-10 text-digiblue-600" />,
       title: 'Berorientasi Hasil',
       description: 'Kami fokus pada pencapaian hasil nyata yang terukur dan memberikan dampak positif bagi bisnis klien.'
     },
     {
-      icon: <Star className="h-10 w-10 text-purple-600" />,
+      icon: <Star className="h-10 w-10 text-digiblue-600" />,
       title: 'Keunggulan Kualitas',
       description: 'Kami berkomitmen untuk memberikan layanan dan solusi dengan standar kualitas tertinggi tanpa kompromi.'
     },
     {
-      icon: <CheckCircle className="h-10 w-10 text-purple-600" />,
+      icon: <CheckCircle className="h-10 w-10 text-digiblue-600" />,
       title: 'Integritas',
       description: 'Kami menjalankan bisnis dengan kejujuran, transparansi, dan etika profesional yang tinggi.'
     },
     {
-      icon: <Users className="h-10 w-10 text-purple-600" />,
+      icon: <Users className="h-10 w-10 text-digiblue-600" />,
       title: 'Kolaborasi',
       description: 'Kami percaya bahwa kerja sama yang baik antara tim dan klien menghasilkan solusi terbaik.'
     }
@@ -99,9 +99,9 @@ const Tentang = () => {
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-24 text-center">
-          <span className="inline-block py-1 px-3 text-xs font-medium text-purple-600 bg-purple-100 rounded-full mb-3">TENTANG KAMI</span>
+          <span className="inline-block py-1 px-3 text-xs font-medium text-digiblue-600 bg-digiblue-100 rounded-full mb-3">TENTANG KAMI</span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900">
-            Tumbuh Bersama <span className="text-purple-600">DigiBooster</span>
+            Tumbuh Bersama <span className="text-digiblue-600">DigiBooster</span>
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Kami adalah agensi digital yang berdedikasi untuk membantu bisnis dan individu 
@@ -113,7 +113,7 @@ const Tentang = () => {
         <div className="max-w-4xl mx-auto mb-20">
           <div className="mb-12 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Cerita Kami</h2>
-            <div className="w-20 h-1 bg-purple-600 mx-auto"></div>
+            <div className="w-20 h-1 bg-digiblue-600 mx-auto"></div>
           </div>
           
           <div className="prose prose-lg max-w-none text-gray-600">
@@ -142,13 +142,13 @@ const Tentang = () => {
         <div className="mb-20">
           <div className="mb-12 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Nilai-Nilai Kami</h2>
-            <div className="w-20 h-1 bg-purple-600 mx-auto"></div>
+            <div className="w-20 h-1 bg-digiblue-600 mx-auto"></div>
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {values.map((value, index) => (
               <div key={index} className="bg-white rounded-xl p-8 shadow-lg hover:shadow-xl transition-shadow text-center">
-                <div className="bg-purple-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
+                <div className="bg-digiblue-50 w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6">
                   {value.icon}
                 </div>
                 <h3 className="text-xl font-bold mb-3 text-gray-900">{value.title}</h3>
@@ -159,7 +159,7 @@ const Tentang = () => {
         </div>
 
         {/* Stats Section */}
-        <div className="bg-gradient-to-r from-purple-800 to-purple-600 rounded-2xl p-10 md:p-16 mb-20">
+        <div className="bg-gradient-to-r from-digiblue-800 to-digiblue-600 rounded-2xl p-10 md:p-16 mb-20">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {stats.map((stat, index) => (
               <div key={index} className="text-white">
@@ -167,7 +167,7 @@ const Tentang = () => {
                   {stat.icon}
                 </div>
                 <div className="text-4xl font-bold mb-2">{stat.value}</div>
-                <div className="text-purple-200">{stat.label}</div>
+                <div className="text-digiblue-200">{stat.label}</div>
               </div>
             ))}
           </div>
@@ -177,12 +177,12 @@ const Tentang = () => {
         <div className="mb-20">
           <div className="mb-12 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Perjalanan Kami</h2>
-            <div className="w-20 h-1 bg-purple-600 mx-auto"></div>
+            <div className="w-20 h-1 bg-digiblue-600 mx-auto"></div>
           </div>
           
           <div className="relative">
             {/* Timeline line */}
-            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-purple-100"></div>
+            <div className="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-digiblue-100"></div>
             
             <div className="space-y-12">
               {milestones.map((milestone, index) => (
@@ -193,10 +193,10 @@ const Tentang = () => {
                   <div className="flex-1"></div>
                   
                   {/* Timeline point */}
-                  <div className="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-purple-600 border-4 border-white z-10"></div>
+                  <div className="absolute left-1/2 transform -translate-x-1/2 w-8 h-8 rounded-full bg-digiblue-600 border-4 border-white z-10"></div>
                   
                   <div className="flex-1 bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow mx-6 md:mx-12">
-                    <div className="text-purple-600 font-bold text-xl mb-2">{milestone.year}</div>
+                    <div className="text-digiblue-600 font-bold text-xl mb-2">{milestone.year}</div>
                     <h3 className="text-lg font-bold mb-2 text-gray-900">{milestone.title}</h3>
                     <p className="text-gray-600">{milestone.description}</p>
                   </div>
@@ -210,7 +210,7 @@ const Tentang = () => {
         <div className="mb-20">
           <div className="mb-12 text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Tim Kami</h2>
-            <div className="w-20 h-1 bg-purple-600 mx-auto mb-6"></div>
+            <div className="w-20 h-1 bg-digiblue-600 mx-auto mb-6"></div>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Kenali para ahli di balik DigiBooster yang membawa kreativitas, keahlian teknis, dan 
               dedikasi untuk setiap proyek yang kami tangani.
@@ -230,7 +230,7 @@ const Tentang = () => {
                 
                 <div className="p-6 text-center">
                   <h3 className="text-xl font-bold mb-1 text-gray-900">{member.name}</h3>
-                  <p className="text-purple-600 font-medium mb-3">{member.role}</p>
+                  <p className="text-digiblue-600 font-medium mb-3">{member.role}</p>
                   <p className="text-gray-600 text-sm">{member.bio}</p>
                 </div>
               </div>
@@ -239,7 +239,7 @@ const Tentang = () => {
         </div>
 
         {/* CTA Section */}
-        <div className="bg-purple-50 rounded-2xl p-8 md:p-12 mb-16 text-center">
+        <div className="bg-digiblue-50 rounded-2xl p-8 md:p-12 mb-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-gray-900">Mari Berkolaborasi!</h2>
           <p className="text-gray-600 max-w-2xl mx-auto mb-8">
             Kami siap membantu bisnis Anda berkembang di dunia digital. Hubungi kami untuk mendiskusikan
@@ -247,7 +247,7 @@ const Tentang = () => {
           </p>
           <a 
             href="/kontak" 
-            className="inline-flex items-center px-6 py-3 bg-purple-600 text-white rounded-full hover:bg-purple-700 transition-colors font-medium shadow-md"
+            className="inline-flex items-center px-6 py-3 bg-digiblue-600 text-white rounded-full hover:bg-digiblue-700 transition-colors font-medium shadow-md"
           >
             Hubungi Kami Sekarang <ArrowRight className="ml-2 h-4 w-4" />
           </a>

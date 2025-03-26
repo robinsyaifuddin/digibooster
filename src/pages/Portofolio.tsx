@@ -102,9 +102,9 @@ const Portofolio = () => {
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
-          <span className="inline-block py-1 px-3 text-xs font-medium text-purple-600 bg-purple-100 rounded-full mb-3">KARYA KAMI</span>
+          <span className="inline-block py-1 px-3 text-xs font-medium text-digiblue-600 bg-digiblue-100 rounded-full mb-3">KARYA KAMI</span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900">
-            Portofolio <span className="text-purple-600">Proyek Digital</span>
+            Portofolio <span className="text-digiblue-600">Proyek Digital</span>
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Kumpulan karya dan proyek digital yang telah kami kerjakan untuk berbagai klien
@@ -120,7 +120,7 @@ const Portofolio = () => {
               onClick={() => filterItems(filter)}
               className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
                 activeFilter === filter
-                  ? "bg-purple-600 text-white"
+                  ? "bg-digiblue-600 text-white"
                   : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
             >
@@ -150,7 +150,7 @@ const Portofolio = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end">
                   <div className="p-6">
-                    <span className="text-xs font-medium text-purple-300 bg-purple-900/40 px-2 py-1 rounded-full">
+                    <span className="text-xs font-medium text-digiblue-300 bg-digiblue-900/40 px-2 py-1 rounded-full">
                       {project.category}
                     </span>
                     <h3 className="text-xl font-bold text-white mt-2">{project.title}</h3>
@@ -168,7 +168,7 @@ const Portofolio = () => {
                     {project.services.map((service, idx) => (
                       <span 
                         key={idx} 
-                        className="text-xs bg-purple-50 text-purple-700 px-2 py-1 rounded-full"
+                        className="text-xs bg-digiblue-50 text-digiblue-700 px-2 py-1 rounded-full"
                       >
                         {service}
                       </span>
@@ -176,7 +176,7 @@ const Portofolio = () => {
                   </div>
                 </div>
                 
-                <button className="inline-flex items-center text-purple-600 hover:text-purple-800 font-medium">
+                <button className="inline-flex items-center text-digiblue-600 hover:text-digiblue-800 font-medium">
                   Lihat Detail 
                   <ExternalLink className="ml-2 h-4 w-4" />
                 </button>
@@ -186,15 +186,15 @@ const Portofolio = () => {
         </motion.div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-purple-800 to-purple-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
+        <div className="bg-gradient-to-r from-digiblue-800 to-digiblue-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Siap Mewujudkan Proyek Digital Anda?</h2>
-          <p className="text-purple-100 max-w-2xl mx-auto mb-8">
+          <p className="text-digiblue-100 max-w-2xl mx-auto mb-8">
             Kami siap membantu mewujudkan ide dan kebutuhan digital Anda dengan solusi kreatif
             dan profesional sesuai standar industri.
           </p>
           <a 
             href="/kontak" 
-            className="inline-flex items-center px-6 py-3 bg-white text-purple-700 rounded-full hover:bg-purple-50 transition-colors font-medium"
+            className="inline-flex items-center px-6 py-3 bg-white text-digiblue-700 rounded-full hover:bg-digiblue-50 transition-colors font-medium"
           >
             Diskusikan Proyek Anda <ArrowRight className="ml-2 h-4 w-4" />
           </a>
