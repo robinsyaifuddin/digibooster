@@ -17,6 +17,11 @@ import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 import Blog from "./pages/Blog";
 import JasaDigital from "./pages/JasaDigital";
+import MotivasiEdukasi from "./pages/MotivasiEdukasi";
+import SharingKonsultasi from "./pages/SharingKonsultasi";
+import Kelas from "./pages/Kelas";
+import Portofolio from "./pages/Portofolio";
+import Tentang from "./pages/Tentang";
 
 // Layout component to wrap content with Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -76,6 +81,51 @@ const App = () => (
                 element={
                   <Layout>
                     <JasaDigital />
+                  </Layout>
+                }
+              />
+              
+              <Route
+                path="/program/motivasi-edukasi"
+                element={
+                  <Layout>
+                    <MotivasiEdukasi />
+                  </Layout>
+                }
+              />
+              
+              <Route
+                path="/program/sharing-konsultasi"
+                element={
+                  <Layout>
+                    <SharingKonsultasi />
+                  </Layout>
+                }
+              />
+              
+              <Route
+                path="/program/kelas"
+                element={
+                  <Layout>
+                    <Kelas />
+                  </Layout>
+                }
+              />
+              
+              <Route
+                path="/portofolio"
+                element={
+                  <Layout>
+                    <Portofolio />
+                  </Layout>
+                }
+              />
+              
+              <Route
+                path="/tentang"
+                element={
+                  <Layout>
+                    <Tentang />
                   </Layout>
                 }
               />

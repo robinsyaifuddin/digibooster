@@ -42,7 +42,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4 md:px-6">
         <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center">
-            <img src="/lovable-uploads/eb7d859a-60c0-4007-afe4-522ffdd5afda.png" alt="DigiBooster Logo" className="h-10 md:h-12" />
+            <img src="/lovable-uploads/eb7d859a-60c0-4007-afe4-522ffdd5afda.png" alt="DigiBooster Logo" className="h-8 md:h-10 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -69,17 +69,17 @@ const Navbar = () => {
                   </NavigationMenuContent>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link to="/blog" className="text-diginavy px-4 py-2">
+                  <Link to="/blog" className="text-diginavy px-4 py-2 hover:text-purple-700 transition-colors">
                     Blog
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link to="/portofolio" className="text-diginavy px-4 py-2">
+                  <Link to="/portofolio" className="text-diginavy px-4 py-2 hover:text-purple-700 transition-colors">
                     Portofolio
                   </Link>
                 </NavigationMenuItem>
                 <NavigationMenuItem>
-                  <Link to="/tentang" className="text-diginavy px-4 py-2">
+                  <Link to="/tentang" className="text-diginavy px-4 py-2 hover:text-purple-700 transition-colors">
                     Tentang
                   </Link>
                 </NavigationMenuItem>
@@ -141,31 +141,34 @@ const Navbar = () => {
         <div className="md:hidden bg-white shadow-md mt-2 animate-fade-in">
           <div className="py-4 space-y-1">
             <div className="block px-6 py-2 font-medium text-diginavy border-b border-gray-100">Program</div>
-            <Link to="/program/jasa-digital" className="block px-8 py-3 text-sm">
+            <Link to="/program/jasa-digital" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
               Layanan Jasa Digital
             </Link>
-            <Link to="/program/motivasi-edukasi" className="block px-8 py-3 text-sm">
+            <Link to="/program/motivasi-edukasi" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
               Motivasi dan Edukasi Digital
             </Link>
-            <Link to="/program/sharing-konsultasi" className="block px-8 py-3 text-sm">
+            <Link to="/program/sharing-konsultasi" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
               Sharing dan Konsultasi Bisnis Digital
             </Link>
-            <Link to="/program/kelas" className="block px-8 py-3 text-sm">
+            <Link to="/program/kelas" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
               Short Class dan Mini Bootcamp Digital
             </Link>
-            <Link to="/blog" className="block px-6 py-3 border-t border-gray-100">Blog</Link>
-            <Link to="/portofolio" className="block px-6 py-3">Portofolio</Link>
-            <Link to="/tentang" className="block px-6 py-3">Tentang</Link>
+            <Link to="/blog" className="block px-6 py-3 border-t border-gray-100" onClick={toggleMenu}>Blog</Link>
+            <Link to="/portofolio" className="block px-6 py-3" onClick={toggleMenu}>Portofolio</Link>
+            <Link to="/tentang" className="block px-6 py-3" onClick={toggleMenu}>Tentang</Link>
             
             {user ? (
               <>
                 <div className="border-t border-gray-200 my-2"></div>
-                <Link to="/profil" className="block px-6 py-3">Profil</Link>
+                <Link to="/profil" className="block px-6 py-3" onClick={toggleMenu}>Profil</Link>
                 {user.email === "digibooster@123" && (
-                  <Link to="/admin" className="block px-6 py-3">Admin Dashboard</Link>
+                  <Link to="/admin" className="block px-6 py-3" onClick={toggleMenu}>Admin Dashboard</Link>
                 )}
                 <button 
-                  onClick={logout} 
+                  onClick={() => {
+                    logout();
+                    toggleMenu();
+                  }} 
                   className="block w-full text-left px-6 py-3 text-red-600"
                 >
                   Keluar
@@ -173,10 +176,10 @@ const Navbar = () => {
               </>
             ) : (
               <div className="flex justify-center space-x-4 px-6 py-4 border-t border-gray-100 mt-2">
-                <Link to="/login" className="flex-1">
+                <Link to="/login" className="flex-1" onClick={toggleMenu}>
                   <Button variant="outline" className="w-full border-digiblue-600 text-digiblue-600">Masuk</Button>
                 </Link>
-                <Link to="/register" className="flex-1">
+                <Link to="/register" className="flex-1" onClick={toggleMenu}>
                   <Button className="w-full bg-digiblue-600 text-white hover:bg-digiblue-700">Daftar</Button>
                 </Link>
               </div>
