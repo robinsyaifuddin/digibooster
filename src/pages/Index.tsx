@@ -1,4 +1,3 @@
-
 import { ArrowRight, Zap, Code, PenTool, Users, Lightbulb, CheckCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -7,15 +6,12 @@ import { useWebsiteDataStore, WebsiteData } from '@/stores/websiteDataStore';
 
 const Index = () => {
   const [animatedElements, setAnimatedElements] = useState<Element[]>([]);
-  // Gunakan state lokal untuk konten home, sehingga bisa diupdate saat ada perubahan
   const [homeContent, setHomeContent] = useState<WebsiteData['homeContent'] | null>(null);
   const websiteData = useWebsiteDataStore();
 
-  // Load data dari store saat komponen mount
   useEffect(() => {
     setHomeContent(websiteData.homeContent);
     
-    // Listener untuk update data dari admin dashboard
     const handleContentUpdate = (event: CustomEvent<WebsiteData>) => {
       console.log('Content update event received:', event.detail);
       if (event.detail && event.detail.homeContent) {
@@ -25,7 +21,6 @@ const Index = () => {
     
     window.addEventListener('websiteContentUpdated', handleContentUpdate as EventListener);
     
-    // Cek jika ada data yang disimpan di localStorage
     const storedData = localStorage.getItem('websiteData');
     if (storedData) {
       try {
@@ -43,7 +38,6 @@ const Index = () => {
     };
   }, [websiteData]);
 
-  // Helper function untuk scroll animation
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -74,7 +68,6 @@ const Index = () => {
     };
   }, [homeContent, animatedElements]);
 
-  // Jika data homeContent belum tersedia, tampilkan loading state
   if (!homeContent) {
     return (
       <div className="flex justify-center items-center min-h-screen">
@@ -83,7 +76,6 @@ const Index = () => {
     );
   }
 
-  // Memetakan string icon ke komponen Lucide
   const getIconComponent = (iconName: string) => {
     switch (iconName) {
       case 'Code': return <Code className="h-12 w-12 text-diginavy" />;
@@ -96,7 +88,6 @@ const Index = () => {
 
   return (
     <div className="pt-16">
-      {/* Hero Section */}
       <section className="relative bg-gradient-to-br from-diginavy to-digiblue-700 text-white py-20 md:py-28">
         <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center opacity-20"></div>
         <div className="container mx-auto px-4 relative z-10">
@@ -124,7 +115,6 @@ const Index = () => {
           </div>
         </div>
         
-        {/* Wave effect */}
         <div className="absolute bottom-0 left-0 right-0">
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
             <path fill="#ffffff" fillOpacity="1" d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,229.3C672,245,768,267,864,266.7C960,267,1056,245,1152,229.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
@@ -132,7 +122,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Services Section */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 scroll-animation">
@@ -161,7 +150,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* CTA Section */}
       <section className="bg-gradient-to-r from-diginavy to-digiblue-800 py-16 text-white">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center scroll-animation">
@@ -186,7 +174,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Benefits Section */}
       <section className="py-16 md:py-24 bg-gray-50">
         <div className="container mx-auto px-4">
           <div className="md:flex md:items-center md:justify-between">
@@ -229,7 +216,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Testimonials */}
       <section className="py-16 md:py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 scroll-animation">
@@ -264,7 +250,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Contact CTA */}
       <section className="bg-gray-50 py-16">
         <div className="container mx-auto px-4">
           <div className="max-w-3xl mx-auto text-center scroll-animation">
