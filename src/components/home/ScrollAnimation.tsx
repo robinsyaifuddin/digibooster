@@ -1,13 +1,13 @@
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 interface ScrollAnimationProps {
   children: React.ReactNode;
 }
 
 const ScrollAnimation = ({ children }: ScrollAnimationProps) => {
-  const [animatedElements, setAnimatedElements] = useState<Element[]>([]);
-
+  const observerRef = useRef<IntersectionObserver | null>(null);
+  
   useEffect(() => {
     const observerOptions = {
       root: null,
@@ -15,28 +15,34 @@ const ScrollAnimation = ({ children }: ScrollAnimationProps) => {
       threshold: 0.1
     };
 
-    const observer = new IntersectionObserver((entries) => {
+    // Membuat observer baru hanya sekali
+    observerRef.current = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
         if (entry.isIntersecting) {
           entry.target.classList.add('animate-fade-in');
           entry.target.classList.remove('opacity-0');
-          observer.unobserve(entry.target);
+          observerRef.current?.unobserve(entry.target);
         }
       });
     }, observerOptions);
 
+    // Pilih semua elemen dengan class scroll-animation
     const elements = document.querySelectorAll('.scroll-animation');
-    setAnimatedElements(Array.from(elements));
     
+    // Setup observer untuk setiap elemen
     elements.forEach(el => {
       el.classList.add('opacity-0');
-      observer.observe(el);
+      observerRef.current?.observe(el);
     });
 
+    // Cleanup pada unmount
     return () => {
-      animatedElements.forEach(el => observer.unobserve(el));
+      if (observerRef.current) {
+        elements.forEach(el => observerRef.current?.unobserve(el));
+        observerRef.current = null;
+      }
     };
-  }, [animatedElements]);
+  }, []); // Pastikan effect hanya berjalan sekali
 
   return <>{children}</>;
 };
