@@ -32,17 +32,6 @@ const Footer = () => {
     setEmail('');
   };
 
-  const partnerLogos = [
-    { name: 'Google', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/150px-Google_%22G%22_Logo.svg.png' },
-    { name: 'Microsoft', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/150px-Microsoft_logo.svg.png' },
-    { name: 'Amazon', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/175px-Amazon_logo.svg.png' },
-    { name: 'IBM', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/150px-IBM_logo.svg.png' },
-    { name: 'Oracle', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/150px-Oracle_logo.svg.png' },
-    { name: 'Cisco', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Cisco_logo_blue_2016.svg/150px-Cisco_logo_blue_2016.svg.png' },
-    { name: 'Intel', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Intel_logo_%282006-2020%29.svg/150px-Intel_logo_%282006-2020%29.svg.png' },
-    { name: 'Nvidia', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Nvidia_logo.svg/150px-Nvidia_logo.svg.png' },
-  ];
-
   return (
     <footer className="relative bg-gray-900 text-gray-300 pt-16 pb-6 overflow-hidden">
       {/* Decorative gradient background */}
@@ -61,20 +50,6 @@ const Footer = () => {
           >
             <ArrowUp className="h-6 w-6 group-hover:-translate-y-1 transition-transform" />
           </button>
-        </div>
-        
-        {/* Partner Logos */}
-        <div className="mb-16 overflow-hidden">
-          <h4 className="text-xl font-semibold mb-6 text-center text-white">Dipercaya oleh</h4>
-          <div className="relative overflow-hidden">
-            <div className="flex space-x-12 animate-marquee">
-              {[...partnerLogos, ...partnerLogos].map((logo, index) => (
-                <div key={index} className="flex items-center justify-center h-16">
-                  <img src={logo.image} alt={logo.name} className="h-full object-contain grayscale hover:grayscale-0 transition-all duration-300" />
-                </div>
-              ))}
-            </div>
-          </div>
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-10 border-b border-gray-700">
