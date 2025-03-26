@@ -50,19 +50,19 @@ const Navbar = () => {
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-diginavy">Layanan</NavigationMenuTrigger>
+                  <NavigationMenuTrigger className="text-diginavy">Program</NavigationMenuTrigger>
                   <NavigationMenuContent>
                     <div className="w-64 p-2">
-                      <Link to="/layanan/jasa-digital" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
+                      <Link to="/program/jasa-digital" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
                         Layanan Jasa Digital
                       </Link>
-                      <Link to="/layanan/motivasi-edukasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
+                      <Link to="/program/motivasi-edukasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
                         Motivasi dan Edukasi Digital
                       </Link>
-                      <Link to="/layanan/sharing-konsultasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
+                      <Link to="/program/sharing-konsultasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
                         Sharing dan Konsultasi Bisnis Digital
                       </Link>
-                      <Link to="/layanan/kelas" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
+                      <Link to="/program/kelas" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
                         Short Class dan Mini Bootcamp Digital
                       </Link>
                     </div>
@@ -140,17 +140,17 @@ const Navbar = () => {
       {isOpen && (
         <div className="md:hidden bg-white shadow-md mt-2 animate-fade-in">
           <div className="py-4 space-y-1">
-            <div className="block px-6 py-2 font-medium text-diginavy border-b border-gray-100">Layanan</div>
-            <Link to="/layanan/jasa-digital" className="block px-8 py-3 text-sm">
+            <div className="block px-6 py-2 font-medium text-diginavy border-b border-gray-100">Program</div>
+            <Link to="/program/jasa-digital" className="block px-8 py-3 text-sm">
               Layanan Jasa Digital
             </Link>
-            <Link to="/layanan/motivasi-edukasi" className="block px-8 py-3 text-sm">
+            <Link to="/program/motivasi-edukasi" className="block px-8 py-3 text-sm">
               Motivasi dan Edukasi Digital
             </Link>
-            <Link to="/layanan/sharing-konsultasi" className="block px-8 py-3 text-sm">
+            <Link to="/program/sharing-konsultasi" className="block px-8 py-3 text-sm">
               Sharing dan Konsultasi Bisnis Digital
             </Link>
-            <Link to="/layanan/kelas" className="block px-8 py-3 text-sm">
+            <Link to="/program/kelas" className="block px-8 py-3 text-sm">
               Short Class dan Mini Bootcamp Digital
             </Link>
             <Link to="/blog" className="block px-6 py-3 border-t border-gray-100">Blog</Link>

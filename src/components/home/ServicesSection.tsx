@@ -2,6 +2,8 @@
 import React from 'react';
 import { ServiceItem } from '@/types/websiteTypes';
 import ServiceCard from './ServiceCard';
+import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
 interface ServicesSectionProps {
   services: ServiceItem[];
@@ -16,7 +18,7 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16 scroll-animation">
-          <span className="inline-block py-1 px-3 text-xs font-medium text-white bg-white/10 rounded-full mb-3 backdrop-blur-sm">LAYANAN KAMI</span>
+          <span className="inline-block py-1 px-3 text-xs font-medium text-white bg-white/10 rounded-full mb-3 backdrop-blur-sm">PROGRAM KAMI</span>
           <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
             Solusi Digital <span className="text-purple-300">Komprehensif</span> untuk Bisnis Anda
           </h2>
@@ -26,7 +28,7 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {services.map((service, index) => (
+          {services.slice(0, 3).map((service, index) => (
             <ServiceCard 
               key={service.id} 
               service={service} 
@@ -34,6 +36,15 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
             />
           ))}
         </div>
+
+        {services.length > 3 && (
+          <div className="mt-10 text-center">
+            <Link to="/program/jasa-digital" className="inline-flex items-center px-6 py-3 bg-white/10 backdrop-blur-sm hover:bg-white/20 text-white rounded-full transition-all group">
+              Lihat Semua Program 
+              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );

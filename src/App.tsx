@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +16,7 @@ import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
 import AdminDashboard from "./pages/AdminDashboard";
 import Blog from "./pages/Blog";
+import JasaDigital from "./pages/JasaDigital";
 
 // Layout component to wrap content with Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -64,6 +66,16 @@ const App = () => (
                 element={
                   <Layout>
                     <Blog />
+                  </Layout>
+                }
+              />
+              
+              {/* Program Pages */}
+              <Route
+                path="/program/jasa-digital"
+                element={
+                  <Layout>
+                    <JasaDigital />
                   </Layout>
                 }
               />
