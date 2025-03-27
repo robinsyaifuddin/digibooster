@@ -3,19 +3,15 @@ import React from 'react';
 import { WebsitePage } from '@/types/websiteTypes';
 import { Button } from '@/components/ui/button';
 import { 
-  Save, 
-  Globe, 
-  Laptop, 
-  Smartphone, 
+  Save,
+  Globe,
+  LayoutGrid,
+  Smartphone,
   Tablet,
-  Undo,
-  Redo,
-  Eye,
-  Sidebar,
-  Layers,
-  Settings,
-  Grid,
-  Monitor
+  EyeIcon,
+  SidebarOpen,
+  SidebarClose,
+  Palette
 } from 'lucide-react';
 
 interface EditorToolbarProps {
@@ -29,6 +25,7 @@ interface EditorToolbarProps {
   hasUnsavedChanges: boolean;
   onSave: () => void;
   onPublish: () => void;
+  onPreview: () => void;
 }
 
 const EditorToolbar = ({
@@ -41,108 +38,115 @@ const EditorToolbar = ({
   setShowResponsiveControls,
   hasUnsavedChanges,
   onSave,
-  onPublish
+  onPublish,
+  onPreview
 }: EditorToolbarProps) => {
   return (
-    <div className="bg-white border-b border-gray-200 p-2 flex items-center justify-between flex-wrap gap-2">
-      {/* Page Title */}
-      <div className="flex items-center">
-        {activePage && (
-          <h3 className="font-medium text-gray-700 mr-4 hidden md:block">
-            Edit: <span className="text-blue-600">{activePage.title}</span>
-          </h3>
+    <div className="flex justify-between items-center border-b border-gray-200 bg-white p-2">
+      <div className="flex items-center space-x-2">
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setShowElementsSidebar(!showElementsSidebar)}
+          title={showElementsSidebar ? "Sembunyikan panel elemen" : "Tampilkan panel elemen"}
+        >
+          {showElementsSidebar ? (
+            <SidebarClose className="h-4 w-4" />
+          ) : (
+            <SidebarOpen className="h-4 w-4" />
+          )}
+        </Button>
+        
+        <Button
+          variant="ghost"
+          size="icon"
+          onClick={() => setShowResponsiveControls(!showResponsiveControls)}
+          title="Toggle responsive controls"
+          className={!showResponsiveControls ? 'text-gray-400' : ''}
+        >
+          <Palette className="h-4 w-4" />
+        </Button>
+        
+        {showResponsiveControls && (
+          <div className="flex items-center border border-gray-200 rounded-md overflow-hidden">
+            <Button
+              variant="ghost"
+              size="icon"
+              className={`rounded-none h-8 w-8 ${editMode === 'desktop' ? 'bg-gray-100' : ''}`}
+              onClick={() => setEditMode('desktop')}
+              title="Desktop view"
+            >
+              <LayoutGrid className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className={`rounded-none h-8 w-8 ${editMode === 'tablet' ? 'bg-gray-100' : ''}`}
+              onClick={() => setEditMode('tablet')}
+              title="Tablet view"
+            >
+              <Tablet className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className={`rounded-none h-8 w-8 ${editMode === 'mobile' ? 'bg-gray-100' : ''}`}
+              onClick={() => setEditMode('mobile')}
+              title="Mobile view"
+            >
+              <Smartphone className="h-4 w-4" />
+            </Button>
+          </div>
         )}
       </div>
-
-      {/* Editing Tools */}
-      <div className="flex items-center space-x-2">
-        <div className="border rounded-md flex bg-gray-50">
-          <Button
-            variant="ghost"
-            size="sm"
-            className={`px-2 ${editMode === 'desktop' ? 'bg-white text-blue-600' : 'text-gray-500'}`}
-            onClick={() => setEditMode('desktop')}
-          >
-            <Monitor className="h-4 w-4 mr-1" />
-            <span className="hidden sm:inline">Desktop</span>
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className={`px-2 ${editMode === 'tablet' ? 'bg-white text-blue-600' : 'text-gray-500'}`}
-            onClick={() => setEditMode('tablet')}
-          >
-            <Tablet className="h-4 w-4 mr-1" />
-            <span className="hidden sm:inline">Tablet</span>
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className={`px-2 ${editMode === 'mobile' ? 'bg-white text-blue-600' : 'text-gray-500'}`}
-            onClick={() => setEditMode('mobile')}
-          >
-            <Smartphone className="h-4 w-4 mr-1" />
-            <span className="hidden sm:inline">Mobile</span>
-          </Button>
-        </div>
-
-        <div className="border rounded-md flex bg-gray-50">
-          <Button
-            variant="ghost"
-            size="sm"
-            className="px-2 text-gray-500"
-            onClick={() => setShowElementsSidebar(!showElementsSidebar)}
-          >
-            <Sidebar className="h-4 w-4 mr-1" />
-            <span className="hidden sm:inline">Elements</span>
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="px-2 text-gray-500"
-          >
-            <Layers className="h-4 w-4 mr-1" />
-            <span className="hidden sm:inline">Layers</span>
-          </Button>
-          <Button
-            variant="ghost"
-            size="sm"
-            className="px-2 text-gray-500"
-          >
-            <Settings className="h-4 w-4 mr-1" />
-            <span className="hidden sm:inline">Settings</span>
-          </Button>
-        </div>
+      
+      <div className="flex items-center">
+        {activePage && (
+          <span className="text-sm font-medium text-gray-600 mr-4">
+            Editing: {activePage.title}
+          </span>
+        )}
+        
+        {hasUnsavedChanges && (
+          <span className="text-xs text-amber-600 mr-4">
+            Perubahan belum disimpan
+          </span>
+        )}
       </div>
-
-      {/* Actions */}
+      
       <div className="flex items-center space-x-2">
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           size="sm"
-          onClick={() => window.open(`/${activePage?.slug || ''}`, '_blank')}
+          onClick={onPreview}
+          title="Pratinjau halaman di tab baru"
+          disabled={!activePage}
         >
-          <Eye className="h-4 w-4 mr-1" />
-          Preview
+          <EyeIcon className="h-4 w-4 mr-1" />
+          Pratinjau
         </Button>
         
-        <Button 
-          variant="outline" 
+        <Button
+          variant="outline"
           size="sm"
           onClick={onSave}
-          disabled={!hasUnsavedChanges}
-          className={hasUnsavedChanges ? 'border-amber-500 text-amber-600' : ''}
+          disabled={!hasUnsavedChanges || !activePage}
+          title="Simpan perubahan"
         >
           <Save className="h-4 w-4 mr-1" />
-          Save
+          Simpan
         </Button>
         
-        <Button 
+        <Button
+          variant="default"
           size="sm"
           onClick={onPublish}
+          disabled={!activePage}
+          title="Publikasikan halaman"
+          className="bg-green-600 hover:bg-green-700"
         >
           <Globe className="h-4 w-4 mr-1" />
-          Publish
+          Publikasikan
         </Button>
       </div>
     </div>

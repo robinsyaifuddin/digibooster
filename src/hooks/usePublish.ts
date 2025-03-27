@@ -23,6 +23,15 @@ export const usePublish = () => {
         localStorage.setItem('websiteDataBackup', currentData);
       }
 
+      // Simpan data halaman yang dipublish
+      const pageEdits = {};
+      websiteData.pages.forEach(page => {
+        const isEdited = localStorage.getItem('pageEdited_' + page.id);
+        if (isEdited) {
+          pageEdits[page.id] = page.content;
+        }
+      });
+
       // Simulate website publishing process with stages
       await simulateProgressStep(0, 20, 1000);
       
@@ -55,6 +64,11 @@ export const usePublish = () => {
         // Save site data to localStorage with a permanent flag
         localStorage.setItem('websiteData', JSON.stringify(websiteData));
         localStorage.setItem('websiteDataPermanent', 'true');
+        
+        // Hapus semua flag edit halaman karena sudah dipublikasikan
+        websiteData.pages.forEach(page => {
+          localStorage.removeItem('pageEdited_' + page.id);
+        });
       } catch (storageError) {
         console.error('Error saving to localStorage:', storageError);
         toast({
@@ -71,7 +85,8 @@ export const usePublish = () => {
         const contentUpdateEvent = new CustomEvent('websiteContentUpdated', { 
           detail: {
             ...websiteData,
-            isPermanent: true
+            isPermanent: true,
+            pageEdits
           }
         });
         
@@ -145,6 +160,18 @@ export const usePublish = () => {
             window.dispatchEvent(new CustomEvent('websiteContentUpdated', { 
               detail: parsedBackup
             }));
+            
+            // Notifikasi semua komponen tentang perubahan konten halaman
+            parsedBackup.pages.forEach(page => {
+              window.dispatchEvent(new CustomEvent('pageContentUpdated', {
+                detail: {
+                  pageId: page.id,
+                  content: page.content,
+                  isPermanent: true,
+                  isRollback: true
+                }
+              }));
+            });
             
             toast({
               title: "Rollback selesai",

@@ -31,6 +31,34 @@ const PageEditor = ({ pages }: PageEditorProps) => {
     }
   }, [pages, activePage]);
 
+  // Event listener untuk mendeteksi perubahan konten halaman dari editor lain
+  useEffect(() => {
+    const handlePageContentUpdated = (event: CustomEvent) => {
+      if (event.detail && activePage) {
+        // Update content jika halaman yang aktif
+        setEditorContent(event.detail.content);
+        
+        // Otomatis simpan perubahan jika didapat dari sinkronisasi
+        if (event.detail.autoSave) {
+          websiteData.updatePage(activePage.id, {
+            content: event.detail.content
+          });
+          
+          toast({
+            title: "Konten tersimpan",
+            description: "Perubahan konten halaman telah otomatis tersimpan.",
+          });
+        }
+      }
+    };
+
+    window.addEventListener('pageContentUpdated', handlePageContentUpdated as EventListener);
+    
+    return () => {
+      window.removeEventListener('pageContentUpdated', handlePageContentUpdated as EventListener);
+    };
+  }, [activePage, websiteData, toast]);
+
   // Handle page change
   const handlePageChange = (pageId: string) => {
     // Check for unsaved changes before switching
@@ -73,12 +101,40 @@ const PageEditor = ({ pages }: PageEditorProps) => {
       description: "Perubahan pada halaman telah disimpan dan siap untuk dipublikasikan.",
     });
     
+    // Sinkronkan perubahan ke tampilan langsung
+    const contentUpdateEvent = new CustomEvent('pageContentUpdated', { 
+      detail: {
+        pageId: activePage.id,
+        content: editorContent,
+        isPermanent: false
+      }
+    });
+    window.dispatchEvent(contentUpdateEvent);
+    
     // Mark page as edited for tracking changes
     localStorage.setItem('pageEdited_' + activePage.id, 'true');
   };
 
   // Publish changes
   const handlePublishChanges = () => {
+    if (!activePage) return;
+    
+    // Simpan terlebih dahulu
+    websiteData.updatePage(activePage.id, {
+      content: editorContent,
+      isPublished: true
+    });
+    
+    // Sinkronkan perubahan ke tampilan langsung dengan status permanen
+    const contentUpdateEvent = new CustomEvent('pageContentUpdated', { 
+      detail: {
+        pageId: activePage.id,
+        content: editorContent,
+        isPermanent: true
+      }
+    });
+    window.dispatchEvent(contentUpdateEvent);
+    
     // Trigger publish event
     const publishEvent = new CustomEvent('triggerPublish', {
       detail: { source: 'pageEditor' }
@@ -89,6 +145,8 @@ const PageEditor = ({ pages }: PageEditorProps) => {
       title: "Halaman siap dipublikasikan",
       description: "Silakan akses menu Publikasi Website untuk mempublikasikan perubahan.",
     });
+    
+    setHasUnsavedChanges(false);
   };
   
   // Add a new page
@@ -132,6 +190,18 @@ const PageEditor = ({ pages }: PageEditorProps) => {
     }
   };
 
+  // Pratinjau halaman di tab baru
+  const handlePreviewPage = () => {
+    if (!activePage) return;
+    
+    // Simpan konten sementara untuk pratinjau
+    localStorage.setItem('pagePreview_' + activePage.id, editorContent);
+    
+    // Buka halaman di tab baru dengan parameter preview
+    const previewUrl = `${window.location.origin}/${activePage.slug}?preview=true`;
+    window.open(previewUrl, '_blank');
+  };
+
   if (!pages || pages.length === 0) {
     return (
       <div className="text-center py-12">
@@ -161,6 +231,7 @@ const PageEditor = ({ pages }: PageEditorProps) => {
           hasUnsavedChanges={hasUnsavedChanges}
           onSave={handleSaveChanges}
           onPublish={handlePublishChanges}
+          onPreview={handlePreviewPage}
         />
         
         <div className="flex flex-1 h-full bg-gray-100 overflow-hidden">

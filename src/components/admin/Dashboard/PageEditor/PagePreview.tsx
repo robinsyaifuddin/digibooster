@@ -1,6 +1,8 @@
 
 import React, { useRef, useEffect, useState } from 'react';
 import { useEditor } from './EditorContext';
+import { useToast } from '@/hooks/use-toast';
+import { useWebsiteDataStore } from '@/stores/websiteDataStore';
 
 interface PagePreviewProps {
   content: string;
@@ -9,6 +11,7 @@ interface PagePreviewProps {
 }
 
 const PagePreview = ({ content, viewMode, onContentUpdate }: PagePreviewProps) => {
+  const { toast } = useToast();
   const { 
     draggedElement, 
     setDraggedElement, 
@@ -22,6 +25,7 @@ const PagePreview = ({ content, viewMode, onContentUpdate }: PagePreviewProps) =
   const [editorActive, setEditorActive] = useState(false);
   const [isHtmlView, setIsHtmlView] = useState(false);
   const [htmlContent, setHtmlContent] = useState(content);
+  const websiteData = useWebsiteDataStore();
 
   // Set width based on viewMode
   useEffect(() => {
@@ -57,6 +61,33 @@ const PagePreview = ({ content, viewMode, onContentUpdate }: PagePreviewProps) =
       onContentUpdate(htmlContent);
     }
     setIsHtmlView(!isHtmlView);
+  };
+
+  // Fungsi untuk menyinkronkan perubahan dengan tampilan sebenarnya
+  const syncWithLiveView = () => {
+    try {
+      // Dispatch event untuk memberi tahu bahwa konten sudah diperbarui
+      const contentUpdateEvent = new CustomEvent('pageContentUpdated', { 
+        detail: {
+          content: htmlContent,
+          isPermanent: false
+        }
+      });
+      
+      window.dispatchEvent(contentUpdateEvent);
+      
+      toast({
+        title: "Pratinjau diperbarui",
+        description: "Perubahan telah disinkronkan dengan tampilan pratinjau website.",
+      });
+    } catch (error) {
+      console.error('Error syncing with live view:', error);
+      toast({
+        variant: "destructive",
+        title: "Gagal menyinkronkan",
+        description: "Terjadi kesalahan saat menyinkronkan dengan tampilan langsung.",
+      });
+    }
   };
 
   // Handle drag over to allow dropping
@@ -134,6 +165,12 @@ const PagePreview = ({ content, viewMode, onContentUpdate }: PagePreviewProps) =
           <span className="text-sm font-medium">{viewMode.charAt(0).toUpperCase() + viewMode.slice(1)} Preview</span>
         </div>
         <div className="flex items-center space-x-2">
+          <button
+            onClick={syncWithLiveView}
+            className="px-3 py-1 text-xs bg-green-500 text-white rounded hover:bg-green-600"
+          >
+            Sinkronkan Pratinjau
+          </button>
           <button
             onClick={toggleHtmlView}
             className={`px-2 py-1 text-xs rounded ${isHtmlView ? 'bg-blue-500 text-white' : 'bg-gray-100'}`}
