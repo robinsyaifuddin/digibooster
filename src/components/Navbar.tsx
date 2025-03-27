@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { Menu, X, ChevronDown, User } from 'lucide-react';
@@ -56,13 +57,13 @@ const Navbar = () => {
                         Layanan Jasa Digital
                       </Link>
                       <Link to="/program/motivasi-edukasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
-                        Edukasi Digital
+                        Motivasi dan Edukasi Digital
                       </Link>
                       <Link to="/program/sharing-konsultasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
-                        Sharing dan Konsultasi
+                        Sharing dan Konsultasi Bisnis Digital
                       </Link>
                       <Link to="/program/kelas" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
-                        Short Class dan Bootcamp
+                        Short Class dan Mini Bootcamp Digital
                       </Link>
                     </div>
                   </NavigationMenuContent>
@@ -144,13 +145,13 @@ const Navbar = () => {
               Layanan Jasa Digital
             </Link>
             <Link to="/program/motivasi-edukasi" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
-              Edukasi Digital
+              Motivasi dan Edukasi Digital
             </Link>
             <Link to="/program/sharing-konsultasi" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
-              Sharing dan Konsultasi
+              Sharing dan Konsultasi Bisnis Digital
             </Link>
             <Link to="/program/kelas" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
-              Short Class dan Bootcamp
+              Short Class dan Mini Bootcamp Digital
             </Link>
             <Link to="/blog" className="block px-6 py-3 border-t border-gray-100" onClick={toggleMenu}>Blog</Link>
             <Link to="/portofolio" className="block px-6 py-3" onClick={toggleMenu}>Portofolio</Link>

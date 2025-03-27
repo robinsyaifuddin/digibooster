@@ -64,8 +64,8 @@ const defaultWebsiteData: WebsiteData = {
     hero: {
       title: 'Skill Up, Stand Out with DigiBooster',
       subtitle: 'Membantu masyarakat Indonesia mengoptimalkan digitalisasi untuk peningkatan kualitas hidup dan bisnis.',
-      ctaText: 'Lihat Program',
-      ctaLink: '/program',
+      ctaText: 'Lihat Layanan',
+      ctaLink: '/layanan',
     },
     services: [
       {
@@ -73,28 +73,28 @@ const defaultWebsiteData: WebsiteData = {
         title: 'Layanan Jasa Digital',
         description: 'Tingkatkan presence digital Anda dengan layanan jasa design, web development, dan digital marketing kami.',
         icon: 'Code',
-        link: '/program/jasa-digital',
+        link: '/layanan/jasa-digital',
       },
       {
         id: '2',
-        title: 'Edukasi Digital',
+        title: 'Motivasi dan Edukasi Digital',
         description: 'Dapatkan inspirasi dan pengetahuan digital melalui seminar dan workshop yang kami selenggarakan.',
         icon: 'Lightbulb',
-        link: '/program/motivasi-edukasi',
+        link: '/layanan/motivasi-edukasi',
       },
       {
         id: '3',
-        title: 'Sharing dan Konsultasi',
+        title: 'Sharing dan Konsultasi Bisnis Digital',
         description: 'Konsultasikan kebutuhan digital bisnis Anda dengan pakar kami untuk solusi terbaik.',
         icon: 'Users',
-        link: '/program/sharing-konsultasi',
+        link: '/layanan/sharing-konsultasi',
       },
       {
         id: '4',
-        title: 'Short Class dan Bootcamp',
+        title: 'Short Class dan Mini Bootcamp',
         description: 'Pelajari keterampilan digital terbaru melalui kelas intensif dan bootcamp dari para ahli.',
         icon: 'PenTool',
-        link: '/program/kelas',
+        link: '/layanan/kelas',
       },
     ],
     testimonials: [
