@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import PortfolioHero from '@/components/portfolio/PortfolioHero';
 import PortfolioFilters from '@/components/portfolio/PortfolioFilters';
 import PortfolioGrid from '@/components/portfolio/PortfolioGrid';
-import CtaSection from '@/components/common/CtaSection';
+import CtaComponent from '@/components/common/CtaComponent';
 import { portfolioItems, portfolioFilters } from '@/data/portfolioData';
 import { PortfolioItemType } from '@/types/portfolioTypes';
 
@@ -37,11 +37,12 @@ const Portofolio = () => {
         <PortfolioGrid items={filteredItems} />
 
         {/* CTA Section */}
-        <CtaSection
+        <CtaComponent
           title="Siap Mewujudkan Proyek Digital Anda?"
           description="Kami siap membantu mewujudkan ide dan kebutuhan digital Anda dengan solusi kreatif dan profesional sesuai standar industri."
           buttonText="Diskusikan Proyek Anda"
           buttonLink="/kontak"
+          theme="blue"
         />
       </div>
     </div>

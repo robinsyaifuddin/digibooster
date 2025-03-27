@@ -1,7 +1,7 @@
-
 import React from 'react';
 import { Code, PenTool, Megaphone, FileText, Camera, FileCog, DatabaseIcon, Server, LineChart, Share2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import CtaComponent from '@/components/common/CtaComponent';
 
 const JasaDigital = () => {
   const services = [
@@ -200,18 +200,13 @@ const JasaDigital = () => {
         </motion.div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-digiblue-800 to-digiblue-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
-          <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Siap Meningkatkan Bisnis Digital Anda?</h2>
-          <p className="text-digiblue-100 max-w-2xl mx-auto mb-8">
-            Konsultasikan kebutuhan digital Anda dengan tim ahli kami dan dapatkan solusi yang sesuai dengan bisnis Anda.
-          </p>
-          <a 
-            href="/kontak" 
-            className="inline-flex items-center px-6 py-3 bg-white text-digiblue-700 rounded-full hover:bg-digiblue-50 transition-colors font-medium"
-          >
-            Hubungi Kami
-          </a>
-        </div>
+        <CtaComponent
+          title="Siap Meningkatkan Bisnis Digital Anda?"
+          description="Konsultasikan kebutuhan digital Anda dengan tim ahli kami dan dapatkan solusi yang sesuai dengan bisnis Anda."
+          buttonText="Hubungi Kami"
+          buttonLink="/kontak"
+          theme="blue"
+        />
       </div>
     </div>
   );
