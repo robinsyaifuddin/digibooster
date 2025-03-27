@@ -1,125 +1,92 @@
 
-import React, { useState, useEffect } from 'react';
-import { SettingsTabs } from './settings/SettingsTabs';
-import GeneralSettings from './settings/GeneralSettings';
-import AppearanceSettings from './settings/AppearanceSettings';
-import SeoSettings from './settings/SeoSettings';
-import PublishingSettings from './settings/PublishingSettings';
-import ImplementationSettings from './settings/ImplementationSettings';
+import React, { useState } from 'react';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SettingsHeader from './settings/SettingsHeader';
+import GeneralSettings from './settings/GeneralSettings';
+import SeoSettings from './settings/SeoSettings';
+import AppearanceSettings from './settings/AppearanceSettings';
+import PublishingSettings from './settings/PublishingSettings';
+import SecuritySettings from './settings/SecuritySettings';
+import SocialMediaSettings from './settings/SocialMediaSettings';
+import ImplementationSettings from './settings/ImplementationSettings';
 import { useToast } from '@/hooks/use-toast';
+import { Shield } from 'lucide-react';
 
 const WebsiteSettings = () => {
+  const [activeTab, setActiveTab] = useState("general");
   const { toast } = useToast();
-  const [activeTab, setActiveTab] = useState('general');
-  const [saving, setSaving] = useState(false);
-  const [implementationComplete, setImplementationComplete] = useState(false);
-  
-  // Cek status implementasi saat komponen dimuat
-  useEffect(() => {
-    const implementationStatus = localStorage.getItem('implementation_status');
-    if (implementationStatus === 'completed') {
-      setImplementationComplete(true);
-    }
+
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
     
-    // Cek jika ada parameter tab di URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const tabParam = urlParams.get('tab');
-    if (tabParam && ['general', 'appearance', 'seo', 'publishing', 'implementation'].includes(tabParam)) {
+    // Perbarui URL dengan tab aktif
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('tab', tab);
+    window.history.pushState({}, '', newUrl);
+  };
+
+  React.useEffect(() => {
+    // Check for tab in URL
+    const params = new URLSearchParams(window.location.search);
+    const tabParam = params.get('tab');
+    
+    if (tabParam) {
       setActiveTab(tabParam);
     }
   }, []);
   
-  const handleSave = () => {
-    setSaving(true);
-    
-    // Simulasi penyimpanan pengaturan
-    setTimeout(() => {
-      setSaving(false);
-      
-      // Menandai bahwa pengaturan telah diedit
-      localStorage.setItem('generalInfoEdited', 'true');
-      localStorage.setItem('appearanceEdited', 'true');
-      localStorage.setItem('seoEdited', 'true');
-      
-      // Dispatch event untuk memberi tahu komponen lain tentang perubahan
-      const updateEvent = new CustomEvent('settingsUpdated', { 
-        detail: { isPermanent: !implementationComplete }
-      });
-      window.dispatchEvent(updateEvent);
-      
-      toast({
-        title: "Pengaturan disimpan",
-        description: implementationComplete 
-          ? "Perubahan telah disimpan dan akan terlihat setelah dipublikasikan." 
-          : "Perubahan telah disimpan dalam mode simulasi. Untuk penyimpanan permanen, selesaikan pengaturan implementasi.",
-        duration: 4000,
-      });
-    }, 1500);
+  const handleSwitchToTab = (tab: string) => {
+    setActiveTab(tab);
   };
-  
-  const getTabTitle = () => {
-    switch (activeTab) {
-      case 'general':
-        return 'Pengaturan Umum';
-      case 'appearance':
-        return 'Tampilan Website';
-      case 'seo':
-        return 'Pengaturan SEO';
-      case 'publishing':
-        return 'Publikasi Website';
-      case 'implementation':
-        return 'Implementasi Nyata';
-      default:
-        return 'Pengaturan Website';
-    }
-  };
-  
+
   return (
-    <div>
-      <SettingsHeader
-        title={getTabTitle()}
-        saving={saving}
-        onSave={handleSave}
-      />
+    <div className="space-y-6">
+      <SettingsHeader activeTab={activeTab} />
       
-      {!implementationComplete && activeTab !== 'implementation' && (
-        <div className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-md text-amber-800">
-          <div className="flex gap-2 items-start">
-            <div className="text-amber-600">
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
-              </svg>
-            </div>
-            <div>
-              <p className="font-medium">Mode Simulasi Aktif</p>
-              <p className="text-sm mt-1">
-                Website Anda saat ini berjalan dalam mode simulasi menggunakan penyimpanan lokal.
-                Untuk implementasi nyata dengan database dan server API, kunjungi 
-                <button 
-                  onClick={() => setActiveTab('implementation')}
-                  className="mx-1 font-medium underline hover:text-amber-900"
-                >
-                  tab Implementasi Nyata
-                </button>.
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-      
-      <div className="flex flex-col md:flex-row gap-6">
-        <div className="w-full md:w-64 mb-6 md:mb-0">
-          <SettingsTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-        </div>
-        <div className="flex-1">
-          {activeTab === 'general' && <GeneralSettings />}
-          {activeTab === 'appearance' && <AppearanceSettings />}
-          {activeTab === 'seo' && <SeoSettings />}
-          {activeTab === 'publishing' && <PublishingSettings onTabChange={setActiveTab} />}
-          {activeTab === 'implementation' && <ImplementationSettings />}
-        </div>
-      </div>
+      <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
+        <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 overflow-auto bg-white border">
+          <TabsTrigger value="general">Umum</TabsTrigger>
+          <TabsTrigger value="seo">SEO</TabsTrigger>
+          <TabsTrigger value="appearance">Tampilan</TabsTrigger>
+          <TabsTrigger value="social">Media Sosial</TabsTrigger>
+          <TabsTrigger value="security" className="relative">
+            Keamanan
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+              Baru
+            </span>
+          </TabsTrigger>
+          <TabsTrigger value="publishing">Penerbitan</TabsTrigger>
+          <TabsTrigger value="implementation">Implementasi</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="general" className="mt-6">
+          <GeneralSettings />
+        </TabsContent>
+        
+        <TabsContent value="seo" className="mt-6">
+          <SeoSettings />
+        </TabsContent>
+        
+        <TabsContent value="appearance" className="mt-6">
+          <AppearanceSettings />
+        </TabsContent>
+        
+        <TabsContent value="social" className="mt-6">
+          <SocialMediaSettings />
+        </TabsContent>
+        
+        <TabsContent value="security" className="mt-6">
+          <SecuritySettings />
+        </TabsContent>
+        
+        <TabsContent value="publishing" className="mt-6">
+          <PublishingSettings onTabChange={handleSwitchToTab} />
+        </TabsContent>
+        
+        <TabsContent value="implementation" className="mt-6">
+          <ImplementationSettings />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
