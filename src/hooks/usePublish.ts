@@ -17,6 +17,12 @@ export const usePublish = () => {
     resetProgress();
     
     try {
+      // Simpan data website saat ini sebagai backup sebelum mempublikasikan
+      const currentData = localStorage.getItem('websiteData');
+      if (currentData) {
+        localStorage.setItem('websiteDataBackup', currentData);
+      }
+
       // Simulate website publishing process with stages
       await simulateProgressStep(0, 20, 1000);
       
@@ -44,19 +50,35 @@ export const usePublish = () => {
       
       await simulateProgressStep(75, 90, 1000);
       
-      // Save site data to localStorage with a permanent flag
-      localStorage.setItem('websiteData', JSON.stringify(websiteData));
-      localStorage.setItem('websiteDataPermanent', 'true');
+      // Coba simpan data dengan penanganan error yang lebih baik
+      try {
+        // Save site data to localStorage with a permanent flag
+        localStorage.setItem('websiteData', JSON.stringify(websiteData));
+        localStorage.setItem('websiteDataPermanent', 'true');
+      } catch (storageError) {
+        console.error('Error saving to localStorage:', storageError);
+        toast({
+          variant: "destructive",
+          title: "Kesalahan penyimpanan",
+          description: "Tidak dapat menyimpan data website. Pastikan browser tidak dalam mode private.",
+          duration: 5000,
+        });
+        throw new Error('Storage error');
+      }
       
       // Create and dispatch an event to notify all components that content has been updated
-      const contentUpdateEvent = new CustomEvent('websiteContentUpdated', { 
-        detail: {
-          ...websiteData,
-          isPermanent: true
-        }
-      });
-      
-      window.dispatchEvent(contentUpdateEvent);
+      try {
+        const contentUpdateEvent = new CustomEvent('websiteContentUpdated', { 
+          detail: {
+            ...websiteData,
+            isPermanent: true
+          }
+        });
+        
+        window.dispatchEvent(contentUpdateEvent);
+      } catch (eventError) {
+        console.error('Error dispatching event:', eventError);
+      }
       
       // Track and save published changes
       const changes = trackChanges();
@@ -86,6 +108,7 @@ export const usePublish = () => {
         });
       }, 2000);
     } catch (error) {
+      console.error('Publish error:', error);
       updatePublishState('error', false);
       toast({
         variant: "destructive",
@@ -105,33 +128,62 @@ export const usePublish = () => {
       duration: 3000,
     });
     
-    // Simulate rollback
-    setTimeout(() => {
-      // Remove permanent flag
-      localStorage.removeItem('websiteDataPermanent');
-      
-      // Get the previous version from backup if available
-      const backupData = localStorage.getItem('websiteDataBackup');
-      if (backupData) {
-        try {
-          const parsedBackup = JSON.parse(backupData);
-          localStorage.setItem('websiteData', backupData);
-          
-          // Notify components of rollback
-          window.dispatchEvent(new CustomEvent('websiteContentUpdated', { 
-            detail: parsedBackup
-          }));
-        } catch (e) {
-          console.error('Error parsing backup data:', e);
+    try {
+      // Simulate rollback
+      setTimeout(() => {
+        // Remove permanent flag
+        localStorage.removeItem('websiteDataPermanent');
+        
+        // Get the previous version from backup if available
+        const backupData = localStorage.getItem('websiteDataBackup');
+        if (backupData) {
+          try {
+            const parsedBackup = JSON.parse(backupData);
+            localStorage.setItem('websiteData', backupData);
+            
+            // Notify components of rollback
+            window.dispatchEvent(new CustomEvent('websiteContentUpdated', { 
+              detail: parsedBackup
+            }));
+            
+            toast({
+              title: "Rollback selesai",
+              description: "Website telah dikembalikan ke versi sebelumnya.",
+              duration: 3000,
+            });
+          } catch (e) {
+            console.error('Error parsing backup data:', e);
+            toast({
+              variant: "destructive",
+              title: "Gagal melakukan rollback",
+              description: "Terjadi kesalahan saat mengembalikan versi website. Silakan coba lagi.",
+              duration: 5000,
+            });
+          }
+        } else {
+          toast({
+            variant: "destructive",
+            title: "Rollback gagal",
+            description: "Tidak ada versi backup yang tersedia untuk dikembalikan.",
+            duration: 5000,
+          });
         }
-      }
-      
+      }, 2000);
+    } catch (error) {
+      console.error('Rollback error:', error);
       toast({
-        title: "Rollback selesai",
-        description: "Website telah dikembalikan ke versi sebelumnya.",
-        duration: 3000,
+        variant: "destructive",
+        title: "Rollback gagal",
+        description: "Terjadi kesalahan saat mengembalikan versi website. Silakan coba lagi.",
+        duration: 5000,
       });
-    }, 2000);
+    }
+  };
+  
+  const previewWebsite = () => {
+    // Buka preview website di tab baru
+    const previewUrl = window.location.origin;
+    window.open(previewUrl, '_blank');
   };
   
   return {
@@ -141,6 +193,7 @@ export const usePublish = () => {
     deploymentStatus,
     lastChanges,
     publishChanges,
-    handleRollback
+    handleRollback,
+    previewWebsite
   };
 };
