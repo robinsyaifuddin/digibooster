@@ -3,7 +3,7 @@ import React from 'react';
 
 const JasaDigitalHero = () => {
   return (
-    <div className="max-w-4xl mx-auto mb-16 text-center bg-white p-8 rounded-lg">
+    <div className="max-w-4xl mx-auto mb-16 text-center bg-white p-8 rounded-lg shadow-sm">
       <div className="bg-digiblue-600 rounded-xl py-16 px-6">
         <span className="inline-block py-1 px-3 text-xs font-medium text-white bg-digiblue-500/40 rounded-full mb-3">
           PROGRAM KAMI
