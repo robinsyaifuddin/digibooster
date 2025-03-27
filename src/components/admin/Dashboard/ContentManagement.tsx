@@ -1,20 +1,17 @@
 
 import { useState } from "react";
-import { Plus, Save } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 import { useToast } from "@/hooks/use-toast";
 import { PartnerItem } from "@/types/websiteTypes";
 
-// Import component files
-import HeroEditor from "./Content/HeroEditor";
-import ServicesEditor from "./Content/ServicesEditor";
-import TestimonialsEditor from "./Content/TestimonialsEditor";
-import BlogsTable from "./Content/BlogsTable";
-import CoursesGrid from "./Content/CoursesGrid";
-import PortfolioGrid from "./Content/PortfolioGrid";
-import PartnersEditor from "./Content/PartnersEditor";
+// Import components
+import PublishButton from "./Content/PublishButton";
+import ContentTabs from "./Content/ContentTabs";
+import BlogTabContent from "./Content/BlogTabContent";
+import CoursesTabContent from "./Content/CoursesTabContent";
+import PortfolioTabContent from "./Content/PortfolioTabContent";
+import HomeTabContent from "./Content/HomeTabContent";
+import PartnersTabContent from "./Content/PartnersTabContent";
 
 interface Blog {
   id: number;
@@ -191,115 +188,39 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
     <div>
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl md:text-2xl font-bold text-gray-800 hidden md:block">Kelola Konten</h2>
-        <Button onClick={handlePublishContent} className="bg-green-600 hover:bg-green-700">
-          <Save className="w-4 h-4 mr-2" />
-          Siap Publikasi
-        </Button>
+        <PublishButton onClick={handlePublishContent} />
       </div>
       
-      <Tabs defaultValue="blog" value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="mb-6 overflow-x-auto flex whitespace-nowrap pb-2 scrollbar-none">
-          <TabsTrigger value="blog">Blog</TabsTrigger>
-          <TabsTrigger value="courses">Kelas</TabsTrigger>
-          <TabsTrigger value="portfolio">Portofolio</TabsTrigger>
-          <TabsTrigger value="home">Beranda</TabsTrigger>
-          <TabsTrigger value="partners">Partner</TabsTrigger>
-        </TabsList>
+      <ContentTabs activeTab={activeTab} setActiveTab={setActiveTab}>
+        <BlogTabContent blogs={blogs} />
         
-        {/* Blog Content Tab */}
-        <TabsContent value="blog">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
-            <h3 className="text-lg font-semibold">Artikel Blog</h3>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Tambah Artikel
-            </Button>
-          </div>
-          
-          <BlogsTable blogs={blogs} />
-        </TabsContent>
+        <CoursesTabContent courses={courses} />
         
-        {/* Courses Content Tab */}
-        <TabsContent value="courses">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
-            <h3 className="text-lg font-semibold">Kelas</h3>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Tambah Kelas
-            </Button>
-          </div>
-          
-          <CoursesGrid courses={courses} />
-        </TabsContent>
+        <PortfolioTabContent portfolios={portfolios} />
         
-        {/* Portfolio Content Tab */}
-        <TabsContent value="portfolio">
-          <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
-            <h3 className="text-lg font-semibold">Portofolio</h3>
-            <Button>
-              <Plus className="w-4 h-4 mr-2" />
-              Tambah Portofolio
-            </Button>
-          </div>
-          
-          <PortfolioGrid portfolios={portfolios} />
-        </TabsContent>
+        <HomeTabContent 
+          heroContent={heroContent}
+          handleHeroChange={handleHeroChange}
+          saveHeroChanges={saveHeroChanges}
+          services={websiteData.homeContent.services}
+          handleServiceChange={handleServiceChange}
+          testimonials={websiteData.homeContent.testimonials}
+          handleTestimonialChange={handleTestimonialChange}
+          handlePublishContent={handlePublishContent}
+          setActiveTab={setActiveTab}
+        />
         
-        {/* Home Content Tab */}
-        <TabsContent value="home">
-          <div className="space-y-6">
-            <HeroEditor 
-              heroContent={heroContent} 
-              handleHeroChange={handleHeroChange} 
-              saveHeroChanges={saveHeroChanges} 
-            />
-            
-            <ServicesEditor 
-              services={websiteData.homeContent.services} 
-              handleServiceChange={handleServiceChange} 
-            />
-            
-            <TestimonialsEditor 
-              testimonials={websiteData.homeContent.testimonials}
-              handleTestimonialChange={handleTestimonialChange}
-            />
-            
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setActiveTab("blog")}>
-                Kembali ke Blog
-              </Button>
-              <Button onClick={handlePublishContent} className="bg-green-600 hover:bg-green-700">
-                <Save className="w-4 h-4 mr-2" />
-                Siap Publikasi
-              </Button>
-            </div>
-          </div>
-        </TabsContent>
-        
-        {/* Partners Content Tab */}
-        <TabsContent value="partners">
-          <div className="space-y-6">
-            <PartnersEditor 
-              partners={websiteData.homeContent.partners}
-              handlePartnerChange={handlePartnerChange}
-              deletePartner={deletePartner}
-              newPartner={newPartner}
-              handleNewPartnerChange={handleNewPartnerChange}
-              addNewPartner={addNewPartner}
-            />
-            
-            <div className="flex justify-between">
-              <Button variant="outline" onClick={() => setActiveTab("home")}>
-                Kembali ke Beranda
-              </Button>
-              <Button onClick={handlePublishContent} className="bg-green-600 hover:bg-green-700">
-                <Save className="w-4 h-4 mr-2" />
-                Siap Publikasi
-              </Button>
-            </div>
-          </div>
-        </TabsContent>
-      </Tabs>
+        <PartnersTabContent 
+          partners={websiteData.homeContent.partners}
+          handlePartnerChange={handlePartnerChange}
+          deletePartner={deletePartner}
+          newPartner={newPartner}
+          handleNewPartnerChange={handleNewPartnerChange}
+          addNewPartner={addNewPartner}
+          handlePublishContent={handlePublishContent}
+          setActiveTab={setActiveTab}
+        />
+      </ContentTabs>
     </div>
   );
 };
