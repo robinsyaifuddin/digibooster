@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -28,7 +27,6 @@ const ImplementationSettings = () => {
   });
 
   useEffect(() => {
-    // Load saved settings if any
     const savedApiUrl = localStorage.getItem('implementation_apiUrl');
     const savedApiKey = localStorage.getItem('implementation_apiKey');
     const savedDatabaseType = localStorage.getItem('implementation_databaseType');
@@ -53,7 +51,6 @@ const ImplementationSettings = () => {
   }, []);
   
   const handleSaveSettings = () => {
-    // Simpan pengaturan implementasi
     localStorage.setItem('implementation_apiUrl', apiUrl);
     localStorage.setItem('implementation_apiKey', apiKey);
     localStorage.setItem('implementation_databaseType', databaseType);
@@ -114,7 +111,7 @@ const ImplementationSettings = () => {
         </div>
       </div>
       
-      <Alert variant="info" className="bg-blue-50 border-blue-200">
+      <Alert className="bg-blue-50 border-blue-200">
         <AlertTriangle className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-700">
           Mode simulasi saat ini menggunakan penyimpanan lokal (localStorage) yang hanya tersimpan di browser Anda. 
