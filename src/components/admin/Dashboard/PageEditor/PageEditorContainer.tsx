@@ -61,7 +61,11 @@ const PageEditorContainer = () => {
     );
     
     setPages(updatedPages);
-    websiteData.updatePages(updatedPages);
+    
+    // Update each page individually since updatePages doesn't exist
+    updatedPages.forEach(page => {
+      websiteData.updatePage(page.id, { content: page.content });
+    });
     
     // Mark page as edited in localStorage for tracking changes
     localStorage.setItem('pageEdited_' + activePage.id, 'true');
@@ -89,7 +93,11 @@ const PageEditorContainer = () => {
     );
     
     setPages(updatedPages);
-    websiteData.updatePages(updatedPages);
+    
+    // Update each page individually
+    updatedPages.forEach(page => {
+      websiteData.updatePage(page.id, { isPublished: page.isPublished });
+    });
     
     toast({
       title: "Halaman dipublikasikan",
@@ -109,14 +117,20 @@ const PageEditorContainer = () => {
       title,
       slug,
       content: '<div class="container mx-auto p-4"><h1>New Page</h1><p>Start editing this page...</p></div>',
-      isPublished: false,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
+      isPublished: false
     };
     
     const updatedPages = [...pages, newPage];
     setPages(updatedPages);
-    websiteData.updatePages(updatedPages);
+    
+    // Add the new page
+    websiteData.addPage({
+      title: newPage.title,
+      slug: newPage.slug, 
+      content: newPage.content,
+      isPublished: newPage.isPublished
+    });
+    
     setActivePage(newPage);
   };
 
@@ -128,7 +142,9 @@ const PageEditorContainer = () => {
     
     const updatedPages = pages.filter(page => page.id !== pageId);
     setPages(updatedPages);
-    websiteData.updatePages(updatedPages);
+    
+    // Delete the page
+    websiteData.deletePage(pageId);
     
     if (activePage && activePage.id === pageId) {
       setActivePage(updatedPages.length > 0 ? updatedPages[0] : null);
