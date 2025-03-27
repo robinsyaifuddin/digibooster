@@ -6,7 +6,7 @@ import { motion } from 'framer-motion';
 const Kelas = () => {
   const classes = [
     {
-      icon: <Monitor className="h-8 w-8 text-purple-600" />,
+      icon: <Monitor className="h-8 w-8 text-digiblue-600" />,
       title: 'Digital Marketing Essentials',
       description: 'Kelas intensif 3 hari untuk memahami dasar-dasar digital marketing yang efektif.',
       details: {
@@ -25,7 +25,7 @@ const Kelas = () => {
       ]
     },
     {
-      icon: <BookOpen className="h-8 w-8 text-purple-600" />,
+      icon: <BookOpen className="h-8 w-8 text-digiblue-600" />,
       title: 'Web Development Bootcamp',
       description: 'Bootcamp intensif pengembangan website dari dasar hingga mampu membangun website sendiri.',
       details: {
@@ -44,7 +44,7 @@ const Kelas = () => {
       ]
     },
     {
-      icon: <Users className="h-8 w-8 text-purple-600" />,
+      icon: <Users className="h-8 w-8 text-digiblue-600" />,
       title: 'Social Media Management',
       description: 'Kelas pengelolaan media sosial profesional untuk meningkatkan engagement dan konversi.',
       details: {
@@ -63,7 +63,7 @@ const Kelas = () => {
       ]
     },
     {
-      icon: <Calendar className="h-8 w-8 text-purple-600" />,
+      icon: <Calendar className="h-8 w-8 text-digiblue-600" />,
       title: 'Content Creation Masterclass',
       description: 'Kelas pembuatan konten berkualitas tinggi untuk berbagai platform digital.',
       details: {
@@ -82,7 +82,7 @@ const Kelas = () => {
       ]
     },
     {
-      icon: <Award className="h-8 w-8 text-purple-600" />,
+      icon: <Award className="h-8 w-8 text-digiblue-600" />,
       title: 'UX/UI Design Workshop',
       description: 'Workshop desain pengalaman pengguna untuk menciptakan produk digital yang user-friendly.',
       details: {
@@ -101,7 +101,7 @@ const Kelas = () => {
       ]
     },
     {
-      icon: <Clock className="h-8 w-8 text-purple-600" />,
+      icon: <Clock className="h-8 w-8 text-digiblue-600" />,
       title: 'E-commerce Business Class',
       description: 'Kelas komprehensif untuk memulai dan mengembangkan bisnis e-commerce yang sukses.',
       details: {
@@ -141,9 +141,9 @@ const Kelas = () => {
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <div className="max-w-4xl mx-auto mb-16 text-center">
-          <span className="inline-block py-1 px-3 text-xs font-medium text-purple-600 bg-purple-100 rounded-full mb-3">PROGRAM KAMI</span>
+          <span className="inline-block py-1 px-3 text-xs font-medium text-digiblue-600 bg-digiblue-100 rounded-full mb-3">PROGRAM KAMI</span>
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900">
-            Short Class & <span className="text-purple-600">Mini Bootcamp</span>
+            Short Class & <span className="text-digiblue-600">Mini Bootcamp</span>
           </h1>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto">
             Tingkatkan keterampilan digital Anda melalui kelas intensif dan bootcamp yang dirancang
@@ -164,7 +164,7 @@ const Kelas = () => {
               variants={item}
               className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
             >
-              <div className="bg-purple-50 p-6">
+              <div className="bg-digiblue-50 p-6">
                 <div className="w-16 h-16 rounded-lg bg-white flex items-center justify-center mb-4">
                   {classItem.icon}
                 </div>
@@ -199,13 +199,13 @@ const Kelas = () => {
                 <ul className="space-y-2">
                   {classItem.topics.map((topic, idx) => (
                     <li key={idx} className="flex items-start">
-                      <span className="text-purple-600 mr-2">•</span>
+                      <span className="text-digiblue-600 mr-2">•</span>
                       <span className="text-gray-700 text-sm">{topic}</span>
                     </li>
                   ))}
                 </ul>
                 
-                <button className="mt-6 w-full py-3 rounded-lg bg-purple-600 hover:bg-purple-700 text-white font-medium transition-colors">
+                <button className="mt-6 w-full py-3 rounded-lg bg-digiblue-600 hover:bg-digiblue-700 text-white font-medium transition-colors">
                   Daftar Kelas
                 </button>
               </div>
@@ -214,15 +214,15 @@ const Kelas = () => {
         </motion.div>
 
         {/* CTA Section */}
-        <div className="bg-gradient-to-r from-purple-800 to-purple-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
+        <div className="bg-gradient-to-r from-digiblue-800 to-digiblue-600 rounded-2xl p-8 md:p-12 mb-16 text-center">
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">Siap Meningkatkan Skill Digital Anda?</h2>
-          <p className="text-purple-100 max-w-2xl mx-auto mb-8">
+          <p className="text-digiblue-100 max-w-2xl mx-auto mb-8">
             Kelas dan bootcamp kami dirancang untuk memberikan keterampilan praktis yang bisa langsung
             diimplementasikan untuk pengembangan karir dan bisnis Anda.
           </p>
           <a 
             href="/kontak" 
-            className="inline-flex items-center px-6 py-3 bg-white text-purple-700 rounded-full hover:bg-purple-50 transition-colors font-medium"
+            className="inline-flex items-center px-6 py-3 bg-white text-digiblue-700 rounded-full hover:bg-digiblue-50 transition-colors font-medium"
           >
             Tanyakan Jadwal
           </a>
@@ -233,3 +233,4 @@ const Kelas = () => {
 };
 
 export default Kelas;
+

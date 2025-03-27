@@ -112,7 +112,7 @@ const Blog = () => {
     <div className="py-24 md:pt-32 px-4 md:px-8 max-w-7xl mx-auto">
       {/* Blog Header */}
       <div className="mb-12 text-center">
-        <h1 className="text-3xl md:text-5xl font-bold mb-3 text-digiblue">DigiBooster Blog</h1>
+        <h1 className="text-3xl md:text-5xl font-bold mb-3 text-digiblue-800">DigiBooster Blog</h1>
         <p className="text-lg md:text-xl text-gray-600 max-w-3xl mx-auto">
           Temukan berbagai artikel informatif tentang dunia digital untuk membantu Anda berkembang
         </p>
@@ -163,7 +163,7 @@ const Blog = () => {
               </div>
               <CardHeader className="pb-2">
                 <div className="flex items-center justify-between mb-2">
-                  <span className="text-xs font-medium bg-digiblue/10 text-digiblue px-2 py-1 rounded">
+                  <span className="text-xs font-medium bg-digiblue/10 text-digiblue-700 px-2 py-1 rounded">
                     {post.category}
                   </span>
                   <div className="flex items-center text-gray-500 text-xs">
@@ -171,7 +171,7 @@ const Blog = () => {
                     {post.readTime}
                   </div>
                 </div>
-                <CardTitle className="text-xl font-bold text-digiblue hover:text-digiblue-800 transition-colors">
+                <CardTitle className="text-xl font-bold text-digiblue-700 hover:text-digiblue-800 transition-colors">
                   {post.title}
                 </CardTitle>
               </CardHeader>
@@ -181,7 +181,7 @@ const Blog = () => {
                 </CardDescription>
                 <div className="flex flex-wrap gap-2 mt-4">
                   {post.tags.map((tag, index) => (
-                    <span key={index} className="text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                    <span key={index} className="text-xs bg-digiblue-50 text-digiblue-600 px-2 py-1 rounded">
                       #{tag}
                     </span>
                   ))}
@@ -189,7 +189,7 @@ const Blog = () => {
               </CardContent>
               <CardFooter className="flex justify-between items-center pt-2 border-t">
                 <div className="text-sm text-gray-500">{post.date}</div>
-                <Button variant="ghost" className="text-digiblue hover:text-digiblue-800 p-0">
+                <Button variant="ghost" className="text-digiblue-600 hover:text-digiblue-800 p-0">
                   Baca Selengkapnya <ChevronRight className="h-4 w-4 ml-1" />
                 </Button>
               </CardFooter>
@@ -198,10 +198,11 @@ const Blog = () => {
         </div>
       ) : (
         <div className="text-center py-12">
-          <BookOpen className="w-12 h-12 mx-auto text-gray-400 mb-4" />
+          <BookOpen className="w-12 h-12 mx-auto text-digiblue-300 mb-4" />
           <h3 className="text-xl font-semibold mb-2">Tidak ada artikel ditemukan</h3>
           <p className="text-gray-500 mb-4">Coba gunakan kata kunci pencarian yang berbeda</p>
-          <Button onClick={() => {setSearchQuery(''); setActiveCategory('all');}}>
+          <Button onClick={() => {setSearchQuery(''); setActiveCategory('all');}} 
+                  className="bg-digiblue-600 hover:bg-digiblue-700 text-white">
             Lihat Semua Artikel
           </Button>
         </div>
@@ -212,7 +213,7 @@ const Blog = () => {
         <Button variant="outline" className="mr-2" disabled>
           Sebelumnya
         </Button>
-        <Button variant="outline" className="bg-digiblue text-white">
+        <Button variant="outline" className="bg-digiblue-600 text-white">
           1
         </Button>
         <Button variant="outline" className="ml-2">
@@ -224,3 +225,4 @@ const Blog = () => {
 };
 
 export default Blog;
+
