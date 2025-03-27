@@ -97,7 +97,13 @@ const Index = () => {
           direction="right" 
           speed="slow"
           bgColor="bg-gray-50"
-          title="Dipercaya oleh Perusahaan Teknologi Terkemuka"
+          title={<>
+            <span className="text-gray-900">Dipercaya</span>{" "}
+            <span className="text-digiblue">oleh</span>{" "}
+            <span className="text-gray-900">Perusahaan</span>{" "}
+            <span className="text-digiblue">Teknologi</span>{" "}
+            <span className="text-gray-900">Terkemuka</span>
+          </>}
           description="Bermitra dengan berbagai perusahaan teknologi untuk menghadirkan solusi digital terbaik"
         />
         
