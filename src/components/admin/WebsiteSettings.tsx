@@ -1,9 +1,9 @@
 
 import React, { useState } from 'react';
 import { SettingsTabs } from './settings/SettingsTabs';
-import { GeneralSettings } from './settings/GeneralSettings';
-import { AppearanceSettings } from './settings/AppearanceSettings';
-import { SeoSettings } from './settings/SeoSettings';
+import GeneralSettings from './settings/GeneralSettings';
+import AppearanceSettings from './settings/AppearanceSettings';
+import SeoSettings from './settings/SeoSettings';
 import PublishingSettings from './settings/PublishingSettings';
 import ImplementationSettings from './settings/ImplementationSettings';
 import SettingsHeader from './settings/SettingsHeader';
