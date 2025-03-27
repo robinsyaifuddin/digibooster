@@ -7,7 +7,7 @@ import {
   CircleDot, Sparkles, Palmtree, 
   ChevronsUpDown
 } from 'lucide-react';
-import { Button } from "@/components/ui/button";  // Corrected import
+import { Button } from "@/components/ui/button";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEditor } from './EditorContext';
@@ -186,9 +186,9 @@ const ElementsSidebar = () => {
       </Accordion>
       
       <div className="mt-4">
-        <UIButton className="w-full" variant="outline" size="sm">
+        <Button className="w-full" variant="outline" size="sm">
           Import Custom Element
-        </UIButton>
+        </Button>
       </div>
     </div>
   );
