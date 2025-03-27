@@ -1,236 +1,195 @@
 
-import React, { useState } from 'react';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import React from 'react';
 import { 
-  Type, 
-  Layout, 
-  Image, 
-  Box, 
-  Grid, 
-  Columns, 
-  Heading, 
-  Text, 
-  Button as ButtonIcon, 
-  ListOrdered, 
-  Link, 
-  Table, 
-  FormInput, 
-  Video,
-  Map,
-  Star,
-  AtSign,
-  ShoppingCart,
-  Camera,
-  Search,
-  AlertCircle,
-  User,
-  Clock,
-  Calendar,
-  Zap,
-  Heart,
-  Square,
-  Minus,
-  Plus
+  Heading1, Heading2, Heading3, 
+  Type, Image, Square, ListOrdered, 
+  Link2, Quote, Video, Columns, 
+  CircleDot, Sparkles, Palmtree, 
+  ChevronsUpDown
 } from 'lucide-react';
+import { Button as UIButton } from "@/components/ui/button";
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
+import { Card, CardContent } from "@/components/ui/card";
 import { useEditor } from './EditorContext';
 
 const ElementsSidebar = () => {
-  const [activeCategory, setActiveCategory] = useState('basic');
-  const { setDraggedElement } = useEditor();
+  const { addElement } = useEditor();
+  
+  const generateUniqueId = () => `el-${Date.now()}-${Math.floor(Math.random() * 1000)}`;
 
-  const handleElementDragStart = (elementType: string) => {
-    const id = `el-${Date.now()}`;
-    let elementData;
+  const handleAddElement = (type: string) => {
+    const defaultContent = `New ${type}`;
+    const elementId = generateUniqueId();
     
-    switch (elementType) {
-      case 'heading':
-        elementData = {
-          id,
-          type: 'heading',
-          content: 'Judul Heading',
-          styles: {
-            fontSize: '24px', 
-            fontWeight: 'bold',
-            marginBottom: '1rem'
-          },
-          attributes: {
-            level: 'h2'
-          }
-        };
-        break;
-      case 'paragraph':
-        elementData = {
-          id,
-          type: 'paragraph',
-          content: 'Ini adalah text paragraph. Klik untuk mengedit.',
-          styles: {
-            fontSize: '16px',
-            lineHeight: '1.5',
-            marginBottom: '1rem'
-          },
-          attributes: {}
-        };
-        break;
-      case 'button':
-        elementData = {
-          id,
-          type: 'button',
-          content: 'Tombol',
-          styles: {
-            backgroundColor: '#2563eb',
-            color: 'white',
-            padding: '0.5rem 1rem',
-            borderRadius: '0.25rem',
-            border: 'none',
-            cursor: 'pointer'
-          },
-          attributes: {
-            href: '#'
-          }
-        };
-        break;
-      case 'image':
-        elementData = {
-          id,
-          type: 'image',
-          content: '',
-          styles: {
-            width: '100%',
-            height: 'auto',
-            marginBottom: '1rem'
-          },
-          attributes: {
-            src: 'https://via.placeholder.com/800x400',
-            alt: 'Placeholder image'
-          }
-        };
-        break;
-      case 'container':
-        elementData = {
-          id,
-          type: 'container',
-          content: '',
-          styles: {
-            display: 'flex',
-            flexDirection: 'column',
-            padding: '1rem',
-            backgroundColor: '#f9fafb',
-            borderRadius: '0.5rem',
-            marginBottom: '1rem'
-          },
-          attributes: {},
-          children: []
-        };
-        break;
-      case 'row':
-        elementData = {
-          id,
-          type: 'row',
-          content: '',
-          styles: {
-            display: 'flex',
-            flexDirection: 'row',
-            gap: '1rem',
-            marginBottom: '1rem'
-          },
-          attributes: {},
-          children: []
-        };
-        break;
-      case 'column':
-        elementData = {
-          id,
-          type: 'column',
-          content: '',
-          styles: {
-            flex: '1',
-            padding: '1rem',
-            backgroundColor: '#f3f4f6',
-            borderRadius: '0.25rem'
-          },
-          attributes: {},
-          children: []
-        };
-        break;
-      default:
-        elementData = {
-          id,
-          type: elementType,
-          content: 'New element',
-          styles: {},
-          attributes: {}
-        };
-    }
+    const newElement = {
+      id: elementId,
+      type,
+      content: defaultContent,
+      styles: {},
+      attributes: {}
+    };
     
-    setDraggedElement(elementData);
+    addElement(newElement);
   };
 
-  const renderElementItem = (name: string, icon: React.ReactNode, type: string) => (
-    <div
-      className="flex flex-col items-center p-2 bg-white border border-gray-200 rounded shadow-sm cursor-move hover:border-blue-400 hover:shadow-md transition-all"
-      draggable
-      onDragStart={() => handleElementDragStart(type)}
-    >
-      <div className="p-2 rounded-full bg-gray-100 mb-1">
-        {icon}
-      </div>
-      <span className="text-xs text-center">{name}</span>
-    </div>
-  );
-
   return (
-    <div className="w-64 bg-gray-50 border-r border-gray-200 flex flex-col h-full">
-      <Tabs defaultValue="basic" className="h-full">
-        <div className="p-3 border-b border-gray-200">
-          <TabsList className="w-full">
-            <TabsTrigger value="basic" className="flex-1 text-xs">Dasar</TabsTrigger>
-            <TabsTrigger value="layout" className="flex-1 text-xs">Layout</TabsTrigger>
-            <TabsTrigger value="advanced" className="flex-1 text-xs">Advanced</TabsTrigger>
-          </TabsList>
-        </div>
+    <div className="w-64 border-r border-gray-200 h-full overflow-y-auto bg-white p-3">
+      <h3 className="text-lg font-medium mb-4">Elements</h3>
+      
+      <Accordion type="multiple" defaultValue={["basic", "media", "layout"]}>
+        <AccordionItem value="basic">
+          <AccordionTrigger>Basic Elements</AccordionTrigger>
+          <AccordionContent>
+            <div className="grid grid-cols-2 gap-2">
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('heading1')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Heading1 className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Heading 1</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('heading2')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Heading2 className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Heading 2</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('heading3')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Heading3 className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Heading 3</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('paragraph')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Type className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Paragraph</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('list')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <ListOrdered className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">List</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('link')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Link2 className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Link</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('quote')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Quote className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Quote</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('button')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Square className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Button</span>
+                </CardContent>
+              </Card>
+            </div>
+          </AccordionContent>
+        </AccordionItem>
         
-        <div className="p-3 flex-1 overflow-y-auto">
-          <TabsContent value="basic" className="mt-0 h-full">
-            <h4 className="text-sm font-medium mb-3">Elemen Dasar</h4>
-            <div className="grid grid-cols-2 gap-3">
-              {renderElementItem('Heading', <Heading className="h-4 w-4 text-blue-600" />, 'heading')}
-              {renderElementItem('Paragraf', <Text className="h-4 w-4 text-blue-600" />, 'paragraph')}
-              {renderElementItem('Tombol', <ButtonIcon className="h-4 w-4 text-blue-600" />, 'button')}
-              {renderElementItem('Gambar', <Image className="h-4 w-4 text-blue-600" />, 'image')}
-              {renderElementItem('Link', <Link className="h-4 w-4 text-blue-600" />, 'link')}
-              {renderElementItem('List', <ListOrdered className="h-4 w-4 text-blue-600" />, 'list')}
-              {renderElementItem('Icon', <Star className="h-4 w-4 text-blue-600" />, 'icon')}
-              {renderElementItem('Video', <Video className="h-4 w-4 text-blue-600" />, 'video')}
+        <AccordionItem value="media">
+          <AccordionTrigger>Media</AccordionTrigger>
+          <AccordionContent>
+            <div className="grid grid-cols-2 gap-2">
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('image')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Image className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Image</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('video')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Video className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Video</span>
+                </CardContent>
+              </Card>
             </div>
-          </TabsContent>
-          
-          <TabsContent value="layout" className="mt-0 h-full">
-            <h4 className="text-sm font-medium mb-3">Elemen Layout</h4>
-            <div className="grid grid-cols-2 gap-3">
-              {renderElementItem('Container', <Box className="h-4 w-4 text-indigo-600" />, 'container')}
-              {renderElementItem('Row', <Layout className="h-4 w-4 text-indigo-600" />, 'row')}
-              {renderElementItem('Column', <Columns className="h-4 w-4 text-indigo-600" />, 'column')}
-              {renderElementItem('Grid', <Grid className="h-4 w-4 text-indigo-600" />, 'grid')}
-              {renderElementItem('Divider', <Minus className="h-4 w-4 text-indigo-600" />, 'divider')}
-              {renderElementItem('Spacer', <Square className="h-4 w-4 text-indigo-600" />, 'spacer')}
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem value="layout">
+          <AccordionTrigger>Layout</AccordionTrigger>
+          <AccordionContent>
+            <div className="grid grid-cols-2 gap-2">
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('container')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Square className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Container</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('columns')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Columns className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Columns</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('accordion')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <ChevronsUpDown className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Accordion</span>
+                </CardContent>
+              </Card>
             </div>
-          </TabsContent>
-          
-          <TabsContent value="advanced" className="mt-0 h-full">
-            <h4 className="text-sm font-medium mb-3">Elemen Advanced</h4>
-            <div className="grid grid-cols-2 gap-3">
-              {renderElementItem('Form', <FormInput className="h-4 w-4 text-purple-600" />, 'form')}
-              {renderElementItem('Table', <Table className="h-4 w-4 text-purple-600" />, 'table')}
-              {renderElementItem('Map', <Map className="h-4 w-4 text-purple-600" />, 'map')}
-              {renderElementItem('Social', <AtSign className="h-4 w-4 text-purple-600" />, 'social')}
-              {renderElementItem('Slider', <Clock className="h-4 w-4 text-purple-600" />, 'slider')}
-              {renderElementItem('Counter', <Plus className="h-4 w-4 text-purple-600" />, 'counter')}
-              {renderElementItem('Gallery', <Camera className="h-4 w-4 text-purple-600" />, 'gallery')}
-              {renderElementItem('Popup', <AlertCircle className="h-4 w-4 text-purple-600" />, 'popup')}
+          </AccordionContent>
+        </AccordionItem>
+        
+        <AccordionItem value="widgets">
+          <AccordionTrigger>Widgets</AccordionTrigger>
+          <AccordionContent>
+            <div className="grid grid-cols-2 gap-2">
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('testimonial')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Quote className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Testimonial</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('icon')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <CircleDot className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Icon</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('feature')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Sparkles className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">Feature</span>
+                </CardContent>
+              </Card>
+              
+              <Card className="cursor-pointer hover:bg-gray-50" onClick={() => handleAddElement('cta')}>
+                <CardContent className="p-3 flex flex-col items-center justify-center">
+                  <Palmtree className="h-8 w-8 mb-1 text-gray-600" />
+                  <span className="text-xs">CTA Block</span>
+                </CardContent>
+              </Card>
             </div>
-          </TabsContent>
-        </div>
-      </Tabs>
+          </AccordionContent>
+        </AccordionItem>
+      </Accordion>
+      
+      <div className="mt-4">
+        <UIButton className="w-full" variant="outline" size="sm">
+          Import Custom Element
+        </UIButton>
+      </div>
     </div>
   );
 };
