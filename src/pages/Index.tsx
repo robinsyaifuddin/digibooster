@@ -66,6 +66,17 @@ const Index = () => {
     },
   ];
 
+  // Create the alternating colored title for the logo marquee
+  const logoMarqueeTitle = (
+    <>
+      <span className="text-gray-900">Dipercaya</span>{" "}
+      <span className="text-digiblue">oleh</span>{" "}
+      <span className="text-gray-900">Perusahaan</span>{" "}
+      <span className="text-digiblue">Teknologi</span>{" "}
+      <span className="text-gray-900">Terkemuka</span>
+    </>
+  );
+
   return (
     <div className="w-full overflow-hidden">
       <ScrollAnimation>
@@ -97,13 +108,7 @@ const Index = () => {
           direction="right" 
           speed="slow"
           bgColor="bg-gray-50"
-          title={<>
-            <span className="text-gray-900">Dipercaya</span>{" "}
-            <span className="text-digiblue">oleh</span>{" "}
-            <span className="text-gray-900">Perusahaan</span>{" "}
-            <span className="text-digiblue">Teknologi</span>{" "}
-            <span className="text-gray-900">Terkemuka</span>
-          </>}
+          title={logoMarqueeTitle}
           description="Bermitra dengan berbagai perusahaan teknologi untuk menghadirkan solusi digital terbaik"
         />
         

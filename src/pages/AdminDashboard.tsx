@@ -12,7 +12,6 @@ import Header from '../components/admin/Dashboard/Header';
 import DashboardOverview from '../components/admin/Dashboard/DashboardOverview';
 import UsersManagement from '../components/admin/Dashboard/UsersManagement';
 import ContentManagement from '../components/admin/Dashboard/ContentManagement';
-import ServicesDevelopment from '../components/admin/Dashboard/ServicesDevelopment';
 import WebsiteSettings from '../components/admin/WebsiteSettings';
 import AdminProfile from '../components/admin/AdminProfile';
 
@@ -87,8 +86,8 @@ const AdminDashboard = () => {
           description: `Perubahan dari ${event.detail.source} telah disimpan dan siap dipublikasikan.`,
         });
         
-        // Otomatis pindah ke tab publikasi
-        setActiveTab('services');
+        // Otomatis pindah ke tab settings
+        setActiveTab('settings');
       }
     };
     
@@ -154,9 +153,6 @@ const AdminDashboard = () => {
           
           {/* Admin Profile */}
           {activeTab === 'profile' && <AdminProfile />}
-          
-          {/* Services tab - untuk fitur publikasi website */}
-          {activeTab === 'services' && <ServicesDevelopment onTabChange={handleTabChange} />}
         </main>
       </div>
     </div>
