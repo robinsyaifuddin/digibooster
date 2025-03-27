@@ -1,4 +1,3 @@
-
 import { WebsiteData } from '../types/websiteTypes';
 
 // Default website data values
@@ -6,6 +5,10 @@ const defaultWebsiteData: WebsiteData = {
   generalInfo: {
     title: 'DigiBooster',
     description: 'Platform Agensi dan Pengembangan Digital',
+    tagline: 'Boost Your Digital Presence',
+    address: 'Jl. Digital No. 123, Jakarta, Indonesia',
+    email: 'hello@digibooster.id',
+    phone: '+62 812 3456 7890',
     contactEmail: 'hello@digibooster.id',
     contactPhone: '+62 812 3456 7890',
     socialMedia: {

@@ -9,6 +9,7 @@ import ContactSection from '@/components/home/ContactSection';
 import ScrollAnimation from '@/components/home/ScrollAnimation';
 import LogoMarquee from '@/components/home/LogoMarquee';
 import { useHomeContent } from '@/contexts/HomeContentContext';
+import { ReactNode } from 'react';
 
 const Index = () => {
   const { homeContent, isLoading } = useHomeContent();
@@ -67,7 +68,7 @@ const Index = () => {
   ];
 
   // Create the alternating colored title for the logo marquee
-  const logoMarqueeTitle = (
+  const logoMarqueeTitle: ReactNode = (
     <>
       <span className="text-gray-900">Dipercaya</span>{" "}
       <span className="text-digiblue">oleh</span>{" "}
@@ -121,3 +122,4 @@ const Index = () => {
 };
 
 export default Index;
+

@@ -1,10 +1,13 @@
-
 // Define website data structure types
 
 // Website general information type
 export interface GeneralInfo {
   title: string;
   description: string;
+  tagline?: string;
+  address?: string;
+  email?: string;
+  phone?: string;
   logo?: string;
   favicon?: string;
   contactEmail: string;

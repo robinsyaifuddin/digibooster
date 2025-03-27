@@ -1,53 +1,72 @@
 
-import React from 'react';
+import React, { ReactNode } from 'react';
+import { cn } from '@/lib/utils';
 
 interface LogoMarqueeProps {
+  logos: { name: string; image: string }[];
   direction?: 'left' | 'right';
   speed?: 'slow' | 'medium' | 'fast';
-  logos: Array<{ name: string; image: string }>;
   bgColor?: string;
-  title?: string;
+  title?: ReactNode;
   description?: string;
 }
 
-const LogoMarquee = ({
-  direction = 'left',
+const LogoMarquee = ({ 
+  logos, 
+  direction = 'left', 
   speed = 'medium',
-  logos,
   bgColor = 'bg-white',
   title,
   description
 }: LogoMarqueeProps) => {
-  const speedClass = 
-    speed === 'slow' ? 'animate-marquee-slow' : 
-    speed === 'fast' ? 'animate-marquee-fast' : 
-    'animate-marquee';
+  // Map speeds to CSS animation durations
+  const speedMap = {
+    slow: '40s',
+    medium: '30s',
+    fast: '20s'
+  };
   
-  const directionClass = direction === 'right' ? 'flex-row-reverse' : 'flex-row';
-
+  const animationDuration = speedMap[speed];
+  const animationDirection = direction === 'left' ? 'normal' : 'reverse';
+  
   return (
-    <div className={`py-12 md:py-16 ${bgColor} overflow-hidden`}>
-      {(title || description) && (
-        <div className="text-center mb-8">
-          {title && <h3 className="text-2xl md:text-3xl font-bold mb-3">{title}</h3>}
-          {description && <p className="text-gray-600 max-w-2xl mx-auto px-4">{description}</p>}
-        </div>
-      )}
+    <section className={`py-16 ${bgColor}`}>
+      <div className="container mx-auto px-4 mb-10 text-center">
+        {title && (
+          <h2 className="text-3xl font-bold mb-4">
+            {title}
+          </h2>
+        )}
+        {description && (
+          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            {description}
+          </p>
+        )}
+      </div>
       
-      <div className="relative overflow-hidden marquee-container">
-        <div className={`flex ${directionClass} space-x-12 ${speedClass}`}>
-          {[...logos, ...logos].map((logo, index) => (
-            <div key={index} className="flex items-center justify-center h-12 md:h-16 px-5 grayscale hover:grayscale-0 transition-all duration-300">
+      <div className="relative overflow-hidden w-full">
+        <div 
+          className="flex items-center space-x-12 animate-marquee whitespace-nowrap"
+          style={{
+            animationDuration,
+            animationDirection
+          }}
+        >
+          {logos.concat(logos).map((logo, index) => (
+            <div 
+              key={`${logo.name}-${index}`} 
+              className="flex items-center justify-center h-16 bg-white p-2 rounded-md shadow-sm"
+            >
               <img 
                 src={logo.image} 
                 alt={logo.name} 
-                className="h-full object-contain"
+                className="h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
               />
             </div>
           ))}
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 
