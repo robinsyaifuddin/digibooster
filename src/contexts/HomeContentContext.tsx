@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useWebsiteDataStore, WebsiteData } from '@/stores/websiteDataStore';
 
@@ -36,7 +35,7 @@ export const HomeContentProvider = ({ children }: { children: ReactNode }) => {
       if (event.detail && event.detail.homeContent) {
         setHomeContent(event.detail.homeContent);
         
-        // Jika pembaruan bertanda permanen, simpan ke localStorage
+        // If update is marked as permanent, save to localStorage
         if (event.detail.isPermanent) {
           localStorage.setItem('permanentHomeContent', JSON.stringify(event.detail.homeContent));
         }

@@ -1,4 +1,3 @@
-
 // Define website data structure types
 
 // Website general information type
@@ -97,6 +96,7 @@ export interface WebsiteData {
   pages: WebsitePage[];
   seo: SeoSettings;
   homeContent: HomeContent;
+  isPermanent?: boolean;
 }
 
 // Website store actions
