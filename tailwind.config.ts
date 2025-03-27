@@ -55,6 +55,7 @@ const config: Config = {
         ring: "hsl(var(--ring))",
         radius: "var(--radius)",
         digiblue: {
+          DEFAULT: '#4338ca', // Using a default blue color that matches digiblue-700
           '50': '#eef2ff',
           '100': '#e0e7ff',
           '200': '#c7d2fe',

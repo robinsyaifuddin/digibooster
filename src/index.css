@@ -124,7 +124,7 @@
   }
 
   .btn-secondary {
-    @apply bg-white text-digiblue border border-digiblue hover:bg-digiblue-50 px-6 py-3 rounded-md transition duration-300 font-medium;
+    @apply bg-white text-digiblue-700 border border-digiblue-600 hover:bg-digiblue-50 px-6 py-3 rounded-md transition duration-300 font-medium;
   }
 
   .card-hover {
@@ -132,11 +132,11 @@
   }
 
   .nav-link {
-    @apply text-gray-700 hover:text-digiblue transition duration-200;
+    @apply text-gray-700 hover:text-digiblue-600 transition duration-200;
   }
 
   .nav-link.active {
-    @apply text-digiblue font-medium;
+    @apply text-digiblue-700 font-medium;
   }
 
   .dropdown-content {
