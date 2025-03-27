@@ -32,7 +32,6 @@ export const usePublish = () => {
         }
       });
 
-      // Simulate website publishing process with stages
       await simulateProgressStep(0, 20, 1000);
       
       toast({
@@ -43,21 +42,45 @@ export const usePublish = () => {
       
       await simulateProgressStep(20, 50, 1500);
       
-      toast({
-        title: "Mengompilasi kode",
-        description: "Membangun dan mengoptimalkan codebase...",
-        duration: 2000,
-      });
-      
-      await simulateProgressStep(50, 75, 1500);
-      
-      toast({
-        title: "Menerapkan perubahan",
-        description: "Mendorong perubahan ke server produksi...",
-        duration: 2000,
-      });
-      
-      await simulateProgressStep(75, 90, 1000);
+      // Kirim data ke API (contoh implementasi nyata)
+      try {
+        await simulateProgressStep(50, 75, 1500);
+        
+        toast({
+          title: "Mengirim data ke server",
+          description: "Menyinkronkan perubahan dengan server produksi...",
+          duration: 2000,
+        });
+        
+        // Kirim data website ke server (implementasi nyata)
+        // const response = await fetch('https://api.yourdomain.com/publish', {
+        //   method: 'POST',
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //     'Authorization': 'Bearer YOUR_API_KEY'
+        //   },
+        //   body: JSON.stringify({
+        //     websiteData,
+        //     pageEdits
+        //   })
+        // });
+        
+        // if (!response.ok) {
+        //   throw new Error('Gagal mengirim data ke server');
+        // }
+        
+        // const publishResult = await response.json();
+        // console.log('Publish result:', publishResult);
+      } catch (apiError) {
+        console.error('Error publishing to API:', apiError);
+        toast({
+          variant: "destructive",
+          title: "Gagal menghubungi server",
+          description: "Tidak dapat mengirim perubahan ke server. Periksa koneksi internet Anda.",
+          duration: 5000,
+        });
+        throw new Error('API error');
+      }
       
       // Coba simpan data dengan penanganan error yang lebih baik
       try {
@@ -114,14 +137,12 @@ export const usePublish = () => {
         duration: 5000,
       });
       
-      // Simulate CDN cache update
-      setTimeout(() => {
-        toast({
-          title: "Pembaruan CDN selesai",
-          description: "Perubahan telah didistribusikan ke semua server CDN",
-          duration: 3000,
-        });
-      }, 2000);
+      // Tampilkan informasi untuk implementasi nyata
+      toast({
+        title: "Catatan implementasi nyata",
+        description: "Untuk implementasi nyata, Anda perlu mengonfigurasi API dan database server.",
+        duration: 8000,
+      });
     } catch (error) {
       console.error('Publish error:', error);
       updatePublishState('error', false);

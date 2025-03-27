@@ -5,6 +5,7 @@ import MainPublishCard from "./Services/MainPublishCard";
 import PublishInfoCard from "./Services/PublishInfoCard";
 import DomainCard from "./Services/DomainCard";
 import UpcomingFeaturesCard from "./Services/UpcomingFeaturesCard";
+import InfoSettingsCard from "./Services/InfoSettingsCard";
 import PreviewButton from "./Services/PreviewButton";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { useState, useEffect } from "react";
@@ -29,6 +30,7 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
   
   const [showLivePreview, setShowLivePreview] = useState(false);
   const [previewUpdated, setPreviewUpdated] = useState(false);
+  const [showImplementationInfo, setShowImplementationInfo] = useState(true);
   
   // Deteksi apakah ada halaman yang sudah diedit
   useEffect(() => {
@@ -75,6 +77,10 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
     <div className="space-y-6">
       <PublishPageHeader onTabChange={onTabChange} />
       
+      {showImplementationInfo && (
+        <InfoSettingsCard onTabChange={onTabChange} />
+      )}
+      
       <Card className="mb-6">
         <CardContent className="pt-6">
           <div className="bg-blue-50 border border-blue-200 rounded-md p-4">
@@ -95,6 +101,12 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
                 Perubahan baru tersedia
               </div>
             )}
+            <button 
+              onClick={() => setShowImplementationInfo(!showImplementationInfo)} 
+              className="text-xs text-gray-500 underline hover:text-gray-700"
+            >
+              {showImplementationInfo ? 'Sembunyikan info implementasi' : 'Tampilkan info implementasi'}
+            </button>
           </div>
           <div className="flex gap-2">
             <button

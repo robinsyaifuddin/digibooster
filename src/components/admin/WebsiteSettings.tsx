@@ -1,72 +1,74 @@
 
 import React, { useState } from 'react';
-import { Tabs, TabsContent } from "@/components/ui/tabs";
-import { useToast } from "@/hooks/use-toast";
-import { useWebsiteDataStore } from '@/stores/websiteDataStore';
-import GeneralSettings from './settings/GeneralSettings';
-import AppearanceSettings from './settings/AppearanceSettings';
-import SeoSettings from './settings/SeoSettings';
-import SocialMediaSettings from './settings/SocialMediaSettings';
+import { SettingsTabs } from './settings/SettingsTabs';
+import { GeneralSettings } from './settings/GeneralSettings';
+import { AppearanceSettings } from './settings/AppearanceSettings';
+import { SeoSettings } from './settings/SeoSettings';
 import PublishingSettings from './settings/PublishingSettings';
+import ImplementationSettings from './settings/ImplementationSettings';
 import SettingsHeader from './settings/SettingsHeader';
-import SettingsTabs from './settings/SettingsTabs';
-import PageEditor from './Dashboard/PageEditor';
 
 const WebsiteSettings = () => {
-  const { toast } = useToast();
-  const websiteData = useWebsiteDataStore();
+  const [activeTab, setActiveTab] = useState('general');
   const [saving, setSaving] = useState(false);
-  const [activeTab, setActiveTab] = useState("general");
-
+  
   const handleSave = () => {
     setSaving(true);
     
-    // Simulate saving data
+    // Simulate saving settings
     setTimeout(() => {
       setSaving(false);
-      toast({
-        title: "Pengaturan berhasil disimpan",
-        description: "Perubahan pada pengaturan website telah berhasil disimpan.",
+      
+      // Menandai bahwa pengaturan telah diedit
+      localStorage.setItem('generalInfoEdited', 'true');
+      localStorage.setItem('appearanceEdited', 'true');
+      localStorage.setItem('seoEdited', 'true');
+      
+      // Dispatch event untuk memberi tahu komponen lain tentang perubahan
+      const updateEvent = new CustomEvent('settingsUpdated', { 
+        detail: { isPermanent: false }
       });
+      window.dispatchEvent(updateEvent);
     }, 1500);
   };
-
+  
+  const getTabTitle = () => {
+    switch (activeTab) {
+      case 'general':
+        return 'Pengaturan Umum';
+      case 'appearance':
+        return 'Tampilan Website';
+      case 'seo':
+        return 'Pengaturan SEO';
+      case 'publishing':
+        return 'Publikasi Website';
+      case 'implementation':
+        return 'Implementasi Nyata';
+      default:
+        return 'Pengaturan Website';
+    }
+  };
+  
   return (
     <div>
-      <SettingsHeader 
-        title="Pengaturan Website" 
-        saving={saving} 
-        onSave={handleSave} 
+      <SettingsHeader
+        title={getTabTitle()}
+        saving={saving}
+        onSave={handleSave}
       />
-
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <SettingsTabs activeTab={activeTab} />
-
-        {/* Content Tabs */}
-        <TabsContent value="general">
-          <GeneralSettings />
-        </TabsContent>
-
-        <TabsContent value="appearance">
-          <AppearanceSettings />
-        </TabsContent>
-
-        <TabsContent value="pages" className="space-y-4">
-          <PageEditor pages={websiteData.pages} />
-        </TabsContent>
-
-        <TabsContent value="seo">
-          <SeoSettings />
-        </TabsContent>
-
-        <TabsContent value="social">
-          <SocialMediaSettings />
-        </TabsContent>
-
-        <TabsContent value="publishing">
-          <PublishingSettings onTabChange={setActiveTab} />
-        </TabsContent>
-      </Tabs>
+      
+      <div className="flex flex-col md:flex-row gap-6">
+        <div className="w-full md:w-64 mb-6 md:mb-0">
+          <SettingsTabs activeTab={activeTab} setActiveTab={setActiveTab} />
+        </div>
+        <div className="flex-1">
+          {activeTab === 'general' && <GeneralSettings />}
+          {activeTab === 'appearance' && <AppearanceSettings />}
+          {activeTab === 'seo' && <SeoSettings />}
+          {activeTab === 'publishing' && <PublishingSettings onTabChange={setActiveTab} />}
+          {activeTab === 'implementation' && <ImplementationSettings />}
+        </div>
+      </div>
     </div>
   );
 };

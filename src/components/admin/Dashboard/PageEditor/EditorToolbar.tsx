@@ -11,8 +11,10 @@ import {
   EyeIcon,
   SidebarOpen,
   SidebarClose,
-  Palette
+  Palette,
+  DatabaseBackup
 } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
 
 interface EditorToolbarProps {
   activePage: WebsitePage | null;
@@ -41,6 +43,16 @@ const EditorToolbar = ({
   onPublish,
   onPreview
 }: EditorToolbarProps) => {
+  const { toast } = useToast();
+  
+  const handleImplementationInfo = () => {
+    toast({
+      title: "Implementasi Nyata Website",
+      description: "Untuk implementasi nyata, perubahan halaman perlu dikirim ke server melalui API dan disimpan dalam database.",
+      duration: 5000,
+    });
+  };
+  
   return (
     <div className="flex justify-between items-center border-b border-gray-200 bg-white p-2">
       <div className="flex items-center space-x-2">
@@ -112,6 +124,16 @@ const EditorToolbar = ({
             Perubahan belum disimpan
           </span>
         )}
+        
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={handleImplementationInfo}
+          className="text-amber-600 mr-2"
+        >
+          <DatabaseBackup className="h-4 w-4 mr-1" />
+          Info Implementasi
+        </Button>
       </div>
       
       <div className="flex items-center space-x-2">

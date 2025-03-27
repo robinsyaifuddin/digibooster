@@ -1,41 +1,67 @@
 
-import React from 'react';
-import { TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { SettingsIcon, Palette, LayoutGrid, Search, Facebook, Globe } from "lucide-react";
+import { Button } from '@/components/ui/button';
+import { GraduationCap, Globe, Settings, Palette, Search, ArrowUpRightFromSquare } from 'lucide-react';
 
 interface SettingsTabsProps {
   activeTab: string;
+  setActiveTab: (tab: string) => void;
 }
 
-const SettingsTabs: React.FC<SettingsTabsProps> = ({ activeTab }) => {
+export function SettingsTabs({ activeTab, setActiveTab }: SettingsTabsProps) {
   return (
-    <TabsList className="w-full md:w-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
-      <TabsTrigger value="general" className="flex items-center">
-        <SettingsIcon className="w-4 h-4 mr-2" />
-        Umum
-      </TabsTrigger>
-      <TabsTrigger value="appearance" className="flex items-center">
-        <Palette className="w-4 h-4 mr-2" />
-        Tampilan
-      </TabsTrigger>
-      <TabsTrigger value="pages" className="flex items-center">
-        <LayoutGrid className="w-4 h-4 mr-2" />
-        Halaman
-      </TabsTrigger>
-      <TabsTrigger value="seo" className="flex items-center">
-        <Search className="w-4 h-4 mr-2" />
-        SEO
-      </TabsTrigger>
-      <TabsTrigger value="social" className="flex items-center">
-        <Facebook className="w-4 h-4 mr-2" />
-        Sosial Media
-      </TabsTrigger>
-      <TabsTrigger value="publishing" className="flex items-center">
-        <Globe className="w-4 h-4 mr-2" />
-        Publikasi
-      </TabsTrigger>
-    </TabsList>
+    <div className="space-y-2">
+      <Button
+        variant={activeTab === 'general' ? 'default' : 'ghost'}
+        className="w-full justify-start"
+        onClick={() => setActiveTab('general')}
+      >
+        <Settings className="mr-2 h-4 w-4" />
+        Pengaturan Umum
+      </Button>
+      <Button
+        variant={activeTab === 'appearance' ? 'default' : 'ghost'}
+        className="w-full justify-start"
+        onClick={() => setActiveTab('appearance')}
+      >
+        <Palette className="mr-2 h-4 w-4" />
+        Tampilan Website
+      </Button>
+      <Button
+        variant={activeTab === 'seo' ? 'default' : 'ghost'}
+        className="w-full justify-start"
+        onClick={() => setActiveTab('seo')}
+      >
+        <Search className="mr-2 h-4 w-4" />
+        Pengaturan SEO
+      </Button>
+      <Button
+        variant={activeTab === 'publishing' ? 'default' : 'ghost'}
+        className="w-full justify-start"
+        onClick={() => setActiveTab('publishing')}
+      >
+        <Globe className="mr-2 h-4 w-4" />
+        Publikasi Website
+      </Button>
+      <Button
+        variant={activeTab === 'implementation' ? 'default' : 'ghost'}
+        className="w-full justify-start"
+        onClick={() => setActiveTab('implementation')}
+      >
+        <ArrowUpRightFromSquare className="mr-2 h-4 w-4" />
+        Implementasi Nyata
+      </Button>
+      
+      <div className="mt-8 pt-6 border-t border-gray-200">
+        <h3 className="text-sm font-medium text-gray-500 mb-4">Bantuan</h3>
+        <Button
+          variant="ghost"
+          className="w-full justify-start text-gray-600"
+          onClick={() => window.open('https://docs.example.com', '_blank')}
+        >
+          <GraduationCap className="mr-2 h-4 w-4" />
+          Dokumentasi
+        </Button>
+      </div>
+    </div>
   );
-};
-
-export default SettingsTabs;
+}
