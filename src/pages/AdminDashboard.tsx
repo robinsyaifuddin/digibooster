@@ -12,6 +12,7 @@ import Header from '../components/admin/Dashboard/Header';
 import DashboardOverview from '../components/admin/Dashboard/DashboardOverview';
 import UsersManagement from '../components/admin/Dashboard/UsersManagement';
 import ContentManagement from '../components/admin/Dashboard/ContentManagement';
+import ServicesDevelopment from '../components/admin/Dashboard/ServicesDevelopment';
 import WebsiteSettings from '../components/admin/WebsiteSettings';
 import AdminProfile from '../components/admin/AdminProfile';
 
@@ -71,14 +72,14 @@ const AdminDashboard = () => {
       });
     }
     
-    // Mendengarkan event untuk pindah tab dari komponen lain
+    // Listen for tab switch events from other components
     const handleSwitchTab = (event: CustomEvent) => {
       if (event.detail) {
         setActiveTab(event.detail);
       }
     };
     
-    // Mendengarkan event triggerPublish dari ContentManagement
+    // Listen for triggerPublish events from ContentManagement
     const handleTriggerPublish = (event: CustomEvent) => {
       if (event.detail && event.detail.source) {
         toast({
@@ -86,7 +87,7 @@ const AdminDashboard = () => {
           description: `Perubahan dari ${event.detail.source} telah disimpan dan siap dipublikasikan.`,
         });
         
-        // Otomatis pindah ke tab settings
+        // Auto switch to publish tab
         setActiveTab('settings');
       }
     };
@@ -147,6 +148,9 @@ const AdminDashboard = () => {
           
           {/* Content tab */}
           {activeTab === 'content' && <ContentManagement blogs={recentBlogs} />}
+          
+          {/* Services Development tab (for publishing) */}
+          {activeTab === 'services' && <ServicesDevelopment onTabChange={handleTabChange} />}
           
           {/* Website Settings */}
           {activeTab === 'settings' && <WebsiteSettings />}

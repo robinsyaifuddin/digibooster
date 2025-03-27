@@ -1,15 +1,20 @@
 
 import { useState } from "react";
-import { Plus, PenSquare, Save, ExternalLink, Trash2 } from "lucide-react";
+import { Plus, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Label } from "@/components/ui/label";
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 import { useToast } from "@/hooks/use-toast";
 import { PartnerItem } from "@/types/websiteTypes";
+
+// Import component files
+import HeroEditor from "./Content/HeroEditor";
+import ServicesEditor from "./Content/ServicesEditor";
+import TestimonialsEditor from "./Content/TestimonialsEditor";
+import BlogsTable from "./Content/BlogsTable";
+import CoursesGrid from "./Content/CoursesGrid";
+import PortfolioGrid from "./Content/PortfolioGrid";
+import PartnersEditor from "./Content/PartnersEditor";
 
 interface Blog {
   id: number;
@@ -28,10 +33,7 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
   const websiteData = useWebsiteDataStore();
   const [activeTab, setActiveTab] = useState("blog");
   
-  // State untuk form editing
-  const [editingService, setEditingService] = useState<string | null>(null);
-  const [editingTestimonial, setEditingTestimonial] = useState<string | null>(null);
-  const [editingPartner, setEditingPartner] = useState<string | null>(null);
+  // State for hero content
   const [heroContent, setHeroContent] = useState({
     title: websiteData.homeContent.hero.title,
     subtitle: websiteData.homeContent.hero.subtitle,
@@ -39,14 +41,14 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
     ctaLink: websiteData.homeContent.hero.ctaLink,
   });
   
-  // State untuk partner baru
+  // State for new partner
   const [newPartner, setNewPartner] = useState<Omit<PartnerItem, 'id'>>({
     name: '',
     image: '',
     link: '',
   });
   
-  // Fungsi untuk handle perubahan
+  // Functions for handling changes
   const handleHeroChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setHeroContent(prev => ({ ...prev, [name]: value }));
@@ -61,6 +63,8 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
       title: "Konten hero berhasil disimpan",
       description: "Perubahan akan terlihat setelah dipublikasikan",
     });
+    
+    localStorage.setItem('heroContentEdited', 'true');
   };
   
   const handleServiceChange = (id: string, field: string, value: string) => {
@@ -72,6 +76,7 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
     });
     
     websiteData.updateHomeServices(updatedServices);
+    localStorage.setItem('servicesEdited', 'true');
   };
   
   const handleTestimonialChange = (id: string, field: string, value: string) => {
@@ -83,6 +88,7 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
     });
     
     websiteData.updateHomeTestimonials(updatedTestimonials);
+    localStorage.setItem('testimonialsEdited', 'true');
   };
   
   const handlePartnerChange = (id: string, field: string, value: string) => {
@@ -94,6 +100,7 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
     });
     
     websiteData.updateHomePartners(updatedPartners);
+    localStorage.setItem('partnersEdited', 'true');
   };
   
   const handleNewPartnerChange = (field: string, value: string) => {
@@ -129,6 +136,8 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
       title: "Partner baru ditambahkan",
       description: "Partner baru berhasil ditambahkan dan akan terlihat setelah dipublikasikan",
     });
+    
+    localStorage.setItem('partnersEdited', 'true');
   };
   
   const deletePartner = (id: string) => {
@@ -142,8 +151,11 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
       title: "Partner dihapus",
       description: "Partner berhasil dihapus dari daftar",
     });
+    
+    localStorage.setItem('partnersEdited', 'true');
   };
   
+  // Sample data for demonstration
   const courses = [
     { id: 1, title: 'Digital Marketing untuk Pemula', students: 156, lessons: 12, level: 'Pemula' },
     { id: 2, title: 'SEO Optimization', students: 89, lessons: 8, level: 'Menengah' },
@@ -194,7 +206,7 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
           <TabsTrigger value="partners">Partner</TabsTrigger>
         </TabsList>
         
-        {/* Tab Konten Blog */}
+        {/* Blog Content Tab */}
         <TabsContent value="blog">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
             <h3 className="text-lg font-semibold">Artikel Blog</h3>
@@ -204,49 +216,10 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
             </Button>
           </div>
           
-          <Card>
-            <CardContent className="p-0">
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Judul</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kategori</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Penulis</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tanggal</th>
-                      <th className="px-4 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                      <th className="px-4 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
-                    </tr>
-                  </thead>
-                  <tbody className="divide-y divide-gray-200">
-                    {[...blogs, 
-                      { id: 4, title: 'Tren Digital Marketing 2023', author: 'Admin', published: '2023-08-03', views: 145 },
-                      { id: 5, title: 'Pentingnya Website untuk Bisnis', author: 'Admin', published: '2023-07-28', views: 267 },
-                    ].map((blog, index) => (
-                      <tr key={blog.id} className="hover:bg-gray-50">
-                        <td className="px-4 py-3 text-sm text-gray-900">{blog.title}</td>
-                        <td className="px-4 py-3 text-sm text-gray-500">{['Marketing', 'Website', 'Content', 'SEO', 'Social Media'][index % 5]}</td>
-                        <td className="px-4 py-3 text-sm text-gray-500">{blog.author}</td>
-                        <td className="px-4 py-3 text-sm text-gray-500">{blog.published}</td>
-                        <td className="px-4 py-3">
-                          <span className="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                            Dipublikasikan
-                          </span>
-                        </td>
-                        <td className="px-4 py-3 text-right text-sm font-medium">
-                          <Button variant="ghost" size="sm">Edit</Button>
-                          <Button variant="ghost" size="sm" className="text-red-600">Hapus</Button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
+          <BlogsTable blogs={blogs} />
         </TabsContent>
         
-        {/* Tab Konten Kelas */}
+        {/* Courses Content Tab */}
         <TabsContent value="courses">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
             <h3 className="text-lg font-semibold">Kelas</h3>
@@ -256,37 +229,10 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {courses.map((course) => (
-              <Card key={course.id} className="hover:shadow-md transition-shadow">
-                <CardHeader>
-                  <CardTitle className="text-base">{course.title}</CardTitle>
-                  <CardDescription>
-                    {course.students} siswa terdaftar
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between text-sm">
-                    <span>{course.lessons} pelajaran</span>
-                    <span className={`px-2 py-1 rounded-full text-xs ${
-                      course.level === 'Pemula' ? 'bg-green-100 text-green-800' :
-                      course.level === 'Menengah' ? 'bg-blue-100 text-blue-800' :
-                      'bg-purple-100 text-purple-800'
-                    }`}>
-                      {course.level}
-                    </span>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-between">
-                  <Button variant="ghost" size="sm">Lihat Detail</Button>
-                  <Button variant="outline" size="sm">Edit</Button>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+          <CoursesGrid courses={courses} />
         </TabsContent>
         
-        {/* Tab Konten Portofolio */}
+        {/* Portfolio Content Tab */}
         <TabsContent value="portfolio">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
             <h3 className="text-lg font-semibold">Portofolio</h3>
@@ -296,252 +242,27 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
             </Button>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {portfolios.map((portfolio) => (
-              <Card key={portfolio.id} className="hover:shadow-md transition-shadow">
-                <div className="h-48 bg-gray-200 rounded-t-lg flex items-center justify-center">
-                  <PenSquare className="w-8 h-8 text-gray-400" />
-                </div>
-                <CardHeader>
-                  <CardTitle className="text-base">{portfolio.title}</CardTitle>
-                  <CardDescription>
-                    Client: {portfolio.client}
-                  </CardDescription>
-                </CardHeader>
-                <CardFooter className="flex justify-between">
-                  <span className="bg-gray-100 text-gray-800 text-xs px-2 py-1 rounded">
-                    {portfolio.category}
-                  </span>
-                  <div>
-                    <Button variant="ghost" size="sm">Edit</Button>
-                    <Button variant="ghost" size="sm" className="text-red-600">Hapus</Button>
-                  </div>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
+          <PortfolioGrid portfolios={portfolios} />
         </TabsContent>
         
-        {/* Tab Konten Beranda */}
+        {/* Home Content Tab */}
         <TabsContent value="home">
           <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Hero Section</CardTitle>
-                <CardDescription>
-                  Edit konten utama di bagian atas halaman beranda
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="title">Judul Hero</Label>
-                    <Input 
-                      id="title" 
-                      name="title" 
-                      value={heroContent.title} 
-                      onChange={handleHeroChange}
-                      className="mt-1" 
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="subtitle">Subtitle Hero</Label>
-                    <Textarea 
-                      id="subtitle" 
-                      name="subtitle" 
-                      value={heroContent.subtitle} 
-                      onChange={handleHeroChange}
-                      className="mt-1" 
-                    />
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                      <Label htmlFor="ctaText">Teks Tombol CTA</Label>
-                      <Input 
-                        id="ctaText" 
-                        name="ctaText" 
-                        value={heroContent.ctaText} 
-                        onChange={handleHeroChange}
-                        className="mt-1" 
-                      />
-                    </div>
-                    <div>
-                      <Label htmlFor="ctaLink">Link Tombol CTA</Label>
-                      <Input 
-                        id="ctaLink" 
-                        name="ctaLink" 
-                        value={heroContent.ctaLink} 
-                        onChange={handleHeroChange}
-                        className="mt-1" 
-                      />
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter>
-                <Button onClick={saveHeroChanges}>
-                  <Save className="h-4 w-4 mr-2" />
-                  Simpan Perubahan
-                </Button>
-              </CardFooter>
-            </Card>
+            <HeroEditor 
+              heroContent={heroContent} 
+              handleHeroChange={handleHeroChange} 
+              saveHeroChanges={saveHeroChanges} 
+            />
             
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Layanan</CardTitle>
-                <CardDescription>
-                  Edit layanan yang ditampilkan di halaman beranda
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {websiteData.homeContent.services.map(service => (
-                    <Card key={service.id} className="shadow-sm">
-                      <CardHeader className="py-3">
-                        <div className="flex justify-between items-start">
-                          <CardTitle className="text-base">{service.title}</CardTitle>
-                          <Button 
-                            size="sm" 
-                            variant="ghost" 
-                            onClick={() => setEditingService(editingService === service.id ? null : service.id)}
-                          >
-                            {editingService === service.id ? "Tutup" : "Edit"}
-                          </Button>
-                        </div>
-                      </CardHeader>
-                      
-                      {editingService === service.id && (
-                        <CardContent className="pb-3">
-                          <div className="space-y-3">
-                            <div>
-                              <Label htmlFor={`service-title-${service.id}`}>Judul Layanan</Label>
-                              <Input 
-                                id={`service-title-${service.id}`}
-                                value={service.title}
-                                onChange={(e) => handleServiceChange(service.id, 'title', e.target.value)}
-                                className="mt-1" 
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor={`service-desc-${service.id}`}>Deskripsi</Label>
-                              <Textarea 
-                                id={`service-desc-${service.id}`}
-                                value={service.description}
-                                onChange={(e) => handleServiceChange(service.id, 'description', e.target.value)}
-                                className="mt-1" 
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor={`service-link-${service.id}`}>Link</Label>
-                              <Input 
-                                id={`service-link-${service.id}`}
-                                value={service.link}
-                                onChange={(e) => handleServiceChange(service.id, 'link', e.target.value)}
-                                className="mt-1" 
-                              />
-                            </div>
-                            <div className="flex justify-end">
-                              <Button size="sm" onClick={() => setEditingService(null)}>
-                                <Save className="h-3 w-3 mr-2" />
-                                Simpan
-                              </Button>
-                            </div>
-                          </div>
-                        </CardContent>
-                      )}
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <ServicesEditor 
+              services={websiteData.homeContent.services} 
+              handleServiceChange={handleServiceChange} 
+            />
             
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Testimonial</CardTitle>
-                <CardDescription>
-                  Edit testimonial yang ditampilkan di halaman beranda
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {websiteData.homeContent.testimonials.map(testimonial => (
-                    <Card key={testimonial.id} className="shadow-sm">
-                      <CardHeader className="py-3">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center">
-                            <img 
-                              src={testimonial.image} 
-                              alt={testimonial.name}
-                              className="w-10 h-10 rounded-full mr-3"
-                            />
-                            <div>
-                              <CardTitle className="text-base">{testimonial.name}</CardTitle>
-                              <CardDescription>{testimonial.role}</CardDescription>
-                            </div>
-                          </div>
-                          <Button 
-                            size="sm" 
-                            variant="ghost" 
-                            onClick={() => setEditingTestimonial(editingTestimonial === testimonial.id ? null : testimonial.id)}
-                          >
-                            {editingTestimonial === testimonial.id ? "Tutup" : "Edit"}
-                          </Button>
-                        </div>
-                      </CardHeader>
-                      
-                      {editingTestimonial === testimonial.id && (
-                        <CardContent className="pb-3">
-                          <div className="space-y-3">
-                            <div>
-                              <Label htmlFor={`testimonial-name-${testimonial.id}`}>Nama</Label>
-                              <Input 
-                                id={`testimonial-name-${testimonial.id}`}
-                                value={testimonial.name}
-                                onChange={(e) => handleTestimonialChange(testimonial.id, 'name', e.target.value)}
-                                className="mt-1" 
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor={`testimonial-role-${testimonial.id}`}>Peran/Jabatan</Label>
-                              <Input 
-                                id={`testimonial-role-${testimonial.id}`}
-                                value={testimonial.role}
-                                onChange={(e) => handleTestimonialChange(testimonial.id, 'role', e.target.value)}
-                                className="mt-1" 
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor={`testimonial-content-${testimonial.id}`}>Testimoni</Label>
-                              <Textarea 
-                                id={`testimonial-content-${testimonial.id}`}
-                                value={testimonial.content}
-                                onChange={(e) => handleTestimonialChange(testimonial.id, 'content', e.target.value)}
-                                className="mt-1" 
-                              />
-                            </div>
-                            <div>
-                              <Label htmlFor={`testimonial-image-${testimonial.id}`}>URL Gambar</Label>
-                              <Input 
-                                id={`testimonial-image-${testimonial.id}`}
-                                value={testimonial.image}
-                                onChange={(e) => handleTestimonialChange(testimonial.id, 'image', e.target.value)}
-                                className="mt-1" 
-                              />
-                            </div>
-                            <div className="flex justify-end">
-                              <Button size="sm" onClick={() => setEditingTestimonial(null)}>
-                                <Save className="h-3 w-3 mr-2" />
-                                Simpan
-                              </Button>
-                            </div>
-                          </div>
-                        </CardContent>
-                      )}
-                    </Card>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
+            <TestimonialsEditor 
+              testimonials={websiteData.homeContent.testimonials}
+              handleTestimonialChange={handleTestimonialChange}
+            />
             
             <div className="flex justify-between">
               <Button variant="outline" onClick={() => setActiveTab("blog")}>
@@ -555,160 +276,27 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
           </div>
         </TabsContent>
         
-        {/* Tab Konten Partners */}
+        {/* Partners Content Tab */}
         <TabsContent value="partners">
           <div className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle className="text-lg">Kelola Partner Perusahaan</CardTitle>
-                <CardDescription>
-                  Edit dan tambahkan perusahaan teknologi yang menjadi partner DigiBooster
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {websiteData.homeContent.partners.map(partner => (
-                      <Card key={partner.id} className="shadow-sm">
-                        <CardHeader className="pb-2">
-                          <div className="flex justify-between items-start">
-                            <CardTitle className="text-base">{partner.name}</CardTitle>
-                            <Button 
-                              size="sm" 
-                              variant="ghost" 
-                              onClick={() => setEditingPartner(editingPartner === partner.id ? null : partner.id)}
-                            >
-                              {editingPartner === partner.id ? "Tutup" : "Edit"}
-                            </Button>
-                          </div>
-                        </CardHeader>
-                        <CardContent className="pt-2">
-                          <div className="h-16 flex items-center justify-center mb-2">
-                            <img 
-                              src={partner.image} 
-                              alt={partner.name}
-                              className="h-full object-contain"
-                            />
-                          </div>
-                          
-                          {editingPartner === partner.id ? (
-                            <div className="space-y-3 mt-4">
-                              <div>
-                                <Label htmlFor={`partner-name-${partner.id}`}>Nama Partner</Label>
-                                <Input 
-                                  id={`partner-name-${partner.id}`}
-                                  value={partner.name}
-                                  onChange={(e) => handlePartnerChange(partner.id, 'name', e.target.value)}
-                                  className="mt-1" 
-                                />
-                              </div>
-                              <div>
-                                <Label htmlFor={`partner-image-${partner.id}`}>URL Logo</Label>
-                                <Input 
-                                  id={`partner-image-${partner.id}`}
-                                  value={partner.image}
-                                  onChange={(e) => handlePartnerChange(partner.id, 'image', e.target.value)}
-                                  className="mt-1" 
-                                />
-                              </div>
-                              <div>
-                                <Label htmlFor={`partner-link-${partner.id}`}>Website Link (opsional)</Label>
-                                <Input 
-                                  id={`partner-link-${partner.id}`}
-                                  value={partner.link || ''}
-                                  onChange={(e) => handlePartnerChange(partner.id, 'link', e.target.value)}
-                                  className="mt-1" 
-                                  placeholder="https://"
-                                />
-                              </div>
-                              <div className="flex justify-between">
-                                <Button 
-                                  size="sm" 
-                                  variant="destructive" 
-                                  onClick={() => deletePartner(partner.id)}
-                                >
-                                  <Trash2 className="h-3 w-3 mr-2" />
-                                  Hapus
-                                </Button>
-                                <Button size="sm" onClick={() => setEditingPartner(null)}>
-                                  <Save className="h-3 w-3 mr-2" />
-                                  Simpan
-                                </Button>
-                              </div>
-                            </div>
-                          ) : (
-                            <p className="text-sm text-gray-500 truncate">
-                              {partner.link ? (
-                                <a href={partner.link} target="_blank" rel="noopener noreferrer" className="flex items-center">
-                                  {partner.link} <ExternalLink className="h-3 w-3 ml-1" />
-                                </a>
-                              ) : (
-                                "Tidak ada link website"
-                              )}
-                            </p>
-                          )}
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                  
-                  <Card>
-                    <CardHeader>
-                      <CardTitle className="text-base">Tambah Partner Baru</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-3">
-                        <div>
-                          <Label htmlFor="new-partner-name">Nama Partner</Label>
-                          <Input 
-                            id="new-partner-name"
-                            value={newPartner.name}
-                            onChange={(e) => handleNewPartnerChange('name', e.target.value)}
-                            className="mt-1" 
-                            placeholder="Nama perusahaan"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="new-partner-image">URL Logo</Label>
-                          <Input 
-                            id="new-partner-image"
-                            value={newPartner.image}
-                            onChange={(e) => handleNewPartnerChange('image', e.target.value)}
-                            className="mt-1" 
-                            placeholder="https://example.com/logo.png"
-                          />
-                        </div>
-                        <div>
-                          <Label htmlFor="new-partner-link">Website Link (opsional)</Label>
-                          <Input 
-                            id="new-partner-link"
-                            value={newPartner.link || ''}
-                            onChange={(e) => handleNewPartnerChange('link', e.target.value)}
-                            className="mt-1" 
-                            placeholder="https://example.com"
-                          />
-                        </div>
-                      </div>
-                    </CardContent>
-                    <CardFooter>
-                      <Button onClick={addNewPartner}>
-                        <Plus className="h-4 w-4 mr-2" />
-                        Tambah Partner
-                      </Button>
-                    </CardFooter>
-                  </Card>
-                </div>
-              </CardContent>
-              <CardFooter className="flex justify-between">
-                <Button variant="outline" onClick={() => setActiveTab("home")}>
-                  Kembali ke Beranda
-                </Button>
-                <Button onClick={handlePublishContent} className="bg-green-600 hover:bg-green-700">
-                  <Save className="w-4 h-4 mr-2" />
-                  Siap Publikasi
-                </Button>
-              </CardFooter>
-            </Card>
+            <PartnersEditor 
+              partners={websiteData.homeContent.partners}
+              handlePartnerChange={handlePartnerChange}
+              deletePartner={deletePartner}
+              newPartner={newPartner}
+              handleNewPartnerChange={handleNewPartnerChange}
+              addNewPartner={addNewPartner}
+            />
+            
+            <div className="flex justify-between">
+              <Button variant="outline" onClick={() => setActiveTab("home")}>
+                Kembali ke Beranda
+              </Button>
+              <Button onClick={handlePublishContent} className="bg-green-600 hover:bg-green-700">
+                <Save className="w-4 h-4 mr-2" />
+                Siap Publikasi
+              </Button>
+            </div>
           </div>
         </TabsContent>
       </Tabs>

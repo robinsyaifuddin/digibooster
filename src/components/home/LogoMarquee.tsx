@@ -1,5 +1,5 @@
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { PartnerItem } from '@/types/websiteTypes';
@@ -28,8 +28,11 @@ const LogoMarquee = ({
   
   const animationClass = speedMap[speed];
   
-  // Duplicate logos for infinite scroll effect
-  const duplicatedLogos = [...logos, ...logos];
+  // Duplicate logos for infinite scroll effect - using useMemo to avoid unnecessary recalculations
+  const duplicatedLogos = useMemo(() => [...logos, ...logos], [logos]);
+  
+  // Only render if we have logos
+  if (logos.length === 0) return null;
   
   return (
     <section className={cn("py-12 md:py-16 overflow-hidden", bgColor)}>
@@ -43,12 +46,30 @@ const LogoMarquee = ({
       <div className="relative w-full overflow-hidden">
         <div className={cn("flex space-x-12 whitespace-nowrap", animationClass)}>
           {duplicatedLogos.map((logo, index) => (
-            <Card key={`${logo.id}-${index}`} className="inline-flex items-center justify-center p-4 rounded-lg shadow-sm border-gray-100 min-w-[160px] h-20">
-              <img 
-                src={logo.image} 
-                alt={logo.name} 
-                className="max-h-12 max-w-[120px] object-contain"
-              />
+            <Card 
+              key={`${logo.id}-${index}`} 
+              className="inline-flex items-center justify-center p-4 rounded-lg shadow-sm border-gray-100 min-w-[160px] h-20"
+            >
+              {logo.link ? (
+                <a 
+                  href={logo.link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full h-full flex items-center justify-center"
+                >
+                  <img 
+                    src={logo.image} 
+                    alt={logo.name} 
+                    className="max-h-12 max-w-[120px] object-contain"
+                  />
+                </a>
+              ) : (
+                <img 
+                  src={logo.image} 
+                  alt={logo.name} 
+                  className="max-h-12 max-w-[120px] object-contain"
+                />
+              )}
             </Card>
           ))}
         </div>
