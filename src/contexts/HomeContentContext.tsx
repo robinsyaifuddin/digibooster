@@ -1,3 +1,4 @@
+
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useWebsiteDataStore, WebsiteData } from '@/stores/websiteDataStore';
 
@@ -5,6 +6,11 @@ import { useWebsiteDataStore, WebsiteData } from '@/stores/websiteDataStore';
 interface HomeContentContextType {
   homeContent: WebsiteData['homeContent'] | null;
   isLoading: boolean;
+}
+
+// Define the expected event detail type
+interface ContentUpdateEventDetail extends WebsiteData {
+  isPermanent?: boolean;
 }
 
 // Create the context with default values
@@ -25,7 +31,7 @@ export const HomeContentProvider = ({ children }: { children: ReactNode }) => {
     setIsLoading(false);
     
     // Setup event listener for content updates
-    const handleContentUpdate = (event: CustomEvent<WebsiteData>) => {
+    const handleContentUpdate = (event: CustomEvent<ContentUpdateEventDetail>) => {
       console.log('Content update event received:', event.detail);
       if (event.detail && event.detail.homeContent) {
         setHomeContent(event.detail.homeContent);
