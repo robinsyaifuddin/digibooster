@@ -112,6 +112,23 @@ const Index = () => {
     </>
   );
 
+  // Cek pembaruan konten dari event yang diterima dari publikasi
+  useEffect(() => {
+    const handleContentUpdated = (event: CustomEvent) => {
+      console.log('Home page received content update event:', event.detail);
+      // Muat ulang halaman untuk menampilkan perubahan terbaru
+      if (event.detail && event.detail.isPermanent) {
+        console.log('Applying permanent content updates to homepage');
+      }
+    };
+
+    window.addEventListener('websiteContentUpdated', handleContentUpdated as EventListener);
+    
+    return () => {
+      window.removeEventListener('websiteContentUpdated', handleContentUpdated as EventListener);
+    };
+  }, []);
+
   // Scroll event listener to handle animations
   useEffect(() => {
     const handleScroll = () => {

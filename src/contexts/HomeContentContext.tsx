@@ -1,4 +1,3 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { useWebsiteDataStore, WebsiteData } from '@/stores/websiteDataStore';
 
@@ -30,21 +29,38 @@ export const HomeContentProvider = ({ children }: { children: ReactNode }) => {
       console.log('Content update event received:', event.detail);
       if (event.detail && event.detail.homeContent) {
         setHomeContent(event.detail.homeContent);
+        
+        // Jika pembaruan bertanda permanen, simpan ke localStorage
+        if (event.detail.isPermanent) {
+          localStorage.setItem('permanentHomeContent', JSON.stringify(event.detail.homeContent));
+        }
       }
     };
     
     window.addEventListener('websiteContentUpdated', handleContentUpdate as EventListener);
     
-    // Check local storage for persisted data
-    const storedData = localStorage.getItem('websiteData');
-    if (storedData) {
+    // Check local storage for permanent content data first
+    const permanentContent = localStorage.getItem('permanentHomeContent');
+    if (permanentContent) {
       try {
-        const parsedData = JSON.parse(storedData);
-        if (parsedData.homeContent) {
-          setHomeContent(parsedData.homeContent);
-        }
+        const parsedContent = JSON.parse(permanentContent);
+        setHomeContent(parsedContent);
       } catch (error) {
-        console.error('Error parsing stored website data:', error);
+        console.error('Error parsing permanent home content:', error);
+      }
+    } 
+    // Otherwise, check for any stored data
+    else {
+      const storedData = localStorage.getItem('websiteData');
+      if (storedData) {
+        try {
+          const parsedData = JSON.parse(storedData);
+          if (parsedData.homeContent) {
+            setHomeContent(parsedData.homeContent);
+          }
+        } catch (error) {
+          console.error('Error parsing stored website data:', error);
+        }
       }
     }
     

@@ -147,13 +147,19 @@ export const usePublish = (): UsePublishReturn => {
       
       await simulateProgressStep(75, 90, 1000);
       
-      // Save site data to localStorage
+      // Save site data to localStorage with a permanent flag
       localStorage.setItem('websiteData', JSON.stringify(websiteData));
+      localStorage.setItem('websiteDataPermanent', 'true');
       
-      // Sync data to homepage by sending an event
-      window.dispatchEvent(new CustomEvent('websiteContentUpdated', { 
-        detail: websiteData
-      }));
+      // Create and dispatch an event to notify all components that content has been updated
+      const contentUpdateEvent = new CustomEvent('websiteContentUpdated', { 
+        detail: {
+          ...websiteData,
+          isPermanent: true
+        }
+      });
+      
+      window.dispatchEvent(contentUpdateEvent);
       
       // Track and save published changes
       const changes = trackChanges();
@@ -214,6 +220,25 @@ export const usePublish = (): UsePublishReturn => {
     
     // Simulate rollback
     setTimeout(() => {
+      // Remove permanent flag
+      localStorage.removeItem('websiteDataPermanent');
+      
+      // Get the previous version from backup if available
+      const backupData = localStorage.getItem('websiteDataBackup');
+      if (backupData) {
+        try {
+          const parsedBackup = JSON.parse(backupData);
+          localStorage.setItem('websiteData', backupData);
+          
+          // Notify components of rollback
+          window.dispatchEvent(new CustomEvent('websiteContentUpdated', { 
+            detail: parsedBackup
+          }));
+        } catch (e) {
+          console.error('Error parsing backup data:', e);
+        }
+      }
+      
       toast({
         title: "Rollback selesai",
         description: "Website telah dikembalikan ke versi sebelumnya.",
