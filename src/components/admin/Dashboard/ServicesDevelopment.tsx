@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { RefreshCw, Globe, Check, AlertTriangle, Zap, RotateCcw, Eye } from "lucide-react";
+import { RefreshCw, Globe, Check, AlertTriangle, Zap, RotateCcw, Eye, ExternalLink } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 

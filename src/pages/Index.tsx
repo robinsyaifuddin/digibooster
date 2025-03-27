@@ -10,9 +10,12 @@ import ScrollAnimation from '@/components/home/ScrollAnimation';
 import LogoMarquee from '@/components/home/LogoMarquee';
 import { useHomeContent } from '@/contexts/HomeContentContext';
 import { ReactNode } from 'react';
+import { useWebsiteDataStore } from '@/stores/websiteDataStore';
 
 const Index = () => {
   const { homeContent, isLoading } = useHomeContent();
+  const websiteData = useWebsiteDataStore();
+  const companyName = websiteData.generalInfo.title;
   
   // Fallback data jika homeContent masih loading
   const servicesFallback = [
@@ -136,10 +139,8 @@ const Index = () => {
     <main className="overflow-x-hidden">
       {/* Hero Section */}
       <HeroSection 
-        title={homeContent?.hero.title || "Skill Up, Stand Out with DigiBooster"}
-        subtitle={homeContent?.hero.subtitle || "Membantu masyarakat Indonesia mengoptimalkan digitalisasi untuk peningkatan kualitas hidup dan bisnis."}
-        ctaText={homeContent?.hero.ctaText || "Lihat Layanan"}
-        ctaLink={homeContent?.hero.ctaLink || "/layanan"}
+        generalInfo={websiteData.generalInfo}
+        hero={homeContent?.hero}
       />
       
       {/* Logo Marquee - Trusted by Companies */}
@@ -156,17 +157,23 @@ const Index = () => {
       
       {/* Benefits Section with Animation */}
       <ScrollAnimation>
-        <BenefitsSection benefits={homeContent?.benefits || []} />
+        <BenefitsSection 
+          benefits={homeContent?.benefits || []} 
+          companyName={companyName}
+        />
       </ScrollAnimation>
       
       {/* Testimonials Section */}
-      <TestimonialsSection testimonials={homeContent?.testimonials || testimonialsFallback} />
+      <TestimonialsSection 
+        testimonials={homeContent?.testimonials || testimonialsFallback}
+        companyName={companyName}
+      />
       
       {/* Contact Section */}
-      <ContactSection />
+      <ContactSection companyName={companyName} />
       
       {/* CTA Section */}
-      <CtaSection />
+      <CtaSection companyName={companyName} />
     </main>
   );
 };

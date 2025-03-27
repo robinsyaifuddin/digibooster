@@ -1,68 +1,55 @@
 
 import React, { ReactNode } from 'react';
+import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
+import { PartnerItem } from '@/types/websiteTypes';
 
 interface LogoMarqueeProps {
-  logos: { name: string; image: string }[];
-  direction?: 'left' | 'right';
+  logos: PartnerItem[];
+  title: ReactNode;
+  description?: string;
   speed?: 'slow' | 'medium' | 'fast';
   bgColor?: string;
-  title?: ReactNode;
-  description?: string;
 }
 
 const LogoMarquee = ({ 
   logos, 
-  direction = 'left', 
+  title, 
+  description, 
   speed = 'medium',
-  bgColor = 'bg-white',
-  title,
-  description
+  bgColor = 'bg-white'
 }: LogoMarqueeProps) => {
-  // Map speeds to CSS animation durations
+  // Speed mapping
   const speedMap = {
-    slow: '40s',
-    medium: '30s',
-    fast: '20s'
+    slow: 'animate-marquee-slow',
+    medium: 'animate-marquee-medium',
+    fast: 'animate-marquee-fast'
   };
   
-  const animationDuration = speedMap[speed];
-  const animationDirection = direction === 'left' ? 'normal' : 'reverse';
+  const animationClass = speedMap[speed];
+  
+  // Duplicate logos for infinite scroll effect
+  const duplicatedLogos = [...logos, ...logos];
   
   return (
-    <section className={`py-16 ${bgColor}`}>
-      <div className="container mx-auto px-4 mb-10 text-center">
-        {title && (
-          <h2 className="text-3xl font-bold mb-4">
-            {title}
-          </h2>
-        )}
+    <section className={cn("py-12 md:py-16 overflow-hidden", bgColor)}>
+      <div className="container mx-auto px-4 mb-8 text-center">
+        <h3 className="text-2xl md:text-3xl font-bold mb-3">{title}</h3>
         {description && (
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-            {description}
-          </p>
+          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">{description}</p>
         )}
       </div>
       
-      <div className="relative overflow-hidden w-full">
-        <div 
-          className="flex items-center space-x-12 animate-marquee whitespace-nowrap"
-          style={{
-            animationDuration,
-            animationDirection
-          }}
-        >
-          {logos.concat(logos).map((logo, index) => (
-            <div 
-              key={`${logo.name}-${index}`} 
-              className="flex items-center justify-center h-16 bg-white p-2 rounded-md shadow-sm"
-            >
+      <div className="relative w-full overflow-hidden">
+        <div className={cn("flex space-x-12 whitespace-nowrap", animationClass)}>
+          {duplicatedLogos.map((logo, index) => (
+            <Card key={`${logo.id}-${index}`} className="inline-flex items-center justify-center p-4 rounded-lg shadow-sm border-gray-100 min-w-[160px] h-20">
               <img 
                 src={logo.image} 
                 alt={logo.name} 
-                className="h-full object-contain filter grayscale hover:grayscale-0 transition-all duration-300"
+                className="max-h-12 max-w-[120px] object-contain"
               />
-            </div>
+            </Card>
           ))}
         </div>
       </div>
