@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { useToast } from "@/hooks/use-toast";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { RefreshCw, Globe, Check, AlertTriangle, Zap, RotateCcw } from "lucide-react";
+import { RefreshCw, Globe, Check, AlertTriangle, Zap, RotateCcw, Eye } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 
@@ -21,12 +21,24 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
   );
   const [deploymentStatus, setDeploymentStatus] = useState<'idle' | 'publishing' | 'success' | 'error'>('idle');
   const websiteData = useWebsiteDataStore(state => state);
+  const [lastChanges, setLastChanges] = useState<string[]>([]);
   
   useEffect(() => {
     // Cek apakah ada data publikasi sebelumnya
     const storedLastPublished = localStorage.getItem('lastPublishTime');
     if (storedLastPublished) {
       setLastPublished(storedLastPublished);
+    }
+    
+    // Cek apakah ada data perubahan terakhir
+    const storedLastChanges = localStorage.getItem('lastChangesPublished');
+    if (storedLastChanges) {
+      try {
+        setLastChanges(JSON.parse(storedLastChanges));
+      } catch (e) {
+        console.error('Error parsing stored changes', e);
+        setLastChanges([]);
+      }
     }
   }, []);
   
@@ -52,6 +64,53 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
         resolve();
       }, duration);
     });
+  };
+  
+  const trackChanges = (): string[] => {
+    const changes: string[] = [];
+    
+    // Simpan detail perubahan yang dilakukan
+    if (localStorage.getItem('heroContentEdited') === 'true') {
+      changes.push('Konten Hero Section diperbarui');
+      localStorage.removeItem('heroContentEdited');
+    }
+    
+    if (localStorage.getItem('servicesEdited') === 'true') {
+      changes.push('Layanan diperbarui');
+      localStorage.removeItem('servicesEdited');
+    }
+    
+    if (localStorage.getItem('testimonialsEdited') === 'true') {
+      changes.push('Testimonial diperbarui');
+      localStorage.removeItem('testimonialsEdited');
+    }
+    
+    if (localStorage.getItem('partnersEdited') === 'true') {
+      changes.push('Partner perusahaan diperbarui');
+      localStorage.removeItem('partnersEdited');
+    }
+    
+    if (localStorage.getItem('generalInfoEdited') === 'true') {
+      changes.push('Informasi umum website diperbarui');
+      localStorage.removeItem('generalInfoEdited');
+    }
+    
+    if (localStorage.getItem('seoEdited') === 'true') {
+      changes.push('Pengaturan SEO diperbarui');
+      localStorage.removeItem('seoEdited');
+    }
+    
+    if (localStorage.getItem('appearanceEdited') === 'true') {
+      changes.push('Tampilan website diperbarui');
+      localStorage.removeItem('appearanceEdited');
+    }
+    
+    // Jika tidak ada perubahan yang tercatat
+    if (changes.length === 0) {
+      changes.push('Website dipublikasikan');
+    }
+    
+    return changes;
   };
   
   const handlePublishChanges = async () => {
@@ -94,6 +153,11 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
       window.dispatchEvent(new CustomEvent('websiteContentUpdated', { 
         detail: websiteData
       }));
+      
+      // Melacak dan menyimpan perubahan yang dipublikasikan
+      const changes = trackChanges();
+      setLastChanges(changes);
+      localStorage.setItem('lastChangesPublished', JSON.stringify(changes));
       
       await simulateProgressStep(90, 100, 500);
       
@@ -157,16 +221,30 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
     }, 2000);
   };
   
+  const handlePreviewWebsite = () => {
+    // Buka tab baru untuk preview website
+    window.open('/', '_blank');
+  };
+  
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-2xl font-bold text-gray-800">Publikasi Website</h2>
-        <Button 
-          onClick={() => onTabChange('overview')}
-          variant="outline"
-        >
-          Kembali ke Dashboard
-        </Button>
+        <div className="flex gap-2">
+          <Button 
+            onClick={handlePreviewWebsite}
+            variant="outline"
+          >
+            <Eye className="h-4 w-4 mr-2" />
+            Lihat Website
+          </Button>
+          <Button 
+            onClick={() => onTabChange('overview')}
+            variant="outline"
+          >
+            Kembali ke Dashboard
+          </Button>
+        </div>
       </div>
       
       <Card>
@@ -308,13 +386,26 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
                 </div>
                 
                 <div className="p-4 border border-gray-200 rounded-md">
-                  <h3 className="font-medium">Komponen yang Diperbarui</h3>
-                  <ul className="text-sm text-gray-500 mt-1 space-y-1">
-                    <li>• Informasi Dasar Website</li>
-                    <li>• Tema dan Warna</li>
-                    <li>• Pengaturan SEO</li>
-                    <li>• Konten Halaman Beranda</li>
-                  </ul>
+                  <h3 className="font-medium">Perubahan yang Dipublikasikan</h3>
+                  {lastChanges.length > 0 ? (
+                    <ul className="text-sm text-gray-500 mt-1 space-y-1">
+                      {lastChanges.map((change, index) => (
+                        <li key={index}>• {change}</li>
+                      ))}
+                    </ul>
+                  ) : (
+                    <p className="text-sm text-gray-500 mt-1">
+                      • Website dipublikasikan
+                    </p>
+                  )}
+                </div>
+                
+                <div className="p-4 border border-gray-200 rounded-md">
+                  <h3 className="font-medium">Status CDN</h3>
+                  <div className="flex items-center gap-2 mt-1">
+                    <div className="h-3 w-3 rounded-full bg-green-500"></div>
+                    <span className="text-sm text-gray-500">Aktif di seluruh region</span>
+                  </div>
                 </div>
               </>
             ) : (
@@ -325,6 +416,37 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
                 </p>
               </div>
             )}
+          </div>
+        </CardContent>
+      </Card>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Situs dan Domain</CardTitle>
+          <CardDescription>
+            Pengaturan alamat website dan domain
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div className="p-4 border border-gray-200 rounded-md">
+              <h3 className="font-medium">URL Website</h3>
+              <p className="text-sm text-gray-500 mt-1">
+                <a href="/" target="_blank" rel="noopener noreferrer" className="text-blue-600 hover:underline flex items-center">
+                  {window.location.origin} <ExternalLink className="h-4 w-4 ml-1" />
+                </a>
+              </p>
+            </div>
+            
+            <div className="p-4 border border-dashed border-gray-300 rounded-md">
+              <h3 className="font-medium">Custom Domain</h3>
+              <p className="text-sm text-gray-500 mt-1">
+                Tidak ada custom domain yang dikonfigurasi. Hubungi administrator untuk menambahkan domain kustom.
+              </p>
+              <Button className="mt-2" variant="outline" disabled>
+                Tambah Domain Kustom
+              </Button>
+            </div>
           </div>
         </CardContent>
       </Card>

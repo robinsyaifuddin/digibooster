@@ -1,3 +1,4 @@
+
 import { WebsiteData } from '../types/websiteTypes';
 
 // Default website data values
@@ -131,6 +132,38 @@ const defaultWebsiteData: WebsiteData = {
         role: 'Seo jasaiklmurah.my.id',
         content: 'Terima kasih Pak, websitenya sangat membantu... after salesnya juga bagus, top deh, next time pasti order lg.',
         image: 'https://randomuser.me/api/portraits/women/5.jpg',
+      },
+    ],
+    partners: [
+      {
+        id: '1',
+        name: 'Google',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png',
+        link: 'https://google.com'
+      },
+      {
+        id: '2',
+        name: 'Microsoft',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png',
+        link: 'https://microsoft.com'
+      },
+      {
+        id: '3',
+        name: 'Amazon',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png',
+        link: 'https://amazon.com'
+      },
+      {
+        id: '4',
+        name: 'Facebook',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png',
+        link: 'https://facebook.com'
+      },
+      {
+        id: '5',
+        name: 'IBM',
+        image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png',
+        link: 'https://ibm.com'
       },
     ],
     benefits: [

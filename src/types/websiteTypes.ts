@@ -1,3 +1,4 @@
+
 // Define website data structure types
 
 // Website general information type
@@ -72,11 +73,20 @@ export interface TestimonialItem {
   image?: string;
 }
 
+// Partner/client item type
+export interface PartnerItem {
+  id: string;
+  name: string;
+  image: string;
+  link?: string;
+}
+
 // Home content type
 export interface HomeContent {
   hero: HeroSection;
   services: ServiceItem[];
   testimonials: TestimonialItem[];
+  partners: PartnerItem[];
   benefits: string[];
 }
 
@@ -100,6 +110,7 @@ export interface WebsiteDataActions {
   updateHomeContent: (content: Partial<HomeContent>) => void;
   updateHomeServices: (services: ServiceItem[]) => void;
   updateHomeTestimonials: (testimonials: TestimonialItem[]) => void;
+  updateHomePartners: (partners: PartnerItem[]) => void;
   resetToDefault: () => void;
 }
 

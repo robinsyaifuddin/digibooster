@@ -1,7 +1,7 @@
 
 import { create } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
-import { WebsiteStore, WebsiteData } from '../types/websiteTypes';
+import { WebsiteStore, WebsiteData, PartnerItem } from '../types/websiteTypes';
 import defaultWebsiteData from '../data/defaultWebsiteData';
 
 // Define persist configuration
@@ -69,6 +69,14 @@ export const useWebsiteDataStore = create<WebsiteStore>()(
           homeContent: {
             ...state.homeContent,
             testimonials,
+          }
+        })),
+      
+      updateHomePartners: (partners) =>
+        set((state) => ({
+          homeContent: {
+            ...state.homeContent,
+            partners,
           }
         })),
       

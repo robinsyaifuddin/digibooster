@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Plus, PenSquare, Save, ExternalLink } from "lucide-react";
+import { Plus, PenSquare, Save, ExternalLink, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -9,6 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 import { useToast } from "@/hooks/use-toast";
+import { PartnerItem } from "@/types/websiteTypes";
 
 interface Blog {
   id: number;
@@ -30,11 +31,19 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
   // State untuk form editing
   const [editingService, setEditingService] = useState<string | null>(null);
   const [editingTestimonial, setEditingTestimonial] = useState<string | null>(null);
+  const [editingPartner, setEditingPartner] = useState<string | null>(null);
   const [heroContent, setHeroContent] = useState({
     title: websiteData.homeContent.hero.title,
     subtitle: websiteData.homeContent.hero.subtitle,
     ctaText: websiteData.homeContent.hero.ctaText,
     ctaLink: websiteData.homeContent.hero.ctaLink,
+  });
+  
+  // State untuk partner baru
+  const [newPartner, setNewPartner] = useState<Omit<PartnerItem, 'id'>>({
+    name: '',
+    image: '',
+    link: '',
   });
   
   // Fungsi untuk handle perubahan
@@ -74,6 +83,65 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
     });
     
     websiteData.updateHomeTestimonials(updatedTestimonials);
+  };
+  
+  const handlePartnerChange = (id: string, field: string, value: string) => {
+    const updatedPartners = websiteData.homeContent.partners.map(partner => {
+      if (partner.id === id) {
+        return { ...partner, [field]: value };
+      }
+      return partner;
+    });
+    
+    websiteData.updateHomePartners(updatedPartners);
+  };
+  
+  const handleNewPartnerChange = (field: string, value: string) => {
+    setNewPartner(prev => ({ ...prev, [field]: value }));
+  };
+  
+  const addNewPartner = () => {
+    if (!newPartner.name || !newPartner.image) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: "Nama dan URL gambar partner harus diisi",
+      });
+      return;
+    }
+    
+    const newPartnerWithId: PartnerItem = {
+      id: Date.now().toString(),
+      ...newPartner
+    };
+    
+    const updatedPartners = [...websiteData.homeContent.partners, newPartnerWithId];
+    websiteData.updateHomePartners(updatedPartners);
+    
+    // Reset form
+    setNewPartner({
+      name: '',
+      image: '',
+      link: '',
+    });
+    
+    toast({
+      title: "Partner baru ditambahkan",
+      description: "Partner baru berhasil ditambahkan dan akan terlihat setelah dipublikasikan",
+    });
+  };
+  
+  const deletePartner = (id: string) => {
+    const updatedPartners = websiteData.homeContent.partners.filter(
+      partner => partner.id !== id
+    );
+    
+    websiteData.updateHomePartners(updatedPartners);
+    
+    toast({
+      title: "Partner dihapus",
+      description: "Partner berhasil dihapus dari daftar",
+    });
   };
   
   const courses = [
@@ -123,8 +191,10 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
           <TabsTrigger value="courses">Kelas</TabsTrigger>
           <TabsTrigger value="portfolio">Portofolio</TabsTrigger>
           <TabsTrigger value="home">Beranda</TabsTrigger>
+          <TabsTrigger value="partners">Partner</TabsTrigger>
         </TabsList>
         
+        {/* Tab Konten Blog */}
         <TabsContent value="blog">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
             <h3 className="text-lg font-semibold">Artikel Blog</h3>
@@ -176,6 +246,7 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
           </Card>
         </TabsContent>
         
+        {/* Tab Konten Kelas */}
         <TabsContent value="courses">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
             <h3 className="text-lg font-semibold">Kelas</h3>
@@ -215,6 +286,7 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
           </div>
         </TabsContent>
         
+        {/* Tab Konten Portofolio */}
         <TabsContent value="portfolio">
           <div className="flex flex-col md:flex-row md:items-center justify-between mb-4 gap-4">
             <h3 className="text-lg font-semibold">Portofolio</h3>
@@ -250,6 +322,7 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
           </div>
         </TabsContent>
         
+        {/* Tab Konten Beranda */}
         <TabsContent value="home">
           <div className="space-y-6">
             <Card>
@@ -479,6 +552,163 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
                 Siap Publikasi
               </Button>
             </div>
+          </div>
+        </TabsContent>
+        
+        {/* Tab Konten Partners */}
+        <TabsContent value="partners">
+          <div className="space-y-6">
+            <Card>
+              <CardHeader>
+                <CardTitle className="text-lg">Kelola Partner Perusahaan</CardTitle>
+                <CardDescription>
+                  Edit dan tambahkan perusahaan teknologi yang menjadi partner DigiBooster
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-6">
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    {websiteData.homeContent.partners.map(partner => (
+                      <Card key={partner.id} className="shadow-sm">
+                        <CardHeader className="pb-2">
+                          <div className="flex justify-between items-start">
+                            <CardTitle className="text-base">{partner.name}</CardTitle>
+                            <Button 
+                              size="sm" 
+                              variant="ghost" 
+                              onClick={() => setEditingPartner(editingPartner === partner.id ? null : partner.id)}
+                            >
+                              {editingPartner === partner.id ? "Tutup" : "Edit"}
+                            </Button>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="pt-2">
+                          <div className="h-16 flex items-center justify-center mb-2">
+                            <img 
+                              src={partner.image} 
+                              alt={partner.name}
+                              className="h-full object-contain"
+                            />
+                          </div>
+                          
+                          {editingPartner === partner.id ? (
+                            <div className="space-y-3 mt-4">
+                              <div>
+                                <Label htmlFor={`partner-name-${partner.id}`}>Nama Partner</Label>
+                                <Input 
+                                  id={`partner-name-${partner.id}`}
+                                  value={partner.name}
+                                  onChange={(e) => handlePartnerChange(partner.id, 'name', e.target.value)}
+                                  className="mt-1" 
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor={`partner-image-${partner.id}`}>URL Logo</Label>
+                                <Input 
+                                  id={`partner-image-${partner.id}`}
+                                  value={partner.image}
+                                  onChange={(e) => handlePartnerChange(partner.id, 'image', e.target.value)}
+                                  className="mt-1" 
+                                />
+                              </div>
+                              <div>
+                                <Label htmlFor={`partner-link-${partner.id}`}>Website Link (opsional)</Label>
+                                <Input 
+                                  id={`partner-link-${partner.id}`}
+                                  value={partner.link || ''}
+                                  onChange={(e) => handlePartnerChange(partner.id, 'link', e.target.value)}
+                                  className="mt-1" 
+                                  placeholder="https://"
+                                />
+                              </div>
+                              <div className="flex justify-between">
+                                <Button 
+                                  size="sm" 
+                                  variant="destructive" 
+                                  onClick={() => deletePartner(partner.id)}
+                                >
+                                  <Trash2 className="h-3 w-3 mr-2" />
+                                  Hapus
+                                </Button>
+                                <Button size="sm" onClick={() => setEditingPartner(null)}>
+                                  <Save className="h-3 w-3 mr-2" />
+                                  Simpan
+                                </Button>
+                              </div>
+                            </div>
+                          ) : (
+                            <p className="text-sm text-gray-500 truncate">
+                              {partner.link ? (
+                                <a href={partner.link} target="_blank" rel="noopener noreferrer" className="flex items-center">
+                                  {partner.link} <ExternalLink className="h-3 w-3 ml-1" />
+                                </a>
+                              ) : (
+                                "Tidak ada link website"
+                              )}
+                            </p>
+                          )}
+                        </CardContent>
+                      </Card>
+                    ))}
+                  </div>
+                  
+                  <Card>
+                    <CardHeader>
+                      <CardTitle className="text-base">Tambah Partner Baru</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <div className="space-y-3">
+                        <div>
+                          <Label htmlFor="new-partner-name">Nama Partner</Label>
+                          <Input 
+                            id="new-partner-name"
+                            value={newPartner.name}
+                            onChange={(e) => handleNewPartnerChange('name', e.target.value)}
+                            className="mt-1" 
+                            placeholder="Nama perusahaan"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="new-partner-image">URL Logo</Label>
+                          <Input 
+                            id="new-partner-image"
+                            value={newPartner.image}
+                            onChange={(e) => handleNewPartnerChange('image', e.target.value)}
+                            className="mt-1" 
+                            placeholder="https://example.com/logo.png"
+                          />
+                        </div>
+                        <div>
+                          <Label htmlFor="new-partner-link">Website Link (opsional)</Label>
+                          <Input 
+                            id="new-partner-link"
+                            value={newPartner.link || ''}
+                            onChange={(e) => handleNewPartnerChange('link', e.target.value)}
+                            className="mt-1" 
+                            placeholder="https://example.com"
+                          />
+                        </div>
+                      </div>
+                    </CardContent>
+                    <CardFooter>
+                      <Button onClick={addNewPartner}>
+                        <Plus className="h-4 w-4 mr-2" />
+                        Tambah Partner
+                      </Button>
+                    </CardFooter>
+                  </Card>
+                </div>
+              </CardContent>
+              <CardFooter className="flex justify-between">
+                <Button variant="outline" onClick={() => setActiveTab("home")}>
+                  Kembali ke Beranda
+                </Button>
+                <Button onClick={handlePublishContent} className="bg-green-600 hover:bg-green-700">
+                  <Save className="w-4 h-4 mr-2" />
+                  Siap Publikasi
+                </Button>
+              </CardFooter>
+            </Card>
           </div>
         </TabsContent>
       </Tabs>

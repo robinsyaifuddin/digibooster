@@ -1,10 +1,10 @@
 
-import { useWebsiteDataStore } from '@/stores/websiteDataStore';
+import { useEffect } from 'react';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import CtaSection from '@/components/home/CtaSection';
-import BenefitsSection from '@/components/home/BenefitsSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
+import BenefitsSection from '@/components/home/BenefitsSection';
 import ContactSection from '@/components/home/ContactSection';
 import ScrollAnimation from '@/components/home/ScrollAnimation';
 import LogoMarquee from '@/components/home/LogoMarquee';
@@ -13,57 +13,88 @@ import { ReactNode } from 'react';
 
 const Index = () => {
   const { homeContent, isLoading } = useHomeContent();
-  const websiteData = useWebsiteDataStore();
-
-  // Partner logos
-  const partnerLogos = [
-    { name: 'Google', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/150px-Google_%22G%22_Logo.svg.png' },
-    { name: 'Microsoft', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/150px-Microsoft_logo.svg.png' },
-    { name: 'Amazon', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/175px-Amazon_logo.svg.png' },
-    { name: 'IBM', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/150px-IBM_logo.svg.png' },
-    { name: 'Oracle', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/50/Oracle_logo.svg/150px-Oracle_logo.svg.png' },
-    { name: 'Cisco', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/08/Cisco_logo_blue_2016.svg/150px-Cisco_logo_blue_2016.svg.png' },
-    { name: 'Intel', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Intel_logo_%282006-2020%29.svg/150px-Intel_logo_%282006-2020%29.svg.png' },
-    { name: 'Nvidia', image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/21/Nvidia_logo.svg/150px-Nvidia_logo.svg.png' },
-  ];
-
-  if (isLoading || !homeContent) {
-    return (
-      <div className="flex justify-center items-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-digiblue-600"></div>
-      </div>
-    );
-  }
-
-  // Updated program data with more specific descriptions
-  const updatedPrograms = [
+  
+  // Fallback data jika homeContent masih loading
+  const servicesFallback = [
     {
       id: '1',
-      title: 'Bantuan Layanan Digital',
-      description: 'Jasa pembuatan website, desain grafis, branding, konten, dan kebutuhan digital lainnya untuk mendukung transformasi digital bisnis Anda.',
+      title: 'Layanan Jasa Digital',
+      description: 'Tingkatkan presence digital Anda dengan layanan jasa design, web development, dan digital marketing kami.',
       icon: 'Code',
-      link: '/program/jasa-digital',
+      link: '/layanan/jasa-digital',
     },
     {
       id: '2',
       title: 'Motivasi dan Edukasi Digital',
-      description: 'Program seminar, webinar, dan workshop yang menginspirasi dan memberi pengetahuan praktis tentang dunia digital dan peluangnya.',
-      icon: 'BookOpen',
-      link: '/program/motivasi-edukasi',
+      description: 'Dapatkan inspirasi dan pengetahuan digital melalui seminar dan workshop yang kami selenggarakan.',
+      icon: 'Lightbulb',
+      link: '/layanan/motivasi-edukasi',
     },
     {
       id: '3',
-      title: 'Sharing dan Konsultasi Bisnis',
-      description: 'Layanan konsultasi dan sharing session untuk membantu menyelesaikan tantangan bisnis digital Anda dengan solusi yang terukur.',
-      icon: 'MessagesSquare',
-      link: '/program/sharing-konsultasi',
+      title: 'Sharing dan Konsultasi Bisnis Digital',
+      description: 'Konsultasikan kebutuhan digital bisnis Anda dengan pakar kami untuk solusi terbaik.',
+      icon: 'Users',
+      link: '/layanan/sharing-konsultasi',
     },
     {
       id: '4',
       title: 'Short Class dan Mini Bootcamp',
-      description: 'Program pelatihan intensif untuk mengembangkan keterampilan digital praktis dalam waktu singkat dengan pendekatan yang terstruktur.',
-      icon: 'GraduationCap',
-      link: '/program/kelas',
+      description: 'Pelajari keterampilan digital terbaru melalui kelas intensif dan bootcamp dari para ahli.',
+      icon: 'PenTool',
+      link: '/layanan/kelas',
+    },
+  ];
+  
+  const testimonialsFallback = [
+    {
+      id: '1',
+      name: 'Lania',
+      role: 'Owner zenboard.id',
+      content: 'Voodoo recomended banget, menurut saya itu jasa paling clex sih. Dijamin pek rapi hasilnya memuaskan!!!!',
+      image: 'https://randomuser.me/api/portraits/women/1.jpg',
+    },
+    {
+      id: '2',
+      name: 'Alvin Rahman',
+      role: 'Owner sixtwogkarta.com',
+      content: 'Pelayananya cepat, hasil bagusss, udah bikin 5 bulanan yang lalu terus minta tolong ada yg di edit masih bisa dibanggiin!!!',
+      image: 'https://randomuser.me/api/portraits/men/2.jpg',
+    },
+    {
+      id: '3',
+      name: 'John Smith',
+      role: 'Marketing rentalspace.web.id',
+      content: 'Voodoo sangat membantu dlm membuat website, kerja dengan cepat, dan hasil website memuaskan banget!',
+      image: 'https://randomuser.me/api/portraits/men/3.jpg',
+    },
+  ];
+  
+  const partnersFallback = [
+    {
+      id: '1',
+      name: 'Google',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/2048px-Google_%22G%22_Logo.svg.png',
+    },
+    {
+      id: '2',
+      name: 'Microsoft',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png',
+    },
+    {
+      id: '3',
+      name: 'Amazon',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a9/Amazon_logo.svg/2560px-Amazon_logo.svg.png',
+    },
+    {
+      id: '4',
+      name: 'Facebook',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/05/Facebook_Logo_%282019%29.png/1024px-Facebook_Logo_%282019%29.png',
+    },
+    {
+      id: '5',
+      name: 'IBM',
+      image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/IBM_logo.svg/2560px-IBM_logo.svg.png',
     },
   ];
 
@@ -78,48 +109,66 @@ const Index = () => {
     </>
   );
 
+  // Scroll event listener to handle animations
+  useEffect(() => {
+    const handleScroll = () => {
+      const reveals = document.querySelectorAll('.reveal');
+      for (let i = 0; i < reveals.length; i++) {
+        const windowHeight = window.innerHeight;
+        const elementTop = reveals[i].getBoundingClientRect().top;
+        const elementVisible = 150;
+        
+        if (elementTop < windowHeight - elementVisible) {
+          reveals[i].classList.add('active');
+        }
+      }
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    handleScroll(); // Trigger on first load
+    
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="w-full overflow-hidden">
+    <main className="overflow-x-hidden">
+      {/* Hero Section */}
+      <HeroSection 
+        title={homeContent?.hero.title || "Skill Up, Stand Out with DigiBooster"}
+        subtitle={homeContent?.hero.subtitle || "Membantu masyarakat Indonesia mengoptimalkan digitalisasi untuk peningkatan kualitas hidup dan bisnis."}
+        ctaText={homeContent?.hero.ctaText || "Lihat Layanan"}
+        ctaLink={homeContent?.hero.ctaLink || "/layanan"}
+      />
+      
+      {/* Logo Marquee - Trusted by Companies */}
+      <LogoMarquee
+        logos={homeContent?.partners || partnersFallback}
+        title={logoMarqueeTitle}
+        description="Bekerja sama dengan berbagai perusahaan teknologi untuk menghadirkan solusi terbaik"
+        speed="slow"
+        bgColor="bg-gray-50"
+      />
+      
+      {/* Services Section */}
+      <ServicesSection services={homeContent?.services || servicesFallback} />
+      
+      {/* Benefits Section with Animation */}
       <ScrollAnimation>
-        <HeroSection 
-          generalInfo={websiteData.generalInfo} 
-          hero={homeContent.hero} 
-        />
-        
-        <ServicesSection 
-          services={updatedPrograms} 
-        />
-        
-        <BenefitsSection 
-          companyName={websiteData.generalInfo.title} 
-          benefits={homeContent.benefits} 
-        />
-        
-        <TestimonialsSection 
-          companyName={websiteData.generalInfo.title} 
-          testimonials={homeContent.testimonials} 
-        />
-        
-        <CtaSection 
-          companyName={websiteData.generalInfo.title} 
-        />
-        
-        <LogoMarquee 
-          logos={partnerLogos} 
-          direction="right" 
-          speed="slow"
-          bgColor="bg-gray-50"
-          title={logoMarqueeTitle}
-          description="Bermitra dengan berbagai perusahaan teknologi untuk menghadirkan solusi digital terbaik"
-        />
-        
-        <ContactSection 
-          companyName={websiteData.generalInfo.title} 
-        />
+        <BenefitsSection benefits={homeContent?.benefits || []} />
       </ScrollAnimation>
-    </div>
+      
+      {/* Testimonials Section */}
+      <TestimonialsSection testimonials={homeContent?.testimonials || testimonialsFallback} />
+      
+      {/* Contact Section */}
+      <ContactSection />
+      
+      {/* CTA Section */}
+      <CtaSection />
+    </main>
   );
 };
 
 export default Index;
-
