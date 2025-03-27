@@ -5,11 +5,13 @@ import { Card, CardContent } from "@/components/ui/card";
 interface PublishStatusCardProps {
   deploymentStatus: 'idle' | 'publishing' | 'success' | 'error';
   lastPublished: string | null;
+  isRealImplementation?: boolean;
 }
 
 const PublishStatusCard = ({ 
   deploymentStatus, 
-  lastPublished 
+  lastPublished,
+  isRealImplementation = false
 }: PublishStatusCardProps) => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">

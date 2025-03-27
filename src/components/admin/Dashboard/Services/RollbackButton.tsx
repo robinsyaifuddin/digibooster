@@ -5,9 +5,10 @@ import { RotateCcw } from "lucide-react";
 interface RollbackButtonProps {
   onClick: () => void;
   disabled: boolean;
+  isRealImplementation?: boolean;
 }
 
-const RollbackButton = ({ onClick, disabled }: RollbackButtonProps) => {
+const RollbackButton = ({ onClick, disabled, isRealImplementation = false }: RollbackButtonProps) => {
   return (
     <Button 
       variant="outline" 
