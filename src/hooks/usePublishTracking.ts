@@ -62,6 +62,16 @@ export const usePublishTracking = () => {
       localStorage.removeItem('appearanceEdited');
     }
     
+    // Check for page edits by scanning localStorage
+    const keys = Object.keys(localStorage);
+    const pageEditKeys = keys.filter(key => key.startsWith('pageEdited_'));
+    
+    if (pageEditKeys.length > 0) {
+      changes.push(`${pageEditKeys.length} halaman diperbarui`);
+      // Clear page edit flags
+      pageEditKeys.forEach(key => localStorage.removeItem(key));
+    }
+    
     // If no changes were recorded
     if (changes.length === 0) {
       changes.push('Website dipublikasikan');

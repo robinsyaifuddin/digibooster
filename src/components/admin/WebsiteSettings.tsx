@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -7,11 +6,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { BarChart4, CheckCircle, Facebook, Github, Globe, GripHorizontal, Instagram, Linkedin, Move, Palette, RefreshCw, Save, Search, Settings as SettingsIcon, TwitterIcon } from "lucide-react";
+import { BarChart4, CheckCircle, Facebook, FileEdit, Github, Globe, GripHorizontal, Instagram, LayoutGrid, Linkedin, Move, Palette, RefreshCw, Save, Search, Settings as SettingsIcon, TwitterIcon } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { useWebsiteDataStore } from '@/stores/websiteDataStore';
 import ServicesDevelopment from './Dashboard/ServicesDevelopment';
+import PageEditor from './Dashboard/PageEditor';
 
 const WebsiteSettings = () => {
   const { toast } = useToast();
@@ -60,7 +60,7 @@ const WebsiteSettings = () => {
       </div>
 
       <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
-        <TabsList className="w-full md:w-auto grid grid-cols-2 md:grid-cols-5 gap-2">
+        <TabsList className="w-full md:w-auto grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2">
           <TabsTrigger value="general" className="flex items-center">
             <SettingsIcon className="w-4 h-4 mr-2" />
             Umum
@@ -68,6 +68,10 @@ const WebsiteSettings = () => {
           <TabsTrigger value="appearance" className="flex items-center">
             <Palette className="w-4 h-4 mr-2" />
             Tampilan
+          </TabsTrigger>
+          <TabsTrigger value="pages" className="flex items-center">
+            <LayoutGrid className="w-4 h-4 mr-2" />
+            Halaman
           </TabsTrigger>
           <TabsTrigger value="seo" className="flex items-center">
             <Search className="w-4 h-4 mr-2" />
@@ -306,6 +310,11 @@ const WebsiteSettings = () => {
           </Card>
         </TabsContent>
 
+        {/* New Pages Editor Tab */}
+        <TabsContent value="pages" className="space-y-4">
+          <PageEditor pages={websiteData.pages} />
+        </TabsContent>
+
         {/* SEO Settings */}
         <TabsContent value="seo" className="space-y-4">
           <Card>
@@ -530,7 +539,7 @@ const WebsiteSettings = () => {
         </TabsContent>
 
         {/* Publishing Settings */}
-        <TabsContent value="publishing" className="space-y-4">
+        <TabsContent value="publishing">
           <ServicesDevelopment onTabChange={setActiveTab} />
         </TabsContent>
       </Tabs>
