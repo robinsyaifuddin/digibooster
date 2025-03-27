@@ -1,6 +1,6 @@
 
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Globe } from "lucide-react";
+import { Globe, Server } from "lucide-react";
 import PublishButton from "./PublishButton";
 import RollbackButton from "./RollbackButton";
 import PublishStatus from "./PublishStatus";
@@ -11,6 +11,7 @@ interface MainPublishCardProps {
   publishProgress: number;
   lastPublished: string | null;
   isPublishing: boolean;
+  isRealImplementation?: boolean;
   handlePublishChanges: () => void;
   handleRollback: () => void;
 }
@@ -20,6 +21,7 @@ const MainPublishCard = ({
   publishProgress,
   lastPublished,
   isPublishing,
+  isRealImplementation = false,
   handlePublishChanges,
   handleRollback
 }: MainPublishCardProps) => {
@@ -27,11 +29,22 @@ const MainPublishCard = ({
     <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <Globe className="h-5 w-5" />
-          Publikasi Real-Time Website
+          {isRealImplementation ? (
+            <>
+              <Server className="h-5 w-5 text-green-600" />
+              Publikasi Website ke Server Produksi
+            </>
+          ) : (
+            <>
+              <Globe className="h-5 w-5" />
+              Publikasi Real-Time Website
+            </>
+          )}
         </CardTitle>
         <CardDescription>
-          Publikasikan perubahan website agar dapat dilihat secara real-time oleh pengguna publik
+          {isRealImplementation 
+            ? "Publikasikan perubahan website ke server produksi dengan database nyata"
+            : "Publikasikan perubahan website agar dapat dilihat secara real-time oleh pengguna publik (mode simulasi)"}
         </CardDescription>
       </CardHeader>
       
@@ -39,12 +52,14 @@ const MainPublishCard = ({
         <PublishStatus 
           deploymentStatus={deploymentStatus} 
           publishProgress={publishProgress} 
-          lastPublished={lastPublished} 
+          lastPublished={lastPublished}
+          isRealImplementation={isRealImplementation}
         />
         
         <PublishStatusCard 
           deploymentStatus={deploymentStatus} 
-          lastPublished={lastPublished} 
+          lastPublished={lastPublished}
+          isRealImplementation={isRealImplementation}
         />
       </CardContent>
       
@@ -52,12 +67,14 @@ const MainPublishCard = ({
         <PublishButton 
           isPublishing={isPublishing}
           onClick={handlePublishChanges}
+          isRealImplementation={isRealImplementation}
         />
         
         {lastPublished && (
           <RollbackButton 
             onClick={handleRollback}
             disabled={isPublishing}
+            isRealImplementation={isRealImplementation}
           />
         )}
       </CardFooter>

@@ -6,9 +6,10 @@ import { Tooltip, TooltipTrigger, TooltipContent, TooltipProvider } from "@/comp
 interface PublishButtonProps {
   isPublishing: boolean;
   onClick: () => void;
+  isRealImplementation?: boolean;
 }
 
-const PublishButton = ({ isPublishing, onClick }: PublishButtonProps) => {
+const PublishButton = ({ isPublishing, onClick, isRealImplementation = false }: PublishButtonProps) => {
   return (
     <TooltipProvider>
       <Tooltip>
@@ -33,8 +34,9 @@ const PublishButton = ({ isPublishing, onClick }: PublishButtonProps) => {
         </TooltipTrigger>
         <TooltipContent className="bg-amber-50 border-amber-200 text-amber-800 max-w-xs">
           <p className="text-xs">
-            Mode simulasi: Perubahan disimpan di localStorage browser. Untuk implementasi nyata, 
-            diperlukan konfigurasi API dan database.
+            {isRealImplementation 
+              ? "Perubahan akan disimpan di database dan dipublikasikan ke website sebenarnya."
+              : "Mode simulasi: Perubahan disimpan di localStorage browser. Untuk implementasi nyata, diperlukan konfigurasi API dan database."}
           </p>
         </TooltipContent>
       </Tooltip>

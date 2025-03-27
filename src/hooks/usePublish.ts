@@ -12,6 +12,20 @@ export const usePublish = () => {
   const { isPublishing, deploymentStatus, lastPublished, updatePublishState, recordPublishTime } = usePublishState();
   const { lastChanges, trackChanges, saveChanges } = usePublishTracking();
   
+  // Periksa apakah implementasi nyata telah selesai
+  const isRealImplementation = localStorage.getItem('implementation_status') === 'completed';
+  
+  // Ambil pengaturan implementasi jika sudah selesai
+  const getImplementationSettings = () => {
+    return {
+      apiUrl: localStorage.getItem('implementation_apiUrl') || '',
+      apiKey: localStorage.getItem('implementation_apiKey') || '',
+      databaseType: localStorage.getItem('implementation_databaseType') || 'mysql',
+      backendType: localStorage.getItem('implementation_backendType') || 'php',
+      serverProvider: localStorage.getItem('implementation_serverProvider') || ''
+    };
+  };
+  
   const publishChanges = async () => {
     updatePublishState('publishing', true);
     resetProgress();
@@ -42,44 +56,62 @@ export const usePublish = () => {
       
       await simulateProgressStep(20, 50, 1500);
       
-      // Kirim data ke API (contoh implementasi nyata)
-      try {
+      // Jika implementasi nyata sudah selesai, gunakan API
+      if (isRealImplementation) {
+        try {
+          const { apiUrl, apiKey } = getImplementationSettings();
+          
+          if (!apiUrl || !apiKey) {
+            throw new Error('API URL atau API Key tidak ditemukan. Periksa pengaturan implementasi.');
+          }
+          
+          await simulateProgressStep(50, 75, 1500);
+          
+          toast({
+            title: "Mengirim data ke server",
+            description: "Menyinkronkan perubahan dengan server produksi...",
+            duration: 2000,
+          });
+          
+          // Kirim data website ke server menggunakan fetch API
+          const response = await fetch(apiUrl, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`
+            },
+            body: JSON.stringify({
+              websiteData,
+              pageEdits
+            })
+          });
+          
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Gagal mengirim data ke server');
+          }
+          
+          const publishResult = await response.json();
+          console.log('Publish result:', publishResult);
+          
+        } catch (apiError) {
+          console.error('Error publishing to API:', apiError);
+          toast({
+            variant: "destructive",
+            title: "Gagal menghubungi server",
+            description: apiError.message || "Tidak dapat mengirim perubahan ke server. Periksa koneksi internet dan pengaturan API Anda.",
+            duration: 5000,
+          });
+          throw new Error('API error');
+        }
+      } else {
+        // Mode simulasi
         await simulateProgressStep(50, 75, 1500);
-        
         toast({
-          title: "Mengirim data ke server",
-          description: "Menyinkronkan perubahan dengan server produksi...",
+          title: "Mode Simulasi",
+          description: "Perubahan disimpan dalam localStorage browser (mode simulasi).",
           duration: 2000,
         });
-        
-        // Kirim data website ke server (implementasi nyata)
-        // const response = await fetch('https://api.yourdomain.com/publish', {
-        //   method: 'POST',
-        //   headers: {
-        //     'Content-Type': 'application/json',
-        //     'Authorization': 'Bearer YOUR_API_KEY'
-        //   },
-        //   body: JSON.stringify({
-        //     websiteData,
-        //     pageEdits
-        //   })
-        // });
-        
-        // if (!response.ok) {
-        //   throw new Error('Gagal mengirim data ke server');
-        // }
-        
-        // const publishResult = await response.json();
-        // console.log('Publish result:', publishResult);
-      } catch (apiError) {
-        console.error('Error publishing to API:', apiError);
-        toast({
-          variant: "destructive",
-          title: "Gagal menghubungi server",
-          description: "Tidak dapat mengirim perubahan ke server. Periksa koneksi internet Anda.",
-          duration: 5000,
-        });
-        throw new Error('API error');
       }
       
       // Coba simpan data dengan penanganan error yang lebih baik
@@ -133,23 +165,27 @@ export const usePublish = () => {
       // Show success toast
       toast({
         title: "Website berhasil dipublikasikan",
-        description: `Semua perubahan telah live dan dapat dilihat oleh publik pada ${publishTime}`,
+        description: `Semua perubahan telah ${isRealImplementation ? 'tersimpan di database dan' : ''} dapat dilihat oleh publik pada ${publishTime}`,
         duration: 5000,
       });
       
-      // Tampilkan informasi untuk implementasi nyata
-      toast({
-        title: "Catatan implementasi nyata",
-        description: "Untuk implementasi nyata, Anda perlu mengonfigurasi API dan database server.",
-        duration: 8000,
-      });
+      // Tampilkan informasi implementasi jika masih dalam mode simulasi
+      if (!isRealImplementation) {
+        setTimeout(() => {
+          toast({
+            title: "Catatan implementasi nyata",
+            description: "Untuk implementasi nyata, Anda perlu mengonfigurasi API dan database server melalui pengaturan Implementasi Nyata.",
+            duration: 8000,
+          });
+        }, 1000);
+      }
     } catch (error) {
       console.error('Publish error:', error);
       updatePublishState('error', false);
       toast({
         variant: "destructive",
         title: "Gagal mempublikasikan perubahan",
-        description: "Terjadi kesalahan saat mempublikasi website. Silakan coba lagi.",
+        description: error.message || "Terjadi kesalahan saat mempublikasi website. Silakan coba lagi.",
         duration: 5000,
       });
     } finally {
@@ -165,7 +201,40 @@ export const usePublish = () => {
     });
     
     try {
-      // Simulate rollback
+      // Jika implementasi nyata, panggil API untuk rollback
+      if (isRealImplementation) {
+        try {
+          const { apiUrl, apiKey } = getImplementationSettings();
+          
+          // Asinkron, tidak menunggu respons
+          fetch(`${apiUrl}/rollback`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${apiKey}`
+            }
+          }).then(response => {
+            if (!response.ok) {
+              throw new Error('Gagal melakukan rollback di server');
+            }
+            return response.json();
+          }).then(data => {
+            console.log('Rollback result:', data);
+          }).catch(error => {
+            console.error('Error during API rollback:', error);
+            toast({
+              variant: "destructive",
+              title: "Error saat rollback via API",
+              description: error.message,
+              duration: 5000,
+            });
+          });
+        } catch (error) {
+          console.error('Error preparing API rollback:', error);
+        }
+      }
+      
+      // Tetap lakukan rollback lokal
       setTimeout(() => {
         // Remove permanent flag
         localStorage.removeItem('websiteDataPermanent');
@@ -242,6 +311,7 @@ export const usePublish = () => {
     lastChanges,
     publishChanges,
     handleRollback,
-    previewWebsite
+    previewWebsite,
+    isRealImplementation
   };
 };
