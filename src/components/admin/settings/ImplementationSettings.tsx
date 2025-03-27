@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -111,7 +112,7 @@ const ImplementationSettings = () => {
         </div>
       </div>
       
-      <Alert className="bg-blue-50 border-blue-200">
+      <Alert variant="default" className="bg-blue-50 border-blue-200">
         <AlertTriangle className="h-4 w-4 text-blue-600" />
         <AlertDescription className="text-blue-700">
           Mode simulasi saat ini menggunakan penyimpanan lokal (localStorage) yang hanya tersimpan di browser Anda. 
