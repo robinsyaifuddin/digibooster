@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useRef, useEffect } from 'react';
 import { ServiceItem } from '@/types/websiteTypes';
 import ServiceCard from './ServiceCard';
 import { Link } from 'react-router-dom';
@@ -10,11 +10,42 @@ interface ServicesSectionProps {
 }
 
 const ServicesSection = ({ services }: ServicesSectionProps) => {
+  const marqueeRef = useRef<HTMLDivElement>(null);
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!marqueeRef.current) return;
+      
+      const scrollPosition = window.scrollY;
+      const offset = scrollPosition * 0.1; // Adjust the speed
+      marqueeRef.current.style.transform = `translateX(${offset}px)`;
+    };
+    
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+  
   return (
     <section className="py-24 md:py-32 bg-gradient-to-tr from-digiblue-800 to-digiblue-600 overflow-hidden relative">
       {/* Decorative elements */}
       <div className="absolute top-20 left-0 w-64 h-64 rounded-full bg-white/5 blur-3xl"></div>
       <div className="absolute bottom-20 right-0 w-64 h-64 rounded-full bg-white/5 blur-3xl"></div>
+      
+      {/* Marquee Title Effect */}
+      <div className="container mx-auto px-4 mb-16 overflow-hidden">
+        <div className="whitespace-nowrap flex space-x-4">
+          <div className="animate-marquee-slow">
+            <h2 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-digiblue-200">
+              PROGRAM KAMI &nbsp;&nbsp;&bull;&nbsp;&nbsp; PROGRAM KAMI &nbsp;&nbsp;&bull;&nbsp;&nbsp; PROGRAM KAMI &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+            </h2>
+          </div>
+          <div className="animate-marquee-slow absolute">
+            <h2 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-white to-digiblue-200">
+              PROGRAM KAMI &nbsp;&nbsp;&bull;&nbsp;&nbsp; PROGRAM KAMI &nbsp;&nbsp;&bull;&nbsp;&nbsp; PROGRAM KAMI &nbsp;&nbsp;&bull;&nbsp;&nbsp;
+            </h2>
+          </div>
+        </div>
+      </div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className="max-w-3xl mx-auto text-center mb-16 scroll-animation">
