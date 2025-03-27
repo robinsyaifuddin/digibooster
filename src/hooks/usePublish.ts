@@ -3,21 +3,45 @@ import { useState, useEffect } from "react";
 import { useToast } from "@/hooks/use-toast";
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 
-interface PublishTrackerProps {
-  setDeploymentStatus: (status: 'idle' | 'publishing' | 'success' | 'error') => void;
-  setPublishProgress: (progress: number) => void;
-  setLastPublished: (time: string | null) => void;
-  setLastChanges: (changes: string[]) => void;
+interface UsePublishReturn {
+  isPublishing: boolean;
+  publishProgress: number;
+  lastPublished: string | null;
+  deploymentStatus: 'idle' | 'publishing' | 'success' | 'error';
+  lastChanges: string[];
+  publishChanges: () => Promise<void>;
+  handleRollback: () => void;
 }
 
-const PublishTracker = ({ 
-  setDeploymentStatus, 
-  setPublishProgress, 
-  setLastPublished, 
-  setLastChanges
-}: PublishTrackerProps) => {
+export const usePublish = (): UsePublishReturn => {
   const { toast } = useToast();
   const websiteData = useWebsiteDataStore(state => state);
+  const [isPublishing, setIsPublishing] = useState(false);
+  const [publishProgress, setPublishProgress] = useState(0);
+  const [lastPublished, setLastPublished] = useState<string | null>(
+    localStorage.getItem('lastPublishTime')
+  );
+  const [deploymentStatus, setDeploymentStatus] = useState<'idle' | 'publishing' | 'success' | 'error'>('idle');
+  const [lastChanges, setLastChanges] = useState<string[]>([]);
+  
+  useEffect(() => {
+    // Load previous publication data
+    const storedLastPublished = localStorage.getItem('lastPublishTime');
+    if (storedLastPublished) {
+      setLastPublished(storedLastPublished);
+    }
+    
+    // Load previous changes data
+    const storedLastChanges = localStorage.getItem('lastChangesPublished');
+    if (storedLastChanges) {
+      try {
+        setLastChanges(JSON.parse(storedLastChanges));
+      } catch (e) {
+        console.error('Error parsing stored changes', e);
+        setLastChanges([]);
+      }
+    }
+  }, []);
   
   const simulateProgressStep = (start: number, end: number, duration: number) => {
     const interval = 50; // Update every 50ms
@@ -91,6 +115,7 @@ const PublishTracker = ({
   };
   
   const publishChanges = async () => {
+    setIsPublishing(true);
     setDeploymentStatus('publishing');
     setPublishProgress(0);
     
@@ -175,10 +200,35 @@ const PublishTracker = ({
         description: "Terjadi kesalahan saat mempublikasi website. Silakan coba lagi.",
         duration: 5000,
       });
+    } finally {
+      setIsPublishing(false);
     }
   };
   
-  return { publishChanges };
+  const handleRollback = () => {
+    toast({
+      title: "Rollback dimulai",
+      description: "Mengembalikan website ke versi sebelumnya...",
+      duration: 3000,
+    });
+    
+    // Simulate rollback
+    setTimeout(() => {
+      toast({
+        title: "Rollback selesai",
+        description: "Website telah dikembalikan ke versi sebelumnya.",
+        duration: 3000,
+      });
+    }, 2000);
+  };
+  
+  return {
+    isPublishing,
+    publishProgress,
+    lastPublished,
+    deploymentStatus,
+    lastChanges,
+    publishChanges,
+    handleRollback
+  };
 };
-
-export default PublishTracker;
