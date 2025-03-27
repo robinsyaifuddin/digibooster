@@ -7,7 +7,7 @@ import {
   CircleDot, Sparkles, Palmtree, 
   ChevronsUpDown
 } from 'lucide-react';
-import { Button as UIButton } from "@/components/ui/button";
+import { Button } from "@/components/ui/button";  // Corrected import
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Card, CardContent } from "@/components/ui/card";
 import { useEditor } from './EditorContext';
