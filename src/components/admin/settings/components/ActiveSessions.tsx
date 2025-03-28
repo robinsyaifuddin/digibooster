@@ -2,8 +2,17 @@
 import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { useAuth } from '@/contexts/AuthContext';
 
 const ActiveSessions: React.FC = () => {
+  const { logoutFromAllDevices } = useAuth();
+
+  const handleLogoutAllDevices = () => {
+    if (logoutFromAllDevices) {
+      logoutFromAllDevices();
+    }
+  };
+
   return (
     <div>
       <h3 className="text-sm font-medium mb-3">Sesi Aktif</h3>
@@ -24,7 +33,7 @@ const ActiveSessions: React.FC = () => {
       </div>
       
       <div className="mt-3">
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={handleLogoutAllDevices}>
           Logout Dari Semua Perangkat
         </Button>
       </div>
