@@ -19,17 +19,20 @@ export const usePublishApi = () => {
       // Jika implementasi nyata, simpan perubahan di Supabase
       const { generalInfo, pages, appearance, seo, homeContent } = data.websiteData;
       
+      // Konversi objek TypeScript ke JSON yang bisa diterima oleh Supabase
+      const websiteContent = {
+        generalInfo, 
+        appearance, 
+        seo, 
+        homeContent
+      };
+      
       // Simpan konten website umum
       const { error: contentError } = await supabase
         .from('website_content')
         .upsert({
           name: 'main',
-          content: {
-            generalInfo, 
-            appearance, 
-            seo, 
-            homeContent
-          }
+          content: websiteContent as any
         }, {
           onConflict: 'name'
         });
@@ -115,12 +118,27 @@ export const usePublishApi = () => {
           .single();
         
         if (prevContentData && prevContentData.content) {
-          const contentData = prevContentData.content as Record<string, any>;
+          // Jika konten content adalah string JSON, parse terlebih dahulu
+          let contentData = prevContentData.content;
+          if (typeof contentData === 'string') {
+            try {
+              contentData = JSON.parse(contentData);
+            } catch (e) {
+              console.error("Failed to parse content:", e);
+            }
+          }
+          
+          // Jika lastPublishes[1].changes adalah objek dengan properti pages, gunakan data tersebut
+          const previousPages = lastPublishes[1].changes && 
+                               typeof lastPublishes[1].changes === 'object' && 
+                               lastPublishes[1].changes.pages ? 
+                               lastPublishes[1].changes.pages : [];
+          
           return { 
             success: true, 
             data: {
               ...contentData,
-              pages: lastPublishes[1].changes?.pages || []
+              pages: previousPages
             }
           };
         }

@@ -48,20 +48,24 @@ export default function Home() {
             if (!pagesError && pagesData) {
               // Replace pages in store with pages from database
               pagesData.forEach(page => {
+                const pageContent = typeof page.content === 'string' 
+                  ? page.content 
+                  : JSON.stringify(page.content);
+                
                 const existingPage = websiteStore.pages.find(p => p.id === page.id);
                 
                 if (existingPage) {
                   websiteStore.updatePage(page.id, {
                     title: page.title,
                     slug: page.slug,
-                    content: page.content as string,
+                    content: pageContent,
                     isPublished: page.published
                   });
                 } else {
                   websiteStore.addPage({
                     title: page.title,
                     slug: page.slug,
-                    content: page.content as string,
+                    content: pageContent,
                     isPublished: page.published
                   });
                 }
