@@ -17,6 +17,7 @@ export interface AuthContextType {
   register: (email: string, password: string, name: string) => Promise<void>;
   logout: () => void;
   isAuthenticated: boolean;
+  isLoading: boolean; // Menambahkan properti isLoading
   checkPasswordStrength: (password: string) => {
     score: number;
     feedback: string;

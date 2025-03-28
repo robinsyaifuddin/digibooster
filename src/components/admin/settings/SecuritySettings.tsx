@@ -65,7 +65,10 @@ const SecuritySettings: React.FC = () => {
               <div className="grid gap-6">
                 <SecurityMonitoring />
                 <PasswordChecker />
-                <SecurityRecommendation />
+                <SecurityRecommendation 
+                  title="Rekomendasi Keamanan" 
+                  description="Aktifkan autentikasi dua faktor untuk meningkatkan keamanan akun Anda." 
+                />
               </div>
             </CardContent>
           </Card>
@@ -93,7 +96,7 @@ const SecuritySettings: React.FC = () => {
         <TabsContent value="sessions" className="space-y-4">
           <Card>
             <CardContent className="pt-6">
-              <ActiveSessions onLogoutAllDevices={logoutFromAllDevices} />
+              <ActiveSessions />
             </CardContent>
           </Card>
         </TabsContent>
