@@ -83,7 +83,8 @@ export const useAuthProvider = (): AuthContextType => {
 
   const login = async (email: string, password: string) => {
     try {
-      const { error } = await supabase.auth.signInWithPassword({
+      console.log(`Attempting login with: ${email}`);
+      const { data, error } = await supabase.auth.signInWithPassword({
         email,
         password,
       });
@@ -95,8 +96,12 @@ export const useAuthProvider = (): AuthContextType => {
           customError.name = 'AuthProviderDisabled';
           throw customError;
         }
+        
+        console.error('Login error details:', error);
         throw error;
       }
+      
+      console.log('Login success:', data);
     } catch (error: any) {
       console.error('Error logging in:', error.message);
       throw error;
