@@ -129,17 +129,23 @@ export const usePublishApi = () => {
           }
           
           // Jika lastPublishes[1].changes adalah objek dengan properti pages, gunakan data tersebut
-          const previousPages = lastPublishes[1].changes && 
-                               typeof lastPublishes[1].changes === 'object' && 
-                               lastPublishes[1].changes.pages ? 
-                               lastPublishes[1].changes.pages : [];
+          let previousPages = [];
+          if (lastPublishes[1].changes && 
+              typeof lastPublishes[1].changes === 'object') {
+            const changes = lastPublishes[1].changes as Record<string, any>;
+            if (changes.pages) {
+              previousPages = changes.pages;
+            }
+          }
+          
+          // Ensure contentData is an object that can be spread
+          const resultData = typeof contentData === 'object' && contentData !== null 
+            ? { ...contentData as Record<string, any>, pages: previousPages }
+            : { pages: previousPages };
           
           return { 
             success: true, 
-            data: {
-              ...contentData,
-              pages: previousPages
-            }
+            data: resultData
           };
         }
       }
