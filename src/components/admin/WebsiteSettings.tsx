@@ -10,10 +10,10 @@ import SecuritySettings from './settings/SecuritySettings';
 import SocialMediaSettings from './settings/SocialMediaSettings';
 import ImplementationSettings from './settings/ImplementationSettings';
 import { useToast } from '@/hooks/use-toast';
-import { Shield } from 'lucide-react';
 
 const WebsiteSettings = () => {
   const [activeTab, setActiveTab] = useState("general");
+  const [saving, setSaving] = useState(false);
   const { toast } = useToast();
 
   const handleTabChange = (tab: string) => {
@@ -39,9 +39,22 @@ const WebsiteSettings = () => {
     setActiveTab(tab);
   };
 
+  const handleSaveSettings = () => {
+    setSaving(true);
+    
+    // Simulasi proses penyimpanan
+    setTimeout(() => {
+      setSaving(false);
+      toast({
+        title: "Pengaturan berhasil disimpan",
+        description: "Semua perubahan telah disimpan dengan sukses",
+      });
+    }, 1500);
+  };
+
   return (
     <div className="space-y-6">
-      <SettingsHeader activeTab={activeTab} />
+      <SettingsHeader activeTab={activeTab} saving={saving} onSave={handleSaveSettings} />
       
       <Tabs value={activeTab} onValueChange={handleTabChange} className="space-y-4">
         <TabsList className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 overflow-auto bg-white border">

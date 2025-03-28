@@ -209,7 +209,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           
           if (passwordCheck.score < 3) {
             toast({
-              variant: "warning",
+              variant: "default",
               title: "Password lemah",
               description: passwordCheck.feedback,
             });
@@ -304,7 +304,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     
     if (passwordStrength.score < 3) {
       toast({
-        variant: "warning",
+        variant: "default",
         title: "Password tidak aman",
         description: passwordStrength.feedback,
       });
@@ -341,7 +341,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         toast({
           title: "Pendaftaran berhasil",
           description: "Akun telah dibuat dengan pengaturan keamanan standar",
-          icon: <Shield className="h-4 w-4 text-green-600" />
         });
         
         resolve();
@@ -379,7 +378,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       toast({
         title: "Keamanan diperbarui",
         description: `Level keamanan akun diubah menjadi ${level}`,
-        icon: <Shield className="h-4 w-4 text-green-600" />
       });
     }
   };
