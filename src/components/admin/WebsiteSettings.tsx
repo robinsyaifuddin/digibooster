@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SettingsHeader from './settings/SettingsHeader';
@@ -69,7 +68,12 @@ const WebsiteSettings = () => {
             </span>
           </TabsTrigger>
           <TabsTrigger value="publishing">Penerbitan</TabsTrigger>
-          <TabsTrigger value="implementation">Implementasi</TabsTrigger>
+          <TabsTrigger value="implementation" className="relative">
+            Implementasi
+            <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-[10px] rounded-full w-4 h-4 flex items-center justify-center">
+              Baru
+            </span>
+          </TabsTrigger>
         </TabsList>
         
         <TabsContent value="general" className="mt-6">

@@ -9,6 +9,8 @@ import { usePublishApi } from "./usePublishApi";
 import { usePublishStorage } from "./usePublishStorage";
 import { usePublishEvents } from "./usePublishEvents";
 import { usePublishNotifications } from "./usePublishNotifications";
+import { useAuth } from "@/contexts/AuthContext";
+import { supabase } from "@/integrations/supabase/client";
 
 export const usePublish = () => {
   const websiteData = useWebsiteDataStore(state => state);
@@ -20,6 +22,34 @@ export const usePublish = () => {
   const { saveWebsiteData, backupCurrentData, restoreFromBackup } = usePublishStorage();
   const { dispatchContentUpdateEvent, dispatchPageContentUpdates } = usePublishEvents();
   const notifications = usePublishNotifications();
+  const { user } = useAuth();
+  
+  // Fungsi untuk memuat data website dari Supabase (jika menggunakan implementasi nyata)
+  const loadWebsiteDataFromSupabase = async () => {
+    if (!isRealImplementation) return null;
+    
+    try {
+      const { data, error } = await supabase
+        .from('website_content')
+        .select('content')
+        .eq('name', 'main')
+        .single();
+      
+      if (error) {
+        console.error('Error loading website data from Supabase:', error);
+        return null;
+      }
+      
+      if (data && data.content) {
+        return data.content;
+      }
+      
+      return null;
+    } catch (error) {
+      console.error('Error loading website data from Supabase:', error);
+      return null;
+    }
+  };
   
   const publishChanges = async () => {
     updatePublishState('publishing', true);
@@ -88,6 +118,15 @@ export const usePublish = () => {
       // Catat waktu publikasi
       const publishTime = recordPublishTime();
       
+      // Tambahkan riwayat publikasi jika dalam mode nyata
+      if (isRealImplementation) {
+        await supabase.from('publish_history').insert({
+          publish_type: 'full',
+          published_by: user?.id,
+          changes: { changes }
+        });
+      }
+      
       // Tampilkan pesan sukses
       notifications.notifyPublishSuccess(publishTime);
       
@@ -100,38 +139,49 @@ export const usePublish = () => {
     }
   };
   
-  const handleRollback = () => {
+  const handleRollback = async () => {
     notifications.notifyRollbackStarted();
     
     try {
       // Jika implementasi nyata, panggil API untuk rollback
       if (isRealImplementation) {
-        // Asinkron, tidak menunggu respons
-        rollbackOnApi().catch(error => {
-          console.error('Error during API rollback:', error);
-        });
+        try {
+          const result = await rollbackOnApi();
+          
+          if (result.success && result.data) {
+            // Dispatch event dengan data yang dikembalikan dari API
+            dispatchContentUpdateEvent(result.data);
+            
+            if (result.data.pages) {
+              dispatchPageContentUpdates(result.data.pages);
+            }
+            
+            notifications.notifyRollbackSuccess();
+            return;
+          }
+        } catch (apiError) {
+          console.error('Error during API rollback:', apiError);
+        }
       }
       
-      // Tetap lakukan rollback lokal
-      setTimeout(() => {
-        const result = restoreFromBackup();
+      // Jika tidak ada implementasi nyata atau API rollback gagal, lakukan rollback lokal
+      const result = restoreFromBackup();
+      
+      if (result.success) {
+        // Notify components of rollback
+        dispatchContentUpdateEvent(result.data);
         
-        if (result.success) {
-          // Notify components of rollback
-          dispatchContentUpdateEvent(result.data);
-          
-          // Notifikasi semua komponen tentang perubahan konten halaman
-          if (result.data.pages) {
-            dispatchPageContentUpdates(result.data.pages);
-          }
-          
-          notifications.notifyRollbackSuccess();
-        } else if (result.reason === 'no-backup') {
-          notifications.notifyNoBackupAvailable();
-        } else {
-          notifications.notifyRollbackFailed("Terjadi kesalahan saat mengembalikan versi website.");
+        // Notifikasi semua komponen tentang perubahan konten halaman
+        if (result.data.pages) {
+          dispatchPageContentUpdates(result.data.pages);
         }
-      }, 2000);
+        
+        notifications.notifyRollbackSuccess();
+      } else if (result.reason === 'no-backup') {
+        notifications.notifyNoBackupAvailable();
+      } else {
+        notifications.notifyRollbackFailed("Terjadi kesalahan saat mengembalikan versi website.");
+      }
     } catch (error) {
       console.error('Rollback error:', error);
       notifications.notifyRollbackFailed();
@@ -153,6 +203,7 @@ export const usePublish = () => {
     publishChanges,
     handleRollback,
     previewWebsite,
-    isRealImplementation
+    isRealImplementation,
+    loadWebsiteDataFromSupabase
   };
 };

@@ -1,10 +1,13 @@
 
 import { useToast } from "@/hooks/use-toast";
 import { useImplementationSettings } from "./useImplementationSettings";
+import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/contexts/AuthContext";
 
 export const usePublishApi = () => {
   const { toast } = useToast();
   const { isRealImplementation, getSettings } = useImplementationSettings();
+  const { user } = useAuth();
   
   const publishToApi = async (data: any) => {
     if (!isRealImplementation) {
@@ -12,30 +15,67 @@ export const usePublishApi = () => {
     }
     
     try {
-      const { apiUrl, apiKey } = getSettings();
+      // Jika implementasi nyata, simpan perubahan di Supabase
+      const { generalInfo, pages, appearance, seo, homeContent } = data.websiteData;
       
-      if (!apiUrl || !apiKey) {
-        throw new Error('API URL atau API Key tidak ditemukan. Periksa pengaturan implementasi.');
+      // Simpan konten website umum
+      const { error: contentError } = await supabase
+        .from('website_content')
+        .upsert({
+          name: 'main',
+          content: {
+            generalInfo, 
+            appearance, 
+            seo, 
+            homeContent
+          }
+        }, {
+          onConflict: 'name'
+        });
+      
+      if (contentError) {
+        throw new Error(`Gagal menyimpan konten website: ${contentError.message}`);
       }
       
-      const response = await fetch(apiUrl, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        },
-        body: JSON.stringify(data)
-      });
-      
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Gagal mengirim data ke server');
+      // Simpan halaman yang diedit
+      if (data.pageEdits && Object.keys(data.pageEdits).length > 0) {
+        for (const pageId in data.pageEdits) {
+          const page = pages.find(p => p.id === pageId);
+          if (page) {
+            const { error: pageError } = await supabase
+              .from('pages')
+              .upsert({
+                id: pageId,
+                title: page.title,
+                slug: page.slug,
+                content: page.content,
+                published: page.isPublished,
+                created_by: user?.id
+              }, {
+                onConflict: 'id'
+              });
+            
+            if (pageError) {
+              console.error(`Gagal menyimpan halaman ${page.title}:`, pageError);
+            }
+          }
+        }
       }
       
-      const publishResult = await response.json();
-      console.log('Publish result:', publishResult);
+      // Catat riwayat publikasi
+      const { error: historyError } = await supabase
+        .from('publish_history')
+        .insert({
+          publish_type: 'full',
+          published_by: user?.id,
+          changes: { changedSections: Object.keys(data.pageEdits || {}) }
+        });
       
-      return { success: true, data: publishResult };
+      if (historyError) {
+        console.error('Gagal menyimpan riwayat publikasi:', historyError);
+      }
+      
+      return { success: true, data: 'Konten berhasil disimpan di database' };
     } catch (apiError) {
       console.error('Error publishing to API:', apiError);
       toast({
@@ -54,24 +94,37 @@ export const usePublishApi = () => {
     }
     
     try {
-      const { apiUrl, apiKey } = getSettings();
+      // Ambil riwayat publikasi terakhir dan dapatkan ID publikasi sebelumnya
+      const { data: lastPublishes, error: historyError } = await supabase
+        .from('publish_history')
+        .select('*')
+        .order('published_at', { ascending: false })
+        .limit(2);
       
-      const response = await fetch(`${apiUrl}/rollback`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey}`
-        }
-      });
-      
-      if (!response.ok) {
-        throw new Error('Gagal melakukan rollback di server');
+      if (historyError) {
+        throw new Error(`Gagal mengambil riwayat publikasi: ${historyError.message}`);
       }
       
-      const data = await response.json();
-      console.log('Rollback result:', data);
+      if (lastPublishes && lastPublishes.length > 1) {
+        // Dapatkan konten website sebelumnya
+        const { data: prevContentData } = await supabase
+          .from('website_content')
+          .select('content')
+          .eq('name', 'main')
+          .single();
+        
+        if (prevContentData) {
+          return { 
+            success: true, 
+            data: {
+              ...prevContentData.content,
+              pages: lastPublishes[1].changes?.pages || []
+            }
+          };
+        }
+      }
       
-      return { success: true, data };
+      return { success: false, reason: 'no-previous-version' };
     } catch (error) {
       console.error('Error during API rollback:', error);
       toast({
