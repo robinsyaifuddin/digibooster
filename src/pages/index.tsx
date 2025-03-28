@@ -6,6 +6,7 @@ import { useWebsiteDataStore } from '@/stores/websiteDataStore';
 import HomePage from '@/components/public/HomePage';
 import { Loader2 } from 'lucide-react';
 import { supabase } from '@/integrations/supabase/client';
+import { WebsiteData } from '@/types/websiteTypes';
 
 export default function Home() {
   const [loading, setLoading] = useState(true);
@@ -20,7 +21,7 @@ export default function Home() {
           // Jika implementasi nyata, ambil data dari Supabase
           const websiteData = await loadWebsiteDataFromSupabase();
           
-          if (websiteData) {
+          if (websiteData && typeof websiteData === 'object') {
             // Update store dengan data dari Supabase
             if (websiteData.generalInfo) {
               websiteStore.updateGeneralInfo(websiteData.generalInfo);
@@ -53,14 +54,14 @@ export default function Home() {
                   websiteStore.updatePage(page.id, {
                     title: page.title,
                     slug: page.slug,
-                    content: page.content,
+                    content: page.content as string,
                     isPublished: page.published
                   });
                 } else {
                   websiteStore.addPage({
                     title: page.title,
                     slug: page.slug,
-                    content: page.content,
+                    content: page.content as string,
                     isPublished: page.published
                   });
                 }

@@ -11,6 +11,7 @@ import { usePublishEvents } from "./usePublishEvents";
 import { usePublishNotifications } from "./usePublishNotifications";
 import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
+import { WebsiteData } from "@/types/websiteTypes";
 
 export const usePublish = () => {
   const websiteData = useWebsiteDataStore(state => state);
@@ -25,7 +26,7 @@ export const usePublish = () => {
   const { user } = useAuth();
   
   // Fungsi untuk memuat data website dari Supabase (jika menggunakan implementasi nyata)
-  const loadWebsiteDataFromSupabase = async () => {
+  const loadWebsiteDataFromSupabase = async (): Promise<WebsiteData | null> => {
     if (!isRealImplementation) return null;
     
     try {
@@ -41,7 +42,7 @@ export const usePublish = () => {
       }
       
       if (data && data.content) {
-        return data.content;
+        return data.content as unknown as WebsiteData;
       }
       
       return null;

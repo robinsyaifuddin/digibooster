@@ -3,13 +3,14 @@ import { useToast } from "@/hooks/use-toast";
 import { useImplementationSettings } from "./useImplementationSettings";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
+import { WebsiteData } from "@/types/websiteTypes";
 
 export const usePublishApi = () => {
   const { toast } = useToast();
   const { isRealImplementation, getSettings } = useImplementationSettings();
   const { user } = useAuth();
   
-  const publishToApi = async (data: any) => {
+  const publishToApi = async (data: { websiteData: WebsiteData, pageEdits: Record<string, any> }) => {
     if (!isRealImplementation) {
       return { success: true, simulation: true };
     }
@@ -113,11 +114,12 @@ export const usePublishApi = () => {
           .eq('name', 'main')
           .single();
         
-        if (prevContentData) {
+        if (prevContentData && prevContentData.content) {
+          const contentData = prevContentData.content as Record<string, any>;
           return { 
             success: true, 
             data: {
-              ...prevContentData.content,
+              ...contentData,
               pages: lastPublishes[1].changes?.pages || []
             }
           };
