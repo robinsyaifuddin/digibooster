@@ -1,150 +1,99 @@
 
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Shield, Lock, Key, AlertTriangle } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
-
-// Komponen-komponen yang dipisahkan
 import SecurityLevelSelector from './components/SecurityLevelSelector';
-import PasswordChecker from './components/PasswordChecker';
-import ApiKeyManager from './components/ApiKeyManager';
-import SecurityRecommendation from './components/SecurityRecommendation';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { AlertTriangle } from 'lucide-react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useAuth } from '@/contexts/AuthContext';
 import AuthenticationSettings from './components/AuthenticationSettings';
 import SecurityMonitoring from './components/SecurityMonitoring';
-import ActiveSessions from './components/ActiveSessions';
+import ApiKeyManager from './components/ApiKeyManager';
+import PasswordChecker from './components/PasswordChecker';
 import IntegratedServices from './components/IntegratedServices';
+import SecurityRecommendation from './components/SecurityRecommendation';
+import ActiveSessions from './components/ActiveSessions';
 
-const SecuritySettings = () => {
-  const { user, updateSecurityLevel } = useAuth();
-  const [securityLevel, setSecurityLevel] = useState(user?.securityLevel || 'standard');
+const SecuritySettings: React.FC = () => {
+  const { user, updateSecurityLevel, logoutFromAllDevices } = useAuth();
+  const [activeTab, setActiveTab] = useState('general');
   
-  const handleSecurityLevelChange = (newLevel: 'standard' | 'enhanced' | 'maximum') => {
-    setSecurityLevel(newLevel);
-    updateSecurityLevel(newLevel);
+  const handleSecurityLevelChange = (level: 'standard' | 'enhanced' | 'maximum') => {
+    updateSecurityLevel(level);
   };
-  
+
   return (
     <div className="space-y-6">
-      <Tabs defaultValue="general">
-        <TabsList className="mb-4">
-          <TabsTrigger value="general" className="flex items-center gap-2">
-            <Shield className="w-4 h-4" />
-            Umum
-          </TabsTrigger>
-          <TabsTrigger value="access" className="flex items-center gap-2">
-            <Key className="w-4 h-4" />
-            Kontrol Akses
-          </TabsTrigger>
-          <TabsTrigger value="api" className="flex items-center gap-2">
-            <Lock className="w-4 h-4" />
-            API & Integrasi
-          </TabsTrigger>
+      <div>
+        <h2 className="text-2xl font-bold">Pengaturan Keamanan</h2>
+        <p className="text-muted-foreground">
+          Kelola pengaturan keamanan dan izin untuk website Anda
+        </p>
+      </div>
+      
+      <Alert variant="warning">
+        <AlertTriangle className="h-4 w-4" />
+        <AlertTitle>Informasi Keamanan</AlertTitle>
+        <AlertDescription>
+          Meningkatkan pengaturan keamanan dapat mempengaruhi cara pengguna mengakses website Anda. Pastikan untuk menguji pengaturan setelah melakukan perubahan.
+        </AlertDescription>
+      </Alert>
+      
+      <Card>
+        <CardHeader>
+          <CardTitle>Level Keamanan</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <SecurityLevelSelector 
+            currentLevel={user?.securityLevel || 'standard'} 
+            onChange={handleSecurityLevelChange} 
+          />
+        </CardContent>
+      </Card>
+      
+      <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="space-y-4">
+        <TabsList>
+          <TabsTrigger value="general">Umum</TabsTrigger>
+          <TabsTrigger value="authentication">Autentikasi</TabsTrigger>
+          <TabsTrigger value="access">Akses & API</TabsTrigger>
+          <TabsTrigger value="sessions">Sesi Aktif</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="general">
+        <TabsContent value="general" className="space-y-4">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-amber-500" />
-                Pengaturan Keamanan Umum
-              </CardTitle>
-              <CardDescription>
-                Atur level keamanan dan proteksi untuk website Anda
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="space-y-4">
-                <div>
-                  <h3 className="text-sm font-medium mb-2">Level Keamanan</h3>
-                  <SecurityLevelSelector 
-                    currentLevel={securityLevel} 
-                    onChange={handleSecurityLevelChange} 
-                  />
-                </div>
-                
-                <SecurityRecommendation 
-                  title="Rekomendasi Keamanan"
-                  description="Gunakan kombinasi password yang kuat dan aktifkan autentikasi dua faktor untuk 
-                    meningkatkan keamanan akun admin. Pastikan juga website selalu diperbarui 
-                    dan gunakan HTTPS untuk semua koneksi."
-                />
-                
-                <div className="space-y-4">
-                  <h3 className="text-sm font-medium">Alat Keamanan</h3>
-                  
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <PasswordChecker />
-                    
-                    <div className="border rounded-md p-4">
-                      <h4 className="font-medium flex items-center gap-2 mb-3">
-                        <Shield className="h-4 w-4 text-green-600" />
-                        Security Scanner
-                      </h4>
-                      <p className="text-sm text-gray-600 mb-4">
-                        Pindai website Anda untuk menemukan celah keamanan potensial.
-                      </p>
-                      <Button variant="outline" className="w-full">
-                        Mulai Pemindaian
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="access">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Key className="h-5 w-5 text-blue-500" />
-                Pengaturan Akses & Otentikasi
-              </CardTitle>
-              <CardDescription>
-                Atur kontrol akses dan keamanan login
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
-                <AuthenticationSettings />
+            <CardContent className="pt-6">
+              <div className="grid gap-6">
                 <SecurityMonitoring />
-              </div>
-              
-              <div className="border-t pt-4 mt-2">
-                <ActiveSessions />
+                <PasswordChecker />
+                <SecurityRecommendation />
               </div>
             </CardContent>
           </Card>
         </TabsContent>
         
-        <TabsContent value="api">
+        <TabsContent value="authentication" className="space-y-4">
           <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Lock className="h-5 w-5 text-purple-500" />
-                API & Keamanan Integrasi
-              </CardTitle>
-              <CardDescription>
-                Kelola API key dan integrasi pihak ketiga dengan aman
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <ApiKeyManager />
-              
-              <div className="border-t pt-4 mt-2">
+            <CardContent className="pt-6">
+              <AuthenticationSettings />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="access" className="space-y-4">
+          <Card>
+            <CardContent className="pt-6">
+              <div className="space-y-6">
+                <ApiKeyManager />
                 <IntegratedServices />
               </div>
-              
-              <SecurityRecommendation 
-                variant="info"
-                title="Praktik Terbaik Keamanan API"
-                description="Jangan pernah menyertakan API key langsung dalam kode frontend. Gunakan 
-                  environment variable server atau layanan pengelolaan rahasia. Perbarui API key 
-                  secara berkala dan batasi akses berdasarkan domain."
-              />
+            </CardContent>
+          </Card>
+        </TabsContent>
+        
+        <TabsContent value="sessions" className="space-y-4">
+          <Card>
+            <CardContent className="pt-6">
+              <ActiveSessions onLogoutAllDevices={logoutFromAllDevices} />
             </CardContent>
           </Card>
         </TabsContent>
