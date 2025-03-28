@@ -88,7 +88,15 @@ export const useAuthProvider = (): AuthContextType => {
         password,
       });
 
-      if (error) throw error;
+      if (error) {
+        // Menangani pesan error spesifik
+        if (error.message.includes('Email logins are disabled')) {
+          const customError = new Error('Autentikasi email dinonaktifkan. Silakan gunakan metode login Google atau hubungi administrator.');
+          customError.name = 'AuthProviderDisabled';
+          throw customError;
+        }
+        throw error;
+      }
     } catch (error: any) {
       console.error('Error logging in:', error.message);
       throw error;

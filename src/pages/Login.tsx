@@ -13,6 +13,7 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const { login, loginWithGoogle } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -20,6 +21,7 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
+    setErrorMessage(null);
     
     try {
       await login(email, password);
@@ -28,12 +30,31 @@ const Login = () => {
         description: "Selamat datang kembali di DigiBooster!",
       });
       navigate('/');
-    } catch (error) {
-      toast({
-        variant: "destructive",
-        title: "Login gagal",
-        description: "Email atau password salah. Silakan coba lagi.",
-      });
+    } catch (error: any) {
+      setErrorMessage(null);
+      
+      if (error.name === 'AuthProviderDisabled') {
+        setErrorMessage(error.message);
+        toast({
+          variant: "destructive",
+          title: "Login gagal",
+          description: error.message,
+        });
+      } else if (error.message.includes('Invalid login credentials')) {
+        setErrorMessage("Email atau password salah. Silakan coba lagi.");
+        toast({
+          variant: "destructive",
+          title: "Login gagal",
+          description: "Email atau password salah. Silakan coba lagi.",
+        });
+      } else {
+        setErrorMessage("Terjadi kesalahan saat login. Silakan coba lagi.");
+        toast({
+          variant: "destructive",
+          title: "Login gagal",
+          description: "Terjadi kesalahan saat login. Silakan coba lagi.",
+        });
+      }
     } finally {
       setIsLoading(false);
     }
@@ -41,11 +62,13 @@ const Login = () => {
 
   const handleGoogleLogin = async () => {
     setIsGoogleLoading(true);
+    setErrorMessage(null);
     
     try {
       await loginWithGoogle();
       navigate('/');
-    } catch (error) {
+    } catch (error: any) {
+      setErrorMessage("Terjadi kesalahan saat login dengan Google. Silakan coba lagi.");
       toast({
         variant: "destructive",
         title: "Login dengan Google gagal",
@@ -74,6 +97,12 @@ const Login = () => {
         </div>
         
         <div className="bg-white py-8 px-6 shadow-md rounded-lg">
+          {errorMessage && (
+            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm">
+              {errorMessage}
+            </div>
+          )}
+          
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
