@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import ServicesDevelopment from '../Dashboard/ServicesDevelopment';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Shield, FileWarning, Database, Lock, AlertTriangle, CheckCircle2, Settings } from 'lucide-react';
+import { Shield, FileWarning, Database, Lock, AlertTriangle, CheckCircle2, Settings, Globe } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { useToast } from '@/hooks/use-toast';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
