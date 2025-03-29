@@ -73,7 +73,6 @@ const ImplementationSettings = () => {
         });
       } else {
         setConnectionStatus('error');
-        // Fixed: Using optional chaining to safely access the error property
         setConnectionDetails(`Gagal terhubung: ${result.error || 'Unknown error'}`);
         toast({
           variant: "destructive",
@@ -188,7 +187,6 @@ const ImplementationSettings = () => {
           toast({
             variant: "destructive",
             title: "Gagal menginisialisasi data",
-            // Fixed: Safely access the error message using optional chaining
             description: dataResult.error?.message || "Terjadi kesalahan saat menyiapkan data di Supabase",
           });
         }

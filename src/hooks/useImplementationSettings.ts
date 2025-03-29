@@ -1,3 +1,4 @@
+
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "./use-toast";
 
@@ -71,7 +72,7 @@ export const useImplementationSettings = () => {
       }
       
       console.log('Koneksi Supabase berhasil:', data);
-      return { success: true, connected: true, data };
+      return { success: true, connected: true, data, error: null };
     } catch (error) {
       console.error('Verifikasi koneksi Supabase gagal:', error);
       return { success: false, error: error.message };
@@ -114,7 +115,7 @@ export const useImplementationSettings = () => {
         console.log('Data website sudah ada di Supabase');
       }
       
-      return { success: true };
+      return { success: true, error: null };
     } catch (error) {
       console.error('Inisialisasi data Supabase gagal:', error);
       return { success: false, error: error };
@@ -155,7 +156,7 @@ export const useImplementationSettings = () => {
       const data = await response.json();
       
       console.log('Koneksi API kustom berhasil:', data);
-      return { success: true, connected: true, data };
+      return { success: true, connected: true, data, error: null };
     } catch (error) {
       console.error('Verifikasi koneksi API kustom gagal:', error);
       return { success: false, error: error.message };

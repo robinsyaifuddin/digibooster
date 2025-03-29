@@ -1,3 +1,4 @@
+
 import { useToast } from "@/hooks/use-toast";
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 import { usePublishProgress } from "./usePublishProgress";
@@ -132,6 +133,11 @@ export const usePublish = () => {
           // Check if there's error from API
           if (!apiResult.success) {
             throw new Error('API error');
+          }
+          
+          // Perbaikan kondisional untuk memeriksa apakah apiResult memiliki properti data
+          if ('data' in apiResult && apiResult.data) {
+            console.log('Data berhasil dipublikasikan ke API:', apiResult.data);
           }
           
         } catch (apiError) {

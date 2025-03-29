@@ -2,12 +2,20 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { AlertCircle, Server, Database, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useImplementationSettings } from "@/hooks/useImplementationSettings";
 
 interface InfoSettingsCardProps {
   onTabChange: (tab: string) => void;
 }
 
 const InfoSettingsCard = ({ onTabChange }: InfoSettingsCardProps) => {
+  const { isRealImplementation, implementationType } = useImplementationSettings();
+  
+  // Jika implementasi nyata sudah aktif, jangan tampilkan card ini
+  if (isRealImplementation) {
+    return null;
+  }
+  
   return (
     <Card className="bg-amber-50 border-amber-200">
       <CardHeader>

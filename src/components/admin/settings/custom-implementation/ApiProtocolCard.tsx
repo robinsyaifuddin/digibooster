@@ -3,7 +3,7 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Code, AlertTriangle } from 'lucide-react';
+import { Code, AlertTriangle, Server, Zap, BookOpen, Lock } from 'lucide-react';
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const ApiProtocolCard = () => {
@@ -76,7 +76,9 @@ const ApiProtocolCard = () => {
           
           <div className="mt-6 space-y-6">
             <div>
-              <h4 className="font-medium mb-2 text-blue-700">Format Request</h4>
+              <h4 className="font-medium mb-2 text-blue-700 flex items-center gap-1">
+                <Server className="h-4 w-4" /> Format Request
+              </h4>
               <div className="bg-gray-100 p-3 rounded-md">
                 <pre className="text-xs overflow-auto">
 {`// POST /website/save
@@ -100,7 +102,9 @@ const ApiProtocolCard = () => {
             </div>
             
             <div>
-              <h4 className="font-medium mb-2 text-blue-700">Format Response</h4>
+              <h4 className="font-medium mb-2 text-blue-700 flex items-center gap-1">
+                <Zap className="h-4 w-4" /> Format Response
+              </h4>
               <div className="bg-gray-100 p-3 rounded-md">
                 <pre className="text-xs overflow-auto">
 {`// Successful response
@@ -123,7 +127,9 @@ const ApiProtocolCard = () => {
             </div>
 
             <div>
-              <h4 className="font-medium mb-2 text-blue-700">Endpoint /health</h4>
+              <h4 className="font-medium mb-2 text-blue-700 flex items-center gap-1">
+                <BookOpen className="h-4 w-4" /> Endpoint /health
+              </h4>
               <p className="text-sm mb-2">
                 Endpoint ini digunakan untuk memeriksa ketersediaan API. Harus mengembalikan status health check dan versi API.
               </p>
@@ -142,7 +148,9 @@ const ApiProtocolCard = () => {
             </div>
 
             <div>
-              <h4 className="font-medium mb-2 text-blue-700">Endpoint /website/get</h4>
+              <h4 className="font-medium mb-2 text-blue-700 flex items-center gap-1">
+                <BookOpen className="h-4 w-4" /> Endpoint /website/get
+              </h4>
               <p className="text-sm mb-2">
                 Mengambil data website lengkap dari database. Opsional dapat menerima parameter versi.
               </p>
@@ -167,7 +175,9 @@ const ApiProtocolCard = () => {
             </div>
 
             <div>
-              <h4 className="font-medium mb-2 text-blue-700">Endpoint /website/rollback</h4>
+              <h4 className="font-medium mb-2 text-blue-700 flex items-center gap-1">
+                <BookOpen className="h-4 w-4" /> Endpoint /website/rollback
+              </h4>
               <p className="text-sm mb-2">
                 Mengembalikan ke versi website sebelumnya. Harus mengembalikan data website versi sebelumnya.
               </p>
@@ -194,7 +204,9 @@ const ApiProtocolCard = () => {
             </div>
 
             <div>
-              <h4 className="font-medium mb-2 text-blue-700">Keamanan API</h4>
+              <h4 className="font-medium mb-2 text-blue-700 flex items-center gap-1">
+                <Lock className="h-4 w-4" /> Keamanan API
+              </h4>
               <p className="text-sm mb-2">
                 Rekomendasi untuk mengamankan API Anda:
               </p>
