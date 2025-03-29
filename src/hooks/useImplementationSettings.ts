@@ -57,7 +57,9 @@ export const useImplementationSettings = () => {
   const verifySupabaseConnection = async () => {
     try {
       console.log('Memeriksa koneksi Supabase...');
-      console.log('Supabase URL:', supabase.supabaseUrl);
+      // Using the project URL directly instead of accessing the protected property
+      const projectUrl = 'https://bacnskcizgzcrqusqalu.supabase.co';
+      console.log('Supabase URL:', projectUrl);
       
       const { data, error } = await supabase.from('website_content').select('id').limit(1);
       
@@ -113,7 +115,7 @@ export const useImplementationSettings = () => {
       return { success: true };
     } catch (error) {
       console.error('Inisialisasi data Supabase gagal:', error);
-      return { success: false, error };
+      return { success: false, error: error };
     }
   };
   

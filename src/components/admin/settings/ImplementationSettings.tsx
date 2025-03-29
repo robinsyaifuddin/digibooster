@@ -41,13 +41,16 @@ const ImplementationSettings = () => {
       
       if (result.success) {
         setConnectionStatus('success');
-        setConnectionDetails(`Terhubung dengan Supabase. Project URL: ${supabase.supabaseUrl}`);
+        // Using the project URL directly instead of accessing the protected property
+        const projectUrl = 'https://bacnskcizgzcrqusqalu.supabase.co';
+        setConnectionDetails(`Terhubung dengan Supabase. Project URL: ${projectUrl}`);
         toast({
           title: "Koneksi berhasil",
           description: "Terhubung dengan database Supabase",
         });
       } else {
         setConnectionStatus('error');
+        // Fixed: Correctly accessing the error property that now exists
         setConnectionDetails(`Gagal terhubung: ${result.error}`);
         toast({
           variant: "destructive",
@@ -119,6 +122,7 @@ const ImplementationSettings = () => {
           toast({
             variant: "destructive",
             title: "Gagal menginisialisasi data",
+            // Fixed: Safely access the error message
             description: dataResult.error?.message || "Terjadi kesalahan saat menyiapkan data di Supabase",
           });
         }
