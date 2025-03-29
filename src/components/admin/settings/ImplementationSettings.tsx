@@ -4,27 +4,51 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Button } from "@/components/ui/button";
 import { useToast } from '@/hooks/use-toast';
 import { useImplementationSettings } from '@/hooks/useImplementationSettings';
-import { Database, ServerIcon, Shield, Check, X, AlertTriangle, RefreshCw } from 'lucide-react';
+import { Database, ServerIcon, Shield, Check, X, AlertTriangle, RefreshCw, Globe, Code, HardDrive } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { supabase } from '@/integrations/supabase/client';
 import { useWebsiteDataStore } from '@/stores/websiteDataStore';
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const ImplementationSettings = () => {
   const { toast } = useToast();
-  const { isRealImplementation, activateRealImplementation, verifySupabaseConnection, initializeSupabaseData } = useImplementationSettings();
+  const { 
+    isRealImplementation, 
+    implementationType,
+    activateRealImplementation, 
+    verifySupabaseConnection, 
+    initializeSupabaseData,
+    verifyCustomApiConnection,
+    activateCustomImplementation
+  } = useImplementationSettings();
   const [activating, setActivating] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<'idle' | 'checking' | 'success' | 'error'>('idle');
   const [connectionDetails, setConnectionDetails] = useState<string>('');
   const [activeTab, setActiveTab] = useState('supabase');
   const websiteData = useWebsiteDataStore();
   
+  // Custom implementation form state
+  const [customApiUrl, setCustomApiUrl] = useState('');
+  const [customApiKey, setCustomApiKey] = useState('');
+  const [customDatabaseType, setCustomDatabaseType] = useState('mysql');
+  const [customBackendType, setCustomBackendType] = useState('php');
+  const [customServerProvider, setCustomServerProvider] = useState('');
+  const [customConnectionStatus, setCustomConnectionStatus] = useState<'idle' | 'checking' | 'success' | 'error'>('idle');
+  const [customConnectionDetails, setCustomConnectionDetails] = useState<string>('');
+  
   // Periksa koneksi saat komponen dimuat
   useEffect(() => {
     const checkInitialConnection = async () => {
       if (!isRealImplementation) {
-        await checkSupabaseConnection();
+        if (activeTab === 'supabase') {
+          await checkSupabaseConnection();
+        }
+      } else if (implementationType === 'custom') {
+        setActiveTab('custom');
       }
     };
     
@@ -65,6 +89,49 @@ const ImplementationSettings = () => {
         variant: "destructive",
         title: "Koneksi gagal",
         description: "Terjadi kesalahan saat mencoba terhubung ke Supabase",
+      });
+    }
+  };
+  
+  const checkCustomApiConnection = async () => {
+    if (!customApiUrl) {
+      toast({
+        variant: "destructive",
+        title: "URL API diperlukan",
+        description: "Masukkan URL API untuk memeriksa koneksi",
+      });
+      return;
+    }
+    
+    setCustomConnectionStatus('checking');
+    setCustomConnectionDetails('Memeriksa koneksi ke API kustom...');
+    
+    try {
+      const result = await verifyCustomApiConnection(customApiUrl, customApiKey);
+      
+      if (result.success) {
+        setCustomConnectionStatus('success');
+        setCustomConnectionDetails(`Terhubung dengan API kustom: ${customApiUrl}`);
+        toast({
+          title: "Koneksi berhasil",
+          description: "Terhubung dengan API kustom",
+        });
+      } else {
+        setCustomConnectionStatus('error');
+        setCustomConnectionDetails(`Gagal terhubung: ${result.error}`);
+        toast({
+          variant: "destructive",
+          title: "Koneksi gagal",
+          description: result.error || "Tidak dapat terhubung ke API kustom",
+        });
+      }
+    } catch (error) {
+      setCustomConnectionStatus('error');
+      setCustomConnectionDetails(`Error: ${error.message}`);
+      toast({
+        variant: "destructive",
+        title: "Koneksi gagal",
+        description: "Terjadi kesalahan saat mencoba terhubung ke API kustom",
       });
     }
   };
@@ -144,6 +211,50 @@ const ImplementationSettings = () => {
     }
   };
   
+  const handleActivateCustomImplementation = () => {
+    if (!customApiUrl) {
+      toast({
+        variant: "destructive",
+        title: "URL API diperlukan",
+        description: "Masukkan URL API untuk mengaktifkan implementasi kustom",
+      });
+      return;
+    }
+    
+    setActivating(true);
+    
+    try {
+      // Aktifkan implementasi kustom
+      const result = activateCustomImplementation({
+        apiUrl: customApiUrl,
+        apiKey: customApiKey,
+        databaseType: customDatabaseType,
+        backendType: customBackendType,
+        serverProvider: customServerProvider
+      });
+      
+      if (result) {
+        toast({
+          title: "Implementasi kustom diaktifkan",
+          description: "Website Anda sekarang terhubung dengan API kustom",
+        });
+        
+        // Reload halaman untuk melihat perubahan
+        setTimeout(() => {
+          window.location.reload();
+        }, 2000);
+      }
+    } catch (error) {
+      toast({
+        variant: "destructive",
+        title: "Aktivasi gagal",
+        description: "Terjadi kesalahan: " + error.message,
+      });
+    } finally {
+      setActivating(false);
+    }
+  };
+  
   return (
     <div className="space-y-6">
       <div>
@@ -158,7 +269,8 @@ const ImplementationSettings = () => {
           <Check className="h-4 w-4 text-green-600" />
           <AlertTitle className="text-green-800">Implementasi Nyata Aktif</AlertTitle>
           <AlertDescription className="text-green-700">
-            Website Anda telah terhubung dengan database Supabase. Semua perubahan akan disimpan secara permanen.
+            Website Anda telah terhubung dengan {implementationType === 'supabase' ? 'database Supabase' : 'API kustom'}.
+            Semua perubahan akan disimpan secara permanen.
           </AlertDescription>
         </Alert>
       ) : (
@@ -263,21 +375,21 @@ const ImplementationSettings = () => {
             </CardContent>
             <CardFooter className="flex justify-between items-center flex-wrap gap-2">
               <div className="text-sm text-gray-500">
-                {isRealImplementation ? 
+                {isRealImplementation && implementationType === 'supabase' ? 
                   'Implementasi nyata telah diaktifkan dengan Supabase' : 
                   'Aktifkan untuk menghubungkan website Anda dengan database nyata'}
               </div>
               <Button 
                 onClick={handleActivateImplementation}
-                disabled={isRealImplementation || activating || connectionStatus !== 'success'}
-                className={isRealImplementation ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'}
+                disabled={isRealImplementation && implementationType === 'supabase' || activating || connectionStatus !== 'success'}
+                className={isRealImplementation && implementationType === 'supabase' ? 'bg-gray-400' : 'bg-blue-600 hover:bg-blue-700'}
               >
                 {activating ? (
                   <>
                     <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
                     Mengaktifkan...
                   </>
-                ) : isRealImplementation ? (
+                ) : isRealImplementation && implementationType === 'supabase' ? (
                   <>
                     <Check className="mr-2 h-4 w-4" />
                     Sudah Diaktifkan
@@ -304,21 +416,220 @@ const ImplementationSettings = () => {
                 Hubungkan website Anda dengan API dan database kustom.
               </CardDescription>
             </CardHeader>
-            <CardContent>
-              <div className="bg-amber-50 border border-amber-200 rounded-md p-4">
-                <div className="flex gap-2">
-                  <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
-                  <div>
-                    <h4 className="font-medium text-amber-800">Implementasi Lanjutan</h4>
-                    <p className="text-sm text-amber-700 mt-1">
-                      Implementasi kustom memerlukan pengaturan API dan database sendiri. Direkomendasikan untuk pengguna tingkat lanjut.
+            <CardContent className="space-y-6">
+              {isRealImplementation && implementationType === 'custom' ? (
+                <div className="bg-green-50 border border-green-200 rounded-md p-4 mb-4">
+                  <div className="flex gap-2">
+                    <Check className="h-5 w-5 text-green-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium text-green-800">API Kustom Aktif</h4>
+                      <p className="text-sm text-green-700 mt-1">
+                        Website Anda terhubung dengan API kustom. Semua perubahan website disimpan di server Anda.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <div className="bg-amber-50 border border-amber-200 rounded-md p-4 mb-4">
+                  <div className="flex gap-2">
+                    <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+                    <div>
+                      <h4 className="font-medium text-amber-800">Implementasi Lanjutan</h4>
+                      <p className="text-sm text-amber-700 mt-1">
+                        Implementasi kustom memerlukan pengaturan API dan database sendiri. Gunakan opsi ini jika Anda sudah 
+                        memiliki backend yang berjalan.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+              
+              <div className="space-y-4">
+                <div className="grid gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="apiUrl">URL API</Label>
+                    <Input
+                      id="apiUrl"
+                      placeholder="https://api.example.com/v1"
+                      value={customApiUrl}
+                      onChange={(e) => setCustomApiUrl(e.target.value)}
+                      disabled={isRealImplementation && implementationType === 'custom'}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      URL endpoint API kustom Anda, misalnya: https://api.contoh.com/v1
+                    </p>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="apiKey">API Key <span className="text-xs text-muted-foreground">(opsional)</span></Label>
+                    <Input
+                      id="apiKey"
+                      type="password"
+                      placeholder="API key Anda"
+                      value={customApiKey}
+                      onChange={(e) => setCustomApiKey(e.target.value)}
+                      disabled={isRealImplementation && implementationType === 'custom'}
+                    />
+                    <p className="text-xs text-muted-foreground">
+                      API key untuk autentikasi dengan backend Anda
                     </p>
                   </div>
                 </div>
+                
+                <div className="space-y-2">
+                  <Label>Status Koneksi API</Label>
+                  <div className="flex items-center gap-2 mb-2">
+                    <div className={`h-3 w-3 rounded-full ${
+                      customConnectionStatus === 'checking' ? 'bg-amber-500 animate-pulse' :
+                      customConnectionStatus === 'success' ? 'bg-green-500' :
+                      customConnectionStatus === 'error' ? 'bg-red-500' :
+                      'bg-gray-300'
+                    }`}></div>
+                    <span className="text-sm text-gray-600">
+                      {customConnectionStatus === 'checking' ? 'Memeriksa koneksi...' :
+                       customConnectionStatus === 'success' ? 'Terhubung dengan API' :
+                       customConnectionStatus === 'error' ? 'Gagal terhubung ke API' :
+                       'Belum memeriksa koneksi'}
+                    </span>
+                  </div>
+                  <div className="text-xs text-gray-500 ml-5 mb-3">
+                    {customConnectionDetails}
+                  </div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="space-y-2">
+                    <Label htmlFor="databaseType">Tipe Database</Label>
+                    <Select 
+                      disabled={isRealImplementation && implementationType === 'custom'}
+                      value={customDatabaseType} 
+                      onValueChange={setCustomDatabaseType}
+                    >
+                      <SelectTrigger id="databaseType">
+                        <SelectValue placeholder="Pilih tipe database" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="mysql">MySQL</SelectItem>
+                        <SelectItem value="postgresql">PostgreSQL</SelectItem>
+                        <SelectItem value="mongodb">MongoDB</SelectItem>
+                        <SelectItem value="sqlite">SQLite</SelectItem>
+                        <SelectItem value="other">Lainnya</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                  
+                  <div className="space-y-2">
+                    <Label htmlFor="backendType">Tipe Backend</Label>
+                    <Select 
+                      disabled={isRealImplementation && implementationType === 'custom'}
+                      value={customBackendType} 
+                      onValueChange={setCustomBackendType}
+                    >
+                      <SelectTrigger id="backendType">
+                        <SelectValue placeholder="Pilih tipe backend" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="php">PHP</SelectItem>
+                        <SelectItem value="node">Node.js</SelectItem>
+                        <SelectItem value="python">Python</SelectItem>
+                        <SelectItem value="java">Java</SelectItem>
+                        <SelectItem value="dotnet">.NET</SelectItem>
+                        <SelectItem value="other">Lainnya</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
+                </div>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="serverProvider">Penyedia Server <span className="text-xs text-muted-foreground">(opsional)</span></Label>
+                  <Input
+                    id="serverProvider"
+                    placeholder="AWS, GCP, Azure, etc."
+                    value={customServerProvider}
+                    onChange={(e) => setCustomServerProvider(e.target.value)}
+                    disabled={isRealImplementation && implementationType === 'custom'}
+                  />
+                </div>
+                
+                <div className="rounded-md border border-blue-200 p-4 bg-blue-50 mt-4">
+                  <h4 className="font-medium text-blue-800 mb-2">Persyaratan Implementasi Kustom</h4>
+                  <ul className="space-y-2 text-sm text-blue-700">
+                    <li className="flex items-start gap-2">
+                      <Globe className="h-4 w-4 mt-0.5 text-blue-600 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium">Endpoint API yang tersedia</span> - Server API Anda harus dapat diakses melalui internet
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Code className="h-4 w-4 mt-0.5 text-blue-600 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium">API RESTful</span> - Mendukung operasi dasar (GET, POST, PUT, DELETE)
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <HardDrive className="h-4 w-4 mt-0.5 text-blue-600 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium">Penyimpanan data</span> - Menyediakan endpoint untuk menyimpan dan mengambil data website
+                      </div>
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <Shield className="h-4 w-4 mt-0.5 text-blue-600 flex-shrink-0" />
+                      <div>
+                        <span className="font-medium">Autentikasi</span> - Mendukung autentikasi via API key atau token JWT
+                      </div>
+                    </li>
+                  </ul>
+                </div>
               </div>
+              
+              <Button 
+                variant="outline" 
+                onClick={checkCustomApiConnection}
+                disabled={!customApiUrl || customConnectionStatus === 'checking' || (isRealImplementation && implementationType === 'custom')}
+                className="w-full mt-4"
+              >
+                {customConnectionStatus === 'checking' ? (
+                  <>
+                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                    Memeriksa...
+                  </>
+                ) : (
+                  <>
+                    <RefreshCw className="mr-2 h-4 w-4" />
+                    Periksa Koneksi API
+                  </>
+                )}
+              </Button>
             </CardContent>
-            <CardFooter>
-              <Button disabled variant="outline">Implementasi Kustom (Segera Hadir)</Button>
+            <CardFooter className="flex justify-between items-center flex-wrap gap-2">
+              <div className="text-sm text-gray-500">
+                {isRealImplementation && implementationType === 'custom' ? 
+                  'Implementasi kustom sudah diaktifkan' : 
+                  'Aktifkan untuk menghubungkan website dengan API kustom'}
+              </div>
+              
+              <Button 
+                onClick={handleActivateCustomImplementation}
+                disabled={isRealImplementation && implementationType === 'custom' || activating || !customApiUrl || customConnectionStatus !== 'success'}
+                variant="default"
+              >
+                {activating ? (
+                  <>
+                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
+                    Mengaktifkan...
+                  </>
+                ) : isRealImplementation && implementationType === 'custom' ? (
+                  <>
+                    <Check className="mr-2 h-4 w-4" />
+                    Sudah Diaktifkan
+                  </>
+                ) : (
+                  <>
+                    <ServerIcon className="mr-2 h-4 w-4" />
+                    Aktifkan Implementasi Kustom
+                  </>
+                )}
+              </Button>
             </CardFooter>
           </Card>
         </TabsContent>

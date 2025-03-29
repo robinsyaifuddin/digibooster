@@ -18,7 +18,7 @@ export const usePublish = () => {
   const { publishProgress, simulateProgressStep, resetProgress } = usePublishProgress();
   const { isPublishing, deploymentStatus, lastPublished, updatePublishState, recordPublishTime } = usePublishState();
   const { lastChanges, trackChanges, saveChanges } = usePublishTracking();
-  const { isRealImplementation } = useImplementationSettings();
+  const { isRealImplementation, implementationType } = useImplementationSettings();
   const { publishToApi, rollbackOnApi } = usePublishApi();
   const { saveWebsiteData, backupCurrentData, restoreFromBackup } = usePublishStorage();
   const { dispatchContentUpdateEvent, dispatchPageContentUpdates } = usePublishEvents();
@@ -30,24 +30,66 @@ export const usePublish = () => {
     if (!isRealImplementation) return null;
     
     try {
-      const { data, error } = await supabase
-        .from('website_content')
-        .select('content')
-        .eq('name', 'main')
-        .single();
-      
-      if (error) {
-        console.error('Error loading website data from Supabase:', error);
-        return null;
-      }
-      
-      if (data && data.content) {
-        return data.content as unknown as WebsiteData;
+      // Jika implementasi Supabase
+      if (implementationType === 'supabase') {
+        const { data, error } = await supabase
+          .from('website_content')
+          .select('content')
+          .eq('name', 'main')
+          .single();
+        
+        if (error) {
+          console.error('Error loading website data from Supabase:', error);
+          return null;
+        }
+        
+        if (data && data.content) {
+          return data.content as unknown as WebsiteData;
+        }
+      } 
+      // Jika implementasi kustom
+      else if (implementationType === 'custom') {
+        // Ambil pengaturan implementasi kustom
+        const apiUrl = localStorage.getItem('implementation_apiUrl');
+        const apiKey = localStorage.getItem('implementation_apiKey');
+        
+        if (!apiUrl) {
+          console.error('API URL tidak dikonfigurasi');
+          return null;
+        }
+        
+        // Buat URL endpoint untuk mengambil data
+        const getEndpoint = apiUrl.endsWith('/') 
+          ? `${apiUrl}website/get` 
+          : `${apiUrl}/website/get`;
+        
+        // Buat header dengan API key jika tersedia
+        const headers = {
+          'Content-Type': 'application/json',
+          ...(apiKey && { 'Authorization': `Bearer ${apiKey}` })
+        };
+        
+        // Kirim permintaan ke API kustom
+        const response = await fetch(getEndpoint, { 
+          method: 'GET',
+          headers
+        });
+        
+        if (!response.ok) {
+          console.error('Error loading website data from custom API:', response.statusText);
+          return null;
+        }
+        
+        const result = await response.json();
+        
+        if (result.success && result.data) {
+          return result.data as WebsiteData;
+        }
       }
       
       return null;
     } catch (error) {
-      console.error('Error loading website data from Supabase:', error);
+      console.error('Error loading website data:', error);
       return null;
     }
   };
@@ -119,8 +161,8 @@ export const usePublish = () => {
       // Catat waktu publikasi
       const publishTime = recordPublishTime();
       
-      // Tambahkan riwayat publikasi jika dalam mode nyata
-      if (isRealImplementation) {
+      // Tambahkan riwayat publikasi jika dalam mode nyata dan menggunakan Supabase
+      if (isRealImplementation && implementationType === 'supabase') {
         await supabase.from('publish_history').insert({
           publish_type: 'full',
           published_by: user?.id,

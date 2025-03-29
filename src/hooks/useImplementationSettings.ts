@@ -8,6 +8,9 @@ export const useImplementationSettings = () => {
   // Periksa apakah implementasi nyata telah selesai
   const isRealImplementation = localStorage.getItem('implementation_status') === 'completed';
   
+  // Periksa tipe implementasi (supabase atau kustom)
+  const implementationType = localStorage.getItem('implementation_provider') || 'supabase';
+  
   // Ambil pengaturan implementasi jika sudah selesai
   const getSettings = () => {
     return {
@@ -119,11 +122,96 @@ export const useImplementationSettings = () => {
     }
   };
   
+  // Implementasi Kustom - Verifikasi koneksi dengan API kustom
+  const verifyCustomApiConnection = async (apiUrl, apiKey) => {
+    try {
+      console.log('Memeriksa koneksi API kustom:', apiUrl);
+      
+      // Validasi parameter
+      if (!apiUrl) {
+        return { success: false, error: 'URL API tidak boleh kosong' };
+      }
+      
+      // Buat URL endpoint untuk health check
+      const healthCheckUrl = apiUrl.endsWith('/') 
+        ? `${apiUrl}health` 
+        : `${apiUrl}/health`;
+      
+      // Buat header dengan API key jika disediakan
+      const headers = {
+        'Content-Type': 'application/json',
+        ...(apiKey && { 'Authorization': `Bearer ${apiKey}` })
+      };
+      
+      // Lakukan permintaan untuk memeriksa koneksi
+      const response = await fetch(healthCheckUrl, { 
+        method: 'GET',
+        headers
+      });
+      
+      if (!response.ok) {
+        throw new Error(`Koneksi gagal dengan status: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      
+      console.log('Koneksi API kustom berhasil:', data);
+      return { success: true, connected: true, data };
+    } catch (error) {
+      console.error('Verifikasi koneksi API kustom gagal:', error);
+      return { success: false, error: error.message };
+    }
+  };
+  
+  // Aktifkan implementasi kustom
+  const activateCustomImplementation = (settings) => {
+    try {
+      console.log('Memulai aktivasi implementasi kustom...', settings);
+      
+      if (!settings.apiUrl) {
+        throw new Error('URL API tidak boleh kosong');
+      }
+      
+      // Simpan pengaturan implementasi kustom
+      localStorage.setItem('implementation_status', 'completed');
+      localStorage.setItem('implementation_provider', 'custom');
+      localStorage.setItem('implementation_apiUrl', settings.apiUrl);
+      localStorage.setItem('implementation_apiKey', settings.apiKey || '');
+      localStorage.setItem('implementation_databaseType', settings.databaseType || 'mysql');
+      localStorage.setItem('implementation_backendType', settings.backendType || 'php');
+      localStorage.setItem('implementation_serverProvider', settings.serverProvider || '');
+      
+      console.log('Konfigurasi implementasi kustom berhasil disimpan');
+      
+      // Reset localStorage untuk menghindari konflik data
+      localStorage.removeItem('websiteData');
+      localStorage.removeItem('websiteDataPermanent');
+      
+      toast({
+        title: "Implementasi kustom diaktifkan",
+        description: "Website Anda sekarang terhubung dengan API kustom. Halaman akan dimuat ulang...",
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('Gagal mengaktifkan implementasi kustom:', error);
+      toast({
+        variant: "destructive",
+        title: "Aktivasi gagal",
+        description: `Gagal mengaktifkan implementasi kustom: ${error.message}`,
+      });
+      return false;
+    }
+  };
+  
   return {
     isRealImplementation,
+    implementationType,
     getSettings,
     activateRealImplementation,
     verifySupabaseConnection,
-    initializeSupabaseData
+    initializeSupabaseData,
+    verifyCustomApiConnection,
+    activateCustomImplementation
   };
 };
