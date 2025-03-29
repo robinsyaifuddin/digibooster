@@ -72,10 +72,34 @@ const AdminDashboard = () => {
       });
     }
     
+    // Update URL with current tab using history API without refresh
+    const loadTabFromUrl = () => {
+      const params = new URLSearchParams(window.location.search);
+      const tabParam = params.get('dashboard_tab');
+      
+      if (tabParam) {
+        setActiveTab(tabParam);
+      }
+    };
+    
+    loadTabFromUrl();
+    
+    // Listen for browser navigation events
+    const handlePopState = () => {
+      loadTabFromUrl();
+    };
+    
+    window.addEventListener('popstate', handlePopState);
+    
     // Listen for tab switch events from other components
     const handleSwitchTab = (event: CustomEvent) => {
       if (event.detail) {
         setActiveTab(event.detail);
+        
+        // Update URL without refresh
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('dashboard_tab', event.detail);
+        window.history.pushState({dashboard_tab: event.detail}, '', newUrl.toString());
       }
     };
     
@@ -89,6 +113,11 @@ const AdminDashboard = () => {
         
         // Auto switch to publish tab
         setActiveTab('settings');
+        
+        // Update URL without refresh
+        const newUrl = new URL(window.location.href);
+        newUrl.searchParams.set('dashboard_tab', 'settings');
+        window.history.pushState({dashboard_tab: 'settings'}, '', newUrl.toString());
       }
     };
     
@@ -98,6 +127,7 @@ const AdminDashboard = () => {
     return () => {
       window.removeEventListener('switchToTab', handleSwitchTab as EventListener);
       window.removeEventListener('triggerPublish', handleTriggerPublish as EventListener);
+      window.removeEventListener('popstate', handlePopState);
     };
   }, [user, navigate, toast]);
   
@@ -107,6 +137,12 @@ const AdminDashboard = () => {
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
+    
+    // Update URL without refresh
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('dashboard_tab', tab);
+    window.history.pushState({dashboard_tab: tab}, '', newUrl.toString());
+    
     if (isMobile) {
       setMobileMenuOpen(false);
     }

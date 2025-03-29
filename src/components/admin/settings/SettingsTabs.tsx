@@ -1,6 +1,7 @@
 
 import { Button } from '@/components/ui/button';
-import { GraduationCap, Globe, Settings, Palette, Search, ArrowUpRightFromSquare, Shield } from 'lucide-react';
+import { GraduationCap, Globe, Settings, ArrowUpRightFromSquare, Shield } from 'lucide-react';
+import { useEffect } from 'react';
 
 interface SettingsTabsProps {
   activeTab: string;
@@ -8,12 +9,37 @@ interface SettingsTabsProps {
 }
 
 export function SettingsTabs({ activeTab, setActiveTab }: SettingsTabsProps) {
+  // Handle tab change without refreshing
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    
+    // Update URL without refresh
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('tab', tab);
+    window.history.pushState({tab}, '', newUrl.toString());
+  };
+  
+  // Sync URL with active tab on mount and back/forward navigation
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      if (event.state && event.state.tab) {
+        setActiveTab(event.state.tab);
+      }
+    };
+    
+    window.addEventListener('popstate', handlePopState);
+    
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
+  }, [setActiveTab]);
+
   return (
     <div className="space-y-2">
       <Button
         variant={activeTab === 'general' ? 'default' : 'ghost'}
         className="w-full justify-start"
-        onClick={() => setActiveTab('general')}
+        onClick={() => handleTabChange('general')}
       >
         <Settings className="mr-2 h-4 w-4" />
         Pengaturan Umum
@@ -21,7 +47,7 @@ export function SettingsTabs({ activeTab, setActiveTab }: SettingsTabsProps) {
       <Button
         variant={activeTab === 'publishing' ? 'default' : 'ghost'}
         className="w-full justify-start"
-        onClick={() => setActiveTab('publishing')}
+        onClick={() => handleTabChange('publishing')}
       >
         <Globe className="mr-2 h-4 w-4" />
         Penerbitan & Keamanan
@@ -29,7 +55,7 @@ export function SettingsTabs({ activeTab, setActiveTab }: SettingsTabsProps) {
       <Button
         variant={activeTab === 'implementation' ? 'default' : 'ghost'}
         className="w-full justify-start"
-        onClick={() => setActiveTab('implementation')}
+        onClick={() => handleTabChange('implementation')}
       >
         <ArrowUpRightFromSquare className="mr-2 h-4 w-4" />
         Implementasi Nyata

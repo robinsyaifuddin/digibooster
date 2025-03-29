@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import SettingsHeader from './settings/SettingsHeader';
 import GeneralSettings from './settings/GeneralSettings';
@@ -15,13 +15,22 @@ const WebsiteSettings = () => {
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
     
-    // Perbarui URL dengan tab aktif
+    // Update URL without page refresh using history API
     const newUrl = new URL(window.location.href);
     newUrl.searchParams.set('tab', tab);
-    window.history.pushState({}, '', newUrl);
+    window.history.pushState({tab}, '', newUrl.toString());
   };
 
-  React.useEffect(() => {
+  // Effect to handle browser back/forward buttons
+  useEffect(() => {
+    const handlePopState = (event: PopStateEvent) => {
+      if (event.state && event.state.tab) {
+        setActiveTab(event.state.tab);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    
     // Check for tab in URL
     const params = new URLSearchParams(window.location.search);
     const tabParam = params.get('tab');
@@ -29,6 +38,10 @@ const WebsiteSettings = () => {
     if (tabParam) {
       setActiveTab(tabParam);
     }
+    
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+    };
   }, []);
   
   const handleSwitchToTab = (tab: string) => {

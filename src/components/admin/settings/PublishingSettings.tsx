@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ServicesDevelopment from '../Dashboard/ServicesDevelopment';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Shield, FileWarning, Database, Lock, AlertTriangle, CheckCircle2, Settings, Globe } from 'lucide-react';
@@ -23,6 +23,25 @@ const PublishingSettings: React.FC<PublishingSettingsProps> = ({ onTabChange }) 
   const isEnhancedSecurity = user?.securityLevel === 'enhanced' || user?.securityLevel === 'maximum';
   const isMaximumSecurity = user?.securityLevel === 'maximum';
   
+  // Persist subtab state in URL without page refresh
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const subTabParam = params.get('subtab');
+    
+    if (subTabParam) {
+      setActiveSubTab(subTabParam);
+    }
+  }, []);
+  
+  const handleSubTabChange = (value: string) => {
+    setActiveSubTab(value);
+    
+    // Update URL without refresh
+    const newUrl = new URL(window.location.href);
+    newUrl.searchParams.set('subtab', value);
+    window.history.pushState({subtab: value}, '', newUrl.toString());
+  };
+  
   const handleSecurityInfo = () => {
     toast({
       title: "Keamanan Penerbitan",
@@ -32,7 +51,7 @@ const PublishingSettings: React.FC<PublishingSettingsProps> = ({ onTabChange }) 
   
   return (
     <div className="space-y-6">
-      <Tabs value={activeSubTab} onValueChange={setActiveSubTab} className="w-full">
+      <Tabs value={activeSubTab} onValueChange={handleSubTabChange} className="w-full">
         <TabsList className="grid grid-cols-3 mb-6">
           <TabsTrigger value="services" className="flex items-center">
             <Settings className="h-4 w-4 mr-2" />
