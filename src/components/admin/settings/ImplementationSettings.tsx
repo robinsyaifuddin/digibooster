@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -12,6 +13,7 @@ import { useWebsiteDataStore } from '@/stores/websiteDataStore';
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import ApiProtocolCard from './components/ApiProtocolCard';
 
 const ImplementationSettings = () => {
   const { toast } = useToast();
@@ -400,6 +402,9 @@ const ImplementationSettings = () => {
               </Button>
             </CardFooter>
           </Card>
+          
+          {/* Tambahkan ApiProtocolCard */}
+          <ApiProtocolCard />
         </TabsContent>
         
         <TabsContent value="custom" className="space-y-4">
@@ -452,7 +457,7 @@ const ImplementationSettings = () => {
                       onChange={(e) => setCustomApiUrl(e.target.value)}
                       disabled={isRealImplementation && implementationType === 'custom'}
                     />
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-500">
                       URL endpoint API kustom Anda, misalnya: https://api.contoh.com/v1
                     </p>
                   </div>
@@ -467,7 +472,7 @@ const ImplementationSettings = () => {
                       onChange={(e) => setCustomApiKey(e.target.value)}
                       disabled={isRealImplementation && implementationType === 'custom'}
                     />
-                    <p className="text-xs text-muted-foreground">
+                    <p className="text-xs text-gray-500">
                       API key untuk autentikasi dengan backend Anda
                     </p>
                   </div>

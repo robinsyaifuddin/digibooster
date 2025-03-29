@@ -1,6 +1,6 @@
 
 import { Button } from '@/components/ui/button';
-import { GraduationCap, Globe, Settings, Palette, Search, ArrowUpRightFromSquare } from 'lucide-react';
+import { GraduationCap, Globe, Settings, Palette, Search, ArrowUpRightFromSquare, Shield } from 'lucide-react';
 
 interface SettingsTabsProps {
   activeTab: string;
@@ -19,28 +19,12 @@ export function SettingsTabs({ activeTab, setActiveTab }: SettingsTabsProps) {
         Pengaturan Umum
       </Button>
       <Button
-        variant={activeTab === 'appearance' ? 'default' : 'ghost'}
-        className="w-full justify-start"
-        onClick={() => setActiveTab('appearance')}
-      >
-        <Palette className="mr-2 h-4 w-4" />
-        Tampilan Website
-      </Button>
-      <Button
-        variant={activeTab === 'seo' ? 'default' : 'ghost'}
-        className="w-full justify-start"
-        onClick={() => setActiveTab('seo')}
-      >
-        <Search className="mr-2 h-4 w-4" />
-        Pengaturan SEO
-      </Button>
-      <Button
         variant={activeTab === 'publishing' ? 'default' : 'ghost'}
         className="w-full justify-start"
         onClick={() => setActiveTab('publishing')}
       >
         <Globe className="mr-2 h-4 w-4" />
-        Publikasi Website
+        Penerbitan & Keamanan
       </Button>
       <Button
         variant={activeTab === 'implementation' ? 'default' : 'ghost'}
