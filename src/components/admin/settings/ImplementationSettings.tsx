@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -74,8 +73,8 @@ const ImplementationSettings = () => {
         });
       } else {
         setConnectionStatus('error');
-        // Fixed: Correctly accessing the error property that now exists
-        setConnectionDetails(`Gagal terhubung: ${result.error}`);
+        // Fixed: Using optional chaining to safely access the error property
+        setConnectionDetails(`Gagal terhubung: ${result.error || 'Unknown error'}`);
         toast({
           variant: "destructive",
           title: "Koneksi gagal",
@@ -146,7 +145,7 @@ const ImplementationSettings = () => {
       if (connectionResult.success) {
         // Inisialisasi data website di Supabase
         const websiteDataString = localStorage.getItem('websiteData');
-        let dataResult = { success: true };
+        let dataResult = { success: true, error: null };
         
         if (websiteDataString) {
           try {
@@ -189,7 +188,7 @@ const ImplementationSettings = () => {
           toast({
             variant: "destructive",
             title: "Gagal menginisialisasi data",
-            // Fixed: Safely access the error message
+            // Fixed: Safely access the error message using optional chaining
             description: dataResult.error?.message || "Terjadi kesalahan saat menyiapkan data di Supabase",
           });
         }

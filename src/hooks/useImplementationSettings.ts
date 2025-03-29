@@ -1,4 +1,3 @@
-
 import { supabase } from "@/integrations/supabase/client";
 import { useToast } from "./use-toast";
 
@@ -68,7 +67,7 @@ export const useImplementationSettings = () => {
       
       if (error) {
         console.error('Koneksi Supabase gagal:', error);
-        throw new Error(`Tidak dapat terhubung ke Supabase: ${error.message}`);
+        return { success: false, error: error.message };
       }
       
       console.log('Koneksi Supabase berhasil:', data);

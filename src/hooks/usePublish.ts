@@ -1,4 +1,3 @@
-
 import { useToast } from "@/hooks/use-toast";
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 import { usePublishProgress } from "./usePublishProgress";
@@ -125,10 +124,15 @@ export const usePublish = () => {
           notifications.notifyDataSending();
           
           // Kirim data website ke server menggunakan API
-          await publishToApi({
+          const apiResult = await publishToApi({
             websiteData,
             pageEdits
           });
+          
+          // Check if there's error from API
+          if (!apiResult.success) {
+            throw new Error('API error');
+          }
           
         } catch (apiError) {
           throw new Error('API error');
@@ -191,7 +195,7 @@ export const usePublish = () => {
         try {
           const result = await rollbackOnApi();
           
-          if (result.success && result.data) {
+          if (result.success && 'data' in result && result.data) {
             // Dispatch event dengan data yang dikembalikan dari API
             dispatchContentUpdateEvent(result.data);
             

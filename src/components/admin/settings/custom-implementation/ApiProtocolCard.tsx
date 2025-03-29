@@ -3,7 +3,8 @@ import React from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
-import { Code } from 'lucide-react';
+import { Code, AlertTriangle } from 'lucide-react';
+import { Alert, AlertDescription } from "@/components/ui/alert";
 
 const ApiProtocolCard = () => {
   return (
@@ -17,8 +18,15 @@ const ApiProtocolCard = () => {
           Dokumentasi endpoint API yang diperlukan untuk implementasi kustom.
         </CardDescription>
       </CardHeader>
-      <CardContent className="space-y-4">
+      <CardContent className="space-y-6">
         <div className="text-sm">
+          <Alert variant="warning" className="mb-4">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>
+              Pastikan server API Anda dapat diakses secara publik dan mendukung operasi RESTful standar.
+            </AlertDescription>
+          </Alert>
+          
           <p className="mb-4">
             Implementasi kustom memerlukan server API dengan endpoint tertentu. API Anda harus menyediakan endpoint berikut:
           </p>
@@ -66,9 +74,9 @@ const ApiProtocolCard = () => {
             </TableBody>
           </Table>
           
-          <div className="mt-6 space-y-4">
+          <div className="mt-6 space-y-6">
             <div>
-              <h4 className="font-medium mb-2">Format Request</h4>
+              <h4 className="font-medium mb-2 text-blue-700">Format Request</h4>
               <div className="bg-gray-100 p-3 rounded-md">
                 <pre className="text-xs overflow-auto">
 {`// POST /website/save
@@ -92,7 +100,7 @@ const ApiProtocolCard = () => {
             </div>
             
             <div>
-              <h4 className="font-medium mb-2">Format Response</h4>
+              <h4 className="font-medium mb-2 text-blue-700">Format Response</h4>
               <div className="bg-gray-100 p-3 rounded-md">
                 <pre className="text-xs overflow-auto">
 {`// Successful response
@@ -112,6 +120,91 @@ const ApiProtocolCard = () => {
 }`}
                 </pre>
               </div>
+            </div>
+
+            <div>
+              <h4 className="font-medium mb-2 text-blue-700">Endpoint /health</h4>
+              <p className="text-sm mb-2">
+                Endpoint ini digunakan untuk memeriksa ketersediaan API. Harus mengembalikan status health check dan versi API.
+              </p>
+              <div className="bg-gray-100 p-3 rounded-md">
+                <pre className="text-xs overflow-auto">
+{`// GET /health
+// Response:
+{
+  "success": true,
+  "status": "healthy",
+  "version": "1.0.0",
+  "timestamp": "2023-01-01T00:00:00Z"
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-medium mb-2 text-blue-700">Endpoint /website/get</h4>
+              <p className="text-sm mb-2">
+                Mengambil data website lengkap dari database. Opsional dapat menerima parameter versi.
+              </p>
+              <div className="bg-gray-100 p-3 rounded-md">
+                <pre className="text-xs overflow-auto">
+{`// GET /website/get
+// Response:
+{
+  "success": true,
+  "data": {
+    "generalInfo": { ... },
+    "appearance": { ... },
+    "seo": { ... },
+    "homeContent": { ... },
+    "pages": [ ... ]
+  },
+  "version": "current",
+  "timestamp": "2023-01-01T00:00:00Z"
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-medium mb-2 text-blue-700">Endpoint /website/rollback</h4>
+              <p className="text-sm mb-2">
+                Mengembalikan ke versi website sebelumnya. Harus mengembalikan data website versi sebelumnya.
+              </p>
+              <div className="bg-gray-100 p-3 rounded-md">
+                <pre className="text-xs overflow-auto">
+{`// POST /website/rollback
+// Request:
+{
+  "userId": "user-id",
+  "timestamp": "2023-01-01T00:00:00Z"
+}
+
+// Response:
+{
+  "success": true,
+  "data": {
+    // Data website versi sebelumnya
+  },
+  "version": "previous",
+  "timestamp": "2023-01-01T00:00:00Z"
+}`}
+                </pre>
+              </div>
+            </div>
+
+            <div>
+              <h4 className="font-medium mb-2 text-blue-700">Keamanan API</h4>
+              <p className="text-sm mb-2">
+                Rekomendasi untuk mengamankan API Anda:
+              </p>
+              <ul className="list-disc list-inside space-y-1 text-sm ml-2">
+                <li>Gunakan HTTPS untuk semua komunikasi API</li>
+                <li>Implementasikan autentikasi dengan API key atau JWT token</li>
+                <li>Tambahkan rate limiting untuk mencegah penyalahgunaan</li>
+                <li>Validasi semua input yang diterima dari klien</li>
+                <li>Implementasikan logging untuk aktivitas API</li>
+              </ul>
             </div>
           </div>
         </div>
