@@ -213,22 +213,17 @@ const DataSyncManager = () => {
             const sectionData = remoteData.content[diff.section];
             
             // Find the appropriate update function for this section
-            if (diff.section === 'generalInfo' && websiteData.updateGeneralInfo) {
-              websiteData.updateGeneralInfo(sectionData);
-            } 
-            else if (diff.section === 'appearance' && websiteData.updateAppearance) {
-              websiteData.updateAppearance(sectionData);
+            const updateFunctionName = `update${diff.section.charAt(0).toUpperCase() + diff.section.slice(1)}`;
+            const updateFunction = websiteData[updateFunctionName];
+            
+            if (typeof updateFunction === 'function') {
+              updateFunction(sectionData);
             }
-            else if (diff.section === 'homeContent' && websiteData.updateHomeContent) {
-              websiteData.updateHomeContent(sectionData);
-            }
-            else if (diff.section === 'seo' && websiteData.updateSeo) {
-              websiteData.updateSeo(sectionData);
-            }
-            else if (diff.section === 'pages' && Array.isArray(sectionData)) {
+            // Special handling for pages (since they require individual updates)
+            else if (diff.section === 'pages' && Array.isArray(sectionData) && typeof websiteData.updatePage === 'function') {
               // For pages, we need to update each page individually
               sectionData.forEach(page => {
-                if (page.id && websiteData.updatePage) {
+                if (page.id) {
                   websiteData.updatePage(page.id, page);
                 }
               });
