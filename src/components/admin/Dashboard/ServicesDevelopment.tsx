@@ -21,7 +21,8 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
     deploymentStatus, 
     publishChanges, 
     handleRollback,
-    isRealImplementation
+    isRealImplementation,
+    lastChanges
   } = usePublish();
   
   const navigateToImplementationSettings = () => {
@@ -70,7 +71,10 @@ const ServicesDevelopment = ({ onTabChange }: ServicesDevelopmentProps) => {
         </div>
         
         <div className="space-y-6 md:col-span-1">
-          <PublishInfoCard />
+          <PublishInfoCard 
+            lastPublished={lastPublished}
+            lastChanges={lastChanges}
+          />
           
           <InfoSettingsCard onTabChange={onTabChange} />
           

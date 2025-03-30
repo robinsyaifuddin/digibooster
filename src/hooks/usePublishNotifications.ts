@@ -1,94 +1,72 @@
 
 import { useToast } from "@/hooks/use-toast";
-import { useImplementationSettings } from "./useImplementationSettings";
 
 export const usePublishNotifications = () => {
   const { toast } = useToast();
-  const { isRealImplementation } = useImplementationSettings();
   
   const notifyPublishStarted = () => {
     toast({
-      title: "Menyiapkan aset",
-      description: "Mengoptimalkan gambar dan aset statis...",
-      duration: 2000,
+      title: "Publikasi dimulai",
+      description: "Sedang mempublikasikan perubahan website Anda...",
     });
   };
   
   const notifyDataSending = () => {
     toast({
-      title: "Mengirim data ke server",
-      description: "Menyinkronkan perubahan dengan server produksi...",
-      duration: 2000,
+      title: "Mengirim data",
+      description: "Mengirim data website ke server...",
     });
   };
   
   const notifySimulationMode = () => {
     toast({
       title: "Mode Simulasi",
-      description: "Perubahan disimpan dalam localStorage browser (mode simulasi).",
-      duration: 2000,
+      description: "Website berjalan dalam mode simulasi. Perubahan hanya tersimpan secara lokal.",
     });
   };
   
   const notifyPublishSuccess = (publishTime: string) => {
     toast({
-      title: "Website berhasil dipublikasikan",
-      description: `Semua perubahan telah ${isRealImplementation ? 'tersimpan di database dan' : ''} dapat dilihat oleh publik pada ${publishTime}`,
-      duration: 5000,
+      title: "Publikasi berhasil",
+      description: `Website berhasil dipublikasikan pada ${new Date(publishTime).toLocaleTimeString('id-ID')}`,
     });
-    
-    // Tampilkan informasi implementasi jika masih dalam mode simulasi
-    if (!isRealImplementation) {
-      setTimeout(() => {
-        toast({
-          title: "Catatan implementasi nyata",
-          description: "Untuk implementasi nyata, Anda perlu mengonfigurasi API dan database server melalui pengaturan Implementasi Nyata.",
-          duration: 8000,
-        });
-      }, 1000);
-    }
   };
   
-  const notifyPublishError = (error: Error) => {
+  const notifyPublishError = (error: any) => {
     toast({
       variant: "destructive",
-      title: "Gagal mempublikasikan perubahan",
-      description: error.message || "Terjadi kesalahan saat mempublikasi website. Silakan coba lagi.",
-      duration: 5000,
+      title: "Publikasi gagal",
+      description: error.message || "Terjadi kesalahan saat mempublikasikan website",
     });
   };
   
   const notifyRollbackStarted = () => {
     toast({
       title: "Rollback dimulai",
-      description: "Mengembalikan website ke versi sebelumnya...",
-      duration: 3000,
+      description: "Sedang mengembalikan website ke versi sebelumnya...",
     });
   };
   
   const notifyRollbackSuccess = () => {
     toast({
-      title: "Rollback selesai",
-      description: "Website telah dikembalikan ke versi sebelumnya.",
-      duration: 3000,
+      title: "Rollback berhasil",
+      description: "Website telah dikembalikan ke versi sebelumnya",
     });
   };
   
-  const notifyRollbackFailed = (reason: string = "") => {
+  const notifyRollbackFailed = (message?: string) => {
     toast({
       variant: "destructive",
       title: "Rollback gagal",
-      description: reason || "Terjadi kesalahan saat mengembalikan versi website. Silakan coba lagi.",
-      duration: 5000,
+      description: message || "Terjadi kesalahan saat mengembalikan website ke versi sebelumnya",
     });
   };
   
   const notifyNoBackupAvailable = () => {
     toast({
       variant: "destructive",
-      title: "Rollback gagal",
-      description: "Tidak ada versi backup yang tersedia untuk dikembalikan.",
-      duration: 5000,
+      title: "Tidak ada backup",
+      description: "Tidak ada versi sebelumnya yang tersedia untuk dikembalikan",
     });
   };
   

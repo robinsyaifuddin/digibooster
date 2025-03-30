@@ -1,67 +1,63 @@
 
-import { useToast } from "@/hooks/use-toast";
+import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 
 export const usePublishStorage = () => {
-  const { toast } = useToast();
+  const websiteData = useWebsiteDataStore();
   
+  // Simpan data website ke localStorage
   const saveWebsiteData = (data: any) => {
-    try {
-      // Save site data to localStorage with a permanent flag
-      localStorage.setItem('websiteData', JSON.stringify(data));
-      localStorage.setItem('websiteDataPermanent', 'true');
-      
-      // Hapus semua flag edit halaman karena sudah dipublikasikan
-      if (data?.pages) {
-        data.pages.forEach(page => {
-          localStorage.removeItem('pageEdited_' + page.id);
-        });
-      }
-      
-      return true;
-    } catch (storageError) {
-      console.error('Error saving to localStorage:', storageError);
-      toast({
-        variant: "destructive",
-        title: "Kesalahan penyimpanan",
-        description: "Tidak dapat menyimpan data website. Pastikan browser tidak dalam mode private.",
-        duration: 5000,
-      });
-      throw new Error('Storage error');
-    }
+    localStorage.setItem('websiteData', JSON.stringify(data));
+    localStorage.setItem('websiteDataPermanent', JSON.stringify(data));
   };
   
+  // Buat backup data saat ini sebelum publikasi
   const backupCurrentData = () => {
+    // Simpan data saat ini ke localStorage sebagai backup
     try {
-      // Simpan data website saat ini sebagai backup sebelum mempublikasikan
-      const currentData = localStorage.getItem('websiteData');
-      if (currentData) {
-        localStorage.setItem('websiteDataBackup', currentData);
-        return true;
-      }
-      return false;
+      localStorage.setItem('websiteDataBackup', JSON.stringify(websiteData));
+      localStorage.setItem('websiteDataBackupTime', new Date().toISOString());
+      return true;
     } catch (error) {
       console.error('Error creating backup:', error);
       return false;
     }
   };
   
+  // Pulihkan dari backup jika terjadi masalah
   const restoreFromBackup = () => {
     try {
-      // Remove permanent flag
-      localStorage.removeItem('websiteDataPermanent');
-      
-      // Get the previous version from backup if available
+      // Cek apakah ada backup tersedia
       const backupData = localStorage.getItem('websiteDataBackup');
-      if (backupData) {
-        const parsedBackup = JSON.parse(backupData);
-        localStorage.setItem('websiteData', backupData);
-        return { success: true, data: parsedBackup };
+      const backupTime = localStorage.getItem('websiteDataBackupTime');
+      
+      if (!backupData || !backupTime) {
+        return { success: false, reason: 'no-backup' };
       }
       
-      return { success: false, reason: 'no-backup' };
+      // Parse data backup
+      const parsedData = JSON.parse(backupData);
+      
+      // Perbarui store dengan data backup
+      Object.keys(parsedData).forEach(key => {
+        // Hanya perbarui properti data, bukan method
+        if (typeof parsedData[key] !== 'function' && typeof websiteData[`update${key.charAt(0).toUpperCase() + key.slice(1)}`] === 'function') {
+          const updateMethod = websiteData[`update${key.charAt(0).toUpperCase() + key.slice(1)}`];
+          updateMethod(parsedData[key]);
+        }
+      });
+      
+      // Simpan kembali data ke localStorage
+      localStorage.setItem('websiteData', backupData);
+      
+      return { 
+        success: true, 
+        data: parsedData,
+        backupTime
+      };
+      
     } catch (error) {
       console.error('Error restoring from backup:', error);
-      return { success: false, reason: 'parse-error', error };
+      return { success: false, reason: 'error', error };
     }
   };
   

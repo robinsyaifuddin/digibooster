@@ -1,43 +1,19 @@
 
 export const usePublishEvents = () => {
+  // Dispatch event untuk memberitahu komponen lain bahwa konten telah diperbarui
   const dispatchContentUpdateEvent = (data: any) => {
-    try {
-      // Create and dispatch an event to notify all components that content has been updated
-      const contentUpdateEvent = new CustomEvent('websiteContentUpdated', { 
-        detail: {
-          ...data,
-          isPermanent: true
-        }
-      });
-      
-      window.dispatchEvent(contentUpdateEvent);
-      return true;
-    } catch (eventError) {
-      console.error('Error dispatching event:', eventError);
-      return false;
-    }
+    const event = new CustomEvent('websiteContentUpdated', { 
+      detail: data
+    });
+    window.dispatchEvent(event);
   };
   
-  const dispatchPageContentUpdates = (pages: any[]) => {
-    try {
-      // Notifikasi semua komponen tentang perubahan konten halaman
-      if (pages && pages.length) {
-        pages.forEach(page => {
-          window.dispatchEvent(new CustomEvent('pageContentUpdated', {
-            detail: {
-              pageId: page.id,
-              content: page.content,
-              isPermanent: true,
-              isRollback: true
-            }
-          }));
-        });
-      }
-      return true;
-    } catch (error) {
-      console.error('Error dispatching page content updates:', error);
-      return false;
-    }
+  // Dispatch event untuk memberitahu komponen tentang pembaruan konten halaman
+  const dispatchPageContentUpdates = (pagesData: any) => {
+    const event = new CustomEvent('pageContentUpdated', { 
+      detail: { pages: pagesData }
+    });
+    window.dispatchEvent(event);
   };
   
   return {

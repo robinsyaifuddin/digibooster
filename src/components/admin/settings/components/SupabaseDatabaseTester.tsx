@@ -39,8 +39,10 @@ const SupabaseDatabaseTester = () => {
       // Test each table
       for (const tableName of tablesToTest) {
         try {
+          // Type casting tableName to allowed table type to fix TS error
+          // Supabase client's type system expects specific table names
           const { data, error, count } = await supabase
-            .from(tableName)
+            .from(tableName as any)
             .select('*', { count: 'exact' })
             .limit(1);
           

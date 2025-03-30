@@ -1,4 +1,3 @@
-
 import { useToast } from "@/hooks/use-toast";
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 import { usePublishProgress } from "./usePublishProgress";
@@ -25,12 +24,10 @@ export const usePublish = () => {
   const notifications = usePublishNotifications();
   const { user } = useAuth();
   
-  // Fungsi untuk memuat data website dari Supabase (jika menggunakan implementasi nyata)
   const loadWebsiteDataFromSupabase = async (): Promise<WebsiteData | null> => {
     if (!isRealImplementation) return null;
     
     try {
-      // Jika implementasi Supabase
       if (implementationType === 'supabase') {
         const { data, error } = await supabase
           .from('website_content')
@@ -47,9 +44,7 @@ export const usePublish = () => {
           return data.content as unknown as WebsiteData;
         }
       } 
-      // Jika implementasi kustom
       else if (implementationType === 'custom') {
-        // Ambil pengaturan implementasi kustom
         const apiUrl = localStorage.getItem('implementation_apiUrl');
         const apiKey = localStorage.getItem('implementation_apiKey');
         
@@ -58,18 +53,15 @@ export const usePublish = () => {
           return null;
         }
         
-        // Buat URL endpoint untuk mengambil data
         const getEndpoint = apiUrl.endsWith('/') 
           ? `${apiUrl}website/get` 
           : `${apiUrl}/website/get`;
         
-        // Buat header dengan API key jika tersedia
         const headers = {
           'Content-Type': 'application/json',
           ...(apiKey && { 'Authorization': `Bearer ${apiKey}` })
         };
         
-        // Kirim permintaan ke API kustom
         const response = await fetch(getEndpoint, { 
           method: 'GET',
           headers
@@ -99,10 +91,8 @@ export const usePublish = () => {
     resetProgress();
     
     try {
-      // Backup data saat ini
       backupCurrentData();
 
-      // Kumpulkan data halaman yang diedit
       const pageEdits = {};
       websiteData.pages.forEach(page => {
         const isEdited = localStorage.getItem('pageEdited_' + page.id);
@@ -117,61 +107,49 @@ export const usePublish = () => {
       
       await simulateProgressStep(20, 50, 1500);
       
-      // Jika implementasi nyata, publikasikan via API
       if (isRealImplementation) {
         try {
           await simulateProgressStep(50, 75, 1500);
           
           notifications.notifyDataSending();
           
-          // Kirim data website ke server menggunakan API
           const apiResult = await publishToApi({
             websiteData,
             pageEdits
           });
           
-          // Check if there's error from API
           if (!apiResult.success) {
             throw new Error('API error');
           }
           
-          // Perbaikan kondisional untuk memeriksa apakah apiResult memiliki properti data
           if ('data' in apiResult && apiResult.data) {
             console.log('Data berhasil dipublikasikan ke API:', apiResult.data);
           }
-          
         } catch (apiError) {
           throw new Error('API error');
         }
       } else {
-        // Mode simulasi
         await simulateProgressStep(50, 75, 1500);
         notifications.notifySimulationMode();
       }
       
-      // Simpan data website
       saveWebsiteData(websiteData);
       
-      // Dispatch event untuk memperbarui konten
       dispatchContentUpdateEvent({
         ...websiteData,
         isPermanent: true,
         pageEdits
       });
       
-      // Track dan simpan perubahan yang dipublikasikan
       const changes = trackChanges();
       saveChanges(changes);
       
       await simulateProgressStep(90, 100, 500);
       
-      // Selesai publikasi
       updatePublishState('success', false);
       
-      // Catat waktu publikasi
       const publishTime = recordPublishTime();
       
-      // Tambahkan riwayat publikasi jika dalam mode nyata dan menggunakan Supabase
       if (isRealImplementation && implementationType === 'supabase') {
         await supabase.from('publish_history').insert({
           publish_type: 'full',
@@ -180,7 +158,6 @@ export const usePublish = () => {
         });
       }
       
-      // Tampilkan pesan sukses
       notifications.notifyPublishSuccess(publishTime);
       
     } catch (error) {
@@ -196,13 +173,11 @@ export const usePublish = () => {
     notifications.notifyRollbackStarted();
     
     try {
-      // Jika implementasi nyata, panggil API untuk rollback
       if (isRealImplementation) {
         try {
           const result = await rollbackOnApi();
           
           if (result.success && 'data' in result && result.data) {
-            // Dispatch event dengan data yang dikembalikan dari API
             dispatchContentUpdateEvent(result.data);
             
             if (result.data.pages) {
@@ -217,14 +192,11 @@ export const usePublish = () => {
         }
       }
       
-      // Jika tidak ada implementasi nyata atau API rollback gagal, lakukan rollback lokal
       const result = restoreFromBackup();
       
       if (result.success) {
-        // Notify components of rollback
         dispatchContentUpdateEvent(result.data);
         
-        // Notifikasi semua komponen tentang perubahan konten halaman
         if (result.data.pages) {
           dispatchPageContentUpdates(result.data.pages);
         }
@@ -242,7 +214,6 @@ export const usePublish = () => {
   };
   
   const previewWebsite = () => {
-    // Buka preview website di tab baru
     const previewUrl = window.location.origin;
     window.open(previewUrl, '_blank');
   };

@@ -1,62 +1,61 @@
 
-import React from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ClipboardCheck, AlertTriangle } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 
-interface PublishInfoCardProps {
+export interface PublishInfoCardProps {
   lastPublished: string | null;
-  lastChanges: string[];
+  lastChanges?: string[] | null;
 }
 
 const PublishInfoCard = ({ lastPublished, lastChanges }: PublishInfoCardProps) => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Informasi Terakhir Dipublikasikan</CardTitle>
-        <CardDescription>
-          Detail perubahan yang terakhir dipublikasikan
-        </CardDescription>
+        <CardTitle className="flex items-center gap-2">
+          <ClipboardCheck className="h-5 w-5" />
+          Informasi Publikasi
+        </CardTitle>
       </CardHeader>
-      <CardContent>
-        <div className="space-y-4">
-          {lastPublished ? (
-            <>
-              <div className="p-4 border border-gray-200 rounded-md">
-                <h3 className="font-medium">Waktu Publikasi</h3>
-                <p className="text-sm text-gray-500 mt-1">{lastPublished}</p>
+      <CardContent className="space-y-4">
+        {lastPublished ? (
+          <div className="space-y-2">
+            <div className="flex items-center gap-2">
+              <Badge variant="outline" className="bg-green-100 text-green-800 border-green-200">
+                Terakhir dipublikasikan
+              </Badge>
+              <span className="text-sm text-gray-500">
+                {new Date(lastPublished).toLocaleString('id-ID', {
+                  day: 'numeric',
+                  month: 'long',
+                  year: 'numeric',
+                  hour: '2-digit',
+                  minute: '2-digit'
+                })}
+              </span>
+            </div>
+            
+            {lastChanges && lastChanges.length > 0 && (
+              <div className="mt-3">
+                <p className="text-sm font-medium mb-1">Perubahan terakhir:</p>
+                <ul className="text-sm text-gray-600 space-y-1 ml-5 list-disc">
+                  {lastChanges.map((change, index) => (
+                    <li key={index}>{change}</li>
+                  ))}
+                </ul>
               </div>
-              
-              <div className="p-4 border border-gray-200 rounded-md">
-                <h3 className="font-medium">Perubahan yang Dipublikasikan</h3>
-                {lastChanges.length > 0 ? (
-                  <ul className="text-sm text-gray-500 mt-1 space-y-1">
-                    {lastChanges.map((change, index) => (
-                      <li key={index}>• {change}</li>
-                    ))}
-                  </ul>
-                ) : (
-                  <p className="text-sm text-gray-500 mt-1">
-                    • Website dipublikasikan
-                  </p>
-                )}
-              </div>
-              
-              <div className="p-4 border border-gray-200 rounded-md">
-                <h3 className="font-medium">Status CDN</h3>
-                <div className="flex items-center gap-2 mt-1">
-                  <div className="h-3 w-3 rounded-full bg-green-500"></div>
-                  <span className="text-sm text-gray-500">Aktif di seluruh region</span>
-                </div>
-              </div>
-            </>
-          ) : (
-            <div className="p-4 border border-dashed border-gray-300 rounded-md">
-              <h3 className="font-medium text-gray-500">Belum Ada Publikasi</h3>
-              <p className="text-sm text-gray-500 mt-1">
-                Website belum pernah dipublikasikan. Klik tombol "Publikasikan Sekarang" untuk mempublikasikan perubahan.
+            )}
+          </div>
+        ) : (
+          <div className="flex items-start gap-2 p-3 bg-amber-50 border border-amber-200 rounded-md">
+            <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0 mt-0.5" />
+            <div>
+              <p className="text-sm text-amber-800">
+                Website belum pernah dipublikasikan. Publikasikan agar perubahan dapat dilihat oleh pengunjung.
               </p>
             </div>
-          )}
-        </div>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
