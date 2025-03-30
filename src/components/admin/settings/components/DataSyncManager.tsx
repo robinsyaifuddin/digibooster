@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -22,17 +23,65 @@ const DataSyncManager = () => {
     remoteData: { sections: string[], totalItems: number };
     differences: { section: string, action: 'push' | 'pull' }[];
   } | null>(null);
+  const [supabaseInfo, setSupabaseInfo] = useState<{
+    isConnected: boolean;
+    url?: string;
+    error?: string;
+  }>({
+    isConnected: false
+  });
+
+  // Periksa konfigurasi Supabase saat komponen dimuat
+  React.useEffect(() => {
+    checkSupabaseConnection();
+  }, []);
+
+  // Fungsi untuk memeriksa koneksi Supabase
+  const checkSupabaseConnection = async () => {
+    try {
+      const projectUrl = 'https://bacnskcizgzcrqusqalu.supabase.co';
+      
+      // Coba mendapatkan data dari Supabase untuk memverifikasi koneksi
+      const { data, error } = await supabase.from('website_content').select('id').limit(1);
+      
+      if (error) {
+        console.error('Koneksi Supabase gagal:', error);
+        setSupabaseInfo({
+          isConnected: false,
+          error: error.message
+        });
+        return;
+      }
+      
+      setSupabaseInfo({
+        isConnected: true,
+        url: projectUrl
+      });
+      
+      // Jika koneksi berhasil, periksa juga status sinkronisasi
+      checkSyncStatus();
+      
+    } catch (error) {
+      console.error('Error memeriksa koneksi Supabase:', error);
+      setSupabaseInfo({
+        isConnected: false,
+        error: error.message
+      });
+    }
+  };
 
   const checkSyncStatus = async () => {
     setSyncingStatus('checking');
     setSyncProgress(10);
     
     try {
+      // Kumpulkan data lokal
       const localData = {
         sections: Object.keys(websiteData).filter(key => typeof websiteData[key] !== 'function'),
         totalItems: countItemsInWebsiteData(websiteData)
       };
       
+      // Dapatkan data dari Supabase
       const { data: remoteContent, error } = await supabase
         .from('website_content')
         .select('content')
@@ -40,11 +89,12 @@ const DataSyncManager = () => {
         .single();
       
       if (error && error.code !== 'PGRST116') {
-        throw new Error(`Error fetching remote data: ${error.message}`);
+        throw new Error(`Error mengambil data dari Supabase: ${error.message}`);
       }
       
       setSyncProgress(50);
       
+      // Jika belum ada data di Supabase
       if (!remoteContent) {
         setSyncDetails({
           localData,
@@ -58,6 +108,7 @@ const DataSyncManager = () => {
         return;
       }
       
+      // Analisis data Supabase
       const remoteDataObj = remoteContent.content || {};
       const remoteData = {
         sections: Object.keys(remoteDataObj),
@@ -66,6 +117,7 @@ const DataSyncManager = () => {
       
       const differences = [];
       
+      // Periksa perubahan yang perlu di-push ke Supabase
       localData.sections.forEach(section => {
         if (!remoteData.sections.includes(section) || 
             JSON.stringify(websiteData[section]) !== JSON.stringify(remoteDataObj[section])) {
@@ -73,6 +125,7 @@ const DataSyncManager = () => {
         }
       });
       
+      // Periksa perubahan yang perlu di-pull dari Supabase
       remoteData.sections.forEach(section => {
         if (!localData.sections.includes(section)) {
           differences.push({ section, action: 'pull' });
@@ -83,13 +136,14 @@ const DataSyncManager = () => {
       setSyncProgress(100);
       setSyncingStatus('success');
       
+      // Dapatkan informasi sinkronisasi terakhir
       const lastSyncedStr = localStorage.getItem('last_data_sync');
       if (lastSyncedStr) {
         setLastSynced(lastSyncedStr);
       }
       
     } catch (error) {
-      console.error('Error checking sync status:', error);
+      console.error('Error memeriksa status sinkronisasi:', error);
       setSyncingStatus('error');
       toast({
         variant: "destructive",
@@ -106,17 +160,20 @@ const DataSyncManager = () => {
     setSyncProgress(0);
     
     try {
+      // Jika belum ada data di Supabase, lakukan sinkronisasi awal
       if (syncDetails.remoteData.totalItems === 0) {
         setSyncProgress(30);
         
         const dataToSync = {};
         
+        // Kumpulkan semua data non-fungsi untuk disimpan
         syncDetails.localData.sections.forEach(section => {
           if (typeof websiteData[section] !== 'function') {
             dataToSync[section] = websiteData[section];
           }
         });
         
+        // Simpan ke Supabase
         const { error } = await supabase
           .from('website_content')
           .upsert({
@@ -128,6 +185,7 @@ const DataSyncManager = () => {
         
         setSyncProgress(100);
         
+        // Catat waktu sinkronisasi
         const now = new Date().toISOString();
         localStorage.setItem('last_data_sync', now);
         setLastSynced(now);
@@ -141,12 +199,13 @@ const DataSyncManager = () => {
         return;
       }
       
+      // Sinkronisasi per bagian yang berubah
       let completed = 0;
+      const progressStep = 100 / syncDetails.differences.length;
       
       for (const diff of syncDetails.differences) {
-        const progressStep = 100 / syncDetails.differences.length;
-        
         if (diff.action === 'push') {
+          // Kirim data ke Supabase
           const { data: currentRemote, error: fetchError } = await supabase
             .from('website_content')
             .select('content')
@@ -157,11 +216,13 @@ const DataSyncManager = () => {
             throw new Error(`Gagal mengambil data remote: ${fetchError.message}`);
           }
           
+          // Gabungkan data baru dengan data yang sudah ada
           const updatedContent = {
-            ...(currentRemote?.content || {}),
+            ...(currentRemote?.content || {} as Record<string, any>),
             [diff.section]: websiteData[diff.section]
           };
           
+          // Simpan perubahan
           const { error } = await supabase
             .from('website_content')
             .upsert({
@@ -172,6 +233,7 @@ const DataSyncManager = () => {
           if (error) throw new Error(`Gagal memperbarui data: ${error.message}`);
         } 
         else if (diff.action === 'pull') {
+          // Ambil data dari Supabase
           const { data: remoteData, error } = await supabase
             .from('website_content')
             .select('content')
@@ -180,18 +242,21 @@ const DataSyncManager = () => {
           
           if (error) throw new Error(`Gagal mengambil data remote: ${error.message}`);
           
+          // Terapkan data jika tersedia
           if (remoteData?.content && remoteData.content[diff.section]) {
             const sectionName = diff.section;
             const firstChar = sectionName.charAt(0).toUpperCase();
             const restChars = sectionName.slice(1);
             const updateFunctionName = `update${firstChar}${restChars}`;
             
+            // Panggil fungsi update sesuai nama bagian
             if (typeof websiteData[updateFunctionName] === 'function') {
               websiteData[updateFunctionName](remoteData.content[diff.section]);
             } else {
               console.warn(`Fungsi update tidak ditemukan untuk bagian: ${diff.section}`);
             }
             
+            // Khusus untuk halaman, update satu per satu
             if (diff.section === 'pages' && Array.isArray(remoteData.content[diff.section])) {
               if (typeof websiteData.updatePage === 'function') {
                 remoteData.content[diff.section].forEach(page => {
@@ -204,16 +269,20 @@ const DataSyncManager = () => {
           }
         }
         
+        // Update progres
         completed++;
-        setSyncProgress(completed * progressStep);
+        setSyncProgress(Math.floor(completed * progressStep));
       }
       
-      dispatchContentUpdateEvent(websiteData);
+      // Beritahu komponen lain tentang pembaruan data
+      dispatchContentUpdateEvent(websiteData as Record<string, any>);
       
+      // Khusus untuk halaman, kirim pembaruan terpisah
       if (syncDetails.differences.some(diff => diff.section === 'pages')) {
         dispatchPageContentUpdates(websiteData.pages);
       }
       
+      // Catat waktu sinkronisasi
       const now = new Date().toISOString();
       localStorage.setItem('last_data_sync', now);
       setLastSynced(now);
@@ -223,6 +292,7 @@ const DataSyncManager = () => {
         description: `${syncDetails.differences.length} perubahan telah disinkronkan.`,
       });
       
+      // Refresh status sinkronisasi
       await checkSyncStatus();
       
     } catch (error) {
@@ -238,6 +308,7 @@ const DataSyncManager = () => {
     }
   };
   
+  // Hitung jumlah item di seluruh data website
   const countItemsInWebsiteData = (data) => {
     let count = 0;
     Object.keys(data).forEach(key => {
@@ -248,6 +319,7 @@ const DataSyncManager = () => {
     return count;
   };
   
+  // Hitung jumlah item dalam suatu objek (rekursif)
   const countItemsInObject = (obj) => {
     if (!obj || typeof obj !== 'object') return 1;
     
@@ -274,6 +346,7 @@ const DataSyncManager = () => {
     return count;
   };
   
+  // Format waktu sinkronisasi terakhir
   const formatLastSynced = (dateString) => {
     if (!dateString) return null;
     
@@ -304,6 +377,29 @@ const DataSyncManager = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
+        {/* Status koneksi Supabase */}
+        <div className="mb-4 p-3 rounded-md border bg-slate-50">
+          <h3 className="text-sm font-medium mb-1">Status Koneksi Supabase</h3>
+          <div className="flex items-center gap-2">
+            <div className={`h-3 w-3 rounded-full ${supabaseInfo.isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
+            <span className="text-sm">
+              {supabaseInfo.isConnected 
+                ? 'Terhubung dengan Supabase' 
+                : 'Tidak terhubung dengan Supabase'}
+            </span>
+          </div>
+          {supabaseInfo.url && (
+            <div className="text-xs text-gray-500 mt-1">
+              URL: {supabaseInfo.url}
+            </div>
+          )}
+          {supabaseInfo.error && (
+            <div className="text-xs text-red-500 mt-1">
+              Error: {supabaseInfo.error}
+            </div>
+          )}
+        </div>
+        
         {syncingStatus === 'syncing' && (
           <div className="mb-4 space-y-2">
             <div className="flex justify-between text-sm mb-1">
@@ -330,6 +426,7 @@ const DataSyncManager = () => {
           </Alert>
         )}
         
+        {/* Informasi detail sinkronisasi */}
         {syncDetails && (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -393,7 +490,7 @@ const DataSyncManager = () => {
         <Button 
           variant="outline" 
           onClick={checkSyncStatus}
-          disabled={syncingStatus === 'checking' || syncingStatus === 'syncing'}
+          disabled={syncingStatus === 'checking' || syncingStatus === 'syncing' || !supabaseInfo.isConnected}
           className="w-full"
         >
           {syncingStatus === 'checking' ? (
@@ -412,7 +509,7 @@ const DataSyncManager = () => {
         {syncDetails && syncDetails.differences.length > 0 && (
           <Button 
             onClick={syncData}
-            disabled={syncingStatus === 'checking' || syncingStatus === 'syncing'}
+            disabled={syncingStatus === 'checking' || syncingStatus === 'syncing' || !supabaseInfo.isConnected}
             className="w-full"
           >
             {syncingStatus === 'syncing' ? (

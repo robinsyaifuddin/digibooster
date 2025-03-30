@@ -1,7 +1,7 @@
 
 export const usePublishEvents = () => {
   // Dispatch event untuk memberitahu komponen lain bahwa konten telah diperbarui
-  const dispatchContentUpdateEvent = (data: any) => {
+  const dispatchContentUpdateEvent = (data: Record<string, any>) => {
     const event = new CustomEvent('websiteContentUpdated', { 
       detail: data
     });
