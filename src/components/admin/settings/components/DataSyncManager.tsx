@@ -8,10 +8,12 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 import { Badge } from '@/components/ui/badge';
 import { Progress } from "@/components/ui/progress";
+import { usePublishEvents } from "@/hooks/usePublishEvents";
 
 const DataSyncManager = () => {
   const { toast } = useToast();
   const websiteData = useWebsiteDataStore();
+  const { dispatchContentUpdateEvent, dispatchPageContentUpdates } = usePublishEvents();
   const [syncingStatus, setSyncingStatus] = useState<'idle' | 'checking' | 'syncing' | 'success' | 'error'>('idle');
   const [syncProgress, setSyncProgress] = useState(0);
   const [lastSynced, setLastSynced] = useState<string | null>(null);
@@ -179,25 +181,37 @@ const DataSyncManager = () => {
           if (error) throw new Error(`Gagal mengambil data remote: ${error.message}`);
           
           if (remoteData?.content && remoteData.content[diff.section]) {
-            const updateFunctionName = `update${diff.section.charAt(0).toUpperCase() + diff.section.slice(1)}`;
-            const updateFunction = websiteData[updateFunctionName];
+            const sectionName = diff.section;
+            const firstChar = sectionName.charAt(0).toUpperCase();
+            const restChars = sectionName.slice(1);
+            const updateFunctionName = `update${firstChar}${restChars}`;
             
-            if (typeof updateFunction === 'function') {
-              updateFunction(remoteData.content[diff.section]);
+            if (typeof websiteData[updateFunctionName] === 'function') {
+              websiteData[updateFunctionName](remoteData.content[diff.section]);
+            } else {
+              console.warn(`Fungsi update tidak ditemukan untuk bagian: ${diff.section}`);
             }
             
-            if (diff.section === 'pages' && Array.isArray(remoteData.content[diff.section]) && typeof websiteData.updatePage === 'function') {
-              remoteData.content[diff.section].forEach(page => {
-                if (page.id) {
-                  websiteData.updatePage(page.id, page);
-                }
-              });
+            if (diff.section === 'pages' && Array.isArray(remoteData.content[diff.section])) {
+              if (typeof websiteData.updatePage === 'function') {
+                remoteData.content[diff.section].forEach(page => {
+                  if (page.id) {
+                    websiteData.updatePage(page.id, page);
+                  }
+                });
+              }
             }
           }
         }
         
         completed++;
         setSyncProgress(completed * progressStep);
+      }
+      
+      dispatchContentUpdateEvent(websiteData);
+      
+      if (syncDetails.differences.some(diff => diff.section === 'pages')) {
+        dispatchPageContentUpdates(websiteData.pages);
       }
       
       const now = new Date().toISOString();
