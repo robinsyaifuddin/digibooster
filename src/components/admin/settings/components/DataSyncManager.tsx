@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -27,26 +26,23 @@ const DataSyncManager = () => {
     setSyncProgress(10);
     
     try {
-      // Get local data structure
       const localData = {
         sections: Object.keys(websiteData).filter(key => typeof websiteData[key] !== 'function'),
         totalItems: countItemsInWebsiteData(websiteData)
       };
       
-      // Get remote data
       const { data: remoteContent, error } = await supabase
         .from('website_content')
         .select('content')
         .eq('name', 'main')
         .single();
       
-      if (error && error.code !== 'PGRST116') { // PGRST116 is "not found" error
+      if (error && error.code !== 'PGRST116') {
         throw new Error(`Error fetching remote data: ${error.message}`);
       }
       
       setSyncProgress(50);
       
-      // If remote data doesn't exist yet
       if (!remoteContent) {
         setSyncDetails({
           localData,
@@ -60,17 +56,14 @@ const DataSyncManager = () => {
         return;
       }
       
-      // Analyze remote data
       const remoteDataObj = remoteContent.content || {};
       const remoteData = {
         sections: Object.keys(remoteDataObj),
         totalItems: countItemsInObject(remoteDataObj)
       };
       
-      // Compare and find differences
       const differences = [];
       
-      // Check which local sections need to be pushed
       localData.sections.forEach(section => {
         if (!remoteData.sections.includes(section) || 
             JSON.stringify(websiteData[section]) !== JSON.stringify(remoteDataObj[section])) {
@@ -78,7 +71,6 @@ const DataSyncManager = () => {
         }
       });
       
-      // Check which remote sections need to be pulled
       remoteData.sections.forEach(section => {
         if (!localData.sections.includes(section)) {
           differences.push({ section, action: 'pull' });
@@ -89,7 +81,6 @@ const DataSyncManager = () => {
       setSyncProgress(100);
       setSyncingStatus('success');
       
-      // Update last synced time if we've synced before
       const lastSyncedStr = localStorage.getItem('last_data_sync');
       if (lastSyncedStr) {
         setLastSynced(lastSyncedStr);
@@ -113,11 +104,9 @@ const DataSyncManager = () => {
     setSyncProgress(0);
     
     try {
-      // If no remote data exists yet, push all local data
       if (syncDetails.remoteData.totalItems === 0) {
         setSyncProgress(30);
         
-        // Push all local data
         const dataToSync = {};
         
         syncDetails.localData.sections.forEach(section => {
@@ -133,11 +122,10 @@ const DataSyncManager = () => {
             content: dataToSync
           });
         
-        if (error) throw new Error(`Error pushing data: ${error.message}`);
+        if (error) throw new Error(`Gagal mengirim data: ${error.message}`);
         
         setSyncProgress(100);
         
-        // Record sync time
         const now = new Date().toISOString();
         localStorage.setItem('last_data_sync', now);
         setLastSynced(now);
@@ -151,14 +139,12 @@ const DataSyncManager = () => {
         return;
       }
       
-      // Process each difference
       let completed = 0;
       
       for (const diff of syncDetails.differences) {
         const progressStep = 100 / syncDetails.differences.length;
         
         if (diff.action === 'push') {
-          // Get the latest remote data first
           const { data: currentRemote, error: fetchError } = await supabase
             .from('website_content')
             .select('content')
@@ -166,39 +152,23 @@ const DataSyncManager = () => {
             .single();
           
           if (fetchError && fetchError.code !== 'PGRST116') {
-            throw new Error(`Error fetching current remote data: ${fetchError.message}`);
+            throw new Error(`Gagal mengambil data remote: ${fetchError.message}`);
           }
           
-          // If no data exists yet, create new record
-          if (!currentRemote) {
-            const newData = {};
-            newData[diff.section] = websiteData[diff.section];
-            
-            const { error } = await supabase
-              .from('website_content')
-              .insert({
-                name: 'main',
-                content: newData
-              });
-            
-            if (error) throw new Error(`Error creating new remote data: ${error.message}`);
-          } 
-          // Update existing data
-          else {
-            const updatedContent = {
-              ...currentRemote.content,
-              [diff.section]: websiteData[diff.section]
-            };
-            
-            const { error } = await supabase
-              .from('website_content')
-              .update({ content: updatedContent })
-              .eq('name', 'main');
-            
-            if (error) throw new Error(`Error updating remote data: ${error.message}`);
-          }
+          const updatedContent = {
+            ...(currentRemote?.content || {}),
+            [diff.section]: websiteData[diff.section]
+          };
+          
+          const { error } = await supabase
+            .from('website_content')
+            .upsert({
+              name: 'main',
+              content: updatedContent
+            });
+          
+          if (error) throw new Error(`Gagal memperbarui data: ${error.message}`);
         } 
-        // Pull changes (this will update the local store)
         else if (diff.action === 'pull') {
           const { data: remoteData, error } = await supabase
             .from('website_content')
@@ -206,23 +176,18 @@ const DataSyncManager = () => {
             .eq('name', 'main')
             .single();
           
-          if (error) throw new Error(`Error pulling remote data: ${error.message}`);
+          if (error) throw new Error(`Gagal mengambil data remote: ${error.message}`);
           
-          // Update local store with the pulled section
-          if (remoteData && remoteData.content && remoteData.content[diff.section]) {
-            const sectionData = remoteData.content[diff.section];
-            
-            // Find the appropriate update function for this section
+          if (remoteData?.content && remoteData.content[diff.section]) {
             const updateFunctionName = `update${diff.section.charAt(0).toUpperCase() + diff.section.slice(1)}`;
             const updateFunction = websiteData[updateFunctionName];
             
             if (typeof updateFunction === 'function') {
-              updateFunction(sectionData);
+              updateFunction(remoteData.content[diff.section]);
             }
-            // Special handling for pages (since they require individual updates)
-            else if (diff.section === 'pages' && Array.isArray(sectionData) && typeof websiteData.updatePage === 'function') {
-              // For pages, we need to update each page individually
-              sectionData.forEach(page => {
+            
+            if (diff.section === 'pages' && Array.isArray(remoteData.content[diff.section]) && typeof websiteData.updatePage === 'function') {
+              remoteData.content[diff.section].forEach(page => {
                 if (page.id) {
                   websiteData.updatePage(page.id, page);
                 }
@@ -235,7 +200,6 @@ const DataSyncManager = () => {
         setSyncProgress(completed * progressStep);
       }
       
-      // Record sync time
       const now = new Date().toISOString();
       localStorage.setItem('last_data_sync', now);
       setLastSynced(now);
@@ -245,11 +209,10 @@ const DataSyncManager = () => {
         description: `${syncDetails.differences.length} perubahan telah disinkronkan.`,
       });
       
-      // Refresh sync status
       await checkSyncStatus();
       
     } catch (error) {
-      console.error('Error syncing data:', error);
+      console.error('Error sinkronisasi data:', error);
       setSyncingStatus('error');
       toast({
         variant: "destructive",
@@ -261,7 +224,6 @@ const DataSyncManager = () => {
     }
   };
   
-  // Helper function to count items in website data
   const countItemsInWebsiteData = (data) => {
     let count = 0;
     Object.keys(data).forEach(key => {
@@ -272,11 +234,10 @@ const DataSyncManager = () => {
     return count;
   };
   
-  // Helper function to recursively count items in an object
   const countItemsInObject = (obj) => {
     if (!obj || typeof obj !== 'object') return 1;
     
-    let count = 1; // Count the object itself
+    let count = 1;
     
     if (Array.isArray(obj)) {
       obj.forEach(item => {
@@ -299,7 +260,6 @@ const DataSyncManager = () => {
     return count;
   };
   
-  // Format date for display
   const formatLastSynced = (dateString) => {
     if (!dateString) return null;
     
