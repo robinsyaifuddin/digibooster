@@ -14,6 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import ApiProtocolCard from './components/ApiProtocolCard';
+import SupabaseDatabaseTester from './components/SupabaseDatabaseTester';
+import DataSyncManager from './components/DataSyncManager';
 
 const ImplementationSettings = () => {
   const { toast } = useToast();
@@ -402,6 +404,14 @@ const ImplementationSettings = () => {
               </Button>
             </CardFooter>
           </Card>
+          
+          {/* Tampilkan komponen database tester ketika implementasi nyata sudah aktif */}
+          {isRealImplementation && implementationType === 'supabase' && (
+            <>
+              <SupabaseDatabaseTester />
+              <DataSyncManager />
+            </>
+          )}
           
           {/* Tambahkan ApiProtocolCard */}
           <ApiProtocolCard />

@@ -21,15 +21,23 @@ const WebsiteSettings = () => {
     window.history.pushState({tab}, '', newUrl.toString());
   };
 
-  // Effect to handle browser back/forward buttons
+  // Effect to handle browser back/forward buttons and custom events
   useEffect(() => {
     const handlePopState = (event: PopStateEvent) => {
       if (event.state && event.state.tab) {
         setActiveTab(event.state.tab);
       }
     };
+    
+    // Handle custom event from ServicesDevelopment component
+    const handleSwitchToSettingsTab = (event: CustomEvent) => {
+      if (event.detail) {
+        setActiveTab(event.detail);
+      }
+    };
 
     window.addEventListener('popstate', handlePopState);
+    window.addEventListener('switchToSettingsTab', handleSwitchToSettingsTab as EventListener);
     
     // Check for tab in URL
     const params = new URLSearchParams(window.location.search);
@@ -41,24 +49,39 @@ const WebsiteSettings = () => {
     
     return () => {
       window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('switchToSettingsTab', handleSwitchToSettingsTab as EventListener);
     };
   }, []);
   
   const handleSwitchToTab = (tab: string) => {
     setActiveTab(tab);
+    handleTabChange(tab);
   };
 
   const handleSaveSettings = () => {
     setSaving(true);
     
-    // Simulasi proses penyimpanan
-    setTimeout(() => {
+    // Simulate saving process with a promise
+    new Promise<void>((resolve) => {
+      setTimeout(() => {
+        resolve();
+      }, 1500);
+    })
+    .then(() => {
       setSaving(false);
       toast({
         title: "Pengaturan berhasil disimpan",
         description: "Semua perubahan telah disimpan dengan sukses",
       });
-    }, 1500);
+    })
+    .catch((error) => {
+      setSaving(false);
+      toast({
+        variant: "destructive",
+        title: "Gagal menyimpan pengaturan",
+        description: error.message || "Terjadi kesalahan saat menyimpan pengaturan",
+      });
+    });
   };
 
   return (
