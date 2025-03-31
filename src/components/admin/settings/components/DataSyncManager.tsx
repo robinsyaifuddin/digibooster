@@ -249,7 +249,7 @@ const DataSyncManager = () => {
         setSyncProgress(Math.floor(completed * progressStep));
       }
       
-      // Perbaikan disini: Mengganti spread operator dengan type casting yang tepat
+      // Menggunakan type casting yang tepat untuk dispatchContentUpdateEvent
       dispatchContentUpdateEvent(websiteData as Record<string, any>);
       
       if (syncDetails.differences.some(diff => diff.section === 'pages')) {

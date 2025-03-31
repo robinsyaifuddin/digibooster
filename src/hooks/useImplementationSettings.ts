@@ -1,205 +1,223 @@
 
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from "./use-toast";
+import { useState, useEffect } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+
+type ImplementationType = 'supabase' | 'custom';
+
+interface CustomApiConfig {
+  apiUrl: string;
+  apiKey?: string;
+  databaseType?: string;
+  backendType?: string;
+  serverProvider?: string;
+}
 
 export const useImplementationSettings = () => {
-  const { toast } = useToast();
+  const [isRealImplementation, setIsRealImplementation] = useState<boolean>(false);
+  const [implementationType, setImplementationType] = useState<ImplementationType>('supabase');
   
-  // Periksa apakah implementasi nyata telah selesai
-  const isRealImplementation = localStorage.getItem('implementation_status') === 'completed';
-  
-  // Periksa tipe implementasi (supabase atau kustom)
-  const implementationType = localStorage.getItem('implementation_provider') || 'supabase';
-  
-  // Ambil pengaturan implementasi jika sudah selesai
-  const getSettings = () => {
-    return {
-      apiUrl: localStorage.getItem('implementation_apiUrl') || '',
-      apiKey: localStorage.getItem('implementation_apiKey') || '',
-      databaseType: localStorage.getItem('implementation_databaseType') || 'mysql',
-      backendType: localStorage.getItem('implementation_backendType') || 'php',
-      serverProvider: localStorage.getItem('implementation_serverProvider') || ''
+  useEffect(() => {
+    // Periksa apakah implementasi nyata sudah diaktifkan
+    const checkImplementation = () => {
+      const implementation = localStorage.getItem('implementation_mode');
+      const type = localStorage.getItem('implementation_type') as ImplementationType | null;
+      
+      setIsRealImplementation(implementation === 'real');
+      setImplementationType(type || 'supabase');
     };
-  };
+    
+    checkImplementation();
+    
+    // Atur event listener untuk mendeteksi perubahan di localStorage
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'implementation_mode' || e.key === 'implementation_type') {
+        checkImplementation();
+      }
+    };
+    
+    window.addEventListener('storage', handleStorageChange);
+    
+    return () => {
+      window.removeEventListener('storage', handleStorageChange);
+    };
+  }, []);
   
-  // Aktifkan implementasi nyata menggunakan Supabase
-  const activateRealImplementation = () => {
-    try {
-      console.log('Memulai aktivasi implementasi nyata...');
-      
-      // Tambahkan konfigurasi implementasi ke localStorage
-      localStorage.setItem('implementation_status', 'completed');
-      localStorage.setItem('implementation_provider', 'supabase');
-      
-      console.log('Konfigurasi implementasi berhasil disimpan di localStorage');
-      
-      // Reset localStorage jika ada konflik dengan data sebelumnya
-      localStorage.removeItem('websiteData');
-      localStorage.removeItem('websiteDataPermanent');
-      
-      console.log('Data simulasi lama telah dihapus dari localStorage');
-      
-      toast({
-        title: "Implementasi nyata diaktifkan",
-        description: "Website Anda sekarang terhubung dengan Supabase. Halaman akan dimuat ulang...",
-      });
-      
-      return true;
-    } catch (error) {
-      console.error('Gagal mengaktifkan implementasi nyata:', error);
-      toast({
-        variant: "destructive",
-        title: "Aktivasi gagal",
-        description: `Gagal mengaktifkan implementasi nyata: ${error.message}`,
-      });
-      return false;
-    }
-  };
-  
-  // Verifikasi koneksi dengan Supabase
+  // Verifikasi koneksi ke Supabase
   const verifySupabaseConnection = async () => {
     try {
-      console.log('Memeriksa koneksi Supabase...');
-      // Using the project URL directly instead of accessing the protected property
-      const projectUrl = 'https://bacnskcizgzcrqusqalu.supabase.co';
-      console.log('Supabase URL:', projectUrl);
-      
       const { data, error } = await supabase.from('website_content').select('id').limit(1);
       
       if (error) {
-        console.error('Koneksi Supabase gagal:', error);
-        return { success: false, error: error.message };
+        return {
+          success: false,
+          error: error.message
+        };
       }
       
-      console.log('Koneksi Supabase berhasil:', data);
-      return { success: true, connected: true, data, error: null };
+      return {
+        success: true
+      };
     } catch (error) {
-      console.error('Verifikasi koneksi Supabase gagal:', error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error.message
+      };
     }
   };
   
-  // Cek apakah konten website sudah ada di Supabase
-  const initializeSupabaseData = async (websiteData) => {
+  // Inisialisasi data website di Supabase
+  const initializeSupabaseData = async (websiteData: any) => {
     try {
-      console.log('Menginisialisasi data di Supabase...');
-      
-      // Cek apakah data website sudah ada
+      // Periksa apakah data sudah ada
       const { data: existingData, error: checkError } = await supabase
         .from('website_content')
         .select('id')
         .eq('name', 'main')
-        .single();
+        .maybeSingle();
       
-      if (checkError && checkError.code !== 'PGRST116') { // PGRST116 is "not found" error
-        console.error('Gagal memeriksa data yang ada:', checkError);
-        return { success: false, error: checkError };
+      if (checkError && checkError.code !== 'PGRST116') {
+        return {
+          success: false,
+          error: checkError
+        };
       }
       
-      // Jika data belum ada, masukkan data dari localStorage
-      if (!existingData) {
+      // Jika data sudah ada, update
+      if (existingData) {
+        const { error: updateError } = await supabase
+          .from('website_content')
+          .update({ content: websiteData })
+          .eq('name', 'main');
+        
+        if (updateError) {
+          return {
+            success: false,
+            error: updateError
+          };
+        }
+      } else {
+        // Jika data belum ada, insert baru
         const { error: insertError } = await supabase
           .from('website_content')
-          .insert({
-            name: 'main',
-            content: websiteData
-          });
+          .insert({ name: 'main', content: websiteData });
         
         if (insertError) {
-          console.error('Gagal menginisialisasi data Supabase:', insertError);
-          return { success: false, error: insertError };
+          return {
+            success: false,
+            error: insertError
+          };
         }
-        
-        console.log('Data berhasil diinisialisasi di Supabase');
-      } else {
-        console.log('Data website sudah ada di Supabase');
       }
       
-      return { success: true, error: null };
+      return {
+        success: true
+      };
     } catch (error) {
-      console.error('Inisialisasi data Supabase gagal:', error);
-      return { success: false, error: error };
+      return {
+        success: false,
+        error
+      };
     }
   };
   
-  // Implementasi Kustom - Verifikasi koneksi dengan API kustom
-  const verifyCustomApiConnection = async (apiUrl, apiKey) => {
+  // Verifikasi koneksi ke API kustom
+  const verifyCustomApiConnection = async (apiUrl: string, apiKey?: string) => {
     try {
-      console.log('Memeriksa koneksi API kustom:', apiUrl);
-      
-      // Validasi parameter
-      if (!apiUrl) {
-        return { success: false, error: 'URL API tidak boleh kosong' };
-      }
-      
-      // Buat URL endpoint untuk health check
-      const healthCheckUrl = apiUrl.endsWith('/') 
-        ? `${apiUrl}health` 
-        : `${apiUrl}/health`;
-      
-      // Buat header dengan API key jika disediakan
-      const headers = {
-        'Content-Type': 'application/json',
-        ...(apiKey && { 'Authorization': `Bearer ${apiKey}` })
+      const headers: Record<string, string> = {
+        'Content-Type': 'application/json'
       };
       
-      // Lakukan permintaan untuk memeriksa koneksi
-      const response = await fetch(healthCheckUrl, { 
+      if (apiKey) {
+        headers['Authorization'] = `Bearer ${apiKey}`;
+      }
+      
+      const response = await fetch(apiUrl, {
         method: 'GET',
         headers
       });
       
       if (!response.ok) {
-        throw new Error(`Koneksi gagal dengan status: ${response.status}`);
+        return {
+          success: false,
+          error: `API merespon dengan status: ${response.status}`
+        };
       }
       
-      const data = await response.json();
-      
-      console.log('Koneksi API kustom berhasil:', data);
-      return { success: true, connected: true, data, error: null };
+      return {
+        success: true
+      };
     } catch (error) {
-      console.error('Verifikasi koneksi API kustom gagal:', error);
-      return { success: false, error: error.message };
+      return {
+        success: false,
+        error: error.message
+      };
     }
   };
   
-  // Aktifkan implementasi kustom
-  const activateCustomImplementation = (settings) => {
+  // Aktivasi implementasi nyata
+  const activateRealImplementation = () => {
     try {
-      console.log('Memulai aktivasi implementasi kustom...', settings);
+      localStorage.setItem('implementation_mode', 'real');
+      localStorage.setItem('implementation_type', 'supabase');
+      setIsRealImplementation(true);
+      setImplementationType('supabase');
+      return true;
+    } catch (error) {
+      console.error('Error activating real implementation:', error);
+      return false;
+    }
+  };
+  
+  // Aktivasi implementasi kustom
+  const activateCustomImplementation = (config: CustomApiConfig) => {
+    try {
+      localStorage.setItem('implementation_mode', 'real');
+      localStorage.setItem('implementation_type', 'custom');
+      localStorage.setItem('implementation_apiUrl', config.apiUrl);
       
-      if (!settings.apiUrl) {
-        throw new Error('URL API tidak boleh kosong');
+      if (config.apiKey) {
+        localStorage.setItem('implementation_apiKey', config.apiKey);
       }
       
-      // Simpan pengaturan implementasi kustom
-      localStorage.setItem('implementation_status', 'completed');
-      localStorage.setItem('implementation_provider', 'custom');
-      localStorage.setItem('implementation_apiUrl', settings.apiUrl);
-      localStorage.setItem('implementation_apiKey', settings.apiKey || '');
-      localStorage.setItem('implementation_databaseType', settings.databaseType || 'mysql');
-      localStorage.setItem('implementation_backendType', settings.backendType || 'php');
-      localStorage.setItem('implementation_serverProvider', settings.serverProvider || '');
+      if (config.databaseType) {
+        localStorage.setItem('implementation_databaseType', config.databaseType);
+      }
       
-      console.log('Konfigurasi implementasi kustom berhasil disimpan');
+      if (config.backendType) {
+        localStorage.setItem('implementation_backendType', config.backendType);
+      }
       
-      // Reset localStorage untuk menghindari konflik data
-      localStorage.removeItem('websiteData');
-      localStorage.removeItem('websiteDataPermanent');
+      if (config.serverProvider) {
+        localStorage.setItem('implementation_serverProvider', config.serverProvider);
+      }
       
-      toast({
-        title: "Implementasi kustom diaktifkan",
-        description: "Website Anda sekarang terhubung dengan API kustom. Halaman akan dimuat ulang...",
-      });
+      setIsRealImplementation(true);
+      setImplementationType('custom');
       
       return true;
     } catch (error) {
-      console.error('Gagal mengaktifkan implementasi kustom:', error);
-      toast({
-        variant: "destructive",
-        title: "Aktivasi gagal",
-        description: `Gagal mengaktifkan implementasi kustom: ${error.message}`,
-      });
+      console.error('Error activating custom implementation:', error);
+      return false;
+    }
+  };
+  
+  // Nonaktifkan implementasi nyata (kembali ke mode simulasi)
+  const deactivateRealImplementation = () => {
+    try {
+      localStorage.removeItem('implementation_mode');
+      localStorage.removeItem('implementation_type');
+      localStorage.removeItem('implementation_apiUrl');
+      localStorage.removeItem('implementation_apiKey');
+      localStorage.removeItem('implementation_databaseType');
+      localStorage.removeItem('implementation_backendType');
+      localStorage.removeItem('implementation_serverProvider');
+      
+      setIsRealImplementation(false);
+      setImplementationType('supabase');
+      
+      return true;
+    } catch (error) {
+      console.error('Error deactivating real implementation:', error);
       return false;
     }
   };
@@ -207,11 +225,11 @@ export const useImplementationSettings = () => {
   return {
     isRealImplementation,
     implementationType,
-    getSettings,
-    activateRealImplementation,
     verifySupabaseConnection,
     initializeSupabaseData,
     verifyCustomApiConnection,
-    activateCustomImplementation
+    activateRealImplementation,
+    activateCustomImplementation,
+    deactivateRealImplementation
   };
 };
