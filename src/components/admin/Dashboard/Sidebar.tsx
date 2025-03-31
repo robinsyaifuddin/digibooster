@@ -10,7 +10,9 @@ import {
   Database,
   Code,
   ExternalLink,
-  BarChart
+  BarChart,
+  Terminal,
+  GitBranch
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
@@ -57,6 +59,35 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
       label: "Profil",
       icon: <User className="h-5 w-5" />,
     },
+  ];
+  
+  const devTabs = [
+    {
+      id: "api-docs",
+      label: "Dokumentasi API",
+      icon: <Code className="h-5 w-5" />,
+    },
+    {
+      id: "database",
+      label: "Database",
+      icon: <Database className="h-5 w-5" />,
+      status: isRealImplementation
+    },
+    {
+      id: "analytics",
+      label: "Analytics",
+      icon: <BarChart className="h-5 w-5" />,
+    },
+    {
+      id: "terminal",
+      label: "Terminal",
+      icon: <Terminal className="h-5 w-5" />,
+    },
+    {
+      id: "git",
+      label: "Version Control",
+      icon: <GitBranch className="h-5 w-5" />,
+    }
   ];
 
   return (
@@ -105,41 +136,32 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
           DEVELOPER
         </div>
         <div className="flex flex-col gap-1">
-          <Button
-            variant="ghost"
-            className="justify-start gap-3 h-10"
-          >
-            <Code className="h-5 w-5" />
-            Dokumentasi API
-          </Button>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Button
-                  variant="ghost"
-                  className="justify-start gap-3 h-10"
+          {devTabs.map((tab) => (
+            <Button
+              key={tab.id}
+              variant="ghost"
+              className={cn("justify-start gap-3 h-10", {
+                "bg-gray-100 text-diginavy font-medium": activeTab === tab.id,
+              })}
+              onClick={() => onTabChange(tab.id)}
+            >
+              {activeTab === tab.id ? (
+                <motion.div
+                  initial={{ scale: 0.8 }}
+                  animate={{ scale: 1 }}
+                  className="text-diginavy"
                 >
-                  <Database className="h-5 w-5" />
-                  <span className="flex-1 text-left">Database Status</span>
-                  {isRealImplementation ? (
-                    <span className="h-2 w-2 rounded-full bg-green-500"></span>
-                  ) : (
-                    <span className="h-2 w-2 rounded-full bg-amber-500"></span>
-                  )}
-                </Button>
-              </TooltipTrigger>
-              <TooltipContent side="right">
-                <p>{isRealImplementation ? 'Terhubung ke Supabase' : 'Mode Simulasi Lokal'}</p>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-          <Button
-            variant="ghost"
-            className="justify-start gap-3 h-10"
-          >
-            <BarChart className="h-5 w-5" />
-            Analytics
-          </Button>
+                  {tab.icon}
+                </motion.div>
+              ) : (
+                tab.icon
+              )}
+              <span className="flex-1 text-left">{tab.label}</span>
+              {tab.id === 'database' && (
+                <span className={`h-2 w-2 rounded-full ${isRealImplementation ? 'bg-green-500' : 'bg-amber-500'}`}></span>
+              )}
+            </Button>
+          ))}
         </div>
       </div>
       

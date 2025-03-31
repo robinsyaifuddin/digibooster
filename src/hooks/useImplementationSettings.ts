@@ -222,6 +222,16 @@ export const useImplementationSettings = () => {
     }
   };
   
+  const getSettings = () => {
+    return {
+      apiUrl: localStorage.getItem('implementation_apiUrl') || '',
+      apiKey: localStorage.getItem('implementation_apiKey') || '',
+      databaseType: localStorage.getItem('implementation_databaseType') || '',
+      backendType: localStorage.getItem('implementation_backendType') || '',
+      serverProvider: localStorage.getItem('implementation_serverProvider') || '',
+    };
+  };
+  
   return {
     isRealImplementation,
     implementationType,
@@ -230,6 +240,7 @@ export const useImplementationSettings = () => {
     verifyCustomApiConnection,
     activateRealImplementation,
     activateCustomImplementation,
-    deactivateRealImplementation
+    deactivateRealImplementation,
+    getSettings
   };
 };

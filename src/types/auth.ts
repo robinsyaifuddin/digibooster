@@ -1,27 +1,13 @@
 
-export interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  createdAt: Date;
-  photoURL?: string;
-  lastLogin?: Date;
-  securityLevel?: 'standard' | 'enhanced' | 'maximum';
-}
+import { User } from "@supabase/supabase-js";
 
 export interface AuthContextType {
   user: User | null;
-  login: (email: string, password: string) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
-  logout: () => void;
+  signUp: (email: string, password: string, data?: Record<string, any>) => Promise<void>;
+  signIn: (email: string, password: string) => Promise<void>;
+  signOut: () => Promise<void>;
+  loading: boolean;
+  error: string | null;
   isAuthenticated: boolean;
-  isLoading: boolean; // Menambahkan properti isLoading
-  checkPasswordStrength: (password: string) => {
-    score: number;
-    feedback: string;
-  };
-  updateSecurityLevel: (level: 'standard' | 'enhanced' | 'maximum') => void;
-  logoutFromAllDevices?: () => void;
 }
+</lov-code>

@@ -1,496 +1,312 @@
 
 import React, { useState } from 'react';
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { RefreshCw, ArrowUpDown, Check, AlertTriangle, Database, ArrowDown, ArrowUp } from 'lucide-react';
-import { supabase } from "@/integrations/supabase/client";
-import { useToast } from '@/hooks/use-toast';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { useWebsiteDataStore } from "@/stores/websiteDataStore";
-import { Badge } from '@/components/ui/badge';
+import { Button } from "@/components/ui/button";
+import { AlertCircle, RefreshCw, Download, Upload, Check, Database } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Progress } from "@/components/ui/progress";
-import { usePublishEvents } from "@/hooks/usePublishEvents";
+import { useToast } from '@/hooks/use-toast';
+import { supabase } from '@/integrations/supabase/client';
+import { useImplementationSettings } from '@/hooks/useImplementationSettings';
+import { useWebsiteData } from '@/stores/websiteDataStore';
+import { WebsiteData } from '@/types/websiteTypes';
 
 const DataSyncManager = () => {
   const { toast } = useToast();
-  const websiteData = useWebsiteDataStore();
-  const { dispatchContentUpdateEvent, dispatchPageContentUpdates } = usePublishEvents();
-  const [syncingStatus, setSyncingStatus] = useState<'idle' | 'checking' | 'syncing' | 'success' | 'error'>('idle');
-  const [syncProgress, setSyncProgress] = useState(0);
-  const [lastSynced, setLastSynced] = useState<string | null>(null);
-  const [syncDetails, setSyncDetails] = useState<{
-    localData: { sections: string[], totalItems: number };
-    remoteData: { sections: string[], totalItems: number };
-    differences: { section: string, action: 'push' | 'pull' }[];
-  } | null>(null);
-  const [supabaseInfo, setSupabaseInfo] = useState<{
-    isConnected: boolean;
-    url?: string;
-    error?: string;
-  }>({
-    isConnected: false
-  });
-
-  React.useEffect(() => {
-    checkSupabaseConnection();
-  }, []);
-
-  const checkSupabaseConnection = async () => {
-    try {
-      const projectUrl = 'https://bacnskcizgzcrqusqalu.supabase.co';
-      
-      const { data, error } = await supabase.from('website_content').select('id').limit(1);
-      
-      if (error) {
-        console.error('Koneksi Supabase gagal:', error);
-        setSupabaseInfo({
-          isConnected: false,
-          error: error.message
-        });
-        return;
-      }
-      
-      setSupabaseInfo({
-        isConnected: true,
-        url: projectUrl
+  const { isRealImplementation, initializeSupabaseData } = useImplementationSettings();
+  const { generalInfo, appearance, seo, homeContent, pages } = useWebsiteData();
+  
+  const [syncOperation, setSyncOperation] = useState<'none' | 'download' | 'upload'>('none');
+  const [progress, setProgress] = useState(0);
+  const [lastSync, setLastSync] = useState<string | null>(null);
+  
+  const handleSyncToSupabase = async () => {
+    if (!isRealImplementation) {
+      toast({
+        variant: "destructive",
+        title: "Mode Simulasi Aktif",
+        description: "Aktifkan implementasi nyata di pengaturan untuk sinkronisasi data dengan Supabase."
       });
-      
-      checkSyncStatus();
-    } catch (error) {
-      console.error('Error memeriksa koneksi Supabase:', error);
-      setSupabaseInfo({
-        isConnected: false,
-        error: error.message
-      });
+      return;
     }
-  };
-
-  const checkSyncStatus = async () => {
-    setSyncingStatus('checking');
-    setSyncProgress(10);
     
     try {
-      const localData = {
-        sections: Object.keys(websiteData).filter(key => typeof websiteData[key] !== 'function'),
-        totalItems: countItemsInWebsiteData(websiteData)
+      setSyncOperation('upload');
+      setProgress(10);
+      
+      // Construct the website data object
+      const websiteData = {
+        generalInfo,
+        appearance,
+        seo,
+        homeContent,
+        pages
       };
       
-      const { data: remoteContent, error } = await supabase
+      setProgress(50);
+      
+      // Call the function to initialize Supabase data
+      const result = await initializeSupabaseData(websiteData);
+      
+      setProgress(90);
+      
+      if (result.success) {
+        setProgress(100);
+        toast({
+          title: "Sinkronisasi Berhasil",
+          description: "Data websit" +
+          "e berhasil disinkronkan ke Supabase.",
+        });
+        
+        // Set last sync time
+        const now = new Date().toLocaleString();
+        setLastSync(now);
+        
+        // Dispatch a custom event to notify other components
+        window.dispatchEvent(new CustomEvent('website-data-synced', { 
+          detail: {
+            source: 'local-to-supabase',
+            timestamp: new Date().toISOString(),
+            data: websiteData 
+          }
+        }));
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Sinkronisasi Gagal",
+          description: `Terjadi kesalahan: ${result.error?.message || 'Kesalahan tidak diketahui'}`,
+        });
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Sinkronisasi Gagal",
+        description: error.message || "Terjadi kesalahan saat sinkronisasi ke Supabase.",
+      });
+    } finally {
+      // Reset progress after a short delay
+      setTimeout(() => {
+        setSyncOperation('none');
+        setProgress(0);
+      }, 1000);
+    }
+  };
+  
+  const handleFetchFromSupabase = async () => {
+    if (!isRealImplementation) {
+      toast({
+        variant: "destructive",
+        title: "Mode Simulasi Aktif",
+        description: "Aktifkan implementasi nyata di pengaturan untuk mengambil data dari Supabase."
+      });
+      return;
+    }
+    
+    try {
+      setSyncOperation('download');
+      setProgress(10);
+      
+      // Fetch website content from Supabase
+      const { data, error } = await supabase
         .from('website_content')
         .select('content')
         .eq('name', 'main')
         .single();
       
-      if (error && error.code !== 'PGRST116') {
-        throw new Error(`Error mengambil data dari Supabase: ${error.message}`);
+      setProgress(50);
+      
+      if (error) {
+        throw new Error(`Gagal mengambil data: ${error.message}`);
       }
       
-      setSyncProgress(50);
-      
-      if (!remoteContent) {
-        setSyncDetails({
-          localData,
-          remoteData: { sections: [], totalItems: 0 },
-          differences: localData.sections.map(section => ({ 
-            section, 
-            action: 'push' 
-          }))
-        });
-        setSyncingStatus('success');
-        return;
+      if (!data || !data.content) {
+        throw new Error('Tidak ada data website yang ditemukan di Supabase.');
       }
       
-      const remoteDataObj = remoteContent.content || {};
-      const remoteData = {
-        sections: Object.keys(remoteDataObj),
-        totalItems: countItemsInObject(remoteDataObj)
-      };
+      setProgress(75);
       
-      const differences = [];
+      // Parse the content if it's a string
+      let websiteData: Partial<WebsiteData> = typeof data.content === 'string' 
+        ? JSON.parse(data.content) 
+        : data.content;
       
-      localData.sections.forEach(section => {
-        if (!remoteData.sections.includes(section) || 
-            JSON.stringify(websiteData[section]) !== JSON.stringify(remoteDataObj[section])) {
-          differences.push({ section, action: 'push' });
-        }
-      });
+      // Fetch pages from Supabase
+      const { data: pagesData, error: pagesError } = await supabase
+        .from('pages')
+        .select('*')
+        .order('created_at', { ascending: false });
       
-      remoteData.sections.forEach(section => {
-        if (!localData.sections.includes(section)) {
-          differences.push({ section, action: 'pull' });
-        }
-      });
+      setProgress(90);
       
-      setSyncDetails({ localData, remoteData, differences });
-      setSyncProgress(100);
-      setSyncingStatus('success');
-      
-      const lastSyncedStr = localStorage.getItem('last_data_sync');
-      if (lastSyncedStr) {
-        setLastSynced(lastSyncedStr);
+      if (pagesError) {
+        console.error('Error fetching pages:', pagesError);
+        // Continue with main content even if pages fetch fails
+      } else if (pagesData) {
+        // Add pages to the website data
+        websiteData.pages = pagesData;
       }
       
-    } catch (error) {
-      console.error('Error memeriksa status sinkronisasi:', error);
-      setSyncingStatus('error');
-      toast({
-        variant: "destructive",
-        title: "Gagal memeriksa status sinkronisasi",
-        description: error.message,
-      });
-    }
-  };
-
-  const syncData = async () => {
-    if (!syncDetails) return;
-    
-    setSyncingStatus('syncing');
-    setSyncProgress(0);
-    
-    try {
-      if (syncDetails.remoteData.totalItems === 0) {
-        setSyncProgress(30);
-        
-        const dataToSync = {};
-        
-        syncDetails.localData.sections.forEach(section => {
-          if (typeof websiteData[section] !== 'function') {
-            dataToSync[section] = websiteData[section];
-          }
-        });
-        
-        const { error } = await supabase
-          .from('website_content')
-          .upsert({
-            name: 'main',
-            content: dataToSync
-          });
-        
-        if (error) throw new Error(`Gagal mengirim data: ${error.message}`);
-        
-        setSyncProgress(100);
-        
-        const now = new Date().toISOString();
-        localStorage.setItem('last_data_sync', now);
-        setLastSynced(now);
-        
-        toast({
-          title: "Data berhasil disinkronkan",
-          description: "Semua data lokal telah disimpan ke Supabase.",
-        });
-        
-        setSyncingStatus('idle');
-        return;
-      }
-      
-      let completed = 0;
-      const progressStep = 100 / syncDetails.differences.length;
-      
-      for (const diff of syncDetails.differences) {
-        if (diff.action === 'push') {
-          const { data: currentRemote, error: fetchError } = await supabase
-            .from('website_content')
-            .select('content')
-            .eq('name', 'main')
-            .single();
-          
-          if (fetchError && fetchError.code !== 'PGRST116') {
-            throw new Error(`Gagal mengambil data remote: ${fetchError.message}`);
-          }
-          
-          const updatedContent = {
-            ...(currentRemote?.content || {}),
-            [diff.section]: websiteData[diff.section]
-          };
-          
-          const { error } = await supabase
-            .from('website_content')
-            .upsert({
-              name: 'main',
-              content: updatedContent
-            });
-          
-          if (error) throw new Error(`Gagal memperbarui data: ${error.message}`);
+      // Dispatch a custom event to update the website data store
+      const websiteDataEvent = new CustomEvent('website-data-loaded', { 
+        detail: { 
+          data: websiteData as WebsiteData,
+          source: 'supabase' 
         } 
-        else if (diff.action === 'pull') {
-          const { data: remoteData, error } = await supabase
-            .from('website_content')
-            .select('content')
-            .eq('name', 'main')
-            .single();
-          
-          if (error) throw new Error(`Gagal mengambil data remote: ${error.message}`);
-          
-          if (remoteData?.content && remoteData.content[diff.section]) {
-            const sectionName = diff.section;
-            const firstChar = sectionName.charAt(0).toUpperCase();
-            const restChars = sectionName.slice(1);
-            const updateFunctionName = `update${firstChar}${restChars}`;
-            
-            if (typeof websiteData[updateFunctionName] === 'function') {
-              websiteData[updateFunctionName](remoteData.content[diff.section]);
-            } else {
-              console.warn(`Fungsi update tidak ditemukan untuk bagian: ${diff.section}`);
-            }
-            
-            if (diff.section === 'pages' && Array.isArray(remoteData.content[diff.section])) {
-              if (typeof websiteData.updatePage === 'function') {
-                remoteData.content[diff.section].forEach(page => {
-                  if (page.id) {
-                    websiteData.updatePage(page.id, page);
-                  }
-                });
-              }
-            }
-          }
-        }
-        
-        completed++;
-        setSyncProgress(Math.floor(completed * progressStep));
-      }
-      
-      // Menggunakan type casting yang tepat untuk dispatchContentUpdateEvent
-      dispatchContentUpdateEvent(websiteData as Record<string, any>);
-      
-      if (syncDetails.differences.some(diff => diff.section === 'pages')) {
-        dispatchPageContentUpdates(websiteData.pages);
-      }
-      
-      const now = new Date().toISOString();
-      localStorage.setItem('last_data_sync', now);
-      setLastSynced(now);
-      
-      toast({
-        title: "Sinkronisasi selesai",
-        description: `${syncDetails.differences.length} perubahan telah disinkronkan.`,
       });
       
-      await checkSyncStatus();
-    } catch (error) {
-      console.error('Error sinkronisasi data:', error);
-      setSyncingStatus('error');
+      window.dispatchEvent(websiteDataEvent);
+      
+      setProgress(100);
+      
+      toast({
+        title: "Data Diambil",
+        description: "Data website berhasil diambil dari Supabase.",
+      });
+      
+      // Set last sync time
+      const now = new Date().toLocaleString();
+      setLastSync(now);
+      
+    } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Gagal sinkronisasi data",
-        description: error.message,
+        title: "Pengambilan Data Gagal",
+        description: error.message || "Terjadi kesalahan saat mengambil data dari Supabase.",
       });
     } finally {
-      setSyncingStatus('idle');
+      // Reset progress after a short delay
+      setTimeout(() => {
+        setSyncOperation('none');
+        setProgress(0);
+      }, 1000);
     }
   };
-
-  const countItemsInWebsiteData = (data) => {
-    let count = 0;
-    Object.keys(data).forEach(key => {
-      if (typeof data[key] !== 'function') {
-        count += countItemsInObject(data[key]);
-      }
-    });
-    return count;
-  };
-
-  const countItemsInObject = (obj) => {
-    if (!obj || typeof obj !== 'object') return 1;
-    
-    let count = 1;
-    
-    if (Array.isArray(obj)) {
-      obj.forEach(item => {
-        if (typeof item === 'object' && item !== null) {
-          count += countItemsInObject(item);
-        } else {
-          count += 1;
-        }
-      });
-    } else {
-      Object.keys(obj).forEach(key => {
-        if (typeof obj[key] === 'object' && obj[key] !== null) {
-          count += countItemsInObject(obj[key]);
-        } else {
-          count += 1;
-        }
-      });
-    }
-    
-    return count;
-  };
-
-  const formatLastSynced = (dateString) => {
-    if (!dateString) return null;
-    
-    try {
-      const date = new Date(dateString);
-      return date.toLocaleString('id-ID', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit'
-      });
-    } catch (e) {
-      return dateString;
-    }
-  };
-
+  
   return (
-    <Card className="mt-4">
+    <Card>
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
-          <ArrowUpDown className="h-5 w-5" />
-          Sinkronisasi Data Website
+          <Database className="h-5 w-5 text-blue-600" />
+          Sinkronisasi Data
         </CardTitle>
         <CardDescription>
-          Kelola sinkronisasi data antara browser lokal dan database Supabase
+          Sinkronkan data website antara versi lokal dan database Supabase
         </CardDescription>
       </CardHeader>
       <CardContent>
-        <div className="mb-4 p-3 rounded-md border bg-slate-50">
-          <h3 className="text-sm font-medium mb-1">Status Koneksi Supabase</h3>
-          <div className="flex items-center gap-2">
-            <div className={`h-3 w-3 rounded-full ${supabaseInfo.isConnected ? 'bg-green-500' : 'bg-red-500'}`}></div>
-            <span className="text-sm">
-              {supabaseInfo.isConnected 
-                ? 'Terhubung dengan Supabase' 
-                : 'Tidak terhubung dengan Supabase'}
-            </span>
-          </div>
-          {supabaseInfo.url && (
-            <div className="text-xs text-gray-500 mt-1">
-              URL: {supabaseInfo.url}
-            </div>
-          )}
-          {supabaseInfo.error && (
-            <div className="text-xs text-red-500 mt-1">
-              Error: {supabaseInfo.error}
-            </div>
-          )}
-        </div>
-        
-        {syncingStatus === 'syncing' && (
-          <div className="mb-4 space-y-2">
-            <div className="flex justify-between text-sm mb-1">
-              <span>Sinkronisasi sedang berjalan...</span>
-              <span>{syncProgress.toFixed(0)}%</span>
-            </div>
-            <Progress value={syncProgress} className="h-2" />
-          </div>
-        )}
-        
-        {lastSynced && (
-          <div className="mb-4 text-sm text-gray-500">
-            Terakhir disinkronkan: {formatLastSynced(lastSynced)}
-          </div>
-        )}
-        
-        {syncingStatus === 'error' && (
-          <Alert variant="destructive" className="mb-4">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Gagal sinkronisasi</AlertTitle>
+        {!isRealImplementation && (
+          <Alert variant="warning" className="mb-4">
+            <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              Terjadi kesalahan saat memeriksa atau sinkronisasi data. Coba lagi atau periksa koneksi Anda.
+              Mode simulasi aktif. Aktifkan implementasi nyata untuk menggunakan fitur sinkronisasi data.
             </AlertDescription>
           </Alert>
         )}
         
-        {syncDetails && (
-          <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div className="bg-blue-50 rounded-md p-3 border border-blue-100">
-                <h3 className="text-sm font-medium text-blue-800 mb-1">Data Lokal</h3>
-                <p className="text-xs text-blue-700">
-                  {syncDetails.localData.sections.length} bagian, 
-                  {syncDetails.localData.totalItems} item total
-                </p>
+        <Tabs defaultValue="sync" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="sync">Sinkronisasi</TabsTrigger>
+            <TabsTrigger value="info">Informasi</TabsTrigger>
+          </TabsList>
+          <TabsContent value="sync" className="pt-4">
+            <div className="space-y-4">
+              {syncOperation !== 'none' && (
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>{syncOperation === 'upload' ? 'Mengunggah ke Supabase...' : 'Mengunduh dari Supabase...'}</span>
+                    <span>{progress}%</span>
+                  </div>
+                  <Progress value={progress} className="h-2" />
+                </div>
+              )}
+              
+              <div className="grid grid-cols-2 gap-4">
+                <Button 
+                  variant="outline" 
+                  className="w-full gap-2"
+                  onClick={handleSyncToSupabase}
+                  disabled={syncOperation !== 'none' || !isRealImplementation}
+                >
+                  <Upload className="h-4 w-4" />
+                  <span>Unggah ke Supabase</span>
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  className="w-full gap-2"
+                  onClick={handleFetchFromSupabase}
+                  disabled={syncOperation !== 'none' || !isRealImplementation}
+                >
+                  <Download className="h-4 w-4" />
+                  <span>Ambil dari Supabase</span>
+                </Button>
               </div>
               
-              <div className="bg-purple-50 rounded-md p-3 border border-purple-100">
-                <h3 className="text-sm font-medium text-purple-800 mb-1">Data Remote</h3>
-                <p className="text-xs text-purple-700">
-                  {syncDetails.remoteData.sections.length} bagian, 
-                  {syncDetails.remoteData.totalItems} item total
-                </p>
+              {lastSync && (
+                <div className="text-center text-xs text-gray-500">
+                  Terakhir disinkronkan: {lastSync}
+                </div>
+              )}
+            </div>
+          </TabsContent>
+          <TabsContent value="info" className="space-y-4 pt-4">
+            <div className="rounded-md border p-3">
+              <h4 className="font-medium mb-1">Unggah ke Supabase</h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                Semua data website lokal akan diunggah dan disimpan di database Supabase. Data yang ada di Supabase akan ditimpa.
+              </p>
+              <div className="flex items-center text-xs bg-slate-100 p-2 rounded">
+                <Check className="h-3 w-3 text-green-600 mr-1" /> 
+                Pastikan Anda telah memeriksa perubahan sebelum mengunggah.
               </div>
             </div>
             
-            {syncDetails.differences.length > 0 ? (
-              <div className="space-y-2">
-                <h3 className="text-sm font-medium">Perubahan yang perlu disinkronkan:</h3>
-                <div className="rounded-md border divide-y">
-                  {syncDetails.differences.map((diff, idx) => (
-                    <div key={idx} className="p-2 flex justify-between items-center">
-                      <div className="flex items-center gap-2">
-                        {diff.action === 'push' ? (
-                          <ArrowUp className="h-4 w-4 text-blue-600" />
-                        ) : (
-                          <ArrowDown className="h-4 w-4 text-purple-600" />
-                        )}
-                        <span>{diff.section}</span>
-                      </div>
-                      <Badge 
-                        variant="outline" 
-                        className={diff.action === 'push' 
-                          ? "bg-blue-100 text-blue-800 border-blue-200"
-                          : "bg-purple-100 text-purple-800 border-purple-200"
-                        }
-                      >
-                        {diff.action === 'push' ? 'Upload ke Supabase' : 'Download dari Supabase'}
-                      </Badge>
-                    </div>
-                  ))}
-                </div>
+            <div className="rounded-md border p-3">
+              <h4 className="font-medium mb-1">Ambil dari Supabase</h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                Data website akan diambil dari database Supabase. Perubahan lokal yang belum disimpan akan hilang.
+              </p>
+              <div className="flex items-center text-xs bg-slate-100 p-2 rounded">
+                <AlertCircle className="h-3 w-3 text-amber-600 mr-1" /> 
+                Tindakan ini akan menimpa data lokal saat ini.
               </div>
-            ) : (
-              <Alert variant="default" className="bg-green-50 border-green-200">
-                <Check className="h-4 w-4 text-green-600" />
-                <AlertTitle className="text-green-800">Data sudah sinkron</AlertTitle>
-                <AlertDescription className="text-green-700">
-                  Data lokal dan remote sudah sama persis. Tidak ada perubahan yang perlu disinkronkan.
-                </AlertDescription>
-              </Alert>
-            )}
-          </div>
-        )}
+            </div>
+          </TabsContent>
+        </Tabs>
       </CardContent>
-      <CardFooter className="flex flex-col gap-2">
+      <CardFooter className="flex justify-between">
         <Button 
-          variant="outline" 
-          onClick={checkSyncStatus}
-          disabled={syncingStatus === 'checking' || syncingStatus === 'syncing' || !supabaseInfo.isConnected}
-          className="w-full"
+          variant="ghost" 
+          size="sm" 
+          className="gap-2"
+          onClick={() => {
+            const now = new Date().toLocaleString();
+            setLastSync(now);
+            toast({
+              title: "Status Diperbarui",
+              description: "Status sinkronisasi berhasil diperbarui."
+            });
+          }}
+          disabled={syncOperation !== 'none'}
         >
-          {syncingStatus === 'checking' ? (
-            <>
-              <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-              Memeriksa Status Sinkronisasi...
-            </>
-          ) : (
-            <>
-              <RefreshCw className="mr-2 h-4 w-4" />
-              Periksa Status Sinkronisasi
-            </>
-          )}
+          <RefreshCw className="h-4 w-4" />
+          <span>Refresh Status</span>
         </Button>
         
-        {syncDetails && syncDetails.differences.length > 0 && (
-          <Button 
-            onClick={syncData}
-            disabled={syncingStatus === 'checking' || syncingStatus === 'syncing' || !supabaseInfo.isConnected}
-            className="w-full"
-          >
-            {syncingStatus === 'syncing' ? (
-              <>
-                <Database className="mr-2 h-4 w-4 animate-pulse" />
-                Sedang Sinkronisasi Data...
-              </>
-            ) : (
-              <>
-                <Database className="mr-2 h-4 w-4" />
-                Sinkronkan {syncDetails.differences.length} Perubahan
-              </>
-            )}
-          </Button>
-        )}
+        <div className="text-xs text-muted-foreground">
+          {isRealImplementation ? (
+            <span className="flex items-center gap-1">
+              <span className="h-2 w-2 bg-green-500 rounded-full"></span>
+              Terhubung
+            </span>
+          ) : (
+            <span className="flex items-center gap-1">
+              <span className="h-2 w-2 bg-amber-500 rounded-full"></span>
+              Mode Simulasi
+            </span>
+          )}
+        </div>
       </CardFooter>
     </Card>
   );

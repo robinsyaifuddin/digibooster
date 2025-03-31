@@ -26,7 +26,7 @@ export const usePublishApi = () => {
       }
       
       return { success: true, simulation: true };
-    } catch (apiError) {
+    } catch (apiError: any) {
       console.error('Error publishing to API:', apiError);
       toast({
         variant: "destructive",
@@ -227,7 +227,7 @@ export const usePublishApi = () => {
       }
       
       return { success: false, reason: 'no-previous-version' };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error during API rollback:', error);
       toast({
         variant: "destructive",
@@ -289,7 +289,7 @@ export const usePublishApi = () => {
       }
       
       return { success: false, reason: 'no-previous-version' };
-    } catch (error) {
+    } catch (error: any) {
       console.error('Error during custom API rollback:', error);
       toast({
         variant: "destructive",
