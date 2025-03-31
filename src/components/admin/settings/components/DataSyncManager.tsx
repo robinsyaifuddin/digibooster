@@ -218,7 +218,7 @@ const DataSyncManager = () => {
           
           // Gabungkan data baru dengan data yang sudah ada
           const updatedContent = {
-            ...(currentRemote?.content || {} as Record<string, any>),
+            ...(currentRemote?.content || {}),
             [diff.section]: websiteData[diff.section]
           };
           
@@ -275,7 +275,7 @@ const DataSyncManager = () => {
       }
       
       // Beritahu komponen lain tentang pembaruan data
-      dispatchContentUpdateEvent(websiteData as Record<string, any>);
+      dispatchContentUpdateEvent(websiteData as unknown as Record<string, any>);
       
       // Khusus untuk halaman, kirim pembaruan terpisah
       if (syncDetails.differences.some(diff => diff.section === 'pages')) {
