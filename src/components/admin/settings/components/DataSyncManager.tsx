@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -31,17 +30,14 @@ const DataSyncManager = () => {
     isConnected: false
   });
 
-  // Periksa konfigurasi Supabase saat komponen dimuat
   React.useEffect(() => {
     checkSupabaseConnection();
   }, []);
 
-  // Fungsi untuk memeriksa koneksi Supabase
   const checkSupabaseConnection = async () => {
     try {
       const projectUrl = 'https://bacnskcizgzcrqusqalu.supabase.co';
       
-      // Coba mendapatkan data dari Supabase untuk memverifikasi koneksi
       const { data, error } = await supabase.from('website_content').select('id').limit(1);
       
       if (error) {
@@ -58,9 +54,7 @@ const DataSyncManager = () => {
         url: projectUrl
       });
       
-      // Jika koneksi berhasil, periksa juga status sinkronisasi
       checkSyncStatus();
-      
     } catch (error) {
       console.error('Error memeriksa koneksi Supabase:', error);
       setSupabaseInfo({
@@ -75,13 +69,11 @@ const DataSyncManager = () => {
     setSyncProgress(10);
     
     try {
-      // Kumpulkan data lokal
       const localData = {
         sections: Object.keys(websiteData).filter(key => typeof websiteData[key] !== 'function'),
         totalItems: countItemsInWebsiteData(websiteData)
       };
       
-      // Dapatkan data dari Supabase
       const { data: remoteContent, error } = await supabase
         .from('website_content')
         .select('content')
@@ -94,7 +86,6 @@ const DataSyncManager = () => {
       
       setSyncProgress(50);
       
-      // Jika belum ada data di Supabase
       if (!remoteContent) {
         setSyncDetails({
           localData,
@@ -108,7 +99,6 @@ const DataSyncManager = () => {
         return;
       }
       
-      // Analisis data Supabase
       const remoteDataObj = remoteContent.content || {};
       const remoteData = {
         sections: Object.keys(remoteDataObj),
@@ -117,7 +107,6 @@ const DataSyncManager = () => {
       
       const differences = [];
       
-      // Periksa perubahan yang perlu di-push ke Supabase
       localData.sections.forEach(section => {
         if (!remoteData.sections.includes(section) || 
             JSON.stringify(websiteData[section]) !== JSON.stringify(remoteDataObj[section])) {
@@ -125,7 +114,6 @@ const DataSyncManager = () => {
         }
       });
       
-      // Periksa perubahan yang perlu di-pull dari Supabase
       remoteData.sections.forEach(section => {
         if (!localData.sections.includes(section)) {
           differences.push({ section, action: 'pull' });
@@ -136,7 +124,6 @@ const DataSyncManager = () => {
       setSyncProgress(100);
       setSyncingStatus('success');
       
-      // Dapatkan informasi sinkronisasi terakhir
       const lastSyncedStr = localStorage.getItem('last_data_sync');
       if (lastSyncedStr) {
         setLastSynced(lastSyncedStr);
@@ -152,7 +139,7 @@ const DataSyncManager = () => {
       });
     }
   };
-  
+
   const syncData = async () => {
     if (!syncDetails) return;
     
@@ -160,20 +147,17 @@ const DataSyncManager = () => {
     setSyncProgress(0);
     
     try {
-      // Jika belum ada data di Supabase, lakukan sinkronisasi awal
       if (syncDetails.remoteData.totalItems === 0) {
         setSyncProgress(30);
         
         const dataToSync = {};
         
-        // Kumpulkan semua data non-fungsi untuk disimpan
         syncDetails.localData.sections.forEach(section => {
           if (typeof websiteData[section] !== 'function') {
             dataToSync[section] = websiteData[section];
           }
         });
         
-        // Simpan ke Supabase
         const { error } = await supabase
           .from('website_content')
           .upsert({
@@ -185,7 +169,6 @@ const DataSyncManager = () => {
         
         setSyncProgress(100);
         
-        // Catat waktu sinkronisasi
         const now = new Date().toISOString();
         localStorage.setItem('last_data_sync', now);
         setLastSynced(now);
@@ -199,13 +182,11 @@ const DataSyncManager = () => {
         return;
       }
       
-      // Sinkronisasi per bagian yang berubah
       let completed = 0;
       const progressStep = 100 / syncDetails.differences.length;
       
       for (const diff of syncDetails.differences) {
         if (diff.action === 'push') {
-          // Kirim data ke Supabase
           const { data: currentRemote, error: fetchError } = await supabase
             .from('website_content')
             .select('content')
@@ -216,13 +197,11 @@ const DataSyncManager = () => {
             throw new Error(`Gagal mengambil data remote: ${fetchError.message}`);
           }
           
-          // Gabungkan data baru dengan data yang sudah ada
           const updatedContent = {
             ...(currentRemote?.content || {}),
             [diff.section]: websiteData[diff.section]
           };
           
-          // Simpan perubahan
           const { error } = await supabase
             .from('website_content')
             .upsert({
@@ -233,7 +212,6 @@ const DataSyncManager = () => {
           if (error) throw new Error(`Gagal memperbarui data: ${error.message}`);
         } 
         else if (diff.action === 'pull') {
-          // Ambil data dari Supabase
           const { data: remoteData, error } = await supabase
             .from('website_content')
             .select('content')
@@ -242,21 +220,18 @@ const DataSyncManager = () => {
           
           if (error) throw new Error(`Gagal mengambil data remote: ${error.message}`);
           
-          // Terapkan data jika tersedia
           if (remoteData?.content && remoteData.content[diff.section]) {
             const sectionName = diff.section;
             const firstChar = sectionName.charAt(0).toUpperCase();
             const restChars = sectionName.slice(1);
             const updateFunctionName = `update${firstChar}${restChars}`;
             
-            // Panggil fungsi update sesuai nama bagian
             if (typeof websiteData[updateFunctionName] === 'function') {
               websiteData[updateFunctionName](remoteData.content[diff.section]);
             } else {
               console.warn(`Fungsi update tidak ditemukan untuk bagian: ${diff.section}`);
             }
             
-            // Khusus untuk halaman, update satu per satu
             if (diff.section === 'pages' && Array.isArray(remoteData.content[diff.section])) {
               if (typeof websiteData.updatePage === 'function') {
                 remoteData.content[diff.section].forEach(page => {
@@ -269,20 +244,16 @@ const DataSyncManager = () => {
           }
         }
         
-        // Update progres
         completed++;
         setSyncProgress(Math.floor(completed * progressStep));
       }
       
-      // Beritahu komponen lain tentang pembaruan data
       dispatchContentUpdateEvent(websiteData as unknown as Record<string, any>);
       
-      // Khusus untuk halaman, kirim pembaruan terpisah
       if (syncDetails.differences.some(diff => diff.section === 'pages')) {
         dispatchPageContentUpdates(websiteData.pages);
       }
       
-      // Catat waktu sinkronisasi
       const now = new Date().toISOString();
       localStorage.setItem('last_data_sync', now);
       setLastSynced(now);
@@ -292,9 +263,7 @@ const DataSyncManager = () => {
         description: `${syncDetails.differences.length} perubahan telah disinkronkan.`,
       });
       
-      // Refresh status sinkronisasi
       await checkSyncStatus();
-      
     } catch (error) {
       console.error('Error sinkronisasi data:', error);
       setSyncingStatus('error');
@@ -307,8 +276,7 @@ const DataSyncManager = () => {
       setSyncingStatus('idle');
     }
   };
-  
-  // Hitung jumlah item di seluruh data website
+
   const countItemsInWebsiteData = (data) => {
     let count = 0;
     Object.keys(data).forEach(key => {
@@ -318,8 +286,7 @@ const DataSyncManager = () => {
     });
     return count;
   };
-  
-  // Hitung jumlah item dalam suatu objek (rekursif)
+
   const countItemsInObject = (obj) => {
     if (!obj || typeof obj !== 'object') return 1;
     
@@ -345,8 +312,7 @@ const DataSyncManager = () => {
     
     return count;
   };
-  
-  // Format waktu sinkronisasi terakhir
+
   const formatLastSynced = (dateString) => {
     if (!dateString) return null;
     
@@ -377,7 +343,6 @@ const DataSyncManager = () => {
         </CardDescription>
       </CardHeader>
       <CardContent>
-        {/* Status koneksi Supabase */}
         <div className="mb-4 p-3 rounded-md border bg-slate-50">
           <h3 className="text-sm font-medium mb-1">Status Koneksi Supabase</h3>
           <div className="flex items-center gap-2">
@@ -426,7 +391,6 @@ const DataSyncManager = () => {
           </Alert>
         )}
         
-        {/* Informasi detail sinkronisasi */}
         {syncDetails && (
           <div className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
