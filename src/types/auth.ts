@@ -10,4 +10,3 @@ export interface AuthContextType {
   error: string | null;
   isAuthenticated: boolean;
 }
-</lov-code>
