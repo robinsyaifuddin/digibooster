@@ -77,12 +77,22 @@ const config = {
           '800': "#233690",
           '900': "#19296D",
         },
+        elegant: {
+          primary: "#2A4365", // Deep blue
+          secondary: "#4A5568", // Slate
+          accent: "#7B9CD5", // Soft blue
+          light: "#EDF2F7", // Light gray
+          dark: "#1A202C", // Almost black
+          muted: "#A0AEC0", // Muted text
+        },
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
+        sans: ['Plus Jakarta Sans', 'Inter', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
         cyber: ['Rajdhani', 'sans-serif'],
         display: ['Orbitron', 'sans-serif'],
+        heading: ['Outfit', 'sans-serif'],
+        body: ['Manrope', 'sans-serif'],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -93,6 +103,7 @@ const config = {
         'neon': '0 0 5px theme("colors.cyber.accent"), 0 0 20px theme("colors.cyber.accent")',
         'neon-cyan': '0 0 5px theme("colors.cyber.highlight"), 0 0 20px theme("colors.cyber.highlight")',
         'neon-purple': '0 0 5px theme("colors.cyber.primary"), 0 0 20px theme("colors.cyber.primary")',
+        'elegant': '0 10px 30px rgba(42, 67, 101, 0.15)',
       },
       keyframes: {
         "accordion-down": {
@@ -134,6 +145,26 @@ const config = {
             textShadow: '-0.025em 0 0 #ff00c1, -0.025em -0.025em 0 #4bffd1, -0.025em -0.05em 0 #2dbeff' 
           },
         },
+        "fade-in-up": {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateY(20px)' 
+          },
+          '100%': { 
+            opacity: '1',
+            transform: 'translateY(0)' 
+          },
+        },
+        "slide-in-right": {
+          '0%': { 
+            opacity: '0',
+            transform: 'translateX(20px)' 
+          },
+          '100%': { 
+            opacity: '1',
+            transform: 'translateX(0)' 
+          },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -141,10 +172,13 @@ const config = {
         "glow": "glow 2s ease-in-out infinite",
         "float": "float 6s ease-in-out infinite",
         "cyber-glitch": "cyber-glitch 3s infinite alternate",
+        "fade-in-up": "fade-in-up 0.7s ease-out forwards",
+        "slide-in-right": "slide-in-right 0.7s ease-out forwards",
       },
       backgroundImage: {
         'cyber-grid': "linear-gradient(#2f3b5910 1px, transparent 1px), linear-gradient(90deg, #2f3b5910 1px, transparent 1px)",
         'cyber-gradient': "linear-gradient(135deg, #1A1F2C 0%, #2A3040 100%)",
+        'elegant-gradient': "linear-gradient(135deg, #EDF2F7 0%, #E2E8F0 100%)",
       },
     },
   },

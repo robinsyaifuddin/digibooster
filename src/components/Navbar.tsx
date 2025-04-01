@@ -58,7 +58,7 @@ const Navbar = () => {
           {/* Logo */}
           <Link to="/" className="flex items-center">
             <div className="text-cyber-accent font-display text-2xl font-bold">
-              <span className="cyber-glow" style={{ "--glow-color": "rgba(75, 255, 209, 0.7)" } as React.CSSProperties}>DIGI</span>
+              <span className="cyber-glow">DIGI</span>
               <span className="text-white">BOOSTER</span>
             </div>
           </Link>
@@ -78,8 +78,8 @@ const Navbar = () => {
               Blog
             </Link>
             <Link
-              to="/portfolio"
-              className={cn('nav-link', isActive('/portfolio') && 'active')}
+              to="/portofolio"
+              className={cn('nav-link', isActive('/portofolio') && 'active')}
             >
               Portfolio
             </Link>
@@ -172,8 +172,8 @@ const Navbar = () => {
                 Blog
               </Link>
               <Link
-                to="/portfolio"
-                className={cn('nav-link text-lg py-2', isActive('/portfolio') && 'active')}
+                to="/portofolio"
+                className={cn('nav-link text-lg py-2', isActive('/portofolio') && 'active')}
               >
                 Portfolio
               </Link>
