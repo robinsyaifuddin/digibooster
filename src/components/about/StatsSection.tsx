@@ -32,7 +32,19 @@ const StatsSection = () => {
         <div className="absolute bottom-0 right-0 w-60 h-60 rounded-full bg-white blur-3xl"></div>
       </div>
       
-      <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12">Pencapaian Kami</h2>
+      {/* Cyberpunk grid background */}
+      <div className="absolute inset-0 cyber-grid-bg opacity-10"></div>
+      
+      {/* Animated border elements */}
+      <div className="absolute top-0 left-0 w-20 h-1 bg-white/30 animate-pulse"></div>
+      <div className="absolute top-0 left-0 h-20 w-1 bg-white/30 animate-pulse"></div>
+      <div className="absolute bottom-0 right-0 w-20 h-1 bg-white/30 animate-pulse" style={{ animationDelay: "1s" }}></div>
+      <div className="absolute bottom-0 right-0 h-20 w-1 bg-white/30 animate-pulse" style={{ animationDelay: "1s" }}></div>
+      
+      <h2 className="text-3xl md:text-4xl font-bold text-white text-center mb-12 relative">
+        Pencapaian Kami
+        <div className="h-1 w-20 bg-digiblue-300 mx-auto mt-4"></div>
+      </h2>
       
       <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center relative z-10">
         {stats.map((stat, index) => (
@@ -53,6 +65,10 @@ const StatsSection = () => {
           </motion.div>
         ))}
       </div>
+      
+      {/* Decorative cyberpunk corner elements */}
+      <div className="absolute top-3 right-3 w-6 h-6 border-t-2 border-r-2 border-white/20 rounded-tr"></div>
+      <div className="absolute bottom-3 left-3 w-6 h-6 border-b-2 border-l-2 border-white/20 rounded-bl"></div>
     </div>
   );
 };

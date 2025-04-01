@@ -5,7 +5,12 @@ import { motion } from 'framer-motion';
 const AboutHeroSection = () => {
   return (
     <div className="max-w-5xl mx-auto mb-24 text-center relative z-10">
+      {/* Animated background gradient */}
       <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_center,rgba(var(--digiblue-600-rgb),0.15),transparent_70%)]"></div>
+      
+      {/* Floating elements */}
+      <div className="absolute top-20 right-10 w-16 h-16 border border-digiblue-400/20 rotate-45 animate-float opacity-20"></div>
+      <div className="absolute bottom-10 left-20 w-12 h-12 border border-digiblue-600/20 rotate-12 animate-float opacity-20" style={{ animationDelay: "1.2s" }}></div>
       
       <motion.span 
         className="inline-block py-1.5 px-4 text-xs font-medium tracking-wider text-digiblue-600 bg-digiblue-50 rounded-full mb-5 border border-digiblue-200/30 shadow-sm"
@@ -49,6 +54,29 @@ const AboutHeroSection = () => {
         <div className="h-1 w-10 bg-digiblue-600 rounded-full"></div>
         <div className="h-1 w-10 bg-digiblue-400 rounded-full"></div>
         <div className="h-1 w-10 bg-digiblue-200 rounded-full"></div>
+      </motion.div>
+      
+      {/* Decorative cyberpunk elements */}
+      <motion.div 
+        className="absolute -bottom-10 left-0 w-32 opacity-10 hidden lg:block"
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 0.1, x: 0 }}
+        transition={{ delay: 0.8, duration: 0.7 }}
+      >
+        <div className="h-0.5 w-full bg-digiblue-600 mb-2"></div>
+        <div className="h-0.5 w-3/4 bg-digiblue-400 mb-2"></div>
+        <div className="h-0.5 w-1/2 bg-digiblue-600 mb-2"></div>
+      </motion.div>
+      
+      <motion.div 
+        className="absolute -bottom-10 right-0 w-32 opacity-10 hidden lg:block"
+        initial={{ opacity: 0, x: 20 }}
+        animate={{ opacity: 0.1, x: 0 }}
+        transition={{ delay: 0.8, duration: 0.7 }}
+      >
+        <div className="h-0.5 w-3/4 bg-digiblue-400 mb-2"></div>
+        <div className="h-0.5 w-full bg-digiblue-600 mb-2"></div>
+        <div className="h-0.5 w-1/2 bg-digiblue-400 mb-2"></div>
       </motion.div>
     </div>
   );

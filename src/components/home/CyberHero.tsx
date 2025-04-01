@@ -41,7 +41,7 @@ const CyberHero = () => {
 
   return (
     <section className="min-h-screen pt-32 pb-20 relative overflow-hidden bg-cyber-dark">
-      {/* Grid background */}
+      {/* Grid background with animation */}
       <div className="absolute inset-0 cyber-grid-bg opacity-30"></div>
       
       {/* Animated glowing circles */}
@@ -56,6 +56,10 @@ const CyberHero = () => {
         className="absolute bottom-1/4 left-[10%] w-60 h-60 rounded-full bg-cyber-accent/10 blur-3xl"
         style={{ animationDelay: "1.5s" }}
       />
+      
+      {/* Floating elements */}
+      <div className="absolute top-[30%] right-[20%] w-20 h-20 border border-cyber-accent/30 rotate-45 animate-float opacity-30"></div>
+      <div className="absolute bottom-[20%] left-[15%] w-16 h-16 border border-cyber-primary/30 rotate-12 animate-float opacity-20" style={{ animationDelay: "1s" }}></div>
       
       {/* Main content */}
       <div className="container mx-auto px-4 relative z-10">
@@ -76,8 +80,8 @@ const CyberHero = () => {
             variants={itemVariants} 
             className="text-6xl md:text-7xl lg:text-8xl font-display font-bold mb-8 tracking-tighter"
           >
-            <span className="text-gradient-cyber">SKILL UP.</span>{" "}
-            <span className="text-white">STAND UP.</span>
+            <span className="text-gradient-cyber animate-cyber-glitch">SKILL UP.</span>{" "}
+            <span className="text-white">STAND OUT.</span>
           </motion.h1>
           
           <motion.p 
@@ -92,9 +96,9 @@ const CyberHero = () => {
             variants={itemVariants} 
             className="flex flex-col sm:flex-row gap-6 justify-center mb-16"
           >
-            <Button asChild className="cyber-btn text-base px-10 py-7 text-lg">
+            <Button asChild className="cyber-btn text-base px-10 py-7 text-lg group">
               <Link to="/program/jasa-digital">
-                Explore Programs <ArrowRight className="ml-2 h-5 w-5" />
+                Explore Programs <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Link>
             </Button>
             <Button asChild variant="outline" className="bg-transparent border border-cyber-primary text-cyber-primary hover:bg-cyber-primary/10 text-base px-10 py-7 text-lg">
@@ -102,6 +106,27 @@ const CyberHero = () => {
                 About Us
               </Link>
             </Button>
+          </motion.div>
+          
+          {/* Cyberpunk code lines decoration */}
+          <motion.div 
+            variants={itemVariants}
+            className="absolute bottom-40 left-0 w-32 h-40 opacity-20 hidden lg:block"
+          >
+            <div className="h-1 w-full bg-cyber-accent mb-2"></div>
+            <div className="h-1 w-3/4 bg-cyber-primary mb-2"></div>
+            <div className="h-1 w-1/2 bg-cyber-accent mb-2"></div>
+            <div className="h-1 w-full bg-cyber-primary mb-2"></div>
+          </motion.div>
+          
+          <motion.div 
+            variants={itemVariants}
+            className="absolute bottom-40 right-0 w-32 h-40 opacity-20 hidden lg:block"
+          >
+            <div className="h-1 w-3/4 bg-cyber-primary mb-2"></div>
+            <div className="h-1 w-full bg-cyber-accent mb-2"></div>
+            <div className="h-1 w-1/2 bg-cyber-primary mb-2"></div>
+            <div className="h-1 w-full bg-cyber-accent mb-2"></div>
           </motion.div>
           
           {/* Scroll indicator */}

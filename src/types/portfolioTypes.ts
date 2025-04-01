@@ -1,10 +1,11 @@
 
 export interface PortfolioItemType {
-  id: number;
+  id: string;
   title: string;
-  client: string;
-  category: string;
-  image: string;
   description: string;
+  category: string;
+  client: string;
   services: string[];
+  image: string;
+  slug: string;
 }

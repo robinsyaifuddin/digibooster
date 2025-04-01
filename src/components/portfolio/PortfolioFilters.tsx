@@ -15,10 +15,10 @@ const PortfolioFilters = ({ filters, activeFilter, onFilterChange }: PortfolioFi
         <motion.button
           key={filter}
           onClick={() => onFilterChange(filter)}
-          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 ${
+          className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-300 relative overflow-hidden group ${
             activeFilter === filter
-              ? "bg-digiblue-600 text-white shadow-md transform -translate-y-0.5"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+              ? "bg-cyber-primary text-white shadow-neon-purple"
+              : "bg-cyber-darker/70 text-white/70 hover:text-white border border-cyber-primary/30 hover:border-cyber-primary/60"
           }`}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -26,7 +26,18 @@ const PortfolioFilters = ({ filters, activeFilter, onFilterChange }: PortfolioFi
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
         >
-          {filter}
+          <span className="relative z-10">{filter}</span>
+          
+          {/* Hover effect background */}
+          <span className="absolute inset-0 bg-cyber-primary/20 scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left z-0"></span>
+          
+          {/* Active indicator */}
+          {activeFilter === filter && (
+            <motion.span 
+              className="absolute bottom-0 left-0 h-0.5 w-full bg-cyber-accent" 
+              layoutId="activeFilterIndicator"
+            ></motion.span>
+          )}
         </motion.button>
       ))}
     </div>

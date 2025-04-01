@@ -48,7 +48,7 @@ const Tentang = () => {
   };
 
   return (
-    <div className="pt-28 md:pt-36 bg-gradient-to-b from-white to-gray-50 min-h-screen font-['Playfair_Display',_serif]">
+    <div className="pt-28 md:pt-36 bg-gradient-to-b from-white to-gray-50 min-h-screen font-sans">
       <div className="container mx-auto px-4 max-w-6xl">
         {/* Hero Section */}
         <motion.div
