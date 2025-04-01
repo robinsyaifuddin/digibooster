@@ -98,7 +98,7 @@ const Navbar = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="ghost" className="relative h-8 w-8 rounded-full">
                     <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.avatar_url || ''} alt={user.name || 'User'} />
+                      <AvatarImage src={user.photoURL || ''} alt={user.name || 'User'} />
                       <AvatarFallback className="bg-cyber-primary/20 text-cyber-accent">
                         {user.name ? user.name[0] : 'U'}
                       </AvatarFallback>
@@ -189,7 +189,7 @@ const Navbar = () => {
                   <div className="space-y-3">
                     <div className="flex items-center space-x-3">
                       <Avatar className="h-8 w-8">
-                        <AvatarImage src={user.avatar_url || ''} alt={user.name || 'User'} />
+                        <AvatarImage src={user.photoURL || ''} alt={user.name || 'User'} />
                         <AvatarFallback className="bg-cyber-primary/20 text-cyber-accent">
                           {user.name ? user.name[0] : 'U'}
                         </AvatarFallback>
