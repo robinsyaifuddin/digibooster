@@ -8,19 +8,22 @@ import Index from '@/pages/index';
 import Tentang from '@/pages/Tentang';
 import Portfolio from '@/pages/Portfolio';
 import NotFound from '@/pages/NotFound';
+import { AuthProvider } from '@/contexts/AuthContext';
 
 function App() {
   return (
-    <Router>
-      <Navbar />
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/tentang" element={<Tentang />} />
-        <Route path="/portfolio" element={<Portfolio />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-      <Footer />
-    </Router>
+    <AuthProvider>
+      <Router>
+        <Navbar />
+        <Routes>
+          <Route path="/" element={<Index />} />
+          <Route path="/tentang" element={<Tentang />} />
+          <Route path="/portfolio" element={<Portfolio />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+        <Footer />
+      </Router>
+    </AuthProvider>
   );
 }
 
