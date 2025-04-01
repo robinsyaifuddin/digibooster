@@ -21,7 +21,7 @@ interface HeaderProps {
 }
 
 const Header = ({ activeTab, setMobileMenuOpen }: HeaderProps) => {
-  const { user, signOut } = useAuth();
+  const { user, logout } = useAuth();
   const { isRealImplementation } = useImplementationSettings();
   
   const getHeaderTitle = () => {
@@ -44,20 +44,20 @@ const Header = ({ activeTab, setMobileMenuOpen }: HeaderProps) => {
   };
 
   return (
-    <header className="bg-white border-b sticky top-0 z-10">
+    <header className="bg-dark-200 border-b border-dark-300 sticky top-0 z-10">
       <div className="h-16 px-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Button 
             variant="ghost" 
             size="icon" 
-            className="md:hidden" 
+            className="md:hidden text-white hover:bg-dark-300" 
             onClick={() => setMobileMenuOpen(true)}
           >
             <MenuIcon className="h-5 w-5" />
             <span className="sr-only">Toggle Menu</span>
           </Button>
           
-          <h1 className="text-xl md:text-2xl font-bold">{getHeaderTitle()}</h1>
+          <h1 className="text-xl md:text-2xl font-bold text-white">{getHeaderTitle()}</h1>
           
           {isRealImplementation ? (
             <TooltipProvider>
@@ -65,13 +65,13 @@ const Header = ({ activeTab, setMobileMenuOpen }: HeaderProps) => {
                 <TooltipTrigger asChild>
                   <Badge 
                     variant="outline" 
-                    className="hidden md:flex items-center ml-2 bg-green-50 text-green-700 border-green-200"
+                    className="hidden md:flex items-center ml-2 bg-green-900/30 text-green-400 border-green-700"
                   >
                     <span className="h-2 w-2 mr-1 rounded-full bg-green-500"></span>
                     Live
                   </Badge>
                 </TooltipTrigger>
-                <TooltipContent className="bg-green-50 border-green-200 text-green-700">
+                <TooltipContent className="bg-dark-200 border-dark-300 text-green-400">
                   <p className="text-xs">Implementasi nyata aktif - terhubung ke Supabase</p>
                 </TooltipContent>
               </Tooltip>
@@ -82,13 +82,13 @@ const Header = ({ activeTab, setMobileMenuOpen }: HeaderProps) => {
                 <TooltipTrigger asChild>
                   <Badge 
                     variant="outline" 
-                    className="hidden md:flex items-center ml-2 bg-amber-50 text-amber-700 border-amber-200"
+                    className="hidden md:flex items-center ml-2 bg-amber-900/30 text-amber-400 border-amber-700"
                   >
                     <span className="h-2 w-2 mr-1 rounded-full bg-amber-500"></span>
                     Simulasi
                   </Badge>
                 </TooltipTrigger>
-                <TooltipContent className="bg-amber-50 border-amber-200 text-amber-700">
+                <TooltipContent className="bg-dark-200 border-dark-300 text-amber-400">
                   <p className="text-xs">Mode simulasi - data hanya disimpan secara lokal</p>
                 </TooltipContent>
               </Tooltip>
@@ -99,7 +99,7 @@ const Header = ({ activeTab, setMobileMenuOpen }: HeaderProps) => {
         <div className="flex items-center gap-3">
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon" className="relative">
+              <Button variant="ghost" size="icon" className="relative text-white hover:bg-dark-300">
                 <Bell className="h-5 w-5" />
                 <span className="sr-only">Notifikasi</span>
                 <span className="absolute -top-1 -right-1 h-4 w-4 rounded-full bg-red-500 text-[9px] font-medium text-white flex items-center justify-center">
@@ -107,28 +107,28 @@ const Header = ({ activeTab, setMobileMenuOpen }: HeaderProps) => {
                 </span>
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="min-w-[300px]">
+            <DropdownMenuContent align="end" className="min-w-[300px] bg-dark-200 border-dark-300 text-white">
               <DropdownMenuLabel>Notifikasi</DropdownMenuLabel>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="bg-dark-300" />
               {[
                 { id: 1, title: "Pendaftaran pengguna baru", time: "5 menit yang lalu", read: false },
                 { id: 2, title: "Komentar baru di artikel", time: "1 jam yang lalu", read: false },
                 { id: 3, title: "Pembaruan sistem tersedia", time: "3 jam yang lalu", read: false },
               ].map(notification => (
-                <DropdownMenuItem key={notification.id} className="py-2 px-3 flex flex-col items-start gap-1 hover:bg-gray-50">
+                <DropdownMenuItem key={notification.id} className="py-2 px-3 flex flex-col items-start gap-1 hover:bg-dark-300 focus:bg-dark-300">
                   <div className="flex justify-between w-full">
-                    <span className={`text-sm font-medium ${notification.read ? 'text-gray-600' : 'text-black'}`}>
+                    <span className={`text-sm font-medium ${notification.read ? 'text-gray-400' : 'text-white'}`}>
                       {notification.title}
                     </span>
                     {!notification.read && (
-                      <span className="h-2 w-2 rounded-full bg-blue-500"></span>
+                      <span className="h-2 w-2 rounded-full bg-neon-purple"></span>
                     )}
                   </div>
-                  <span className="text-xs text-gray-500">{notification.time}</span>
+                  <span className="text-xs text-gray-400">{notification.time}</span>
                 </DropdownMenuItem>
               ))}
-              <DropdownMenuSeparator />
-              <Button variant="ghost" className="w-full justify-center text-sm" size="sm">
+              <DropdownMenuSeparator className="bg-dark-300" />
+              <Button variant="ghost" className="w-full justify-center text-sm text-white hover:bg-dark-300" size="sm">
                 Lihat semua notifikasi
               </Button>
             </DropdownMenuContent>
@@ -136,32 +136,32 @@ const Header = ({ activeTab, setMobileMenuOpen }: HeaderProps) => {
           
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost" className="flex items-center gap-2 pr-1">
+              <Button variant="ghost" className="flex items-center gap-2 pr-1 text-white hover:bg-dark-300">
                 <Avatar className="h-8 w-8">
                   <AvatarImage src="" />
-                  <AvatarFallback className="bg-diginavy text-white">AD</AvatarFallback>
+                  <AvatarFallback className="bg-neon-purple text-white">AD</AvatarFallback>
                 </Avatar>
                 <div className="hidden md:block text-sm font-medium text-left">
                   Admin DigiBooster
                 </div>
-                <ChevronDown className="h-4 w-4 text-gray-500" />
+                <ChevronDown className="h-4 w-4 text-gray-400" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
+            <DropdownMenuContent align="end" className="bg-dark-200 border-dark-300 text-white">
               <DropdownMenuLabel>Admin DigiBooster</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem className="flex items-center gap-2">
+              <DropdownMenuSeparator className="bg-dark-300" />
+              <DropdownMenuItem className="flex items-center gap-2 text-white hover:bg-dark-300 focus:bg-dark-300">
                 <User size={16} />
                 <span>Profil</span>
               </DropdownMenuItem>
-              <DropdownMenuItem className="flex items-center gap-2">
+              <DropdownMenuItem className="flex items-center gap-2 text-white hover:bg-dark-300 focus:bg-dark-300">
                 <Settings size={16} />
                 <span>Pengaturan</span>
               </DropdownMenuItem>
-              <DropdownMenuSeparator />
+              <DropdownMenuSeparator className="bg-dark-300" />
               <DropdownMenuItem 
-                className="flex items-center gap-2 text-red-600" 
-                onClick={() => signOut?.()}
+                className="flex items-center gap-2 text-red-400 hover:bg-dark-300 focus:bg-dark-300" 
+                onClick={() => logout?.()}
               >
                 Keluar
               </DropdownMenuItem>

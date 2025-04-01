@@ -1,11 +1,11 @@
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ChevronRight, ArrowRight } from 'lucide-react';
 import { WebsiteData } from '@/stores/websiteDataStore';
 import { useWebsiteDataStore } from '@/stores/websiteDataStore';
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 
 interface HeroSectionProps {
   title?: string;
@@ -18,6 +18,8 @@ interface HeroSectionProps {
 
 const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: HeroSectionProps) => {
   const websiteStore = useWebsiteDataStore();
+  const controls = useAnimation();
+  
   // Use passed props or fallback to the store data
   const storeGeneralInfo = generalInfo || websiteStore.generalInfo;
   const storeHero = hero || websiteStore.homeContent.hero;
@@ -26,6 +28,18 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
   const displaySubtitle = subtitle || storeHero.subtitle;
   const displayCtaText = ctaText || storeHero.ctaText;
   const displayCtaLink = ctaLink || storeHero.ctaLink;
+
+  useEffect(() => {
+    controls.start({
+      y: [0, -15, 0],
+      transition: {
+        duration: 4,
+        repeat: Infinity,
+        repeatType: "reverse",
+        ease: "easeInOut"
+      }
+    });
+  }, [controls]);
 
   const fadeIn = {
     hidden: { opacity: 0, y: 20 },
@@ -50,15 +64,7 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
   const ChessPiece = ({ className }: { className: string }) => (
     <motion.div 
       className={`absolute opacity-20 ${className}`}
-      animate={{ 
-        y: [0, -15, 0],
-        rotate: [0, 5, 0, -5, 0]
-      }}
-      transition={{ 
-        duration: 10, 
-        repeat: Infinity,
-        repeatType: "reverse"
-      }}
+      animate={controls}
     >
       <img 
         src="/lovable-uploads/b9e99a39-1bea-4a66-a055-a70e8d5ac4ab.png" 
@@ -68,17 +74,145 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
     </motion.div>
   );
 
+  // Cyberpunk grid background animation component
+  const CyberGrid = () => (
+    <div className="absolute inset-0 overflow-hidden">
+      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+      
+      {/* Horizontal lines animation */}
+      <div className="absolute inset-0">
+        {[...Array(10)].map((_, i) => (
+          <motion.div 
+            key={`h-line-${i}`}
+            className="absolute h-[1px] bg-neon-purple/20 w-full left-0"
+            style={{ top: `${i * 10}%` }}
+            animate={{ 
+              opacity: [0.1, 0.3, 0.1],
+              scaleX: [1, 1.05, 1],
+              boxShadow: [
+                "0 0 2px rgba(166, 51, 255, 0.2)",
+                "0 0 8px rgba(166, 51, 255, 0.6)",
+                "0 0 2px rgba(166, 51, 255, 0.2)"
+              ]
+            }}
+            transition={{ 
+              duration: 3 + i,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut",
+              delay: i * 0.2
+            }}
+          />
+        ))}
+      </div>
+      
+      {/* Vertical lines animation */}
+      <div className="absolute inset-0">
+        {[...Array(10)].map((_, i) => (
+          <motion.div 
+            key={`v-line-${i}`}
+            className="absolute w-[1px] bg-neon-violet/20 h-full top-0"
+            style={{ left: `${i * 10}%` }}
+            animate={{ 
+              opacity: [0.1, 0.3, 0.1],
+              scaleY: [1, 1.05, 1],
+              boxShadow: [
+                "0 0 2px rgba(114, 9, 183, 0.2)",
+                "0 0 8px rgba(114, 9, 183, 0.6)",
+                "0 0 2px rgba(114, 9, 183, 0.2)"
+              ]
+            }}
+            transition={{ 
+              duration: 4 + i,
+              repeat: Infinity,
+              repeatType: "reverse",
+              ease: "easeInOut",
+              delay: i * 0.3
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+
+  // Data circuit animation
+  const DataCircuit = () => (
+    <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      {[...Array(15)].map((_, i) => (
+        <motion.div 
+          key={`data-point-${i}`}
+          className="absolute h-1 w-1 rounded-full bg-neon-blue"
+          style={{ 
+            left: `${Math.random() * 100}%`, 
+            top: `${Math.random() * 100}%`,
+            opacity: 0
+          }}
+          animate={{ 
+            opacity: [0, 1, 0],
+            scale: [0.5, 1.5, 0.5],
+            boxShadow: [
+              "0 0 0px rgba(76, 201, 240, 0)",
+              "0 0 10px rgba(76, 201, 240, 0.8)",
+              "0 0 0px rgba(76, 201, 240, 0)"
+            ]
+          }}
+          transition={{ 
+            duration: 2 + Math.random() * 3,
+            repeat: Infinity,
+            delay: i * 0.6
+          }}
+        />
+      ))}
+      
+      {/* Data flow lines */}
+      {[...Array(5)].map((_, i) => {
+        const startX = Math.random() * 100;
+        const startY = Math.random() * 100;
+        const endX = Math.random() * 100;
+        const endY = Math.random() * 100;
+        
+        return (
+          <motion.div 
+            key={`data-line-${i}`}
+            className="absolute h-[2px] bg-gradient-to-r from-neon-blue/0 via-neon-blue to-neon-blue/0"
+            style={{ 
+              top: `${startY}%`,
+              left: `${startX}%`,
+              width: `${Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2))}%`,
+              transform: `rotate(${Math.atan2(endY - startY, endX - startX) * (180 / Math.PI)}deg)`,
+              transformOrigin: 'left center',
+              opacity: 0
+            }}
+            animate={{ 
+              opacity: [0, 0.7, 0],
+              scaleX: [0, 1, 0]
+            }}
+            transition={{ 
+              duration: 4,
+              repeat: Infinity,
+              delay: i * 2
+            }}
+          />
+        );
+      })}
+    </div>
+  );
+
   return (
     <section className="relative bg-dark text-white overflow-hidden pt-20 pb-32">
+      {/* Background elements */}
+      <CyberGrid />
+      <DataCircuit />
+      
       {/* Background pattern */}
-      <div className="absolute inset-0 chess-bg opacity-10"></div>
+      <div className="absolute inset-0 chess-bg opacity-5"></div>
       
       {/* Purple gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-dark-300/50 to-dark/90"></div>
       
       {/* Large blurred purple circles for abstract background */}
-      <div className="absolute top-20 right-0 w-64 h-64 bg-neon-purple rounded-full filter blur-[100px] opacity-20"></div>
-      <div className="absolute bottom-20 left-0 w-80 h-80 bg-neon-violet rounded-full filter blur-[100px] opacity-20"></div>
+      <div className="absolute top-20 right-0 w-64 h-64 bg-neon-purple rounded-full filter blur-[100px] opacity-10 animate-pulse"></div>
+      <div className="absolute bottom-20 left-0 w-80 h-80 bg-neon-violet rounded-full filter blur-[100px] opacity-10 animate-pulse"></div>
       
       {/* Chess pieces in background */}
       <ChessPiece className="right-[5%] top-[15%] w-40 md:w-64" />
@@ -103,7 +237,7 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
           >
             <span className="block mb-2 text-white">{displayTitle.split('with')[0]}</span>
             <span className="neon-text bg-gradient-to-r from-neon-purple to-neon-pink">
-              with <span className="text-neon-purple">{storeGeneralInfo.title}</span>
+              with <span className="text-neon-purple">DigiBooster</span>
             </span>
           </motion.h1>
           

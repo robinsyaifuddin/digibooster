@@ -36,7 +36,7 @@ const HomeTabContent = ({
   setActiveTab
 }: HomeTabContentProps) => {
   return (
-    <TabsContent value="home">
+    <TabsContent value="home" className="space-y-6">
       <div className="space-y-6">
         <HeroEditor 
           heroContent={heroContent} 
@@ -55,10 +55,10 @@ const HomeTabContent = ({
         />
         
         <div className="flex justify-between">
-          <Button variant="outline" onClick={() => setActiveTab("blog")}>
+          <Button variant="outline" onClick={() => setActiveTab("blog")} className="border-dark-300 text-white hover:bg-dark-300">
             Kembali ke Blog
           </Button>
-          <Button onClick={handlePublishContent} className="bg-green-600 hover:bg-green-700">
+          <Button onClick={handlePublishContent} className="bg-neon-purple hover:bg-neon-violet text-white">
             <Save className="w-4 h-4 mr-2" />
             Siap Publikasi
           </Button>

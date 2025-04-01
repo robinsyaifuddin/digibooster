@@ -28,7 +28,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex flex-col min-h-screen bg-dark">
       <Navbar />
-      <main className="flex-grow">
+      <main className="flex-grow pt-16 md:pt-20">
         {children}
       </main>
       <Footer />
@@ -45,12 +45,19 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      refetchOnWindowFocus: false,
+      retry: 1,
+    },
+  },
+});
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <AuthProvider>
+    <AuthProvider>
+      <TooltipProvider>
         <HomeContentProvider>
           <Toaster />
           <Sonner />
@@ -170,8 +177,8 @@ const App = () => (
             </Routes>
           </BrowserRouter>
         </HomeContentProvider>
-      </AuthProvider>
-    </TooltipProvider>
+      </TooltipProvider>
+    </AuthProvider>
   </QueryClientProvider>
 );
 
