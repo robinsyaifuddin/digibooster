@@ -24,7 +24,7 @@ export const useImplementationSettings = () => {
   
   const [implementationType, setImplementationType] = useState<'supabase' | 'custom'>(() => {
     const stored = localStorage.getItem('implementationType');
-    return stored || 'supabase';
+    return (stored as 'supabase' | 'custom') || 'supabase';
   });
 
   const activateRealImplementation = (): boolean => {
@@ -123,6 +123,31 @@ export const useImplementationSettings = () => {
     }
   };
 
+  const getSettings = (): CustomImplementationConfig => {
+    try {
+      const configString = localStorage.getItem('customApiConfig');
+      if (configString) {
+        return JSON.parse(configString);
+      }
+      return {
+        apiUrl: '',
+        apiKey: '',
+        databaseType: 'mysql',
+        backendType: 'php',
+        serverProvider: ''
+      };
+    } catch (error) {
+      console.error('Failed to get custom API settings:', error);
+      return {
+        apiUrl: '',
+        apiKey: '',
+        databaseType: 'mysql',
+        backendType: 'php',
+        serverProvider: ''
+      };
+    }
+  };
+
   return {
     isRealImplementation,
     implementationType,
@@ -130,6 +155,7 @@ export const useImplementationSettings = () => {
     activateCustomImplementation,
     verifySupabaseConnection,
     verifyCustomApiConnection,
-    initializeSupabaseData
+    initializeSupabaseData,
+    getSettings
   };
 };

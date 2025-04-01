@@ -160,8 +160,11 @@ const DatabaseMonitor = () => {
             .order('updated_at', { ascending: false })
             .limit(1);
             
-          if (!updateError && data && data.length > 0 && data[0]?.updated_at) {
-            newStats.lastUpdated[table] = new Date(data[0].updated_at).toLocaleString('id-ID');
+          if (!updateError && data && data.length > 0) {
+            const updated = data[0] as unknown as { updated_at?: string };
+            if (updated && updated.updated_at) {
+              newStats.lastUpdated[table] = new Date(updated.updated_at).toLocaleString('id-ID');
+            }
           }
         } catch (err) {
           console.error(`Error getting updated_at for ${table}:`, err);

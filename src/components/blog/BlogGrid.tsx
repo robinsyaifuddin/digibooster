@@ -16,7 +16,22 @@ const BlogGrid = ({ posts, resetFilters }: BlogGridProps) => {
       {posts.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {posts.map((post) => (
-            <BlogCard key={post.id} post={post} />
+            <BlogCard 
+              key={post.id} 
+              post={{
+                id: post.id.toString(),
+                title: post.title,
+                date: post.date,
+                author: { 
+                  name: post.author,
+                },
+                category: post.category,
+                tags: post.tags,
+                excerpt: post.excerpt,
+                image: post.image,
+                slug: post.slug
+              }} 
+            />
           ))}
         </div>
       ) : (

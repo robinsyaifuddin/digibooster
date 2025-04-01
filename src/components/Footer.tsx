@@ -47,7 +47,7 @@ const Footer = () => {
           <div>
             <Link to="/" className="inline-block mb-6">
               <div className="text-cyber-accent font-display text-2xl font-bold">
-                <span className="cyber-glow" style={{/* @ts-ignore */ "--glow-color": "rgba(75, 255, 209, 0.7)"}}>DIGI</span>
+                <span className="cyber-glow" style={{ "--glow-color": "rgba(75, 255, 209, 0.7)" } as React.CSSProperties}>DIGI</span>
                 <span className="text-white">BOOSTER</span>
               </div>
             </Link>
