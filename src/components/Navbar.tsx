@@ -1,39 +1,55 @@
 
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
-import { Menu, X, ChevronDown, User } from 'lucide-react';
-import { Button } from './ui/button';
-import { useAuth } from '../contexts/AuthContext';
-import {
+import React, { useState, useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import { 
   NavigationMenu,
   NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
+  NavigationMenuTrigger
 } from "@/components/ui/navigation-menu";
+import { Button } from "@/components/ui/button";
+import { 
+  Menu, 
+  X, 
+  ChevronDown, 
+  Home, 
+  BookOpen, 
+  Briefcase, 
+  Users, 
+  User,
+  LogOut,
+  Grid
+} from 'lucide-react';
+import { useAuth } from '@/contexts/AuthContext';
+import ThemeToggle from './ThemeToggle';
+import { cn } from '@/lib/utils';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const { user, logout, signOut } = useAuth();
+  const [isScrolled, setIsScrolled] = useState(false);
+  const { user, signOut, logout } = useAuth();
+  const location = useLocation();
   
-  // Use signOut if logout is not available
-  const handleLogout = () => {
-    if (logout) {
-      logout();
-    } else if (signOut) {
-      signOut();
+  // Function to handle logout
+  const handleLogout = async () => {
+    try {
+      // Use either logout or signOut based on what's available
+      if (logout) {
+        await logout();
+      } else if (signOut) {
+        await signOut();
+      }
+    } catch (error) {
+      console.error('Logout error:', error);
     }
   };
-  
+
+  // Monitor scroll position to change navbar styles
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setScrolled(true);
-      } else {
-        setScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 20);
     };
     
     window.addEventListener('scroll', handleScroll);
@@ -44,158 +60,317 @@ const Navbar = () => {
     setIsOpen(!isOpen);
   };
 
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
+
   return (
-    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
-      scrolled ? 'bg-white shadow-md py-2' : 'bg-white/90 backdrop-blur-md py-4'
-    }`}>
-      <div className="container mx-auto px-4 md:px-6">
-        <div className="flex justify-between items-center">
-          <Link to="/" className="flex items-center">
-            <img src="/lovable-uploads/eb7d859a-60c0-4007-afe4-522ffdd5afda.png" alt="DigiBooster Logo" className="h-8 md:h-10 w-auto" />
-          </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
-            <NavigationMenu>
-              <NavigationMenuList>
-                <NavigationMenuItem>
-                  <NavigationMenuTrigger className="text-diginavy">Program</NavigationMenuTrigger>
-                  <NavigationMenuContent>
-                    <div className="w-64 p-2">
-                      <Link to="/program/jasa-digital" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
-                        Layanan Jasa Digital
-                      </Link>
-                      <Link to="/program/motivasi-edukasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
-                        Motivasi dan Edukasi Digital
-                      </Link>
-                      <Link to="/program/sharing-konsultasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
-                        Sharing dan Konsultasi Bisnis Digital
-                      </Link>
-                      <Link to="/program/kelas" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
-                        Short Class dan Mini Bootcamp Digital
-                      </Link>
-                    </div>
-                  </NavigationMenuContent>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link to="/blog" className="text-diginavy px-4 py-2 hover:text-purple-700 transition-colors">
+    <nav className={cn(
+      "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
+      isScrolled 
+        ? "bg-cyber-dark/90 backdrop-blur shadow-md py-3"
+        : "bg-transparent py-5"
+    )}>
+      <div className="container mx-auto px-4 flex items-center justify-between">
+        {/* Logo */}
+        <Link to="/" className="flex items-center space-x-2">
+          <div className="text-cyber-accent font-display text-2xl font-bold">
+            <span className="cyber-glow" style={{"--glow-color": "rgba(75, 255, 209, 0.7)"}}>DIGI</span>
+            <span className="text-white">BOOSTER</span>
+          </div>
+        </Link>
+        
+        {/* Desktop Navigation */}
+        <div className="hidden md:flex items-center space-x-6">
+          <NavigationMenu>
+            <NavigationMenuList>
+              {/* Home */}
+              <NavigationMenuItem>
+                <Link to="/">
+                  <NavigationMenuLink className={cn(
+                    "inline-flex items-center justify-center py-2 text-sm font-medium transition-colors",
+                    isActive('/') 
+                      ? "text-cyber-accent" 
+                      : "text-white/80 hover:text-cyber-accent"
+                  )}>
+                    Home
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              
+              {/* Blog */}
+              <NavigationMenuItem>
+                <Link to="/blog">
+                  <NavigationMenuLink className={cn(
+                    "inline-flex items-center justify-center py-2 text-sm font-medium transition-colors",
+                    isActive('/blog') 
+                      ? "text-cyber-accent" 
+                      : "text-white/80 hover:text-cyber-accent"
+                  )}>
                     Blog
-                  </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link to="/portofolio" className="text-diginavy px-4 py-2 hover:text-purple-700 transition-colors">
-                    Portofolio
-                  </Link>
-                </NavigationMenuItem>
-                <NavigationMenuItem>
-                  <Link to="/tentang" className="text-diginavy px-4 py-2 hover:text-purple-700 transition-colors">
-                    Tentang
-                  </Link>
-                </NavigationMenuItem>
-              </NavigationMenuList>
-            </NavigationMenu>
-
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              
+              {/* Programs Dropdown */}
+              <NavigationMenuItem>
+                <NavigationMenuTrigger className={cn(
+                  "bg-transparent hover:bg-cyber-darker/60",
+                  (isActive('/program/jasa-digital') || 
+                   isActive('/program/motivasi-edukasi') || 
+                   isActive('/program/sharing-konsultasi') || 
+                   isActive('/program/kelas'))
+                    ? "text-cyber-accent" 
+                    : "text-white/80 hover:text-cyber-accent"
+                )}>
+                  Programs
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid gap-3 p-4 w-[200px] bg-cyber-dark border border-cyber-primary/20">
+                    <li>
+                      <Link to="/program/jasa-digital">
+                        <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-cyber-primary/10 hover:text-cyber-accent">
+                          Digital Services
+                        </NavigationMenuLink>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/program/motivasi-edukasi">
+                        <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-cyber-primary/10 hover:text-cyber-accent">
+                          Motivation & Education
+                        </NavigationMenuLink>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/program/sharing-konsultasi">
+                        <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-cyber-primary/10 hover:text-cyber-accent">
+                          Sharing & Consultation
+                        </NavigationMenuLink>
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to="/program/kelas">
+                        <NavigationMenuLink className="block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-cyber-primary/10 hover:text-cyber-accent">
+                          Classes
+                        </NavigationMenuLink>
+                      </Link>
+                    </li>
+                  </ul>
+                </NavigationMenuContent>
+              </NavigationMenuItem>
+              
+              {/* Portfolio */}
+              <NavigationMenuItem>
+                <Link to="/portofolio">
+                  <NavigationMenuLink className={cn(
+                    "inline-flex items-center justify-center py-2 text-sm font-medium transition-colors",
+                    isActive('/portofolio') 
+                      ? "text-cyber-accent" 
+                      : "text-white/80 hover:text-cyber-accent"
+                  )}>
+                    Portfolio
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+              
+              {/* About */}
+              <NavigationMenuItem>
+                <Link to="/tentang">
+                  <NavigationMenuLink className={cn(
+                    "inline-flex items-center justify-center py-2 text-sm font-medium transition-colors",
+                    isActive('/tentang') 
+                      ? "text-cyber-accent" 
+                      : "text-white/80 hover:text-cyber-accent"
+                  )}>
+                    About
+                  </NavigationMenuLink>
+                </Link>
+              </NavigationMenuItem>
+            </NavigationMenuList>
+          </NavigationMenu>
+          
+          {/* Authentication buttons */}
+          <div className="flex items-center gap-3">
             {user ? (
-              <div className="relative dropdown group">
-                <button className="flex items-center space-x-2 text-diginavy">
-                  <User className="w-5 h-5" />
-                  <span>{user.email}</span>
-                  <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180 duration-300" />
-                </button>
-                <div className="dropdown-content w-48 right-0 rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-scale-in">
-                  <Link to="/profil" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">Profil</Link>
-                  {user.email === "digibooster@123" && (
-                    <Link to="/admin" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">Admin Dashboard</Link>
-                  )}
-                  <button 
-                    onClick={handleLogout} 
-                    className="block w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 text-red-600"
-                  >
-                    Keluar
-                  </button>
-                </div>
+              <div className="flex items-center gap-2">
+                <Button asChild variant="ghost" className="text-white/80 hover:text-cyber-accent hover:bg-cyber-darker/60">
+                  <Link to="/admin">
+                    <Grid className="mr-1 h-4 w-4" />
+                    Dashboard
+                  </Link>
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className="text-white/80 hover:text-cyber-accent hover:bg-cyber-darker/60"
+                  onClick={handleLogout}
+                >
+                  <LogOut className="mr-1 h-4 w-4" />
+                  Logout
+                </Button>
               </div>
             ) : (
-              <div className="flex items-center space-x-4">
-                <Link to="/login">
-                  <Button variant="outline" className="border-digiblue-600 text-digiblue-600 hover:bg-digiblue-50 hover:text-digiblue-700 transition-colors duration-300">
-                    Masuk
-                  </Button>
-                </Link>
-                <Link to="/register">
-                  <Button className="bg-gradient-to-r from-digiblue-500 to-diginavy hover:from-digiblue-600 hover:to-diginavy-800 text-white shadow-md hover:shadow-lg transition-all duration-300">
-                    Daftar
-                  </Button>
-                </Link>
-              </div>
+              <>
+                <Button asChild variant="ghost" className="text-white/80 hover:text-cyber-accent hover:bg-cyber-darker/60">
+                  <Link to="/login">
+                    <User className="mr-1 h-4 w-4" />
+                    Login
+                  </Link>
+                </Button>
+                <Button asChild className="cyber-btn">
+                  <Link to="/register">
+                    Register
+                  </Link>
+                </Button>
+              </>
             )}
+            <ThemeToggle />
           </div>
-
-          {/* Mobile menu button */}
-          <button 
-            className="md:hidden focus:outline-none text-diginavy"
+        </div>
+        
+        {/* Mobile Menu Button */}
+        <div className="md:hidden flex items-center">
+          <Button 
+            variant="ghost" 
+            size="icon" 
+            className="text-white" 
             onClick={toggleMenu}
           >
-            {isOpen ? (
-              <X className="h-6 w-6" />
-            ) : (
-              <Menu className="h-6 w-6" />
-            )}
-          </button>
+            {isOpen ? <X size={24} /> : <Menu size={24} />}
+          </Button>
         </div>
       </div>
-
+      
       {/* Mobile Navigation */}
-      {isOpen && (
-        <div className="md:hidden bg-white shadow-md mt-2 animate-fade-in">
-          <div className="py-4 space-y-1">
-            <div className="block px-6 py-2 font-medium text-diginavy border-b border-gray-100">Program</div>
-            <Link to="/program/jasa-digital" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
-              Layanan Jasa Digital
-            </Link>
-            <Link to="/program/motivasi-edukasi" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
-              Motivasi dan Edukasi Digital
-            </Link>
-            <Link to="/program/sharing-konsultasi" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
-              Sharing dan Konsultasi Bisnis Digital
-            </Link>
-            <Link to="/program/kelas" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
-              Short Class dan Mini Bootcamp Digital
-            </Link>
-            <Link to="/blog" className="block px-6 py-3 border-t border-gray-100" onClick={toggleMenu}>Blog</Link>
-            <Link to="/portofolio" className="block px-6 py-3" onClick={toggleMenu}>Portofolio</Link>
-            <Link to="/tentang" className="block px-6 py-3" onClick={toggleMenu}>Tentang</Link>
-            
-            {user ? (
-              <>
-                <div className="border-t border-gray-200 my-2"></div>
-                <Link to="/profil" className="block px-6 py-3" onClick={toggleMenu}>Profil</Link>
-                {user.email === "digibooster@123" && (
-                  <Link to="/admin" className="block px-6 py-3" onClick={toggleMenu}>Admin Dashboard</Link>
-                )}
-                <button 
-                  onClick={() => {
-                    handleLogout();
-                    toggleMenu();
-                  }} 
-                  className="block w-full text-left px-6 py-3 text-red-600"
-                >
-                  Keluar
-                </button>
-              </>
-            ) : (
-              <div className="flex justify-center space-x-4 px-6 py-4 border-t border-gray-100 mt-2">
-                <Link to="/login" className="flex-1" onClick={toggleMenu}>
-                  <Button variant="outline" className="w-full border-digiblue-600 text-digiblue-600">Masuk</Button>
-                </Link>
-                <Link to="/register" className="flex-1" onClick={toggleMenu}>
-                  <Button className="w-full bg-digiblue-600 text-white hover:bg-digiblue-700">Daftar</Button>
-                </Link>
+      <div className={`md:hidden transition-all duration-300 ease-in-out ${isOpen ? 'h-auto opacity-100 visible' : 'h-0 opacity-0 invisible'}`}>
+        <div className="container mx-auto px-4 py-4 bg-cyber-dark border-t border-cyber-primary/20">
+          <ul className="space-y-4">
+            <li>
+              <Link 
+                to="/" 
+                className={`flex items-center space-x-2 ${isActive('/') ? 'text-cyber-accent' : 'text-white/80'}`}
+                onClick={() => setIsOpen(false)}
+              >
+                <Home size={18} />
+                <span>Home</span>
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/blog" 
+                className={`flex items-center space-x-2 ${isActive('/blog') ? 'text-cyber-accent' : 'text-white/80'}`}
+                onClick={() => setIsOpen(false)}
+              >
+                <BookOpen size={18} />
+                <span>Blog</span>
+              </Link>
+            </li>
+            <li>
+              <div className="flex flex-col space-y-2">
+                <div className="flex items-center space-x-2 text-white/80">
+                  <Briefcase size={18} />
+                  <span>Programs</span>
+                </div>
+                <ul className="pl-6 space-y-2 border-l border-cyber-primary/30">
+                  <li>
+                    <Link 
+                      to="/program/jasa-digital" 
+                      className="text-white/70 hover:text-cyber-accent"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Digital Services
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      to="/program/motivasi-edukasi" 
+                      className="text-white/70 hover:text-cyber-accent"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Motivation & Education
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      to="/program/sharing-konsultasi" 
+                      className="text-white/70 hover:text-cyber-accent"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Sharing & Consultation
+                    </Link>
+                  </li>
+                  <li>
+                    <Link 
+                      to="/program/kelas" 
+                      className="text-white/70 hover:text-cyber-accent"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      Classes
+                    </Link>
+                  </li>
+                </ul>
               </div>
-            )}
-          </div>
+            </li>
+            <li>
+              <Link 
+                to="/portofolio" 
+                className={`flex items-center space-x-2 ${isActive('/portofolio') ? 'text-cyber-accent' : 'text-white/80'}`}
+                onClick={() => setIsOpen(false)}
+              >
+                <Briefcase size={18} />
+                <span>Portfolio</span>
+              </Link>
+            </li>
+            <li>
+              <Link 
+                to="/tentang" 
+                className={`flex items-center space-x-2 ${isActive('/tentang') ? 'text-cyber-accent' : 'text-white/80'}`}
+                onClick={() => setIsOpen(false)}
+              >
+                <Users size={18} />
+                <span>About</span>
+              </Link>
+            </li>
+            <div className="pt-4 border-t border-cyber-primary/20">
+              {user ? (
+                <div className="flex flex-col space-y-2">
+                  <Button asChild variant="secondary" size="sm" className="justify-start">
+                    <Link to="/admin" onClick={() => setIsOpen(false)}>
+                      <Grid className="mr-2 h-4 w-4" />
+                      Dashboard
+                    </Link>
+                  </Button>
+                  <Button 
+                    variant="destructive" 
+                    size="sm" 
+                    className="justify-start"
+                    onClick={() => {
+                      handleLogout();
+                      setIsOpen(false);
+                    }}
+                  >
+                    <LogOut className="mr-2 h-4 w-4" />
+                    Logout
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex flex-col space-y-2">
+                  <Button asChild variant="secondary" size="sm" className="justify-start">
+                    <Link to="/login" onClick={() => setIsOpen(false)}>
+                      <User className="mr-2 h-4 w-4" />
+                      Login
+                    </Link>
+                  </Button>
+                  <Button asChild variant="default" size="sm" className="justify-start">
+                    <Link to="/register" onClick={() => setIsOpen(false)}>
+                      Register
+                    </Link>
+                  </Button>
+                </div>
+              )}
+            </div>
+          </ul>
         </div>
-      )}
+      </div>
     </nav>
   );
 };

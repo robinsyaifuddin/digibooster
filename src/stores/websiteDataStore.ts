@@ -1,7 +1,7 @@
 
 import { create } from 'zustand';
 import { persist, PersistOptions } from 'zustand/middleware';
-import { WebsiteStore, WebsiteData, PartnerItem } from '../types/websiteTypes';
+import { WebsiteStore, WebsiteData, PartnerItem, WebsitePage } from '../types/websiteTypes';
 import defaultWebsiteData from '../data/defaultWebsiteData';
 
 // Define persist configuration
@@ -44,6 +44,11 @@ export const useWebsiteDataStore = create<WebsiteStore>()(
       deletePage: (pageId) =>
         set((state) => ({
           pages: state.pages.filter(page => page.id !== pageId)
+        })),
+      
+      updatePages: (pages) =>
+        set(() => ({
+          pages: pages
         })),
       
       updateSeo: (seo) =>
