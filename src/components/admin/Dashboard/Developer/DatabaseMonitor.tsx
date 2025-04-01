@@ -57,7 +57,6 @@ const DatabaseMonitor = () => {
     setCheckingProgress(10);
     
     try {
-      // 1. Test Database Connection
       const startTime = performance.now();
       const { data: dbData, error: dbError } = await supabase
         .from('website_content')
@@ -69,23 +68,19 @@ const DatabaseMonitor = () => {
       setHealthChecks(prev => ({ ...prev, database: !dbError }));
       setCheckingProgress(40);
       
-      // 2. Test Auth Connection
       const { data: authData, error: authError } = await supabase.auth.getSession();
       setHealthChecks(prev => ({ ...prev, auth: !authError }));
       setCheckingProgress(60);
       
-      // 3. Test Storage Connection (just checking bucket list)
       const { data: storageData, error: storageError } = await supabase.storage.listBuckets();
       setHealthChecks(prev => ({ ...prev, storage: !storageError }));
       setCheckingProgress(80);
       
-      // 4. Test Realtime Connection (subscribe and unsubscribe quickly)
       try {
         const channel = supabase.channel('connection_test');
         const subscription = channel.subscribe((status) => {
           if (status === 'SUBSCRIBED') {
             setHealthChecks(prev => ({ ...prev, realtime: true }));
-            // Clean up subscription
             setTimeout(() => {
               supabase.removeChannel(channel);
             }, 500);
@@ -96,11 +91,9 @@ const DatabaseMonitor = () => {
         setHealthChecks(prev => ({ ...prev, realtime: false }));
       }
       
-      // Determine overall status
       const allConnected = !dbError && !authError && !storageError;
       setConnectionStatus(allConnected ? 'connected' : 'error');
       
-      // Update last checked time
       const now = new Date().toLocaleString('id-ID', {
         hour: '2-digit',
         minute: '2-digit',
@@ -120,7 +113,6 @@ const DatabaseMonitor = () => {
         });
       }
       
-      // Get database stats if connected
       if (allConnected) {
         await fetchDatabaseStats();
       }
@@ -137,7 +129,6 @@ const DatabaseMonitor = () => {
   
   const fetchDatabaseStats = async () => {
     try {
-      // Get row counts
       const tables = ['profiles', 'pages', 'website_content', 'publish_history'];
       let newStats = {
         rowCount: { ...databaseStats.rowCount },
@@ -154,7 +145,6 @@ const DatabaseMonitor = () => {
           newStats.rowCount[table] = count;
         }
         
-        // Get last updated
         const { data, error: updateError } = await supabase
           .from(table)
           .select('updated_at')
@@ -165,7 +155,6 @@ const DatabaseMonitor = () => {
           newStats.lastUpdated[table] = new Date(data[0].updated_at).toLocaleString('id-ID');
         }
         
-        // Set mock table size for demonstration
         newStats.tableSize[table] = `${(Math.random() * 100).toFixed(1)} KB`;
       }
       
@@ -180,7 +169,6 @@ const DatabaseMonitor = () => {
       checkConnection();
     }
     
-    // Set up a periodic check every 2 minutes if real implementation
     let intervalId: number;
     if (isRealImplementation) {
       intervalId = window.setInterval(() => {
@@ -592,7 +580,7 @@ const DatabaseMonitor = () => {
                     <span className="text-gray-400">[2025-03-31 07:32:14]</span> <span className="text-blue-400">INFO:</span> Database connection established
                   </div>
                   <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:15]</span> <span className="text-blue-400">QUERY:</span> SELECT * FROM website_content WHERE name = 'main' LIMIT 1
+                    <span className="text-gray-400">[2025-03-31 07:32:15]</span> <span className="text-blue-400">QUERY:</span> SELECT * FROM website_content WHERE name = {"'main'"} LIMIT 1
                   </div>
                   <div className="mb-1">
                     <span className="text-gray-400">[2025-03-31 07:32:15]</span> <span className="text-green-400">SUCCESS:</span> Query executed successfully (12ms)
@@ -613,7 +601,7 @@ const DatabaseMonitor = () => {
                     <span className="text-gray-400">[2025-03-31 07:32:25]</span> <span className="text-yellow-400">NOTICE:</span> Cache hit for website_content query
                   </div>
                   <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:30]</span> <span className="text-blue-400">QUERY:</span> UPDATE website_content SET content = $1 WHERE name = 'main'
+                    <span className="text-gray-400">[2025-03-31 07:32:30]</span> <span className="text-blue-400">QUERY:</span> UPDATE website_content SET content = $1 WHERE name = {"'main'"}
                   </div>
                   <div className="mb-1">
                     <span className="text-gray-400">[2025-03-31 07:32:30]</span> <span className="text-green-400">SUCCESS:</span> Updated 1 row (27ms)
@@ -622,8 +610,7 @@ const DatabaseMonitor = () => {
                     <span className="text-gray-400">[2025-03-31 07:32:35]</span> <span className="text-blue-400">TRIGGER:</span> update_website_content_updated_at executed
                   </div>
                   <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:40]</span> <span className="text-blue-400">QUERY:</span> INSERT INTO publish_history (publish_type, published_by, changes) VALUES ('full', 'f82c0e3a-...', '{"changedSections":["home","services"]}')
-                  </div>
+                    <span className="text-gray-400">[2025-03-31 07:32:40]</span> <span className="text-blue-400">QUERY:</span> INSERT INTO publish_history (publish_type, published_by, changes) VALUES ({"'full'"},{"'f82c0e3a-...'"},{"'{\"changedSections\":[\"home\",\"services\"]}'"})</div>
                   <div className="mb-1">
                     <span className="text-gray-400">[2025-03-31 07:32:40]</span> <span className="text-green-400">SUCCESS:</span> Inserted 1 row (18ms)
                   </div>
