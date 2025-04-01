@@ -9,4 +9,5 @@ export interface BlogPost {
   readTime: string;
   image: string;
   tags: string[];
+  slug: string;
 }

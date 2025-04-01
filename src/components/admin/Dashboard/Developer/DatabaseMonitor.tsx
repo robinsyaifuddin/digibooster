@@ -137,7 +137,7 @@ const DatabaseMonitor = () => {
   
   const fetchDatabaseStats = async () => {
     try {
-      const tables: ValidTable[] = ['profiles', 'pages', 'website_content', 'publish_history'];
+      const tables = ['profiles', 'pages', 'website_content', 'publish_history'] as const;
       let newStats = {
         rowCount: { ...databaseStats.rowCount },
         tableSize: { ...databaseStats.tableSize },
@@ -153,14 +153,18 @@ const DatabaseMonitor = () => {
           newStats.rowCount[table] = count;
         }
         
-        const { data, error: updateError } = await supabase
-          .from(table)
-          .select('updated_at')
-          .order('updated_at', { ascending: false })
-          .limit(1);
-          
-        if (!updateError && data && data.length > 0 && data[0]?.updated_at) {
-          newStats.lastUpdated[table] = new Date(data[0].updated_at).toLocaleString('id-ID');
+        try {
+          const { data, error: updateError } = await supabase
+            .from(table)
+            .select('updated_at')
+            .order('updated_at', { ascending: false })
+            .limit(1);
+            
+          if (!updateError && data && data.length > 0 && data[0]?.updated_at) {
+            newStats.lastUpdated[table] = new Date(data[0].updated_at).toLocaleString('id-ID');
+          }
+        } catch (err) {
+          console.error(`Error getting updated_at for ${table}:`, err);
         }
         
         newStats.tableSize[table] = `${(Math.random() * 100).toFixed(1)} KB`;

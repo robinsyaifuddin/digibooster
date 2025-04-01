@@ -75,7 +75,7 @@ const Navbar = () => {
         {/* Logo */}
         <Link to="/" className="flex items-center space-x-2">
           <div className="text-cyber-accent font-display text-2xl font-bold">
-            <span className="cyber-glow" style={{"--glow-color": "rgba(75, 255, 209, 0.7)"}}>DIGI</span>
+            <span className="cyber-glow" style={{/* @ts-ignore */ "--glow-color": "rgba(75, 255, 209, 0.7)"}}>DIGI</span>
             <span className="text-white">BOOSTER</span>
           </div>
         </Link>

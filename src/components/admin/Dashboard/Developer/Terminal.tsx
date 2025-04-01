@@ -92,12 +92,13 @@ const Terminal = () => {
               timestamp
             };
           } else {
-            const supabaseApiUrl = new URL(supabase.getAuthApiBaseUrl());
+            // Use a safe way to get API URL
+            const supabaseUrl = new URL(supabase.url);
             responseEntry = {
               type: 'output',
               content: `Status koneksi: OK
 Latency: ${Math.round(endTime - startTime)}ms
-Database URL: ${supabaseApiUrl.hostname || 'tidak tersedia'}
+Database URL: ${supabaseUrl.hostname || 'tidak tersedia'}
 Mode: ${isRealImplementation ? 'Live Implementation' : 'Simulation'}`,
               timestamp
             };
