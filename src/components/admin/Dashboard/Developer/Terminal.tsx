@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -9,6 +8,8 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { useToast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { useImplementationSettings } from "@/hooks/useImplementationSettings";
+
+type ValidTable = 'profiles' | 'pages' | 'website_content' | 'publish_history';
 
 interface CommandResponse {
   type: 'input' | 'output' | 'error';
@@ -91,11 +92,12 @@ const Terminal = () => {
               timestamp
             };
           } else {
+            const supabaseApiUrl = new URL(supabase.getAuthApiBaseUrl());
             responseEntry = {
               type: 'output',
               content: `Status koneksi: OK
 Latency: ${Math.round(endTime - startTime)}ms
-Database URL: ${supabase?.supabaseUrl || 'tidak tersedia'}
+Database URL: ${supabaseApiUrl.hostname || 'tidak tersedia'}
 Mode: ${isRealImplementation ? 'Live Implementation' : 'Simulation'}`,
               timestamp
             };
@@ -136,9 +138,9 @@ Mode: ${isRealImplementation ? 'Live Implementation' : 'Simulation'}`,
             };
           } else {
             const tableName = args[1];
-            const validTables = ['profiles', 'pages', 'publish_history', 'website_content'];
+            const validTables: ValidTable[] = ['profiles', 'pages', 'publish_history', 'website_content'];
             
-            if (!validTables.includes(tableName)) {
+            if (!validTables.includes(tableName as ValidTable)) {
               responseEntry = {
                 type: 'error',
                 content: `Error: Tabel "${tableName}" tidak valid. Tabel yang tersedia: ${validTables.join(', ')}`,
@@ -147,7 +149,7 @@ Mode: ${isRealImplementation ? 'Live Implementation' : 'Simulation'}`,
             } else {
               try {
                 const { count, error } = await supabase
-                  .from(tableName)
+                  .from(tableName as ValidTable)
                   .select('*', { count: 'exact', head: true });
                 
                 if (error) {

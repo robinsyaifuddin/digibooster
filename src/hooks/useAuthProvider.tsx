@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { AuthContextType, User } from '../types/auth';
@@ -7,15 +6,16 @@ import { checkPasswordStrength } from '../utils/securityUtils';
 
 export const useAuthProvider = (): AuthContextType => {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   // Initialize auth state from Supabase
   useEffect(() => {
     // First set up the auth listener
     const { data: { subscription } } = supabase.auth.onAuthStateChange(
       (event, session) => {
-        setIsLoading(true);
+        setLoading(true);
         
         if (session && session.user) {
           // Get the user profile from the profiles table
@@ -34,11 +34,9 @@ export const useAuthProvider = (): AuthContextType => {
 
               if (data) {
                 const userWithProfile: User = {
-                  id: session.user.id,
-                  email: session.user.email || '',
+                  ...session.user,
                   name: data.name || '',
                   role: data.role || 'user',
-                  createdAt: new Date(session.user.created_at),
                   photoURL: data.avatar_url,
                   securityLevel: 'standard',
                 };
@@ -48,7 +46,7 @@ export const useAuthProvider = (): AuthContextType => {
             } catch (error) {
               console.error('Error in profile fetch:', error);
             } finally {
-              setIsLoading(false);
+              setLoading(false);
             }
           };
 
@@ -59,7 +57,7 @@ export const useAuthProvider = (): AuthContextType => {
         } else {
           setUser(null);
           setIsAuthenticated(false);
-          setIsLoading(false);
+          setLoading(false);
         }
       }
     );
@@ -70,7 +68,7 @@ export const useAuthProvider = (): AuthContextType => {
       
       // Initial auth state is handled by the listener above
       if (!session) {
-        setIsLoading(false);
+        setLoading(false);
       }
     };
 
@@ -151,6 +149,18 @@ export const useAuthProvider = (): AuthContextType => {
     }
   };
 
+  const signIn = async (email: string, password: string) => {
+    return login(email, password);
+  };
+
+  const signUp = async (email: string, password: string, data?: Record<string, any>) => {
+    return register(email, password, data?.name || '');
+  };
+
+  const signOut = async () => {
+    return logout();
+  };
+
   const logout = async () => {
     try {
       await supabase.auth.signOut();
@@ -194,9 +204,13 @@ export const useAuthProvider = (): AuthContextType => {
     login,
     loginWithGoogle,
     register,
+    signIn,
+    signUp,
+    signOut,
     logout,
     isAuthenticated,
-    isLoading,
+    loading,
+    error,
     checkPasswordStrength,
     updateSecurityLevel,
     logoutFromAllDevices,

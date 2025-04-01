@@ -86,5 +86,8 @@ export const useWebsiteDataStore = create<WebsiteStore>()(
   )
 );
 
+// Create a hook for easier access to the store's state
+export const useWebsiteData = () => useWebsiteDataStore((state) => state);
+
 // Re-export the types for convenience
 export type { WebsiteData } from '../types/websiteTypes';

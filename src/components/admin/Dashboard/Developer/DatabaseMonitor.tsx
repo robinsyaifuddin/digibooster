@@ -23,6 +23,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { useImplementationSettings } from "@/hooks/useImplementationSettings";
 import { motion } from "framer-motion";
 
+type ValidTable = 'profiles' | 'pages' | 'website_content' | 'publish_history';
+
+interface DatabaseStats {
+  rowCount: Record<ValidTable, number>;
+  tableSize: Record<ValidTable, string>;
+  lastUpdated: Record<ValidTable, string | null>;
+}
+
 const DatabaseMonitor = () => {
   const { toast } = useToast();
   const { isRealImplementation, verifySupabaseConnection } = useImplementationSettings();
@@ -31,7 +39,7 @@ const DatabaseMonitor = () => {
   const [lastChecked, setLastChecked] = useState<string | null>(null);
   const [latency, setLatency] = useState<number | null>(null);
   const [checkingProgress, setCheckingProgress] = useState(0);
-  const [databaseStats, setDatabaseStats] = useState({
+  const [databaseStats, setDatabaseStats] = useState<DatabaseStats>({
     rowCount: { profiles: 0, pages: 0, website_content: 0, publish_history: 0 },
     tableSize: { profiles: '0 KB', pages: '0 KB', website_content: '0 KB', publish_history: '0 KB' },
     lastUpdated: { profiles: null, pages: null, website_content: null, publish_history: null },
@@ -129,7 +137,7 @@ const DatabaseMonitor = () => {
   
   const fetchDatabaseStats = async () => {
     try {
-      const tables = ['profiles', 'pages', 'website_content', 'publish_history'];
+      const tables: ValidTable[] = ['profiles', 'pages', 'website_content', 'publish_history'];
       let newStats = {
         rowCount: { ...databaseStats.rowCount },
         tableSize: { ...databaseStats.tableSize },
@@ -138,7 +146,7 @@ const DatabaseMonitor = () => {
       
       for (const table of tables) {
         const { count, error } = await supabase
-          .from(table as any)
+          .from(table)
           .select('*', { count: 'exact', head: true });
           
         if (!error && count !== null) {
@@ -146,12 +154,12 @@ const DatabaseMonitor = () => {
         }
         
         const { data, error: updateError } = await supabase
-          .from(table as any)
+          .from(table)
           .select('updated_at')
           .order('updated_at', { ascending: false })
           .limit(1);
           
-        if (!updateError && data && data.length > 0 && data[0].updated_at) {
+        if (!updateError && data && data.length > 0 && data[0]?.updated_at) {
           newStats.lastUpdated[table] = new Date(data[0].updated_at).toLocaleString('id-ID');
         }
         
@@ -183,6 +191,50 @@ const DatabaseMonitor = () => {
     };
   }, [isRealImplementation]);
   
+  const renderLogContent = () => (
+    <div className="bg-black text-green-400 p-4 rounded-md font-mono text-xs h-96 overflow-auto">
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:14]</span> <span className="text-blue-400">INFO:</span> Database connection established
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:15]</span> <span className="text-blue-400">QUERY:</span> SELECT * FROM website_content WHERE name = {`'main'`} LIMIT 1
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:15]</span> <span className="text-green-400">SUCCESS:</span> Query executed successfully (12ms)
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:18]</span> <span className="text-blue-400">QUERY:</span> SELECT COUNT(*) FROM pages
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:18]</span> <span className="text-green-400">SUCCESS:</span> Query executed successfully (8ms)
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:20]</span> <span className="text-blue-400">QUERY:</span> SELECT * FROM profiles ORDER BY created_at DESC LIMIT 5
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:20]</span> <span className="text-green-400">SUCCESS:</span> Query executed successfully (15ms)
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:25]</span> <span className="text-yellow-400">NOTICE:</span> Cache hit for website_content query
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:30]</span> <span className="text-blue-400">QUERY:</span> UPDATE website_content SET content = $1 WHERE name = {`'main'`}
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:30]</span> <span className="text-green-400">SUCCESS:</span> Updated 1 row (27ms)
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:35]</span> <span className="text-blue-400">TRIGGER:</span> update_website_content_updated_at executed
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:40]</span> <span className="text-blue-400">QUERY:</span> INSERT INTO publish_history (publish_type, published_by, changes) VALUES ({`'full'`},{`'f82c0e3a-...'`},{`'{\"changedSections\":[\"home\",\"services\"]}'`})
+      </div>
+      <div className="mb-1">
+        <span className="text-gray-400">[2025-03-31 07:32:40]</span> <span className="text-green-400">SUCCESS:</span> Inserted 1 row (18ms)
+      </div>
+    </div>
+  );
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -575,47 +627,7 @@ const DatabaseMonitor = () => {
                 </Button>
               </CardHeader>
               <CardContent>
-                <div className="bg-black text-green-400 p-4 rounded-md font-mono text-xs h-96 overflow-auto">
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:14]</span> <span className="text-blue-400">INFO:</span> Database connection established
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:15]</span> <span className="text-blue-400">QUERY:</span> SELECT * FROM website_content WHERE name = {`'main'`} LIMIT 1
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:15]</span> <span className="text-green-400">SUCCESS:</span> Query executed successfully (12ms)
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:18]</span> <span className="text-blue-400">QUERY:</span> SELECT COUNT(*) FROM pages
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:18]</span> <span className="text-green-400">SUCCESS:</span> Query executed successfully (8ms)
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:20]</span> <span className="text-blue-400">QUERY:</span> SELECT * FROM profiles ORDER BY created_at DESC LIMIT 5
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:20]</span> <span className="text-green-400">SUCCESS:</span> Query executed successfully (15ms)
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:25]</span> <span className="text-yellow-400">NOTICE:</span> Cache hit for website_content query
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:30]</span> <span className="text-blue-400">QUERY:</span> UPDATE website_content SET content = $1 WHERE name = {`'main'`}
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:30]</span> <span className="text-green-400">SUCCESS:</span> Updated 1 row (27ms)
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:35]</span> <span className="text-blue-400">TRIGGER:</span> update_website_content_updated_at executed
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:40]</span> <span className="text-blue-400">QUERY:</span> INSERT INTO publish_history (publish_type, published_by, changes) VALUES ({`'full'`},{`'f82c0e3a-...'`},{`'{\"changedSections\":[\"home\",\"services\"]}'`})
-                  </div>
-                  <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:40]</span> <span className="text-green-400">SUCCESS:</span> Inserted 1 row (18ms)
-                  </div>
-                </div>
+                {renderLogContent()}
               </CardContent>
               <CardFooter className="flex justify-between">
                 <Button variant="outline" size="sm" className="gap-2">

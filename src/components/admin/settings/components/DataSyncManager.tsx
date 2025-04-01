@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -10,12 +9,13 @@ import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useImplementationSettings } from '@/hooks/useImplementationSettings';
 import { useWebsiteData } from '@/stores/websiteDataStore';
-import { WebsiteData } from '@/types/websiteTypes';
+import { WebsiteData, WebsitePage } from '@/types/websiteTypes';
 
 const DataSyncManager = () => {
   const { toast } = useToast();
   const { isRealImplementation, initializeSupabaseData } = useImplementationSettings();
-  const { generalInfo, appearance, seo, homeContent, pages } = useWebsiteData();
+  const websiteData = useWebsiteData();
+  const { generalInfo, appearance, seo, homeContent, pages } = websiteData;
   
   const [syncOperation, setSyncOperation] = useState<'none' | 'download' | 'upload'>('none');
   const [progress, setProgress] = useState(0);
@@ -55,8 +55,7 @@ const DataSyncManager = () => {
         setProgress(100);
         toast({
           title: "Sinkronisasi Berhasil",
-          description: "Data websit" +
-          "e berhasil disinkronkan ke Supabase.",
+          description: "Data website berhasil disinkronkan ke Supabase.",
         });
         
         // Set last sync time
@@ -143,8 +142,20 @@ const DataSyncManager = () => {
         console.error('Error fetching pages:', pagesError);
         // Continue with main content even if pages fetch fails
       } else if (pagesData) {
+        // Convert database pages to WebsitePage format
+        const convertedPages: WebsitePage[] = pagesData.map(dbPage => ({
+          id: dbPage.id,
+          title: dbPage.title,
+          slug: dbPage.slug,
+          content: dbPage.content,
+          meta: dbPage.meta,
+          isPublished: dbPage.published || false,
+          createdAt: dbPage.created_at,
+          updatedAt: dbPage.updated_at
+        }));
+        
         // Add pages to the website data
-        websiteData.pages = pagesData;
+        websiteData.pages = convertedPages;
       }
       
       // Dispatch a custom event to update the website data store

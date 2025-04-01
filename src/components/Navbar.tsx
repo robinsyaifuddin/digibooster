@@ -16,7 +16,16 @@ import {
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { user, logout } = useAuth();
+  const { user, logout, signOut } = useAuth();
+  
+  // Use signOut if logout is not available
+  const handleLogout = () => {
+    if (logout) {
+      logout();
+    } else if (signOut) {
+      signOut();
+    }
+  };
   
   useEffect(() => {
     const handleScroll = () => {
@@ -99,7 +108,7 @@ const Navbar = () => {
                     <Link to="/admin" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">Admin Dashboard</Link>
                   )}
                   <button 
-                    onClick={logout} 
+                    onClick={handleLogout} 
                     className="block w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 text-red-600"
                   >
                     Keluar
@@ -166,7 +175,7 @@ const Navbar = () => {
                 )}
                 <button 
                   onClick={() => {
-                    logout();
+                    handleLogout();
                     toggleMenu();
                   }} 
                   className="block w-full text-left px-6 py-3 text-red-600"

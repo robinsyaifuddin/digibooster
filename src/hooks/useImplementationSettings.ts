@@ -1,246 +1,174 @@
 
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { WebsiteData } from '@/types/websiteTypes';
 
-type ImplementationType = 'supabase' | 'custom';
-
-interface CustomApiConfig {
-  apiUrl: string;
-  apiKey?: string;
-  databaseType?: string;
-  backendType?: string;
-  serverProvider?: string;
+// Define explicit return type for initializeSupabaseData
+interface SupabaseDataResult {
+  success: boolean;
+  error?: any;
 }
 
 export const useImplementationSettings = () => {
   const [isRealImplementation, setIsRealImplementation] = useState<boolean>(false);
-  const [implementationType, setImplementationType] = useState<ImplementationType>('supabase');
-  
+  const [isBusy, setIsBusy] = useState<boolean>(false);
+  const [lastVerified, setLastVerified] = useState<Date | null>(null);
+
+  // Load settings from localStorage on component mount
   useEffect(() => {
-    // Periksa apakah implementasi nyata sudah diaktifkan
-    const checkImplementation = () => {
-      const implementation = localStorage.getItem('implementation_mode');
-      const type = localStorage.getItem('implementation_type') as ImplementationType | null;
-      
-      setIsRealImplementation(implementation === 'real');
-      setImplementationType(type || 'supabase');
-    };
-    
-    checkImplementation();
-    
-    // Atur event listener untuk mendeteksi perubahan di localStorage
-    const handleStorageChange = (e: StorageEvent) => {
-      if (e.key === 'implementation_mode' || e.key === 'implementation_type') {
-        checkImplementation();
-      }
-    };
-    
-    window.addEventListener('storage', handleStorageChange);
-    
-    return () => {
-      window.removeEventListener('storage', handleStorageChange);
-    };
+    const storedSetting = localStorage.getItem('implementation-setting');
+    if (storedSetting) {
+      setIsRealImplementation(storedSetting === 'real');
+    }
   }, []);
-  
-  // Verifikasi koneksi ke Supabase
-  const verifySupabaseConnection = async () => {
+
+  // Update localStorage when setting changes
+  useEffect(() => {
+    localStorage.setItem('implementation-setting', isRealImplementation ? 'real' : 'simulation');
+  }, [isRealImplementation]);
+
+  const toggleImplementation = () => {
+    setIsRealImplementation(!isRealImplementation);
+  };
+
+  const verifySupabaseConnection = async (): Promise<boolean> => {
+    if (!isRealImplementation) {
+      return false;
+    }
+
+    setIsBusy(true);
     try {
       const { data, error } = await supabase.from('website_content').select('id').limit(1);
       
       if (error) {
-        return {
-          success: false,
-          error: error.message
-        };
+        console.error('Supabase connection error:', error);
+        return false;
       }
       
-      return {
-        success: true
-      };
-    } catch (error) {
-      return {
-        success: false,
-        error: error.message
-      };
+      setLastVerified(new Date());
+      return true;
+    } catch (err) {
+      console.error('Error verifying Supabase connection:', err);
+      return false;
+    } finally {
+      setIsBusy(false);
     }
   };
-  
-  // Inisialisasi data website di Supabase
-  const initializeSupabaseData = async (websiteData: any) => {
+
+  const initializeSupabaseData = async (websiteData: WebsiteData): Promise<SupabaseDataResult> => {
+    if (!isRealImplementation) {
+      return { 
+        success: false, 
+        error: new Error('Cannot initialize data when in simulation mode') 
+      };
+    }
+
     try {
-      // Periksa apakah data sudah ada
+      setIsBusy(true);
+      
+      // Check if main website_content exists
       const { data: existingData, error: checkError } = await supabase
         .from('website_content')
         .select('id')
         .eq('name', 'main')
-        .maybeSingle();
+        .single();
       
-      if (checkError && checkError.code !== 'PGRST116') {
-        return {
-          success: false,
-          error: checkError
-        };
-      }
+      // Prepare serialized website data
+      const serializedData = {
+        generalInfo: websiteData.generalInfo,
+        appearance: websiteData.appearance,
+        seo: websiteData.seo,
+        homeContent: websiteData.homeContent
+      };
       
-      // Jika data sudah ada, update
-      if (existingData) {
-        const { error: updateError } = await supabase
+      let contentResult;
+      
+      // Insert or update website_content
+      if (checkError || !existingData) {
+        // Insert new record if it doesn't exist
+        contentResult = await supabase
           .from('website_content')
-          .update({ content: websiteData })
-          .eq('name', 'main');
-        
-        if (updateError) {
-          return {
-            success: false,
-            error: updateError
-          };
-        }
+          .insert({ 
+            name: 'main', 
+            content: serializedData 
+          });
       } else {
-        // Jika data belum ada, insert baru
-        const { error: insertError } = await supabase
+        // Update existing record
+        contentResult = await supabase
           .from('website_content')
-          .insert({ name: 'main', content: websiteData });
-        
-        if (insertError) {
-          return {
-            success: false,
-            error: insertError
+          .update({ content: serializedData })
+          .eq('name', 'main');
+      }
+      
+      if (contentResult.error) {
+        throw contentResult.error;
+      }
+      
+      // Process pages if they exist
+      if (websiteData.pages && websiteData.pages.length > 0) {
+        // Since we can't perform bulk upserts easily, we'll handle pages one by one
+        for (const page of websiteData.pages) {
+          // Check if page exists
+          const { data: existingPage, error: pageCheckError } = await supabase
+            .from('pages')
+            .select('id')
+            .eq('id', page.id)
+            .single();
+          
+          // Prepare page data
+          const pageData = {
+            title: page.title,
+            slug: page.slug,
+            content: page.content,
+            meta: page.meta,
+            published: page.isPublished
           };
+          
+          let pageResult;
+          if (pageCheckError || !existingPage) {
+            // Insert new page
+            pageResult = await supabase
+              .from('pages')
+              .insert({
+                ...pageData,
+                id: page.id
+              });
+          } else {
+            // Update existing page
+            pageResult = await supabase
+              .from('pages')
+              .update(pageData)
+              .eq('id', page.id);
+          }
+          
+          if (pageResult.error) {
+            console.error(`Error updating page ${page.id}:`, pageResult.error);
+          }
         }
       }
       
-      return {
-        success: true
-      };
+      setLastVerified(new Date());
+      
+      return { success: true };
     } catch (error) {
-      return {
-        success: false,
-        error
+      console.error('Error initializing Supabase data:', error);
+      return { 
+        success: false, 
+        error: error 
       };
+    } finally {
+      setIsBusy(false);
     }
   };
-  
-  // Verifikasi koneksi ke API kustom
-  const verifyCustomApiConnection = async (apiUrl: string, apiKey?: string) => {
-    try {
-      const headers: Record<string, string> = {
-        'Content-Type': 'application/json'
-      };
-      
-      if (apiKey) {
-        headers['Authorization'] = `Bearer ${apiKey}`;
-      }
-      
-      const response = await fetch(apiUrl, {
-        method: 'GET',
-        headers
-      });
-      
-      if (!response.ok) {
-        return {
-          success: false,
-          error: `API merespon dengan status: ${response.status}`
-        };
-      }
-      
-      return {
-        success: true
-      };
-    } catch (error) {
-      return {
-        success: false,
-        error: error.message
-      };
-    }
-  };
-  
-  // Aktivasi implementasi nyata
-  const activateRealImplementation = () => {
-    try {
-      localStorage.setItem('implementation_mode', 'real');
-      localStorage.setItem('implementation_type', 'supabase');
-      setIsRealImplementation(true);
-      setImplementationType('supabase');
-      return true;
-    } catch (error) {
-      console.error('Error activating real implementation:', error);
-      return false;
-    }
-  };
-  
-  // Aktivasi implementasi kustom
-  const activateCustomImplementation = (config: CustomApiConfig) => {
-    try {
-      localStorage.setItem('implementation_mode', 'real');
-      localStorage.setItem('implementation_type', 'custom');
-      localStorage.setItem('implementation_apiUrl', config.apiUrl);
-      
-      if (config.apiKey) {
-        localStorage.setItem('implementation_apiKey', config.apiKey);
-      }
-      
-      if (config.databaseType) {
-        localStorage.setItem('implementation_databaseType', config.databaseType);
-      }
-      
-      if (config.backendType) {
-        localStorage.setItem('implementation_backendType', config.backendType);
-      }
-      
-      if (config.serverProvider) {
-        localStorage.setItem('implementation_serverProvider', config.serverProvider);
-      }
-      
-      setIsRealImplementation(true);
-      setImplementationType('custom');
-      
-      return true;
-    } catch (error) {
-      console.error('Error activating custom implementation:', error);
-      return false;
-    }
-  };
-  
-  // Nonaktifkan implementasi nyata (kembali ke mode simulasi)
-  const deactivateRealImplementation = () => {
-    try {
-      localStorage.removeItem('implementation_mode');
-      localStorage.removeItem('implementation_type');
-      localStorage.removeItem('implementation_apiUrl');
-      localStorage.removeItem('implementation_apiKey');
-      localStorage.removeItem('implementation_databaseType');
-      localStorage.removeItem('implementation_backendType');
-      localStorage.removeItem('implementation_serverProvider');
-      
-      setIsRealImplementation(false);
-      setImplementationType('supabase');
-      
-      return true;
-    } catch (error) {
-      console.error('Error deactivating real implementation:', error);
-      return false;
-    }
-  };
-  
-  const getSettings = () => {
-    return {
-      apiUrl: localStorage.getItem('implementation_apiUrl') || '',
-      apiKey: localStorage.getItem('implementation_apiKey') || '',
-      databaseType: localStorage.getItem('implementation_databaseType') || '',
-      backendType: localStorage.getItem('implementation_backendType') || '',
-      serverProvider: localStorage.getItem('implementation_serverProvider') || '',
-    };
-  };
-  
+
   return {
     isRealImplementation,
-    implementationType,
+    toggleImplementation,
     verifySupabaseConnection,
     initializeSupabaseData,
-    verifyCustomApiConnection,
-    activateRealImplementation,
-    activateCustomImplementation,
-    deactivateRealImplementation,
-    getSettings
+    isBusy,
+    lastVerified
   };
 };
+
+export default useImplementationSettings;
