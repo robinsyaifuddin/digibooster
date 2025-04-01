@@ -1,196 +1,218 @@
-
 import { useState, useEffect } from 'react';
-import { supabase } from "@/integrations/supabase/client";
-import { User, AuthContextType } from "@/types/auth";
+import { supabase } from '@/integrations/supabase/client';
+import { AuthContextType, User } from '../types/auth';
+import { toast } from '@/hooks/use-toast';
+import { checkPasswordStrength } from '../utils/securityUtils';
 
 export const useAuthProvider = (): AuthContextType => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
+  // Initialize auth state from Supabase
   useEffect(() => {
-    // Check active session on mount
-    const checkSession = async () => {
-      try {
-        const { data, error } = await supabase.auth.getSession();
+    // First set up the auth listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        setLoading(true);
         
-        if (error) {
-          throw error;
-        }
-        
-        if (data.session) {
-          // Set user if there's an active session
-          const userData = data.session.user;
-          setUser({
-            ...userData,
-            name: userData.user_metadata?.name || userData.email?.split('@')[0] || 'User',
-            role: userData.user_metadata?.role || 'user',
-            created_at: userData.created_at
-          } as User);
-        }
-      } catch (error: any) {
-        console.error("Error checking session:", error.message);
-        setError(error.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-    
-    // Check active session when the component mounts
-    checkSession();
-    
-    // Listen for auth state changes
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      async (event, session) => {
-        if (event === 'SIGNED_IN' && session) {
-          const userData = session.user;
-          setUser({
-            ...userData,
-            name: userData.user_metadata?.name || userData.email?.split('@')[0] || 'User',
-            role: userData.user_metadata?.role || 'user',
-            created_at: userData.created_at
-          } as User);
-          setError(null);
-        } else if (event === 'SIGNED_OUT') {
+        if (session && session.user) {
+          // Get the user profile from the profiles table
+          const fetchUserProfile = async () => {
+            try {
+              const { data, error } = await supabase
+                .from('profiles')
+                .select('*')
+                .eq('id', session.user.id)
+                .single();
+
+              if (error) {
+                console.error('Error fetching user profile:', error);
+                return;
+              }
+
+              if (data) {
+                const userWithProfile: User = {
+                  ...session.user,
+                  name: data.name || '',
+                  role: data.role || 'user',
+                  photoURL: data.avatar_url,
+                  securityLevel: 'standard',
+                };
+                setUser(userWithProfile);
+                setIsAuthenticated(true);
+              }
+            } catch (error) {
+              console.error('Error in profile fetch:', error);
+            } finally {
+              setLoading(false);
+            }
+          };
+
+          // Use setTimeout to prevent auth deadlock
+          setTimeout(() => {
+            fetchUserProfile();
+          }, 0);
+        } else {
           setUser(null);
+          setIsAuthenticated(false);
+          setLoading(false);
         }
       }
     );
-    
-    // Clean up the subscription
+
+    // Then check for existing session
+    const initializeAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      // Initial auth state is handled by the listener above
+      if (!session) {
+        setLoading(false);
+      }
+    };
+
+    initializeAuth();
+
     return () => {
-      authListener.subscription.unsubscribe();
+      subscription.unsubscribe();
     };
   }, []);
-  
-  const signIn = async (email: string, password: string) => {
+
+  const login = async (email: string, password: string) => {
     try {
-      setLoading(true);
-      setError(null);
-      
+      console.log(`Attempting login with: ${email}`);
       const { data, error } = await supabase.auth.signInWithPassword({
         email,
-        password
+        password,
       });
+
+      if (error) {
+        // Menangani pesan error spesifik
+        if (error.message.includes('Email logins are disabled')) {
+          const customError = new Error('Autentikasi email dinonaktifkan. Silakan gunakan metode login Google atau hubungi administrator.');
+          customError.name = 'AuthProviderDisabled';
+          throw customError;
+        }
+        
+        console.error('Login error details:', error);
+        throw error;
+      }
       
-      if (error) throw error;
-      
-      // User data will be set via the auth state change listener
+      console.log('Login success:', data);
     } catch (error: any) {
-      console.error("Error signing in:", error.message);
-      setError(error.message);
-      throw error; // Re-throw for the component to catch
-    } finally {
-      setLoading(false);
+      console.error('Error logging in:', error.message);
+      throw error;
     }
   };
-  
-  const signUp = async (email: string, password: string, userData?: Record<string, any>) => {
+
+  const loginWithGoogle = async () => {
     try {
-      setLoading(true);
-      setError(null);
-      
-      const { data, error } = await supabase.auth.signUp({
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+
+      if (error) throw error;
+    } catch (error: any) {
+      console.error('Error logging in with Google:', error.message);
+      throw error;
+    }
+  };
+
+  const register = async (email: string, password: string, name: string) => {
+    try {
+      // Check password strength before registration
+      const strengthCheck = checkPasswordStrength(password);
+      if (strengthCheck.score < 3) {
+        toast({
+          title: "Password terlalu lemah",
+          description: strengthCheck.feedback,
+          variant: "destructive",
+        });
+        throw new Error("Password terlalu lemah");
+      }
+
+      const { error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            ...userData,
-            name: userData?.name || email.split('@')[0],
-            role: 'user'
-          }
-        }
+            name,
+          },
+        },
       });
-      
+
       if (error) throw error;
-      
-      // We might not set the user here because email confirmation may be required
     } catch (error: any) {
-      console.error("Error signing up:", error.message);
-      setError(error.message);
-      throw error; // Re-throw for the component to catch
-    } finally {
-      setLoading(false);
+      console.error('Error registering:', error.message);
+      throw error;
     }
   };
-  
+
+  const signIn = async (email: string, password: string) => {
+    return login(email, password);
+  };
+
+  const signUp = async (email: string, password: string, data?: Record<string, any>) => {
+    return register(email, password, data?.name || '');
+  };
+
   const signOut = async () => {
+    return logout();
+  };
+
+  const logout = async () => {
     try {
-      setLoading(true);
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
-      setUser(null);
+      await supabase.auth.signOut();
     } catch (error: any) {
-      console.error("Error signing out:", error.message);
-      setError(error.message);
-    } finally {
-      setLoading(false);
+      console.error('Error logging out:', error.message);
     }
   };
-  
-  const login = async (email: string, password: string) => {
-    return signIn(email, password);
-  };
-  
-  const logout = async () => {
-    return signOut();
-  };
-  
+
   const logoutFromAllDevices = async () => {
     try {
-      setLoading(true);
       const { error } = await supabase.auth.signOut({ scope: 'global' });
       if (error) throw error;
-      setUser(null);
-    } catch (error: any) {
-      console.error("Error signing out from all devices:", error.message);
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-  
-  const register = async (email: string, password: string, name: string) => {
-    return signUp(email, password, { name });
-  };
-  
-  const loginWithGoogle = async () => {
-    try {
-      setLoading(true);
-      const { data, error } = await supabase.auth.signInWithOAuth({
-        provider: 'google'
+      toast({
+        title: "Berhasil keluar",
+        description: "Anda telah keluar dari semua perangkat",
       });
-      
-      if (error) throw error;
-      
-      // User data will be set via the auth state change listener
     } catch (error: any) {
-      console.error("Error signing in with Google:", error.message);
-      setError(error.message);
-      throw error;
-    } finally {
-      setLoading(false);
+      console.error('Error logging out from all devices:', error.message);
+      toast({
+        title: "Gagal keluar",
+        description: "Terjadi kesalahan saat keluar dari semua perangkat",
+        variant: "destructive",
+      });
     }
   };
-  
+
   const updateSecurityLevel = (level: 'standard' | 'enhanced' | 'maximum') => {
-    // Would implement actual security level changes in a real app
-    console.log(`Security level updated to ${level}`);
+    if (user) {
+      const updatedUser = { ...user, securityLevel: level };
+      setUser(updatedUser);
+      
+      toast({
+        title: "Level keamanan diperbarui",
+        description: `Level keamanan akun telah diubah ke ${level}`,
+      });
+    }
   };
-  
+
   return {
     user,
+    login,
+    loginWithGoogle,
+    register,
     signIn,
     signUp,
     signOut,
+    logout,
+    isAuthenticated,
     loading,
     error,
-    isAuthenticated: !!user,
-    login,
-    logout,
-    register,
-    loginWithGoogle,
+    checkPasswordStrength,
+    updateSecurityLevel,
     logoutFromAllDevices,
-    updateSecurityLevel
   };
 };

@@ -1,242 +1,196 @@
-
-import { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { AlertCircle, RefreshCw, Download, Upload, Check, Database } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { AlertTriangle, Check, Database, RefreshCw, Server } from 'lucide-react';
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Progress } from "@/components/ui/progress";
 import { useToast } from '@/hooks/use-toast';
 import { supabase } from '@/integrations/supabase/client';
 import { useImplementationSettings } from '@/hooks/useImplementationSettings';
-import { useWebsiteDataStore } from '@/stores/websiteDataStore';
-import { useWebsiteData } from '@/hooks/useWebsiteData';
-import { WebsitePage } from '@/types/websiteTypes';
-import { Json } from '@/integrations/supabase/types';
+import { useWebsiteData } from '@/stores/websiteDataStore';
+import { WebsiteData, WebsitePage } from '@/types/websiteTypes';
 
 const DataSyncManager = () => {
   const { toast } = useToast();
-  const { isRealImplementation } = useImplementationSettings();
-  const websiteStore = useWebsiteDataStore();
+  const { isRealImplementation, initializeSupabaseData } = useImplementationSettings();
   const websiteData = useWebsiteData();
+  const { generalInfo, appearance, seo, homeContent, pages } = websiteData;
   
-  const [syncing, setSyncing] = useState(false);
-  const [syncProgress, setSyncProgress] = useState(0);
-  const [lastSynced, setLastSynced] = useState<string | null>(null);
-  const [activeTab, setActiveTab] = useState('pull');
+  const [syncOperation, setSyncOperation] = useState<'none' | 'download' | 'upload'>('none');
+  const [progress, setProgress] = useState(0);
+  const [lastSync, setLastSync] = useState<string | null>(null);
   
-  const pullFromDatabase = async () => {
+  const handleSyncToSupabase = async () => {
     if (!isRealImplementation) {
       toast({
         variant: "destructive",
-        title: "Mode simulasi aktif",
-        description: "Aktifkan implementasi nyata untuk menggunakan fitur sinkronisasi data.",
+        title: "Mode Simulasi Aktif",
+        description: "Aktifkan implementasi nyata di pengaturan untuk sinkronisasi data dengan Supabase."
       });
       return;
     }
     
     try {
-      setSyncing(true);
-      setSyncProgress(10);
+      setSyncOperation('upload');
+      setProgress(10);
       
-      // Fetch website content
-      const { data: websiteContent, error: contentError } = await supabase
+      // Construct the website data object
+      const websiteData = {
+        generalInfo,
+        appearance,
+        seo,
+        homeContent,
+        pages
+      };
+      
+      setProgress(50);
+      
+      // Call the function to initialize Supabase data
+      const result = await initializeSupabaseData(websiteData);
+      
+      setProgress(90);
+      
+      if (result.success) {
+        setProgress(100);
+        toast({
+          title: "Sinkronisasi Berhasil",
+          description: "Data website berhasil disinkronkan ke Supabase.",
+        });
+        
+        // Set last sync time
+        const now = new Date().toLocaleString();
+        setLastSync(now);
+        
+        // Dispatch a custom event to notify other components
+        window.dispatchEvent(new CustomEvent('website-data-synced', { 
+          detail: {
+            source: 'local-to-supabase',
+            timestamp: new Date().toISOString(),
+            data: websiteData 
+          }
+        }));
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Sinkronisasi Gagal",
+          description: `Terjadi kesalahan: ${result.error?.message || 'Kesalahan tidak diketahui'}`,
+        });
+      }
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Sinkronisasi Gagal",
+        description: error.message || "Terjadi kesalahan saat sinkronisasi ke Supabase.",
+      });
+    } finally {
+      // Reset progress after a short delay
+      setTimeout(() => {
+        setSyncOperation('none');
+        setProgress(0);
+      }, 1000);
+    }
+  };
+  
+  const handleFetchFromSupabase = async () => {
+    if (!isRealImplementation) {
+      toast({
+        variant: "destructive",
+        title: "Mode Simulasi Aktif",
+        description: "Aktifkan implementasi nyata di pengaturan untuk mengambil data dari Supabase."
+      });
+      return;
+    }
+    
+    try {
+      setSyncOperation('download');
+      setProgress(10);
+      
+      // Fetch website content from Supabase
+      const { data, error } = await supabase
         .from('website_content')
         .select('content')
         .eq('name', 'main')
         .single();
       
-      if (contentError) {
-        throw contentError;
+      setProgress(50);
+      
+      if (error) {
+        throw new Error(`Gagal mengambil data: ${error.message}`);
       }
       
-      setSyncProgress(40);
+      if (!data || !data.content) {
+        throw new Error('Tidak ada data website yang ditemukan di Supabase.');
+      }
       
-      // Fetch pages
-      const { data: pages, error: pagesError } = await supabase
+      setProgress(75);
+      
+      // Parse the content if it's a string
+      let websiteData: Partial<WebsiteData> = typeof data.content === 'string' 
+        ? JSON.parse(data.content) 
+        : data.content;
+      
+      // Fetch pages from Supabase
+      const { data: pagesData, error: pagesError } = await supabase
         .from('pages')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: false });
+      
+      setProgress(90);
       
       if (pagesError) {
-        throw pagesError;
-      }
-      
-      setSyncProgress(70);
-      
-      // Update local state
-      if (websiteContent?.content) {
-        // Update website content
-        const content = websiteContent.content as unknown as any;
-        
-        if (content.generalInfo) {
-          websiteStore.updateGeneralInfo(content.generalInfo);
-        }
-        
-        if (content.appearance) {
-          websiteStore.updateAppearance(content.appearance);
-        }
-        
-        if (content.seo) {
-          websiteStore.updateSeo(content.seo);
-        }
-        
-        if (content.homeContent) {
-          websiteStore.updateHomeContent(content.homeContent);
-        }
-      }
-      
-      // Update pages
-      if (pages && pages.length > 0) {
-        // Map DB pages to WebsitePage format
-        const formattedPages: WebsitePage[] = pages.map(page => ({
-          id: page.id,
-          title: page.title,
-          slug: page.slug,
-          content: typeof page.content === 'string' ? page.content : JSON.stringify(page.content),
-          isPublished: page.published,
-          meta: page.meta ? (typeof page.meta === 'string' ? JSON.parse(page.meta) : page.meta) : {}
+        console.error('Error fetching pages:', pagesError);
+        // Continue with main content even if pages fetch fails
+      } else if (pagesData) {
+        // Convert database pages to WebsitePage format
+        const convertedPages: WebsitePage[] = pagesData.map(dbPage => ({
+          id: dbPage.id,
+          title: dbPage.title,
+          slug: dbPage.slug,
+          content: dbPage.content,
+          meta: dbPage.meta,
+          isPublished: dbPage.published || false,
+          createdAt: dbPage.created_at,
+          updatedAt: dbPage.updated_at
         }));
         
-        // Replace all pages in the store
-        websiteStore.updatePages(formattedPages);
+        // Add pages to the website data
+        websiteData.pages = convertedPages;
       }
       
-      setSyncProgress(100);
-      setLastSynced(new Date().toLocaleString('id-ID'));
+      // Dispatch a custom event to update the website data store
+      const websiteDataEvent = new CustomEvent('website-data-loaded', { 
+        detail: { 
+          data: websiteData as WebsiteData,
+          source: 'supabase' 
+        } 
+      });
+      
+      window.dispatchEvent(websiteDataEvent);
+      
+      setProgress(100);
       
       toast({
-        title: "Sinkronisasi berhasil",
-        description: "Data berhasil ditarik dari database.",
+        title: "Data Diambil",
+        description: "Data website berhasil diambil dari Supabase.",
       });
-    } catch (error) {
-      console.error('Error pulling data from database:', error);
+      
+      // Set last sync time
+      const now = new Date().toLocaleString();
+      setLastSync(now);
+      
+    } catch (error: any) {
       toast({
         variant: "destructive",
-        title: "Gagal sinkronisasi",
-        description: "Terjadi kesalahan saat menarik data dari database.",
+        title: "Pengambilan Data Gagal",
+        description: error.message || "Terjadi kesalahan saat mengambil data dari Supabase.",
       });
     } finally {
-      setSyncing(false);
-    }
-  };
-  
-  const pushToDatabase = async () => {
-    if (!isRealImplementation) {
-      toast({
-        variant: "destructive",
-        title: "Mode simulasi aktif",
-        description: "Aktifkan implementasi nyata untuk menggunakan fitur sinkronisasi data.",
-      });
-      return;
-    }
-    
-    try {
-      setSyncing(true);
-      setSyncProgress(10);
-      
-      // Prepare website content
-      const websiteContent = {
-        generalInfo: websiteData.generalInfo,
-        appearance: websiteData.appearance,
-        seo: websiteData.seo,
-        homeContent: websiteData.homeContent,
-      };
-      
-      // Check if record exists
-      const { data: existingContent, error: checkError } = await supabase
-        .from('website_content')
-        .select('id')
-        .eq('name', 'main')
-        .single();
-      
-      setSyncProgress(30);
-      
-      // Update or insert website content
-      let contentResult;
-      if (checkError || !existingContent) {
-        contentResult = await supabase
-          .from('website_content')
-          .insert({
-            name: 'main',
-            content: websiteContent as unknown as Json
-          });
-      } else {
-        contentResult = await supabase
-          .from('website_content')
-          .update({
-            content: websiteContent as unknown as Json
-          })
-          .eq('name', 'main');
-      }
-      
-      if (contentResult.error) {
-        throw contentResult.error;
-      }
-      
-      setSyncProgress(60);
-      
-      // Update pages
-      if (websiteData.pages && websiteData.pages.length > 0) {
-        for (const page of websiteData.pages) {
-          // Check if page exists
-          const { data: existingPage, error: pageCheckError } = await supabase
-            .from('pages')
-            .select('id')
-            .eq('id', page.id)
-            .single();
-          
-          // Format page data for database
-          const pageData = {
-            title: page.title,
-            slug: page.slug,
-            content: page.content as unknown as Json,
-            published: page.isPublished,
-            meta: {} as Json
-          };
-          
-          // Handle meta data if present
-          if (page.meta) {
-            pageData.meta = page.meta as unknown as Json;
-          }
-          
-          // Insert or update page
-          let pageResult;
-          if (pageCheckError || !existingPage) {
-            pageResult = await supabase
-              .from('pages')
-              .insert({
-                id: page.id,
-                ...pageData
-              });
-          } else {
-            pageResult = await supabase
-              .from('pages')
-              .update(pageData)
-              .eq('id', page.id);
-          }
-          
-          if (pageResult.error) {
-            console.error(`Error updating page ${page.id}:`, pageResult.error);
-          }
-        }
-      }
-      
-      setSyncProgress(100);
-      setLastSynced(new Date().toLocaleString('id-ID'));
-      
-      toast({
-        title: "Sinkronisasi berhasil",
-        description: "Data berhasil dikirim ke database.",
-      });
-    } catch (error) {
-      console.error('Error pushing data to database:', error);
-      toast({
-        variant: "destructive",
-        title: "Gagal sinkronisasi",
-        description: "Terjadi kesalahan saat mengirim data ke database.",
-      });
-    } finally {
-      setSyncing(false);
+      // Reset progress after a short delay
+      setTimeout(() => {
+        setSyncOperation('none');
+        setProgress(0);
+      }, 1000);
     }
   };
   
@@ -248,119 +202,120 @@ const DataSyncManager = () => {
           Sinkronisasi Data
         </CardTitle>
         <CardDescription>
-          Kelola sinkronisasi data antara aplikasi lokal dan database
+          Sinkronkan data website antara versi lokal dan database Supabase
         </CardDescription>
       </CardHeader>
       <CardContent>
         {!isRealImplementation && (
           <Alert variant="warning" className="mb-4">
-            <AlertTriangle className="h-4 w-4" />
-            <AlertTitle>Mode Simulasi Aktif</AlertTitle>
+            <AlertCircle className="h-4 w-4" />
             <AlertDescription>
-              Aktifkan implementasi nyata di tab Implementasi untuk menggunakan fitur sinkronisasi data.
+              Mode simulasi aktif. Aktifkan implementasi nyata untuk menggunakan fitur sinkronisasi data.
             </AlertDescription>
           </Alert>
         )}
         
-        {syncing && (
-          <div className="mb-4">
-            <div className="flex justify-between text-xs text-gray-500 mb-1">
-              <span>Sinkronisasi data...</span>
-              <span>{syncProgress}%</span>
-            </div>
-            <Progress value={syncProgress} className="h-1" />
-          </div>
-        )}
-        
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="grid grid-cols-2 mb-4">
-            <TabsTrigger value="pull">
-              <Server className="h-4 w-4 mr-2" />
-              Tarik dari Database
-            </TabsTrigger>
-            <TabsTrigger value="push">
-              <Database className="h-4 w-4 mr-2" />
-              Kirim ke Database
-            </TabsTrigger>
+        <Tabs defaultValue="sync" className="w-full">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="sync">Sinkronisasi</TabsTrigger>
+            <TabsTrigger value="info">Informasi</TabsTrigger>
           </TabsList>
-          
-          <TabsContent value="pull">
+          <TabsContent value="sync" className="pt-4">
             <div className="space-y-4">
-              <div className="bg-blue-50 text-blue-800 p-4 rounded-md text-sm">
-                <div className="flex gap-2">
-                  <AlertTriangle className="h-5 w-5 text-blue-600 flex-shrink-0" />
-                  <div>
-                    <p className="font-medium">Tarik data dari database akan menimpa data lokal</p>
-                    <p className="mt-1">Proses ini akan mengambil data terbaru dari database dan menimpa data yang ada di aplikasi lokal.</p>
+              {syncOperation !== 'none' && (
+                <div className="space-y-2">
+                  <div className="flex justify-between text-sm">
+                    <span>{syncOperation === 'upload' ? 'Mengunggah ke Supabase...' : 'Mengunduh dari Supabase...'}</span>
+                    <span>{progress}%</span>
                   </div>
+                  <Progress value={progress} className="h-2" />
                 </div>
+              )}
+              
+              <div className="grid grid-cols-2 gap-4">
+                <Button 
+                  variant="outline" 
+                  className="w-full gap-2"
+                  onClick={handleSyncToSupabase}
+                  disabled={syncOperation !== 'none' || !isRealImplementation}
+                >
+                  <Upload className="h-4 w-4" />
+                  <span>Unggah ke Supabase</span>
+                </Button>
+                
+                <Button 
+                  variant="outline" 
+                  className="w-full gap-2"
+                  onClick={handleFetchFromSupabase}
+                  disabled={syncOperation !== 'none' || !isRealImplementation}
+                >
+                  <Download className="h-4 w-4" />
+                  <span>Ambil dari Supabase</span>
+                </Button>
               </div>
               
-              <Button
-                onClick={pullFromDatabase}
-                disabled={syncing || !isRealImplementation}
-                className="w-full"
-              >
-                {syncing ? (
-                  <>
-                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                    Sinkronisasi...
-                  </>
-                ) : (
-                  <>
-                    <Server className="mr-2 h-4 w-4" />
-                    Tarik Data dari Database
-                  </>
-                )}
-              </Button>
+              {lastSync && (
+                <div className="text-center text-xs text-gray-500">
+                  Terakhir disinkronkan: {lastSync}
+                </div>
+              )}
             </div>
           </TabsContent>
-          
-          <TabsContent value="push">
-            <div className="space-y-4">
-              <div className="bg-amber-50 text-amber-800 p-4 rounded-md text-sm">
-                <div className="flex gap-2">
-                  <AlertTriangle className="h-5 w-5 text-amber-600 flex-shrink-0" />
-                  <div>
-                    <p className="font-medium">Kirim data ke database akan menimpa data di server</p>
-                    <p className="mt-1">Proses ini akan mengirim data lokal ke database dan menimpa data yang ada di server.</p>
-                  </div>
-                </div>
+          <TabsContent value="info" className="space-y-4 pt-4">
+            <div className="rounded-md border p-3">
+              <h4 className="font-medium mb-1">Unggah ke Supabase</h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                Semua data website lokal akan diunggah dan disimpan di database Supabase. Data yang ada di Supabase akan ditimpa.
+              </p>
+              <div className="flex items-center text-xs bg-slate-100 p-2 rounded">
+                <Check className="h-3 w-3 text-green-600 mr-1" /> 
+                Pastikan Anda telah memeriksa perubahan sebelum mengunggah.
               </div>
-              
-              <Button
-                onClick={pushToDatabase}
-                disabled={syncing || !isRealImplementation}
-                className="w-full"
-              >
-                {syncing ? (
-                  <>
-                    <RefreshCw className="mr-2 h-4 w-4 animate-spin" />
-                    Sinkronisasi...
-                  </>
-                ) : (
-                  <>
-                    <Database className="mr-2 h-4 w-4" />
-                    Kirim Data ke Database
-                  </>
-                )}
-              </Button>
+            </div>
+            
+            <div className="rounded-md border p-3">
+              <h4 className="font-medium mb-1">Ambil dari Supabase</h4>
+              <p className="text-sm text-muted-foreground mb-2">
+                Data website akan diambil dari database Supabase. Perubahan lokal yang belum disimpan akan hilang.
+              </p>
+              <div className="flex items-center text-xs bg-slate-100 p-2 rounded">
+                <AlertCircle className="h-3 w-3 text-amber-600 mr-1" /> 
+                Tindakan ini akan menimpa data lokal saat ini.
+              </div>
             </div>
           </TabsContent>
         </Tabs>
       </CardContent>
-      <CardFooter className="flex justify-between border-t pt-4">
-        <div className="text-sm text-gray-500">
-          {lastSynced ? (
-            <div className="flex items-center">
-              <Check className="mr-2 h-4 w-4 text-green-500" />
-              Terakhir disinkronkan: {lastSynced}
-            </div>
+      <CardFooter className="flex justify-between">
+        <Button 
+          variant="ghost" 
+          size="sm" 
+          className="gap-2"
+          onClick={() => {
+            const now = new Date().toLocaleString();
+            setLastSync(now);
+            toast({
+              title: "Status Diperbarui",
+              description: "Status sinkronisasi berhasil diperbarui."
+            });
+          }}
+          disabled={syncOperation !== 'none'}
+        >
+          <RefreshCw className="h-4 w-4" />
+          <span>Refresh Status</span>
+        </Button>
+        
+        <div className="text-xs text-muted-foreground">
+          {isRealImplementation ? (
+            <span className="flex items-center gap-1">
+              <span className="h-2 w-2 bg-green-500 rounded-full"></span>
+              Terhubung
+            </span>
           ) : (
-            <div className="flex items-center">
-              <AlertTriangle className="mr-2 h-4 w-4 text-amber-500" />
-              Belum ada sinkronisasi
-            </div>
+            <span className="flex items-center gap-1">
+              <span className="h-2 w-2 bg-amber-500 rounded-full"></span>
+              Mode Simulasi
+            </span>
           )}
         </div>
       </CardFooter>

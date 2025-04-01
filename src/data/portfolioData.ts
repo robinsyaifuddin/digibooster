@@ -1,67 +1,68 @@
 
 import { PortfolioItemType } from '@/types/portfolioTypes';
 
-const portfolioData: PortfolioItemType[] = [
+export const portfolioItems: PortfolioItemType[] = [
   {
-    id: "1", // Changed from number to string
-    title: "E-commerce Website Redesign",
-    description: "A complete redesign of an e-commerce platform focused on improving user experience and conversion rates.",
-    category: "Web Design",
-    client: "Fashion Retailer",
-    services: ["UI/UX Design", "Front-end Development", "SEO Optimization"],
-    image: "https://images.unsplash.com/photo-1607082349566-187342175e2f?q=80&w=2070&auto=format&fit=crop",
-    slug: "ecommerce-redesign"
+    id: 1,
+    title: 'Website E-commerce Fashion',
+    client: 'FashionStyle Boutique',
+    category: 'Web Development',
+    image: 'https://images.unsplash.com/photo-1523381294911-8d3cead13475?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
+    description: 'Pengembangan website e-commerce modern dengan fitur katalog produk, keranjang belanja, pembayaran terintegrasi, dan sistem manajemen inventori.',
+    services: ['Web Development', 'UI/UX Design', 'Payment Integration']
   },
   {
-    id: "2", // Changed from number to string
-    title: "Mobile Banking App",
-    description: "A secure and user-friendly mobile banking application with advanced features like biometric authentication and real-time notifications.",
-    category: "Mobile App",
-    client: "Regional Bank",
-    services: ["Mobile App Development", "UX Research", "Security Implementation"],
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1968&auto=format&fit=crop",
-    slug: "mobile-banking-app"
+    id: 2,
+    title: 'Rebranding Digital Agency',
+    client: 'CreativePulse Agency',
+    category: 'Branding',
+    image: 'https://images.unsplash.com/photo-1542744094-3a31f272c490?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
+    description: 'Proses rebranding menyeluruh meliputi logo baru, guidelines brand, stationery design, dan implementasi identitas pada seluruh aset digital.',
+    services: ['Brand Strategy', 'Logo Design', 'Brand Guidelines', 'Marketing Collateral']
   },
   {
-    id: "3", // Changed from number to string
-    title: "Corporate Branding",
-    description: "A complete brand identity overhaul including logo design, typography, color palette, and brand guidelines.",
-    category: "Branding",
-    client: "Tech Startup",
-    services: ["Logo Design", "Brand Strategy", "Brand Guidelines"],
-    image: "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?q=80&w=2070&auto=format&fit=crop",
-    slug: "corporate-branding"
+    id: 3,
+    title: 'Kampanye Digital Marketing',
+    client: 'NutriHealth Products',
+    category: 'Digital Marketing',
+    image: 'https://images.unsplash.com/photo-1557838923-2985c318be48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
+    description: 'Kampanye pemasaran digital terintegrasi untuk meluncurkan produk baru dengan strategi konten, social media, dan paid advertising.',
+    services: ['Content Strategy', 'Social Media Management', 'Google & Facebook Ads', 'Analytics & Reporting']
   },
   {
-    id: "4", // Changed from number to string
-    title: "Social Media Campaign",
-    description: "A comprehensive social media campaign across multiple platforms to increase brand awareness and engagement.",
-    category: "Digital Marketing",
-    client: "Food Delivery Service",
-    services: ["Content Strategy", "Social Media Management", "Analytics & Reporting"],
-    image: "https://images.unsplash.com/photo-1611162616305-c69b3fa7fbe0?q=80&w=2074&auto=format&fit=crop",
-    slug: "social-media-campaign"
+    id: 4,
+    title: 'Aplikasi Mobile Fintech',
+    client: 'EasyPay Solutions',
+    category: 'App Development',
+    image: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
+    description: 'Pengembangan aplikasi mobile untuk layanan keuangan digital dengan fitur pembayaran, transfer, dan manajemen keuangan pribadi.',
+    services: ['Mobile App Development', 'UI/UX Design', 'Backend Integration', 'Security Implementation']
   },
   {
-    id: "5", // Changed from number to string
-    title: "Educational Platform",
-    description: "An interactive e-learning platform designed to make online education engaging and accessible for students of all ages.",
-    category: "Web Development",
-    client: "Education Foundation",
-    services: ["Full-stack Development", "Content Management", "User Testing"],
-    image: "https://images.unsplash.com/photo-1610484826967-09c5720778c7?q=80&w=2070&auto=format&fit=crop",
-    slug: "educational-platform"
+    id: 5,
+    title: 'Produksi Video Korporat',
+    client: 'IndustrialTech Corporation',
+    category: 'Video Production',
+    image: 'https://images.unsplash.com/photo-1579165466949-3180a0d950f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
+    description: 'Produksi video perusahaan untuk memperkenalkan visi, misi, dan layanan dengan teknik storytelling yang menarik dan profesional.',
+    services: ['Script Writing', 'Videography', 'Animation', 'Post-Production', 'Sound Design']
   },
   {
-    id: "6", // Changed from number to string
-    title: "IoT Dashboard Interface",
-    description: "A real-time dashboard for monitoring and controlling IoT devices with data visualization and analytics capabilities.",
-    category: "UI/UX Design",
-    client: "Smart Home Solutions",
-    services: ["UI Design", "Front-end Development", "Data Visualization"],
-    image: "https://images.unsplash.com/photo-1581092580497-e0d23cbdf1dc?q=80&w=2070&auto=format&fit=crop",
-    slug: "iot-dashboard"
+    id: 6,
+    title: 'Sistem Manajemen Konten',
+    client: 'EduLearn Platform',
+    category: 'Web Development',
+    image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
+    description: 'Pengembangan sistem manajemen konten khusus untuk platform pembelajaran online dengan fitur kursus, materi, dan penilaian terintegrasi.',
+    services: ['Custom CMS Development', 'Learning Management System', 'User Authentication', 'Content Delivery']
   }
 ];
 
-export default portfolioData;
+export const portfolioFilters = [
+  "All",
+  "Web Development",
+  "Branding",
+  "Digital Marketing",
+  "App Development",
+  "Video Production"
+];

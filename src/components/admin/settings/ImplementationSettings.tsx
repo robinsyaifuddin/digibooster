@@ -153,12 +153,7 @@ const ImplementationSettings = () => {
         if (websiteDataString) {
           try {
             const parsedData = JSON.parse(websiteDataString);
-            // Fix the type mismatch by ensuring error property is always present
-            const initResult = await initializeSupabaseData(parsedData);
-            dataResult = { 
-              success: initResult.success, 
-              error: initResult.error || null  // Ensure error is always present
-            };
+            dataResult = await initializeSupabaseData(parsedData);
           } catch (parseError) {
             console.error('Gagal parsing data website dari localStorage:', parseError);
             toast({

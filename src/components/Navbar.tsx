@@ -1,237 +1,202 @@
 
 import { useState, useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, ChevronDown, User, LogOut } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { Link } from 'react-router-dom';
+import { Menu, X, ChevronDown, User } from 'lucide-react';
+import { Button } from './ui/button';
+import { useAuth } from '../contexts/AuthContext';
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useAuth } from '@/contexts/AuthContext';
-import { cn } from '@/lib/utils';
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 const Navbar = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const location = useLocation();
-  const { user, signOut } = useAuth();
-
+  const { user, logout, signOut } = useAuth();
+  
+  // Use signOut if logout is not available
+  const handleLogout = () => {
+    if (logout) {
+      logout();
+    } else if (signOut) {
+      signOut();
+    }
+  };
+  
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(window.scrollY > 50);
+      if (window.scrollY > 10) {
+        setScrolled(true);
+      } else {
+        setScrolled(false);
+      }
     };
-
+    
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  useEffect(() => {
-    // Close the mobile menu when route changes
-    setMobileMenuOpen(false);
-  }, [location.pathname]);
-
-  const isActive = (path: string) => {
-    if (path === '/') {
-      return location.pathname === '/';
-    }
-    return location.pathname.startsWith(path);
+  const toggleMenu = () => {
+    setIsOpen(!isOpen);
   };
 
   return (
-    <header
-      className={cn(
-        'fixed top-0 w-full z-50 transition-all duration-300',
-        scrolled
-          ? 'bg-cyber-darker/90 backdrop-blur-md shadow-lg'
-          : 'bg-transparent'
-      )}
-    >
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16 md:h-20">
-          {/* Logo */}
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+      scrolled ? 'bg-white shadow-md py-2' : 'bg-white/90 backdrop-blur-md py-4'
+    }`}>
+      <div className="container mx-auto px-4 md:px-6">
+        <div className="flex justify-between items-center">
           <Link to="/" className="flex items-center">
-            <div className="text-cyber-accent font-display text-2xl font-bold">
-              <span className="cyber-glow">DIGI</span>
-              <span className="text-white">BOOSTER</span>
-            </div>
+            <img src="/lovable-uploads/eb7d859a-60c0-4007-afe4-522ffdd5afda.png" alt="DigiBooster Logo" className="h-8 md:h-10 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
-          <nav className="hidden md:flex items-center space-x-8">
-            <Link
-              to="/"
-              className={cn('nav-link', isActive('/') && 'active')}
-            >
-              Home
-            </Link>
-            <Link
-              to="/blog"
-              className={cn('nav-link', isActive('/blog') && 'active')}
-            >
-              Blog
-            </Link>
-            <Link
-              to="/portofolio"
-              className={cn('nav-link', isActive('/portofolio') && 'active')}
-            >
-              Portfolio
-            </Link>
-            <Link
-              to="/about"
-              className={cn('nav-link', isActive('/about') && 'active')}
-            >
-              About
-            </Link>
-          </nav>
-
-          {/* Desktop Auth Buttons */}
-          <div className="hidden md:flex items-center space-x-4">
-            {user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button variant="ghost" className="relative h-8 w-8 rounded-full">
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user.photoURL || ''} alt={user.name || 'User'} />
-                      <AvatarFallback className="bg-cyber-primary/20 text-cyber-accent">
-                        {user.name ? user.name[0] : 'U'}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent className="w-56" align="end" forceMount>
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1">
-                      <p className="text-sm font-medium leading-none">{user.name}</p>
-                      <p className="text-xs leading-none text-muted-foreground">
-                        {user.email}
-                      </p>
+          <div className="hidden md:flex items-center space-x-8">
+            <NavigationMenu>
+              <NavigationMenuList>
+                <NavigationMenuItem>
+                  <NavigationMenuTrigger className="text-diginavy">Program</NavigationMenuTrigger>
+                  <NavigationMenuContent>
+                    <div className="w-64 p-2">
+                      <Link to="/program/jasa-digital" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
+                        Layanan Jasa Digital
+                      </Link>
+                      <Link to="/program/motivasi-edukasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
+                        Motivasi dan Edukasi Digital
+                      </Link>
+                      <Link to="/program/sharing-konsultasi" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
+                        Sharing dan Konsultasi Bisnis Digital
+                      </Link>
+                      <Link to="/program/kelas" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">
+                        Short Class dan Mini Bootcamp Digital
+                      </Link>
                     </div>
-                  </DropdownMenuLabel>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem>
-                    <Link to="/dashboard" className="flex w-full items-center">
-                      <User className="mr-2 h-4 w-4" />
-                      <span>Dashboard</span>
-                    </Link>
-                  </DropdownMenuItem>
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem onClick={() => signOut()}>
-                    <LogOut className="mr-2 h-4 w-4" />
-                    <span>Log out</span>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link to="/blog" className="text-diginavy px-4 py-2 hover:text-purple-700 transition-colors">
+                    Blog
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link to="/portofolio" className="text-diginavy px-4 py-2 hover:text-purple-700 transition-colors">
+                    Portofolio
+                  </Link>
+                </NavigationMenuItem>
+                <NavigationMenuItem>
+                  <Link to="/tentang" className="text-diginavy px-4 py-2 hover:text-purple-700 transition-colors">
+                    Tentang
+                  </Link>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+
+            {user ? (
+              <div className="relative dropdown group">
+                <button className="flex items-center space-x-2 text-diginavy">
+                  <User className="w-5 h-5" />
+                  <span>{user.email}</span>
+                  <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180 duration-300" />
+                </button>
+                <div className="dropdown-content w-48 right-0 rounded-xl shadow-lg border border-gray-100 overflow-hidden animate-scale-in">
+                  <Link to="/profil" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">Profil</Link>
+                  {user.email === "digibooster@123" && (
+                    <Link to="/admin" className="block px-4 py-3 hover:bg-gray-50 transition-colors duration-200">Admin Dashboard</Link>
+                  )}
+                  <button 
+                    onClick={handleLogout} 
+                    className="block w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors duration-200 text-red-600"
+                  >
+                    Keluar
+                  </button>
+                </div>
+              </div>
             ) : (
-              <>
+              <div className="flex items-center space-x-4">
                 <Link to="/login">
-                  <Button variant="ghost" className="text-white hover:text-cyber-accent">
-                    Login
+                  <Button variant="outline" className="border-digiblue-600 text-digiblue-600 hover:bg-digiblue-50 hover:text-digiblue-700 transition-colors duration-300">
+                    Masuk
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="bg-cyber-accent hover:bg-cyber-accent/90">
-                    Register
+                  <Button className="bg-gradient-to-r from-digiblue-500 to-diginavy hover:from-digiblue-600 hover:to-diginavy-800 text-white shadow-md hover:shadow-lg transition-all duration-300">
+                    Daftar
                   </Button>
                 </Link>
-              </>
+              </div>
             )}
           </div>
 
-          {/* Mobile Menu Button */}
-          <button
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden text-white"
+          {/* Mobile menu button */}
+          <button 
+            className="md:hidden focus:outline-none text-diginavy"
+            onClick={toggleMenu}
           >
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
+            {isOpen ? (
+              <X className="h-6 w-6" />
+            ) : (
+              <Menu className="h-6 w-6" />
+            )}
           </button>
         </div>
       </div>
 
-      {/* Mobile Menu */}
-      {mobileMenuOpen && (
-        <div className="md:hidden bg-cyber-darker border-t border-cyber-primary/20">
-          <div className="container mx-auto px-4 py-4">
-            <nav className="flex flex-col space-y-4">
-              <Link
-                to="/"
-                className={cn('nav-link text-lg py-2', isActive('/') && 'active')}
-              >
-                Home
-              </Link>
-              <Link
-                to="/blog"
-                className={cn('nav-link text-lg py-2', isActive('/blog') && 'active')}
-              >
-                Blog
-              </Link>
-              <Link
-                to="/portofolio"
-                className={cn('nav-link text-lg py-2', isActive('/portofolio') && 'active')}
-              >
-                Portfolio
-              </Link>
-              <Link
-                to="/about"
-                className={cn('nav-link text-lg py-2', isActive('/about') && 'active')}
-              >
-                About
-              </Link>
-              
-              <div className="pt-4 border-t border-cyber-primary/20">
-                {user ? (
-                  <div className="space-y-3">
-                    <div className="flex items-center space-x-3">
-                      <Avatar className="h-8 w-8">
-                        <AvatarImage src={user.photoURL || ''} alt={user.name || 'User'} />
-                        <AvatarFallback className="bg-cyber-primary/20 text-cyber-accent">
-                          {user.name ? user.name[0] : 'U'}
-                        </AvatarFallback>
-                      </Avatar>
-                      <div>
-                        <p className="text-sm font-medium text-white">{user.name}</p>
-                        <p className="text-xs text-white/60">{user.email}</p>
-                      </div>
-                    </div>
-                    <div className="flex space-x-3">
-                      <Link to="/dashboard" className="flex-1">
-                        <Button variant="outline" className="w-full">
-                          Dashboard
-                        </Button>
-                      </Link>
-                      <Button 
-                        variant="destructive" 
-                        className="flex-1"
-                        onClick={() => signOut()}
-                      >
-                        Logout
-                      </Button>
-                    </div>
-                  </div>
-                ) : (
-                  <div className="flex space-x-3">
-                    <Link to="/login" className="flex-1">
-                      <Button variant="outline" className="w-full">Login</Button>
-                    </Link>
-                    <Link to="/register" className="flex-1">
-                      <Button className="w-full bg-cyber-accent hover:bg-cyber-accent/90">
-                        Register
-                      </Button>
-                    </Link>
-                  </div>
+      {/* Mobile Navigation */}
+      {isOpen && (
+        <div className="md:hidden bg-white shadow-md mt-2 animate-fade-in">
+          <div className="py-4 space-y-1">
+            <div className="block px-6 py-2 font-medium text-diginavy border-b border-gray-100">Program</div>
+            <Link to="/program/jasa-digital" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
+              Layanan Jasa Digital
+            </Link>
+            <Link to="/program/motivasi-edukasi" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
+              Motivasi dan Edukasi Digital
+            </Link>
+            <Link to="/program/sharing-konsultasi" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
+              Sharing dan Konsultasi Bisnis Digital
+            </Link>
+            <Link to="/program/kelas" className="block px-8 py-3 text-sm" onClick={toggleMenu}>
+              Short Class dan Mini Bootcamp Digital
+            </Link>
+            <Link to="/blog" className="block px-6 py-3 border-t border-gray-100" onClick={toggleMenu}>Blog</Link>
+            <Link to="/portofolio" className="block px-6 py-3" onClick={toggleMenu}>Portofolio</Link>
+            <Link to="/tentang" className="block px-6 py-3" onClick={toggleMenu}>Tentang</Link>
+            
+            {user ? (
+              <>
+                <div className="border-t border-gray-200 my-2"></div>
+                <Link to="/profil" className="block px-6 py-3" onClick={toggleMenu}>Profil</Link>
+                {user.email === "digibooster@123" && (
+                  <Link to="/admin" className="block px-6 py-3" onClick={toggleMenu}>Admin Dashboard</Link>
                 )}
+                <button 
+                  onClick={() => {
+                    handleLogout();
+                    toggleMenu();
+                  }} 
+                  className="block w-full text-left px-6 py-3 text-red-600"
+                >
+                  Keluar
+                </button>
+              </>
+            ) : (
+              <div className="flex justify-center space-x-4 px-6 py-4 border-t border-gray-100 mt-2">
+                <Link to="/login" className="flex-1" onClick={toggleMenu}>
+                  <Button variant="outline" className="w-full border-digiblue-600 text-digiblue-600">Masuk</Button>
+                </Link>
+                <Link to="/register" className="flex-1" onClick={toggleMenu}>
+                  <Button className="w-full bg-digiblue-600 text-white hover:bg-digiblue-700">Daftar</Button>
+                </Link>
               </div>
-            </nav>
+            )}
           </div>
         </div>
       )}
-    </header>
+    </nav>
   );
 };
 

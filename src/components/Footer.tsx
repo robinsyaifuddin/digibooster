@@ -1,151 +1,128 @@
 
 import { Link } from 'react-router-dom';
 import { 
-  Facebook, 
-  Twitter, 
-  Instagram, 
-  Linkedin, 
-  Mail, 
   Phone, 
-  MapPin,
-  ArrowRight
+  Mail, 
+  MapPin, 
+  Instagram,
+  Send,
+  ArrowUp
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
+import { Button } from './ui/button';
+import { useState } from 'react';
+import { useToast } from '../hooks/use-toast';
 
 const Footer = () => {
-  const currentYear = new Date().getFullYear();
+  const [email, setEmail] = useState('');
+  const { toast } = useToast();
   
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  };
+
+  const handleSubscribe = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Berhasil berlangganan!",
+      description: "Terima kasih telah berlangganan newsletter DigiBooster.",
+    });
+    setEmail('');
+  };
+
   return (
-    <footer className="bg-cyber-darker border-t border-cyber-primary/20 text-white">
-      <div className="container mx-auto px-4 py-12">
-        {/* Footer Top - Newsletter */}
-        <div className="py-8 px-6 mb-12 glass-card">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-            <div className="md:col-span-2">
-              <h3 className="text-xl font-bold mb-2">Stay Connected</h3>
-              <p className="text-white/70">Subscribe to our newsletter for updates on digital trends, events, and exclusive offers.</p>
-            </div>
-            <div>
-              <div className="flex space-x-0">
-                <Input 
-                  type="email" 
-                  placeholder="Enter your email" 
-                  className="rounded-r-none border-r-0 bg-cyber-dark border-cyber-primary/30 focus:border-cyber-accent"
-                />
-                <Button className="rounded-l-none bg-cyber-accent hover:bg-cyber-accent/90">
-                  <ArrowRight className="h-4 w-4" />
-                </Button>
-              </div>
-            </div>
-          </div>
+    <footer className="relative bg-gray-900 text-gray-300 pt-16 pb-6 overflow-hidden">
+      {/* Decorative gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-900 to-diginavy-900 opacity-90 z-0"></div>
+      
+      {/* Decorative shapes */}
+      <div className="absolute top-0 right-0 w-96 h-96 bg-diginavy/20 rounded-full filter blur-3xl"></div>
+      <div className="absolute bottom-0 left-0 w-96 h-96 bg-digiblue-700/10 rounded-full filter blur-3xl"></div>
+      
+      <div className="container mx-auto px-4 relative z-10">
+        {/* Back to top button */}
+        <div className="absolute right-10 top-0 transform -translate-y-1/2">
+          <button 
+            onClick={scrollToTop} 
+            className="bg-white text-diginavy p-4 rounded-full shadow-lg hover:bg-gray-100 transition-all duration-300 group"
+          >
+            <ArrowUp className="h-6 w-6 group-hover:-translate-y-1 transition-transform" />
+          </button>
         </div>
         
-        {/* Footer Main */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10">
-          {/* Company Info */}
+        <div className="grid grid-cols-1 md:grid-cols-4 gap-10 pb-10 border-b border-gray-700">
           <div>
             <Link to="/" className="inline-block mb-6">
-              <div className="text-cyber-accent font-display text-2xl font-bold">
-                <span className="cyber-glow" style={{ "--glow-color": "rgba(75, 255, 209, 0.7)" } as React.CSSProperties}>DIGI</span>
-                <span className="text-white">BOOSTER</span>
-              </div>
+              <img src="/lovable-uploads/eb7d859a-60c0-4007-afe4-522ffdd5afda.png" alt="DigiBooster Logo" className="h-12" />
             </Link>
-            <p className="text-white/70 mb-6">
-              Empowering digital transformation through education, innovation, and collaboration.
+            <p className="text-gray-400 mb-6">
+              DigiBooster adalah platform agensi dan pengembangan ekosistem digital Indonesia. Kami membantu masyarakat mengoptimalkan digitalisasi.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-white/60 hover:text-cyber-accent transition-colors" aria-label="Facebook">
-                <Facebook size={20} />
-              </a>
-              <a href="#" className="text-white/60 hover:text-cyber-accent transition-colors" aria-label="Twitter">
-                <Twitter size={20} />
-              </a>
-              <a href="#" className="text-white/60 hover:text-cyber-accent transition-colors" aria-label="Instagram">
+              <a 
+                href="https://instagram.com/digibooster.id" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="w-10 h-10 rounded-full bg-gray-800 text-white flex items-center justify-center hover:bg-diginavy transition-colors duration-300"
+              >
                 <Instagram size={20} />
-              </a>
-              <a href="#" className="text-white/60 hover:text-cyber-accent transition-colors" aria-label="LinkedIn">
-                <Linkedin size={20} />
               </a>
             </div>
           </div>
-          
-          {/* Quick Links */}
+
           <div>
-            <h3 className="text-white font-bold mb-6 text-lg">Quick Links</h3>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/" className="text-white/70 hover:text-cyber-accent cyber-link">Home</Link>
-              </li>
-              <li>
-                <Link to="/blog" className="text-white/70 hover:text-cyber-accent cyber-link">Blog</Link>
-              </li>
-              <li>
-                <Link to="/portofolio" className="text-white/70 hover:text-cyber-accent cyber-link">Portfolio</Link>
-              </li>
-              <li>
-                <Link to="/tentang" className="text-white/70 hover:text-cyber-accent cyber-link">About Us</Link>
-              </li>
-              <li>
-                <Link to="/login" className="text-white/70 hover:text-cyber-accent cyber-link">Login</Link>
-              </li>
+            <h5 className="font-semibold text-lg mb-6 text-white">Layanan</h5>
+            <ul className="space-y-4">
+              <li><Link to="/layanan/jasa-digital" className="text-gray-400 hover:text-white transition-colors duration-200">Layanan Jasa Digital</Link></li>
+              <li><Link to="/layanan/motivasi-edukasi" className="text-gray-400 hover:text-white transition-colors duration-200">Motivasi dan Edukasi Digital</Link></li>
+              <li><Link to="/layanan/sharing-konsultasi" className="text-gray-400 hover:text-white transition-colors duration-200">Sharing dan Konsultasi Bisnis Digital</Link></li>
+              <li><Link to="/layanan/kelas" className="text-gray-400 hover:text-white transition-colors duration-200">Short Class dan Mini Bootcamp Digital</Link></li>
             </ul>
           </div>
-          
-          {/* Programs */}
+
           <div>
-            <h3 className="text-white font-bold mb-6 text-lg">Our Programs</h3>
-            <ul className="space-y-3">
-              <li>
-                <Link to="/program/jasa-digital" className="text-white/70 hover:text-cyber-accent cyber-link">Digital Services</Link>
-              </li>
-              <li>
-                <Link to="/program/motivasi-edukasi" className="text-white/70 hover:text-cyber-accent cyber-link">Motivation & Education</Link>
-              </li>
-              <li>
-                <Link to="/program/sharing-konsultasi" className="text-white/70 hover:text-cyber-accent cyber-link">Sharing & Consultation</Link>
-              </li>
-              <li>
-                <Link to="/program/kelas" className="text-white/70 hover:text-cyber-accent cyber-link">Classes</Link>
-              </li>
-            </ul>
-          </div>
-          
-          {/* Contact Info */}
-          <div>
-            <h3 className="text-white font-bold mb-6 text-lg">Contact Us</h3>
+            <h5 className="font-semibold text-lg mb-6 text-white">Kontak</h5>
             <ul className="space-y-4">
               <li className="flex items-start">
-                <MapPin className="mr-3 h-5 w-5 text-cyber-accent shrink-0 mt-0.5" />
-                <span className="text-white/70">
-                  Semarang, Central Java, Indonesia
-                </span>
+                <MapPin className="w-5 h-5 mr-3 text-diginavy-300 shrink-0 mt-0.5" />
+                <span className="text-gray-400">Way Kandis, Bandar Lampung</span>
               </li>
               <li className="flex items-center">
-                <Mail className="mr-3 h-5 w-5 text-cyber-accent shrink-0" />
-                <a href="mailto:info@digibooster.com" className="text-white/70 hover:text-cyber-accent">
-                  info@digibooster.com
-                </a>
+                <Phone className="w-5 h-5 mr-3 text-diginavy-300 shrink-0" />
+                <a href="tel:+6282279722417" className="text-gray-400 hover:text-white transition-colors duration-200">082279722417</a>
               </li>
               <li className="flex items-center">
-                <Phone className="mr-3 h-5 w-5 text-cyber-accent shrink-0" />
-                <a href="tel:+6281234567890" className="text-white/70 hover:text-cyber-accent">
-                  +62 812-3456-7890
-                </a>
+                <Mail className="w-5 h-5 mr-3 text-diginavy-300 shrink-0" />
+                <a href="mailto:hello.digibooster@gmail.com" className="text-gray-400 hover:text-white transition-colors duration-200">hello.digibooster@gmail.com</a>
               </li>
             </ul>
           </div>
-        </div>
-        
-        {/* Footer Bottom */}
-        <div className="pt-10 mt-10 border-t border-cyber-primary/20 text-center md:flex md:justify-between md:text-left">
-          <p className="text-white/60 text-sm">
-            &copy; {currentYear} DigiBooster. All rights reserved.
-          </p>
-          <div className="mt-4 md:mt-0 space-x-4 text-sm">
-            <a href="#" className="text-white/60 hover:text-cyber-accent">Privacy Policy</a>
-            <a href="#" className="text-white/60 hover:text-cyber-accent">Terms of Service</a>
+
+          <div>
+            <h5 className="font-semibold text-lg mb-6 text-white">Berlangganan</h5>
+            <p className="text-gray-400 mb-4">Dapatkan informasi terbaru dan promo menarik dari kami</p>
+            <form onSubmit={handleSubscribe} className="space-y-2">
+              <div className="flex">
+                <input 
+                  type="email" 
+                  placeholder="Email kamu"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  className="flex-1 px-4 py-3 bg-gray-800 border border-gray-700 text-white rounded-l-md focus:ring-2 focus:ring-digiblue-500 focus:border-digiblue-500 outline-none"
+                />
+                <Button type="submit" className="bg-diginavy hover:bg-digiblue-600 rounded-l-none transition-colors duration-300">
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+            </form>
           </div>
+        </div>
+
+        <div className="pt-8 text-center text-gray-500 text-sm">
+          <p>&copy; {new Date().getFullYear()} DigiBooster. Hak cipta dilindungi.</p>
         </div>
       </div>
     </footer>

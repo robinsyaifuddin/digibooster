@@ -1,4 +1,3 @@
-
 // Define website data structure types
 
 // Website general information type
@@ -36,7 +35,6 @@ export interface WebsitePage {
   slug: string;
   content: string;
   isPublished: boolean;
-  meta?: any;
 }
 
 // SEO settings type
@@ -108,7 +106,6 @@ export interface WebsiteDataActions {
   updatePage: (pageId: string, pageData: Partial<Omit<WebsitePage, 'id'>>) => void;
   addPage: (pageData: Omit<WebsitePage, 'id'>) => void;
   deletePage: (pageId: string) => void;
-  updatePages: (pages: WebsitePage[]) => void;
   updateSeo: (seo: Partial<SeoSettings>) => void;
   updateHomeContent: (content: Partial<HomeContent>) => void;
   updateHomeServices: (services: ServiceItem[]) => void;

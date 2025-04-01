@@ -22,5 +22,5 @@ export interface AuthContextType {
   login?: (email: string, password: string) => Promise<void>;
   loginWithGoogle?: () => Promise<void>;
   register?: (email: string, password: string, name: string) => Promise<void>;
-  logout?: () => Promise<void>; // Alias for signOut for backward compatibility
+  logout?: () => Promise<void>; // Adding logout as an alias for signOut for backward compatibility
 }

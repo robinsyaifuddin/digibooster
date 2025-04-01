@@ -1,16 +1,77 @@
 
-import React, { useEffect } from 'react';
-import CyberHero from '@/components/home/CyberHero';
-import FeatureSection from '@/components/home/FeatureSection';
-import CyberTestimonials from '@/components/home/CyberTestimonials';
+import { useEffect } from 'react';
+import HeroSection from '@/components/home/HeroSection';
+import ServicesSection from '@/components/home/ServicesSection';
+import CtaSection from '@/components/home/CtaSection';
+import TestimonialsSection from '@/components/home/TestimonialsSection';
 import BenefitsSection from '@/components/home/BenefitsSection';
-import PartnersCarousel from '@/components/home/PartnersCarousel';
-import CyberCta from '@/components/home/CyberCta';
+import ContactSection from '@/components/home/ContactSection';
+import ScrollAnimation from '@/components/home/ScrollAnimation';
+import LogoMarquee from '@/components/home/LogoMarquee';
+import { useHomeContent } from '@/contexts/HomeContentContext';
+import { ReactNode } from 'react';
 import { useWebsiteDataStore } from '@/stores/websiteDataStore';
 
 const Index = () => {
+  const { homeContent, isLoading } = useHomeContent();
   const websiteData = useWebsiteDataStore();
   const companyName = websiteData.generalInfo.title;
+  
+  // Fallback data jika homeContent masih loading
+  const servicesFallback = [
+    {
+      id: '1',
+      title: 'Layanan Jasa Digital',
+      description: 'Tingkatkan presence digital Anda dengan layanan jasa design, web development, dan digital marketing kami.',
+      icon: 'Code',
+      link: '/layanan/jasa-digital',
+    },
+    {
+      id: '2',
+      title: 'Motivasi dan Edukasi Digital',
+      description: 'Dapatkan inspirasi dan pengetahuan digital melalui seminar dan workshop yang kami selenggarakan.',
+      icon: 'Lightbulb',
+      link: '/layanan/motivasi-edukasi',
+    },
+    {
+      id: '3',
+      title: 'Sharing dan Konsultasi Bisnis Digital',
+      description: 'Konsultasikan kebutuhan digital bisnis Anda dengan pakar kami untuk solusi terbaik.',
+      icon: 'Users',
+      link: '/layanan/sharing-konsultasi',
+    },
+    {
+      id: '4',
+      title: 'Short Class dan Mini Bootcamp',
+      description: 'Pelajari keterampilan digital terbaru melalui kelas intensif dan bootcamp dari para ahli.',
+      icon: 'PenTool',
+      link: '/layanan/kelas',
+    },
+  ];
+  
+  const testimonialsFallback = [
+    {
+      id: '1',
+      name: 'Lania',
+      role: 'Owner zenboard.id',
+      content: 'Voodoo recomended banget, menurut saya itu jasa paling clex sih. Dijamin pek rapi hasilnya memuaskan!!!!',
+      image: 'https://randomuser.me/api/portraits/women/1.jpg',
+    },
+    {
+      id: '2',
+      name: 'Alvin Rahman',
+      role: 'Owner sixtwogkarta.com',
+      content: 'Pelayananya cepat, hasil bagusss, udah bikin 5 bulanan yang lalu terus minta tolong ada yg di edit masih bisa dibanggiin!!!',
+      image: 'https://randomuser.me/api/portraits/men/2.jpg',
+    },
+    {
+      id: '3',
+      name: 'John Smith',
+      role: 'Marketing rentalspace.web.id',
+      content: 'Voodoo sangat membantu dlm membuat website, kerja dengan cepat, dan hasil website memuaskan banget!',
+      image: 'https://randomuser.me/api/portraits/men/3.jpg',
+    },
+  ];
   
   const partnersFallback = [
     {
@@ -40,11 +101,22 @@ const Index = () => {
     },
   ];
 
-  // Detect content updates
+  // Create the alternating colored title for the logo marquee
+  const logoMarqueeTitle: ReactNode = (
+    <>
+      <span className="text-gray-900">Dipercaya</span>{" "}
+      <span className="text-digiblue">oleh</span>{" "}
+      <span className="text-gray-900">Perusahaan</span>{" "}
+      <span className="text-digiblue">Teknologi</span>{" "}
+      <span className="text-gray-900">Terkemuka</span>
+    </>
+  );
+
+  // Cek pembaruan konten dari event yang diterima dari publikasi
   useEffect(() => {
     const handleContentUpdated = (event: CustomEvent) => {
       console.log('Home page received content update event:', event.detail);
-      // Reload the page to show the latest changes
+      // Muat ulang halaman untuk menampilkan perubahan terbaru
       if (event.detail && event.detail.isPermanent) {
         console.log('Applying permanent content updates to homepage');
       }
@@ -57,7 +129,7 @@ const Index = () => {
     };
   }, []);
 
-  // Scroll animation
+  // Scroll event listener to handle animations
   useEffect(() => {
     const handleScroll = () => {
       const reveals = document.querySelectorAll('.reveal');
@@ -81,27 +153,44 @@ const Index = () => {
   }, []);
 
   return (
-    <main className="overflow-x-hidden bg-cyber-dark text-white">
+    <main className="overflow-x-hidden">
       {/* Hero Section */}
-      <CyberHero />
+      <HeroSection 
+        generalInfo={websiteData.generalInfo}
+        hero={homeContent?.hero}
+      />
       
-      {/* Features Section */}
-      <FeatureSection />
+      {/* Logo Marquee - Trusted by Companies */}
+      <LogoMarquee
+        logos={homeContent?.partners || partnersFallback}
+        title={logoMarqueeTitle}
+        description="Bekerja sama dengan berbagai perusahaan teknologi untuk menghadirkan solusi terbaik"
+        speed="slow"
+        bgColor="bg-gray-50"
+      />
       
-      {/* Partners Carousel */}
-      <PartnersCarousel partners={websiteData.homeContent?.partners || partnersFallback} />
+      {/* Services Section */}
+      <ServicesSection services={homeContent?.services || servicesFallback} />
       
-      {/* Benefits Section */}
-      <BenefitsSection 
-        benefits={websiteData.homeContent?.benefits || []} 
+      {/* Benefits Section with Animation */}
+      <ScrollAnimation>
+        <BenefitsSection 
+          benefits={homeContent?.benefits || []} 
+          companyName={companyName}
+        />
+      </ScrollAnimation>
+      
+      {/* Testimonials Section */}
+      <TestimonialsSection 
+        testimonials={homeContent?.testimonials || testimonialsFallback}
         companyName={companyName}
       />
       
-      {/* Testimonials Section */}
-      <CyberTestimonials />
+      {/* Contact Section */}
+      <ContactSection companyName={companyName} />
       
       {/* CTA Section */}
-      <CyberCta />
+      <CtaSection companyName={companyName} />
     </main>
   );
 };

@@ -11,8 +11,7 @@ export const blogPosts: BlogPost[] = [
     date: "20 Jul 2023",
     readTime: "5 menit",
     image: "https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-    tags: ["SEO", "Website", "Optimasi"],
-    slug: "7-tips-optimasi-website-untuk-pemula"
+    tags: ["SEO", "Website", "Optimasi"]
   },
   {
     id: 2,
@@ -23,8 +22,7 @@ export const blogPosts: BlogPost[] = [
     date: "15 Jul 2023",
     readTime: "8 menit",
     image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-    tags: ["Content", "Digital Marketing", "Engagement"],
-    slug: "cara-membuat-konten-digital-yang-menarik"
+    tags: ["Content", "Digital Marketing", "Engagement"]
   },
   {
     id: 3,
@@ -35,8 +33,7 @@ export const blogPosts: BlogPost[] = [
     date: "10 Jul 2023",
     readTime: "10 menit",
     image: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-    tags: ["Marketing", "Digital Strategy", "Trends"],
-    slug: "strategi-marketing-digital-di-era-2023"
+    tags: ["Marketing", "Digital Strategy", "Trends"]
   },
   {
     id: 4,
@@ -47,8 +44,7 @@ export const blogPosts: BlogPost[] = [
     date: "5 Jul 2023",
     readTime: "7 menit",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-    tags: ["Marketing", "Trends", "Digital"],
-    slug: "tren-digital-marketing-2023"
+    tags: ["Marketing", "Trends", "Digital"]
   },
   {
     id: 5,
@@ -59,8 +55,7 @@ export const blogPosts: BlogPost[] = [
     date: "1 Jul 2023",
     readTime: "6 menit",
     image: "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-    tags: ["Website", "Business", "Digital Presence"],
-    slug: "pentingnya-website-untuk-bisnis"
+    tags: ["Website", "Business", "Digital Presence"]
   },
   {
     id: 6,
@@ -71,7 +66,6 @@ export const blogPosts: BlogPost[] = [
     date: "25 Jun 2023",
     readTime: "12 menit",
     image: "https://images.unsplash.com/photo-1523726491678-bf852e717f6a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80",
-    tags: ["SEO", "Website", "Search Engine"],
-    slug: "panduan-seo-untuk-pemula"
+    tags: ["SEO", "Website", "Search Engine"]
   }
 ];

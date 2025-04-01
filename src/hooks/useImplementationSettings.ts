@@ -1,161 +1,174 @@
 
-// Create this file if it doesn't exist, or update it if it does
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
+import { WebsiteData } from '@/types/websiteTypes';
 
-export interface SupabaseDataResult {
+// Define explicit return type for initializeSupabaseData
+interface SupabaseDataResult {
   success: boolean;
-  error: any | null;  // Make sure error is always present but can be null
-}
-
-export interface CustomImplementationConfig {
-  apiUrl: string;
-  apiKey: string;
-  databaseType: string;
-  backendType: string;
-  serverProvider: string;
+  error?: any;
 }
 
 export const useImplementationSettings = () => {
-  const [isRealImplementation, setIsRealImplementation] = useState<boolean>(() => {
-    const stored = localStorage.getItem('realImplementation');
-    return stored ? JSON.parse(stored) : false;
-  });
-  
-  const [implementationType, setImplementationType] = useState<'supabase' | 'custom'>(() => {
-    const stored = localStorage.getItem('implementationType');
-    return (stored as 'supabase' | 'custom') || 'supabase';
-  });
+  const [isRealImplementation, setIsRealImplementation] = useState<boolean>(false);
+  const [isBusy, setIsBusy] = useState<boolean>(false);
+  const [lastVerified, setLastVerified] = useState<Date | null>(null);
 
-  const activateRealImplementation = (): boolean => {
-    try {
-      localStorage.setItem('realImplementation', 'true');
-      localStorage.setItem('implementationType', 'supabase');
-      setIsRealImplementation(true);
-      setImplementationType('supabase');
-      return true;
-    } catch (error) {
-      console.error('Failed to activate real implementation:', error);
-      return false;
+  // Load settings from localStorage on component mount
+  useEffect(() => {
+    const storedSetting = localStorage.getItem('implementation-setting');
+    if (storedSetting) {
+      setIsRealImplementation(storedSetting === 'real');
     }
-  };
-  
-  const activateCustomImplementation = (config: CustomImplementationConfig): boolean => {
-    try {
-      localStorage.setItem('realImplementation', 'true');
-      localStorage.setItem('implementationType', 'custom');
-      localStorage.setItem('customApiConfig', JSON.stringify(config));
-      setIsRealImplementation(true);
-      setImplementationType('custom');
-      return true;
-    } catch (error) {
-      console.error('Failed to activate custom implementation:', error);
-      return false;
-    }
+  }, []);
+
+  // Update localStorage when setting changes
+  useEffect(() => {
+    localStorage.setItem('implementation-setting', isRealImplementation ? 'real' : 'simulation');
+  }, [isRealImplementation]);
+
+  const toggleImplementation = () => {
+    setIsRealImplementation(!isRealImplementation);
   };
 
-  const verifySupabaseConnection = async (): Promise<{ success: boolean; error: string | null }> => {
+  const verifySupabaseConnection = async (): Promise<boolean> => {
+    if (!isRealImplementation) {
+      return false;
+    }
+
+    setIsBusy(true);
     try {
       const { data, error } = await supabase.from('website_content').select('id').limit(1);
       
       if (error) {
-        return { success: false, error: error.message };
+        console.error('Supabase connection error:', error);
+        return false;
       }
       
-      return { success: true, error: null };
-    } catch (error) {
-      return { success: false, error: error.message || 'Unknown error' };
+      setLastVerified(new Date());
+      return true;
+    } catch (err) {
+      console.error('Error verifying Supabase connection:', err);
+      return false;
+    } finally {
+      setIsBusy(false);
     }
   };
-  
-  const verifyCustomApiConnection = async (apiUrl: string, apiKey: string): Promise<{ success: boolean; error: string | null }> => {
-    try {
-      // Simulate an API connection check
-      if (!apiUrl) {
-        return { success: false, error: 'API URL is required' };
-      }
-      
-      // In a real implementation, we would actually try to connect to the API
-      // For now, just check if it's a valid URL
-      try {
-        new URL(apiUrl);
-      } catch (e) {
-        return { success: false, error: 'Invalid API URL format' };
-      }
-      
-      // Simulate a successful connection for demo purposes
-      return { success: true, error: null };
-    } catch (error) {
-      return { success: false, error: error.message || 'Unknown error' };
+
+  const initializeSupabaseData = async (websiteData: WebsiteData): Promise<SupabaseDataResult> => {
+    if (!isRealImplementation) {
+      return { 
+        success: false, 
+        error: new Error('Cannot initialize data when in simulation mode') 
+      };
     }
-  };
-  
-  const initializeSupabaseData = async (data: any): Promise<SupabaseDataResult> => {
+
     try {
-      // If the data already exists, don't override it
+      setIsBusy(true);
+      
+      // Check if main website_content exists
       const { data: existingData, error: checkError } = await supabase
         .from('website_content')
         .select('id')
         .eq('name', 'main')
-        .limit(1);
+        .single();
       
-      if (checkError) {
-        return { success: false, error: checkError };
-      }
-      
-      if (existingData && existingData.length > 0) {
-        // Data already exists, don't override
-        return { success: true, error: null };
-      }
-      
-      // Insert initial data
-      const { error: insertError } = await supabase
-        .from('website_content')
-        .insert({ name: 'main', content: data });
-      
-      if (insertError) {
-        return { success: false, error: insertError };
-      }
-      
-      return { success: true, error: null };
-    } catch (error) {
-      return { success: false, error };
-    }
-  };
-
-  const getSettings = (): CustomImplementationConfig => {
-    try {
-      const configString = localStorage.getItem('customApiConfig');
-      if (configString) {
-        return JSON.parse(configString);
-      }
-      return {
-        apiUrl: '',
-        apiKey: '',
-        databaseType: 'mysql',
-        backendType: 'php',
-        serverProvider: ''
+      // Prepare serialized website data
+      const serializedData = {
+        generalInfo: websiteData.generalInfo,
+        appearance: websiteData.appearance,
+        seo: websiteData.seo,
+        homeContent: websiteData.homeContent
       };
+      
+      let contentResult;
+      
+      // Insert or update website_content
+      if (checkError || !existingData) {
+        // Insert new record if it doesn't exist
+        contentResult = await supabase
+          .from('website_content')
+          .insert({ 
+            name: 'main', 
+            content: serializedData 
+          });
+      } else {
+        // Update existing record
+        contentResult = await supabase
+          .from('website_content')
+          .update({ content: serializedData })
+          .eq('name', 'main');
+      }
+      
+      if (contentResult.error) {
+        throw contentResult.error;
+      }
+      
+      // Process pages if they exist
+      if (websiteData.pages && websiteData.pages.length > 0) {
+        // Since we can't perform bulk upserts easily, we'll handle pages one by one
+        for (const page of websiteData.pages) {
+          // Check if page exists
+          const { data: existingPage, error: pageCheckError } = await supabase
+            .from('pages')
+            .select('id')
+            .eq('id', page.id)
+            .single();
+          
+          // Prepare page data
+          const pageData = {
+            title: page.title,
+            slug: page.slug,
+            content: page.content,
+            meta: page.meta,
+            published: page.isPublished
+          };
+          
+          let pageResult;
+          if (pageCheckError || !existingPage) {
+            // Insert new page
+            pageResult = await supabase
+              .from('pages')
+              .insert({
+                ...pageData,
+                id: page.id
+              });
+          } else {
+            // Update existing page
+            pageResult = await supabase
+              .from('pages')
+              .update(pageData)
+              .eq('id', page.id);
+          }
+          
+          if (pageResult.error) {
+            console.error(`Error updating page ${page.id}:`, pageResult.error);
+          }
+        }
+      }
+      
+      setLastVerified(new Date());
+      
+      return { success: true };
     } catch (error) {
-      console.error('Failed to get custom API settings:', error);
-      return {
-        apiUrl: '',
-        apiKey: '',
-        databaseType: 'mysql',
-        backendType: 'php',
-        serverProvider: ''
+      console.error('Error initializing Supabase data:', error);
+      return { 
+        success: false, 
+        error: error 
       };
+    } finally {
+      setIsBusy(false);
     }
   };
 
   return {
     isRealImplementation,
-    implementationType,
-    activateRealImplementation,
-    activateCustomImplementation,
+    toggleImplementation,
     verifySupabaseConnection,
-    verifyCustomApiConnection,
     initializeSupabaseData,
-    getSettings
+    isBusy,
+    lastVerified
   };
 };
+
+export default useImplementationSettings;

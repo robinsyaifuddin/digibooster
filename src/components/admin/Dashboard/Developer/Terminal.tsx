@@ -92,12 +92,12 @@ const Terminal = () => {
               timestamp
             };
           } else {
-            const supabaseUrl = 'https://bacnskcizgzcrqusqalu.supabase.co';
+            const supabaseApiUrl = new URL(supabase.getAuthApiBaseUrl());
             responseEntry = {
               type: 'output',
               content: `Status koneksi: OK
 Latency: ${Math.round(endTime - startTime)}ms
-Database URL: ${supabaseUrl || 'tidak tersedia'}
+Database URL: ${supabaseApiUrl.hostname || 'tidak tersedia'}
 Mode: ${isRealImplementation ? 'Live Implementation' : 'Simulation'}`,
               timestamp
             };
