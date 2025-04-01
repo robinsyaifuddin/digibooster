@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { ChevronRight, ArrowRight } from 'lucide-react';
 import { WebsiteData } from '@/stores/websiteDataStore';
 import { useWebsiteDataStore } from '@/stores/websiteDataStore';
+import { motion } from 'framer-motion';
 
 interface HeroSectionProps {
   title?: string;
@@ -26,53 +27,117 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
   const displayCtaText = ctaText || storeHero.ctaText;
   const displayCtaLink = ctaLink || storeHero.ctaLink;
 
+  const fadeIn = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { duration: 0.6 }
+    }
+  };
+
+  const staggerChildren = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.3
+      }
+    }
+  };
+
+  // Create chess piece component for the background
+  const ChessPiece = ({ className }: { className: string }) => (
+    <motion.div 
+      className={`absolute opacity-20 ${className}`}
+      animate={{ 
+        y: [0, -15, 0],
+        rotate: [0, 5, 0, -5, 0]
+      }}
+      transition={{ 
+        duration: 10, 
+        repeat: Infinity,
+        repeatType: "reverse"
+      }}
+    >
+      <img 
+        src="/lovable-uploads/b9e99a39-1bea-4a66-a055-a70e8d5ac4ab.png" 
+        alt="Chess piece" 
+        className="w-full h-full object-contain" 
+      />
+    </motion.div>
+  );
+
   return (
-    <section className="relative bg-gradient-to-br from-digiblue-800 to-digiblue-600 text-white overflow-hidden">
-      <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1531297484001-80022131f5a1?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80')] bg-cover bg-center opacity-20"></div>
+    <section className="relative bg-dark text-white overflow-hidden pt-20 pb-32">
+      {/* Background pattern */}
+      <div className="absolute inset-0 chess-bg opacity-10"></div>
       
-      {/* Decorative shapes */}
-      <div className="absolute top-20 right-0 w-64 h-64 bg-digiblue-400 rounded-full filter blur-3xl opacity-20"></div>
-      <div className="absolute bottom-20 left-0 w-80 h-80 bg-digiblue-200 rounded-full filter blur-3xl opacity-20"></div>
+      {/* Purple gradient background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-dark-300/50 to-dark/90"></div>
       
-      <div className="container mx-auto px-4 relative z-10 pt-24 pb-32 md:pt-32 md:pb-40">
-        <div className="max-w-4xl mx-auto">
-          <div className="mb-6 md:mb-8">
-            <span className="inline-block px-4 py-1 rounded-full bg-white/10 backdrop-blur-sm text-digiblue-200 font-medium text-sm mb-3 border border-white/10">
+      {/* Large blurred purple circles for abstract background */}
+      <div className="absolute top-20 right-0 w-64 h-64 bg-neon-purple rounded-full filter blur-[100px] opacity-20"></div>
+      <div className="absolute bottom-20 left-0 w-80 h-80 bg-neon-violet rounded-full filter blur-[100px] opacity-20"></div>
+      
+      {/* Chess pieces in background */}
+      <ChessPiece className="right-[5%] top-[15%] w-40 md:w-64" />
+      <ChessPiece className="left-[8%] bottom-[10%] w-40 md:w-56" />
+      
+      <div className="container mx-auto px-4 relative z-10 pt-16 md:pt-24">
+        <motion.div 
+          className="max-w-4xl mx-auto"
+          initial="hidden"
+          animate="visible"
+          variants={staggerChildren}
+        >
+          <motion.div className="mb-6 md:mb-8" variants={fadeIn}>
+            <span className="inline-block px-4 py-1 rounded-full bg-dark-300/80 backdrop-blur-sm text-neon-purple font-medium text-sm mb-3 border border-neon-purple/30 neon-border">
               {storeGeneralInfo.description}
             </span>
-          </div>
+          </motion.div>
           
-          <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight">
-            <span className="block mb-2">{displayTitle.split('with')[0]}</span>
-            <span className="bg-gradient-to-r from-white to-digiblue-300 bg-clip-text text-transparent">
-              with <span className="text-digiblue-300">{storeGeneralInfo.title}</span>
+          <motion.h1 
+            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
+            variants={fadeIn}
+          >
+            <span className="block mb-2 text-white">{displayTitle.split('with')[0]}</span>
+            <span className="neon-text bg-gradient-to-r from-neon-purple to-neon-pink">
+              with <span className="text-neon-purple">{storeGeneralInfo.title}</span>
             </span>
-          </h1>
+          </motion.h1>
           
-          <p className="text-lg md:text-xl mb-8 text-gray-100 max-w-3xl">
+          <motion.p 
+            className="text-lg md:text-xl mb-8 text-gray-300 max-w-3xl"
+            variants={fadeIn}
+          >
             {displaySubtitle}
-          </p>
+          </motion.p>
           
-          <div className="flex flex-col sm:flex-row gap-4">
+          <motion.div 
+            className="flex flex-col sm:flex-row gap-4"
+            variants={fadeIn}
+          >
             <Link to={displayCtaLink}>
-              <Button size="lg" className="bg-gradient-to-r from-sky-400 to-blue-500 hover:from-sky-500 hover:to-blue-600 text-white border-none shadow-lg shadow-blue-500/20 group">
+              <Button size="lg" className="bg-gradient-to-r from-neon-purple to-neon-violet hover:from-neon-violet hover:to-neon-purple text-white border-none shadow-lg shadow-neon-purple/20 group">
                 {displayCtaText}
                 <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
             <Link to="/register">
-              <Button size="lg" variant="outline" className="border-white/40 bg-white/10 backdrop-blur-sm text-white hover:bg-white/20 hover:border-white/60 group transition-all duration-300">
+              <Button size="lg" variant="outline" className="border-neon-purple/40 bg-dark-300/50 backdrop-blur-sm text-white hover:bg-dark-300 hover:border-neon-purple/80 group transition-all duration-300">
                 Mulai Sekarang
                 <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       </div>
       
+      {/* Bottom wave decoration */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
-          <path fill="#ffffff" fillOpacity="1" d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,229.3C672,245,768,267,864,266.7C960,267,1056,245,1152,229.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+          <path fill="#1A1025" fillOpacity="1" d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,229.3C672,245,768,267,864,266.7C960,267,1056,245,1152,229.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
         </svg>
       </div>
     </section>

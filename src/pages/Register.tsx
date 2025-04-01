@@ -7,6 +7,7 @@ import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../hooks/use-toast';
+import { Loader2 } from 'lucide-react';
 
 const Register = () => {
   const [name, setName] = useState('');
@@ -61,7 +62,7 @@ const Register = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-dark">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="inline-block">
@@ -71,16 +72,16 @@ const Register = () => {
               className="h-12 mx-auto" 
             />
           </Link>
-          <h1 className="mt-6 text-3xl font-bold text-gray-900">Buat Akun Baru</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="mt-6 text-3xl font-bold text-white">Buat Akun Baru</h1>
+          <p className="mt-2 text-gray-300">
             Lengkapi data berikut untuk membuat akun DigiBooster
           </p>
         </div>
         
-        <div className="bg-white py-8 px-6 shadow-md rounded-lg">
+        <div className="bg-dark-200 py-8 px-6 shadow-md rounded-lg border border-dark-300">
           <form onSubmit={handleSubmit} className="space-y-5">
             <div className="space-y-2">
-              <Label htmlFor="name">Nama Lengkap</Label>
+              <Label htmlFor="name" className="text-gray-200">Nama Lengkap</Label>
               <Input
                 id="name"
                 type="text"
@@ -88,12 +89,12 @@ const Register = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="w-full"
+                className="w-full bg-dark-300 border-dark-400 text-white"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-gray-200">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -101,12 +102,12 @@ const Register = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full"
+                className="w-full bg-dark-300 border-dark-400 text-white"
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-gray-200">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -114,13 +115,13 @@ const Register = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full"
+                className="w-full bg-dark-300 border-dark-400 text-white"
                 minLength={8}
               />
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Konfirmasi Password</Label>
+              <Label htmlFor="confirmPassword" className="text-gray-200">Konfirmasi Password</Label>
               <Input
                 id="confirmPassword"
                 type="password"
@@ -128,7 +129,7 @@ const Register = () => {
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
                 required
-                className="w-full"
+                className="w-full bg-dark-300 border-dark-400 text-white"
                 minLength={8}
               />
             </div>
@@ -138,19 +139,19 @@ const Register = () => {
                 id="terms" 
                 checked={agreedToTerms}
                 onCheckedChange={(checked) => setAgreedToTerms(checked as boolean)}
-                className="mt-1"
+                className="mt-1 data-[state=checked]:bg-neon-purple data-[state=checked]:border-neon-purple"
               />
               <div>
                 <Label 
                   htmlFor="terms" 
-                  className="text-sm text-gray-600 font-normal"
+                  className="text-sm text-gray-300 font-normal"
                 >
                   Saya setuju dengan{" "}
-                  <Link to="/syarat-ketentuan" className="text-diginavy hover:underline">
+                  <Link to="/syarat-ketentuan" className="text-neon-purple hover:underline">
                     Syarat dan Ketentuan
                   </Link>{" "}
                   serta{" "}
-                  <Link to="/kebijakan-privasi" className="text-diginavy hover:underline">
+                  <Link to="/kebijakan-privasi" className="text-neon-purple hover:underline">
                     Kebijakan Privasi
                   </Link>
                 </Label>
@@ -159,17 +160,22 @@ const Register = () => {
             
             <Button 
               type="submit" 
-              className="w-full bg-diginavy text-white hover:bg-diginavy-800 mt-6"
+              className="w-full bg-gradient-to-r from-neon-purple to-neon-violet hover:from-neon-violet hover:to-neon-purple text-white mt-6"
               disabled={isLoading}
             >
-              {isLoading ? "Memproses..." : "Daftar Sekarang"}
+              {isLoading ? (
+                <>
+                  <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
+                  Memproses...
+                </>
+              ) : "Daftar Sekarang"}
             </Button>
           </form>
           
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            <p className="text-gray-300">
               Sudah punya akun?{" "}
-              <Link to="/login" className="text-diginavy hover:underline">
+              <Link to="/login" className="text-neon-purple hover:underline">
                 Masuk
               </Link>
             </p>

@@ -7,16 +7,13 @@ import { Label } from '@/components/ui/label';
 import { useAuth } from '../contexts/AuthContext';
 import { useToast } from '../hooks/use-toast';
 import { Loader2 } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isGoogleLoading, setIsGoogleLoading] = useState(false);
-  const [isResetLoading, setIsResetLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  const [showResetPassword, setShowResetPassword] = useState(false);
   const { login, loginWithGoogle } = useAuth();
   const { toast } = useToast();
   const navigate = useNavigate();
@@ -34,31 +31,12 @@ const Login = () => {
       });
       navigate('/');
     } catch (error: any) {
-      setErrorMessage(null);
-      
-      if (error.name === 'AuthProviderDisabled') {
-        setErrorMessage(error.message);
-        toast({
-          variant: "destructive",
-          title: "Login gagal",
-          description: error.message,
-        });
-      } else if (error.message.includes('Invalid login credentials')) {
-        setErrorMessage("Email atau password salah. Silakan coba lagi atau gunakan fitur 'Lupa Password'.");
-        toast({
-          variant: "destructive",
-          title: "Login gagal",
-          description: "Email atau password salah. Silakan coba lagi atau gunakan fitur 'Lupa Password'.",
-        });
-        setShowResetPassword(true);
-      } else {
-        setErrorMessage("Terjadi kesalahan saat login. Silakan coba lagi.");
-        toast({
-          variant: "destructive",
-          title: "Login gagal",
-          description: "Terjadi kesalahan saat login. Silakan coba lagi.",
-        });
-      }
+      setErrorMessage("Email atau password salah. Silakan coba lagi.");
+      toast({
+        variant: "destructive",
+        title: "Login gagal",
+        description: "Email atau password salah. Silakan coba lagi.",
+      });
     } finally {
       setIsLoading(false);
     }
@@ -83,37 +61,8 @@ const Login = () => {
     }
   };
 
-  const handleResetPassword = async () => {
-    if (!email) {
-      setErrorMessage("Masukkan email Anda terlebih dahulu untuk reset password");
-      return;
-    }
-
-    setIsResetLoading(true);
-    try {
-      const { error } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: window.location.origin + '/reset-password',
-      });
-
-      if (error) throw error;
-
-      toast({
-        title: "Email reset password telah dikirim",
-        description: "Silakan periksa email Anda untuk instruksi reset password",
-      });
-    } catch (error: any) {
-      toast({
-        variant: "destructive",
-        title: "Gagal mengirim email reset password",
-        description: error.message,
-      });
-    } finally {
-      setIsResetLoading(false);
-    }
-  };
-
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-gray-50">
+    <div className="min-h-screen flex items-center justify-center px-4 py-12 bg-dark">
       <div className="w-full max-w-md">
         <div className="text-center mb-8">
           <Link to="/" className="inline-block">
@@ -123,22 +72,22 @@ const Login = () => {
               className="h-12 mx-auto" 
             />
           </Link>
-          <h1 className="mt-6 text-3xl font-bold text-gray-900">Masuk ke Akun Anda</h1>
-          <p className="mt-2 text-gray-600">
+          <h1 className="mt-6 text-3xl font-bold text-white">Masuk ke Akun Anda</h1>
+          <p className="mt-2 text-gray-300">
             Masukkan email dan password untuk melanjutkan
           </p>
         </div>
         
-        <div className="bg-white py-8 px-6 shadow-md rounded-lg">
+        <div className="bg-dark-200 py-8 px-6 shadow-md rounded-lg border border-dark-300">
           {errorMessage && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 text-red-700 rounded-md text-sm">
+            <div className="mb-4 p-3 bg-red-900/30 border border-red-800/50 text-red-400 rounded-md text-sm">
               {errorMessage}
             </div>
           )}
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-gray-200">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -146,20 +95,16 @@ const Login = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="w-full"
+                className="w-full bg-dark-300 border-dark-400 text-white"
               />
             </div>
             
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label htmlFor="password">Password</Label>
-                <button 
-                  type="button"
-                  onClick={() => setShowResetPassword(!showResetPassword)}
-                  className="text-sm text-diginavy hover:underline"
-                >
+                <Label htmlFor="password" className="text-gray-200">Password</Label>
+                <Link to="/forgot-password" className="text-sm text-neon-purple hover:underline">
                   Lupa password?
-                </button>
+                </Link>
               </div>
               <Input
                 id="password"
@@ -168,35 +113,13 @@ const Login = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="w-full"
+                className="w-full bg-dark-300 border-dark-400 text-white"
               />
             </div>
-
-            {showResetPassword && (
-              <div className="p-3 bg-blue-50 border border-blue-200 rounded-md">
-                <p className="text-sm text-blue-700 mb-2">
-                  Masukkan email Anda di atas, lalu klik tombol di bawah untuk reset password:
-                </p>
-                <Button 
-                  type="button" 
-                  onClick={handleResetPassword}
-                  variant="outline"
-                  className="w-full text-sm"
-                  disabled={isResetLoading || !email}
-                >
-                  {isResetLoading ? (
-                    <>
-                      <Loader2 className="mr-2 h-4 w-4 animate-spin" /> 
-                      Mengirim...
-                    </>
-                  ) : "Kirim Link Reset Password"}
-                </Button>
-              </div>
-            )}
             
             <Button 
               type="submit" 
-              className="w-full bg-diginavy text-white hover:bg-diginavy-800"
+              className="w-full bg-gradient-to-r from-neon-purple to-neon-violet hover:from-neon-violet hover:to-neon-purple text-white"
               disabled={isLoading}
             >
               {isLoading ? (
@@ -210,17 +133,17 @@ const Login = () => {
           
           <div className="relative mt-6">
             <div className="absolute inset-0 flex items-center">
-              <div className="w-full border-t border-gray-300"></div>
+              <div className="w-full border-t border-dark-400"></div>
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="px-2 bg-white text-gray-500">Atau masuk dengan</span>
+              <span className="px-2 bg-dark-200 text-gray-400">Atau masuk dengan</span>
             </div>
           </div>
           
           <Button 
             type="button"
             variant="outline"
-            className="w-full mt-6 flex items-center justify-center"
+            className="w-full mt-6 flex items-center justify-center border-dark-400 text-white hover:bg-dark-300"
             onClick={handleGoogleLogin}
             disabled={isGoogleLoading}
           >
@@ -256,9 +179,9 @@ const Login = () => {
           </Button>
           
           <div className="mt-6 text-center">
-            <p className="text-gray-600">
+            <p className="text-gray-300">
               Belum punya akun?{" "}
-              <Link to="/register" className="text-diginavy hover:underline">
+              <Link to="/register" className="text-neon-purple hover:underline">
                 Daftar sekarang
               </Link>
             </p>

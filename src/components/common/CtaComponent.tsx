@@ -1,17 +1,15 @@
 
 import React from 'react';
-import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
+import { ArrowRight } from 'lucide-react';
 
-export interface CtaComponentProps {
+interface CtaComponentProps {
   title: string;
   description: string;
   buttonText: string;
   buttonLink: string;
-  theme?: 'blue' | 'light' | 'white';
-  size?: 'default' | 'large';
-  className?: string;
+  theme?: 'light' | 'dark' | 'blue';
 }
 
 const CtaComponent = ({ 
@@ -19,52 +17,59 @@ const CtaComponent = ({
   description, 
   buttonText, 
   buttonLink,
-  theme = 'blue',
-  size = 'default',
-  className = ''
+  theme = 'dark'
 }: CtaComponentProps) => {
-  // Theme styles
-  const themeStyles = {
-    blue: "bg-gradient-to-r from-digiblue-800 to-digiblue-600 text-white",
-    light: "bg-digiblue-50 text-gray-900",
-    white: "bg-white border border-gray-200 text-gray-900"
+  const getThemeClasses = () => {
+    switch(theme) {
+      case 'light':
+        return {
+          container: 'bg-dark-200 border border-dark-300',
+          title: 'text-white',
+          description: 'text-gray-300',
+          button: 'bg-neon-purple hover:bg-neon-violet text-white'
+        };
+      case 'blue':
+        return {
+          container: 'bg-gradient-to-br from-dark-300 to-dark-400 border border-dark-500',
+          title: 'text-white',
+          description: 'text-gray-300',
+          button: 'bg-neon-blue hover:bg-blue-600 text-white'
+        };
+      case 'dark':
+      default:
+        return {
+          container: 'bg-dark-300 border border-neon-purple/20',
+          title: 'text-white',
+          description: 'text-gray-300',
+          button: 'bg-gradient-to-r from-neon-purple to-neon-violet hover:from-neon-violet hover:to-neon-purple text-white'
+        };
+    }
   };
 
-  // Size styles
-  const sizeStyles = {
-    default: "p-8 md:p-12 rounded-2xl",
-    large: "p-12 md:p-16 rounded-3xl"
-  };
-
-  // Button styles based on theme
-  const buttonStyles = {
-    blue: "bg-white text-digiblue-700 hover:bg-digiblue-50",
-    light: "bg-digiblue-600 text-white hover:bg-digiblue-700",
-    white: "bg-digiblue-600 text-white hover:bg-digiblue-700"
-  };
-
-  // Description text color based on theme
-  const descriptionStyles = {
-    blue: "text-digiblue-100",
-    light: "text-gray-600",
-    white: "text-gray-600"
-  };
+  const themeClasses = getThemeClasses();
 
   return (
-    <div className={`${themeStyles[theme]} ${sizeStyles[size]} mb-16 text-center ${className}`}>
-      <h2 className={`text-2xl md:text-3xl font-bold mb-4 ${theme === 'blue' ? 'text-white' : 'text-gray-900'}`}>
-        {title}
-      </h2>
-      <p className={`${descriptionStyles[theme]} max-w-2xl mx-auto mb-8`}>
-        {description}
-      </p>
-      <Link to={buttonLink}>
-        <Button 
-          className={`px-6 py-3 rounded-full ${buttonStyles[theme]} transition-colors font-medium inline-flex items-center`}
-        >
-          {buttonText} <ArrowRight className="ml-2 h-4 w-4" />
-        </Button>
-      </Link>
+    <div className={`rounded-lg shadow-lg p-8 md:p-12 my-16 relative overflow-hidden ${themeClasses.container}`}>
+      {/* Animated background effect */}
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute -top-10 -right-10 w-40 h-40 bg-neon-purple rounded-full filter blur-[80px] opacity-10 animate-pulse"></div>
+        <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-neon-violet rounded-full filter blur-[80px] opacity-10 animate-pulse"></div>
+      </div>
+      
+      <div className="relative z-10 text-center">
+        <h2 className={`text-2xl md:text-3xl font-bold mb-4 ${themeClasses.title}`}>
+          {title}
+        </h2>
+        <p className={`text-base md:text-lg mb-8 max-w-3xl mx-auto ${themeClasses.description}`}>
+          {description}
+        </p>
+        <Link to={buttonLink}>
+          <Button className={`px-6 py-3 rounded-md group ${themeClasses.button}`}>
+            {buttonText}
+            <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </Link>
+      </div>
     </div>
   );
 };

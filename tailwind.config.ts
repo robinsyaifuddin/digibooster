@@ -90,6 +90,25 @@ export default {
                     800: '#3820bc',
                     900: '#1a1b7a',
                     950: '#161759'
+                },
+                // New dark theme colors based on reference image
+                dark: {
+                    DEFAULT: '#0E0617',
+                    100: '#1A1025',
+                    200: '#221833',
+                    300: '#2A1E3D',
+                    400: '#352650',
+                    500: '#52336F',
+                },
+                neon: {
+                    purple: '#A633FF',
+                    pink: '#F72585',
+                    blue: '#4CC9F0',
+                    violet: '#7209B7',
+                },
+                chess: {
+                    light: '#F8F9FA',
+                    dark: '#212529',
                 }
 			},
 			borderRadius: {
@@ -125,6 +144,21 @@ export default {
                 'scale-in': {
                     '0%': { transform: 'scale(0.95)', opacity: '0' },
                     '100%': { transform: 'scale(1)', opacity: '1' }
+                },
+                'glow': {
+                    '0%': { textShadow: '0 0 4px rgba(166, 51, 255, 0.6)' },
+                    '50%': { textShadow: '0 0 16px rgba(166, 51, 255, 0.8)' },
+                    '100%': { textShadow: '0 0 4px rgba(166, 51, 255, 0.6)' }
+                },
+                'float': {
+                    '0%': { transform: 'translateY(0px)' },
+                    '50%': { transform: 'translateY(-10px)' },
+                    '100%': { transform: 'translateY(0px)' }
+                },
+                'pulse-light': {
+                    '0%': { boxShadow: '0 0 0 0 rgba(166, 51, 255, 0.7)' },
+                    '70%': { boxShadow: '0 0 0 10px rgba(166, 51, 255, 0)' },
+                    '100%': { boxShadow: '0 0 0 0 rgba(166, 51, 255, 0)' }
                 }
 			},
 			animation: {
@@ -136,7 +170,10 @@ export default {
                 'marquee-reverse': 'marquee-reverse 25s linear infinite',
                 'fade-in': 'fade-in 0.5s ease-out',
                 'fade-out': 'fade-out 0.5s ease-out',
-                'scale-in': 'scale-in 0.3s ease-out'
+                'scale-in': 'scale-in 0.3s ease-out',
+                'glow': 'glow 2s ease-in-out infinite',
+                'float': 'float 6s ease-in-out infinite',
+                'pulse-light': 'pulse-light 2s infinite'
 			}
 		}
 	},

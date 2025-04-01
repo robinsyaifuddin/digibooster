@@ -4,57 +4,57 @@ import { PortfolioItemType } from '@/types/portfolioTypes';
 export const portfolioItems: PortfolioItemType[] = [
   {
     id: 1,
-    title: 'Website E-commerce Fashion',
-    client: 'FashionStyle Boutique',
-    category: 'Web Development',
-    image: 'https://images.unsplash.com/photo-1523381294911-8d3cead13475?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-    description: 'Pengembangan website e-commerce modern dengan fitur katalog produk, keranjang belanja, pembayaran terintegrasi, dan sistem manajemen inventori.',
-    services: ['Web Development', 'UI/UX Design', 'Payment Integration']
+    title: "E-Commerce Platform Redesign",
+    client: "TechStore Indonesia",
+    category: "Web Development",
+    image: "https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80",
+    description: "Complete redesign of an e-commerce platform with focus on user experience and conversion optimization.",
+    services: ["UI/UX Design", "Frontend Development", "Backend Development", "SEO Optimization"]
   },
   {
     id: 2,
-    title: 'Rebranding Digital Agency',
-    client: 'CreativePulse Agency',
-    category: 'Branding',
-    image: 'https://images.unsplash.com/photo-1542744094-3a31f272c490?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-    description: 'Proses rebranding menyeluruh meliputi logo baru, guidelines brand, stationery design, dan implementasi identitas pada seluruh aset digital.',
-    services: ['Brand Strategy', 'Logo Design', 'Brand Guidelines', 'Marketing Collateral']
+    title: "Corporate Branding & Website",
+    client: "InvestBiz Group",
+    category: "Branding",
+    image: "https://images.unsplash.com/photo-1542744094-24638eff58bb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80",
+    description: "Full branding package and responsive website design for a financial consulting firm.",
+    services: ["Brand Strategy", "Logo Design", "Website Design", "Marketing Materials"]
   },
   {
     id: 3,
-    title: 'Kampanye Digital Marketing',
-    client: 'NutriHealth Products',
-    category: 'Digital Marketing',
-    image: 'https://images.unsplash.com/photo-1557838923-2985c318be48?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-    description: 'Kampanye pemasaran digital terintegrasi untuk meluncurkan produk baru dengan strategi konten, social media, dan paid advertising.',
-    services: ['Content Strategy', 'Social Media Management', 'Google & Facebook Ads', 'Analytics & Reporting']
+    title: "Restaurant Online Ordering System",
+    client: "Spice Garden Restaurant",
+    category: "App Development",
+    image: "https://images.unsplash.com/photo-1555421689-491a97ff2040?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    description: "Custom online ordering system with integrated payment processing and order management dashboard.",
+    services: ["Mobile App Development", "Payment Integration", "Backend Development", "UI/UX Design"]
   },
   {
     id: 4,
-    title: 'Aplikasi Mobile Fintech',
-    client: 'EasyPay Solutions',
-    category: 'App Development',
-    image: 'https://images.unsplash.com/photo-1563986768494-4dee2763ff3f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-    description: 'Pengembangan aplikasi mobile untuk layanan keuangan digital dengan fitur pembayaran, transfer, dan manajemen keuangan pribadi.',
-    services: ['Mobile App Development', 'UI/UX Design', 'Backend Integration', 'Security Implementation']
+    title: "Digital Marketing Campaign",
+    client: "EcoLife Products",
+    category: "Digital Marketing",
+    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2426&q=80",
+    description: "Comprehensive digital marketing campaign across multiple channels to promote sustainable products.",
+    services: ["Social Media Marketing", "Content Strategy", "SEO", "PPC Advertising"]
   },
   {
     id: 5,
-    title: 'Produksi Video Korporat',
-    client: 'IndustrialTech Corporation',
-    category: 'Video Production',
-    image: 'https://images.unsplash.com/photo-1579165466949-3180a0d950f3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-    description: 'Produksi video perusahaan untuk memperkenalkan visi, misi, dan layanan dengan teknik storytelling yang menarik dan profesional.',
-    services: ['Script Writing', 'Videography', 'Animation', 'Post-Production', 'Sound Design']
+    title: "Educational Platform",
+    client: "LearnSmart Academy",
+    category: "Web Development",
+    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80",
+    description: "Online learning platform with course management, student tracking, and interactive learning features.",
+    services: ["E-Learning Development", "Frontend Development", "Backend Development", "UI/UX Design"]
   },
   {
     id: 6,
-    title: 'Sistem Manajemen Konten',
-    client: 'EduLearn Platform',
-    category: 'Web Development',
-    image: 'https://images.unsplash.com/photo-1581291518633-83b4ebd1d83e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80',
-    description: 'Pengembangan sistem manajemen konten khusus untuk platform pembelajaran online dengan fitur kursus, materi, dan penilaian terintegrasi.',
-    services: ['Custom CMS Development', 'Learning Management System', 'User Authentication', 'Content Delivery']
+    title: "Real Estate Virtual Tours",
+    client: "PrimeProperties",
+    category: "3D & Visualization",
+    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80",
+    description: "360° virtual property tours with interactive features for a premium real estate agency.",
+    services: ["3D Modeling", "VR Development", "Interactive Design", "Web Integration"]
   }
 ];
 
@@ -62,7 +62,12 @@ export const portfolioFilters = [
   "All",
   "Web Development",
   "Branding",
-  "Digital Marketing",
   "App Development",
-  "Video Production"
+  "Digital Marketing",
+  "3D & Visualization"
 ];
+
+export default {
+  portfolioItems,
+  portfolioFilters
+};

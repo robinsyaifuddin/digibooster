@@ -10,7 +10,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 // Pages
-import Index from "./pages/index"; // Changed from "./pages/Index" to "./pages/index"
+import Index from "./pages/index";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
@@ -26,7 +26,7 @@ import Tentang from "./pages/Tentang";
 // Layout component to wrap content with Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-dark">
       <Navbar />
       <main className="flex-grow">
         {children}
@@ -39,7 +39,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
 // Layout without navbar and footer for auth pages
 const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen bg-dark">
       {children}
     </div>
   );
