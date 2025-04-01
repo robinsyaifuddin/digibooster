@@ -1,5 +1,12 @@
 
-import { User } from "@supabase/supabase-js";
+import { User as SupabaseUser } from "@supabase/supabase-js";
+
+export interface User extends SupabaseUser {
+  name?: string;
+  role?: string;
+  photoURL?: string;
+  securityLevel?: 'standard' | 'enhanced' | 'maximum';
+}
 
 export interface AuthContextType {
   user: User | null;
@@ -9,4 +16,10 @@ export interface AuthContextType {
   loading: boolean;
   error: string | null;
   isAuthenticated: boolean;
+  checkPasswordStrength?: (password: string) => any;
+  updateSecurityLevel?: (level: 'standard' | 'enhanced' | 'maximum') => void;
+  logoutFromAllDevices?: () => Promise<void>;
+  login?: (email: string, password: string) => Promise<void>;
+  loginWithGoogle?: () => Promise<void>;
+  register?: (email: string, password: string, name: string) => Promise<void>;
 }

@@ -138,7 +138,7 @@ const DatabaseMonitor = () => {
       
       for (const table of tables) {
         const { count, error } = await supabase
-          .from(table)
+          .from(table as any)
           .select('*', { count: 'exact', head: true });
           
         if (!error && count !== null) {
@@ -146,12 +146,12 @@ const DatabaseMonitor = () => {
         }
         
         const { data, error: updateError } = await supabase
-          .from(table)
+          .from(table as any)
           .select('updated_at')
           .order('updated_at', { ascending: false })
           .limit(1);
           
-        if (!updateError && data && data.length > 0) {
+        if (!updateError && data && data.length > 0 && data[0].updated_at) {
           newStats.lastUpdated[table] = new Date(data[0].updated_at).toLocaleString('id-ID');
         }
         
@@ -580,7 +580,7 @@ const DatabaseMonitor = () => {
                     <span className="text-gray-400">[2025-03-31 07:32:14]</span> <span className="text-blue-400">INFO:</span> Database connection established
                   </div>
                   <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:15]</span> <span className="text-blue-400">QUERY:</span> SELECT * FROM website_content WHERE name = {"'main'"} LIMIT 1
+                    <span className="text-gray-400">[2025-03-31 07:32:15]</span> <span className="text-blue-400">QUERY:</span> SELECT * FROM website_content WHERE name = {`'main'`} LIMIT 1
                   </div>
                   <div className="mb-1">
                     <span className="text-gray-400">[2025-03-31 07:32:15]</span> <span className="text-green-400">SUCCESS:</span> Query executed successfully (12ms)
@@ -601,7 +601,7 @@ const DatabaseMonitor = () => {
                     <span className="text-gray-400">[2025-03-31 07:32:25]</span> <span className="text-yellow-400">NOTICE:</span> Cache hit for website_content query
                   </div>
                   <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:30]</span> <span className="text-blue-400">QUERY:</span> UPDATE website_content SET content = $1 WHERE name = {"'main'"}
+                    <span className="text-gray-400">[2025-03-31 07:32:30]</span> <span className="text-blue-400">QUERY:</span> UPDATE website_content SET content = $1 WHERE name = {`'main'`}
                   </div>
                   <div className="mb-1">
                     <span className="text-gray-400">[2025-03-31 07:32:30]</span> <span className="text-green-400">SUCCESS:</span> Updated 1 row (27ms)
@@ -610,7 +610,8 @@ const DatabaseMonitor = () => {
                     <span className="text-gray-400">[2025-03-31 07:32:35]</span> <span className="text-blue-400">TRIGGER:</span> update_website_content_updated_at executed
                   </div>
                   <div className="mb-1">
-                    <span className="text-gray-400">[2025-03-31 07:32:40]</span> <span className="text-blue-400">QUERY:</span> INSERT INTO publish_history (publish_type, published_by, changes) VALUES ({"'full'"},{"'f82c0e3a-...'"},{"'{\"changedSections\":[\"home\",\"services\"]}'"})</div>
+                    <span className="text-gray-400">[2025-03-31 07:32:40]</span> <span className="text-blue-400">QUERY:</span> INSERT INTO publish_history (publish_type, published_by, changes) VALUES ({`'full'`},{`'f82c0e3a-...'`},{`'{\"changedSections\":[\"home\",\"services\"]}'`})
+                  </div>
                   <div className="mb-1">
                     <span className="text-gray-400">[2025-03-31 07:32:40]</span> <span className="text-green-400">SUCCESS:</span> Inserted 1 row (18ms)
                   </div>
