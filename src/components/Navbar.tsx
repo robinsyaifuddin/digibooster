@@ -62,16 +62,13 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
+          {/* Logo - updated to use the new logo without text */}
+          <Link to="/" className="flex items-center">
             <img
-              src="/lovable-uploads/eb7d859a-60c0-4007-afe4-522ffdd5afda.png"
+              src="/lovable-uploads/63175a8a-8817-436e-8f8b-a3246a8bf733.png"
               alt="DigiBooster"
-              className="h-8"
+              className="h-10 w-auto"
             />
-            <span className="text-xl font-bold text-white">
-              <span className="text-neon-purple">Digi</span>Booster
-            </span>
           </Link>
 
           {/* Desktop Navigation */}
@@ -81,7 +78,7 @@ const Navbar = () => {
               className={cn(
                 "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center", 
                 isActive("/") 
-                  ? "text-neon-purple bg-dark-300" 
+                  ? "text-neon-cyan bg-dark-300" 
                   : "text-gray-300 hover:text-white hover:bg-dark-300"
               )}
             >
@@ -166,7 +163,7 @@ const Navbar = () => {
               className={cn(
                 "px-4 py-2 rounded-md text-sm font-medium transition-colors", 
                 isActive("/blog") 
-                  ? "text-neon-purple bg-dark-300" 
+                  ? "text-neon-cyan bg-dark-300" 
                   : "text-gray-300 hover:text-white hover:bg-dark-300"
               )}
             >
@@ -178,7 +175,7 @@ const Navbar = () => {
               className={cn(
                 "px-4 py-2 rounded-md text-sm font-medium transition-colors", 
                 isActive("/portofolio") 
-                  ? "text-neon-purple bg-dark-300" 
+                  ? "text-neon-cyan bg-dark-300" 
                   : "text-gray-300 hover:text-white hover:bg-dark-300"
               )}
             >
@@ -190,7 +187,7 @@ const Navbar = () => {
               className={cn(
                 "px-4 py-2 rounded-md text-sm font-medium transition-colors", 
                 isActive("/tentang") 
-                  ? "text-neon-purple bg-dark-300" 
+                  ? "text-neon-cyan bg-dark-300" 
                   : "text-gray-300 hover:text-white hover:bg-dark-300"
               )}
             >
@@ -203,7 +200,7 @@ const Navbar = () => {
             {isAuthenticated ? (
               <>
                 <Link to="/admin">
-                  <Button variant="outline" className="border-neon-purple/40 bg-dark-300/50 text-white hover:bg-dark-300 hover:border-neon-purple/80">
+                  <Button variant="outline" className="border-neon-cyan/40 bg-dark-300/50 text-white hover:bg-dark-300 hover:border-neon-cyan/80">
                     Dashboard
                   </Button>
                 </Link>
@@ -219,7 +216,7 @@ const Navbar = () => {
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button className="bg-neon-purple hover:bg-neon-violet text-white">
+                  <Button className="bg-neon-cyan hover:bg-neon-blue text-white">
                     Daftar
                   </Button>
                 </Link>
@@ -256,7 +253,7 @@ const Navbar = () => {
             className={cn(
               "flex items-center px-3 py-2 rounded-md text-base font-medium",
               isActive("/") 
-                ? "text-neon-purple bg-dark-300" 
+                ? "text-neon-cyan bg-dark-300" 
                 : "text-gray-300 hover:text-white hover:bg-dark-300"
             )}
             onClick={toggleMobileMenu}
@@ -302,7 +299,7 @@ const Navbar = () => {
             className={cn(
               "block px-3 py-2 rounded-md text-base font-medium",
               isActive("/blog") 
-                ? "text-neon-purple bg-dark-300" 
+                ? "text-neon-cyan bg-dark-300" 
                 : "text-gray-300 hover:text-white hover:bg-dark-300"
             )}
             onClick={toggleMobileMenu}
@@ -314,7 +311,7 @@ const Navbar = () => {
             className={cn(
               "block px-3 py-2 rounded-md text-base font-medium",
               isActive("/portofolio") 
-                ? "text-neon-purple bg-dark-300" 
+                ? "text-neon-cyan bg-dark-300" 
                 : "text-gray-300 hover:text-white hover:bg-dark-300"
             )}
             onClick={toggleMobileMenu}
@@ -326,7 +323,7 @@ const Navbar = () => {
             className={cn(
               "block px-3 py-2 rounded-md text-base font-medium",
               isActive("/tentang") 
-                ? "text-neon-purple bg-dark-300" 
+                ? "text-neon-cyan bg-dark-300" 
                 : "text-gray-300 hover:text-white hover:bg-dark-300"
             )}
             onClick={toggleMobileMenu}
@@ -341,7 +338,7 @@ const Navbar = () => {
             <>
               <Link
                 to="/admin"
-                className="block px-3 py-2 rounded-md text-base font-medium text-white bg-neon-purple/20 hover:bg-neon-purple/30"
+                className="block px-3 py-2 rounded-md text-base font-medium text-white bg-neon-cyan/20 hover:bg-neon-cyan/30"
                 onClick={toggleMobileMenu}
               >
                 Dashboard
@@ -367,7 +364,7 @@ const Navbar = () => {
               </Link>
               <Link
                 to="/register"
-                className="block px-3 py-2 rounded-md text-base font-medium text-white bg-neon-purple hover:bg-neon-violet"
+                className="block px-3 py-2 rounded-md text-base font-medium text-white bg-neon-cyan hover:bg-neon-blue"
                 onClick={toggleMobileMenu}
               >
                 Daftar

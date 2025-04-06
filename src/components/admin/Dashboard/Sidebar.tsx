@@ -93,12 +93,12 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
   return (
     <aside className="hidden md:flex flex-col bg-white border-r w-64 h-screen sticky top-0">
       <div className="p-4 border-b flex items-center gap-2">
-        <div className="bg-diginavy text-white rounded-md h-8 w-8 flex items-center justify-center font-bold text-xl">
+        <div className="bg-dark text-white rounded-md h-8 w-8 flex items-center justify-center font-bold text-xl">
           D
         </div>
         <span className="font-bold text-lg">DigiBooster</span>
         {isRealImplementation && (
-          <span className="flex h-2 w-2 bg-green-500 rounded-full ml-1"></span>
+          <span className="flex h-2 w-2 bg-digicyan rounded-full ml-1"></span>
         )}
       </div>
       
@@ -108,7 +108,7 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
             key={tab.id}
             variant="ghost"
             className={cn("justify-start gap-3 h-10", {
-              "bg-gray-100 text-diginavy font-medium": activeTab === tab.id,
+              "bg-gray-100 text-digicyan font-medium": activeTab === tab.id,
             })}
             onClick={() => onTabChange(tab.id)}
           >
@@ -116,7 +116,7 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
               <motion.div
                 initial={{ scale: 0.8 }}
                 animate={{ scale: 1 }}
-                className="text-diginavy"
+                className="text-digicyan"
               >
                 {tab.icon}
               </motion.div>
@@ -125,7 +125,7 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
             )}
             {tab.label}
             {tab.id === 'services' && (
-              <span className="ml-auto flex h-2 w-2 rounded-full bg-diginavy"></span>
+              <span className="ml-auto flex h-2 w-2 rounded-full bg-digicyan"></span>
             )}
           </Button>
         ))}
@@ -141,7 +141,7 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
               key={tab.id}
               variant="ghost"
               className={cn("justify-start gap-3 h-10", {
-                "bg-gray-100 text-diginavy font-medium": activeTab === tab.id,
+                "bg-gray-100 text-digicyan font-medium": activeTab === tab.id,
               })}
               onClick={() => onTabChange(tab.id)}
             >
@@ -149,7 +149,7 @@ const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
                 <motion.div
                   initial={{ scale: 0.8 }}
                   animate={{ scale: 1 }}
-                  className="text-diginavy"
+                  className="text-digicyan"
                 >
                   {tab.icon}
                 </motion.div>

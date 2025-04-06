@@ -5,44 +5,44 @@
 
 @layer base {
   :root {
-    --background: 260 60% 7%;
+    --background: 212 80% 7%;
     --foreground: 0 0% 95%;
 
-    --card: 260 50% 10%;
+    --card: 212 70% 10%;
     --card-foreground: 0 0% 95%;
 
-    --popover: 260 50% 10%;
+    --popover: 212 70% 10%;
     --popover-foreground: 0 0% 95%;
 
-    --primary: 275 100% 60%;
+    --primary: 183 100% 45%;
     --primary-foreground: 0 0% 95%;
 
-    --secondary: 260 50% 15%;
+    --secondary: 212 50% 15%;
     --secondary-foreground: 0 0% 95%;
 
-    --muted: 260 40% 20%;
+    --muted: 212 40% 20%;
     --muted-foreground: 0 0% 70%;
 
-    --accent: 275 100% 60%;
+    --accent: 183 100% 45%;
     --accent-foreground: 0 0% 95%;
 
     --destructive: 350 89% 60%;
     --destructive-foreground: 0 0% 95%;
 
-    --border: 260 30% 20%;
-    --input: 260 30% 20%;
-    --ring: 275 100% 60%;
+    --border: 212 30% 20%;
+    --input: 212 30% 20%;
+    --ring: 183 100% 45%;
 
     --radius: 0.5rem;
 
-    --sidebar-background: 260 60% 7%;
+    --sidebar-background: 212 80% 7%;
     --sidebar-foreground: 0 0% 95%;
-    --sidebar-primary: 275 100% 60%;
+    --sidebar-primary: 183 100% 45%;
     --sidebar-primary-foreground: 0 0% 95%;
-    --sidebar-accent: 260 50% 15%;
+    --sidebar-accent: 212 50% 15%;
     --sidebar-accent-foreground: 0 0% 95%;
-    --sidebar-border: 260 30% 20%;
-    --sidebar-ring: 275 100% 60%;
+    --sidebar-border: 212 30% 20%;
+    --sidebar-ring: 183 100% 45%;
   }
 
   .light {
@@ -55,7 +55,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 221 83% 25%;
+    --primary: 183 83% 45%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -64,7 +64,7 @@
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 221 83% 55%;
+    --accent: 183 83% 55%;
     --accent-foreground: 222.2 47.4% 11.2%;
 
     --destructive: 0 84.2% 60.2%;
@@ -127,11 +127,11 @@
 
 @layer components {
   .btn-primary {
-    @apply bg-neon-purple text-white hover:bg-neon-violet px-6 py-3 rounded-md transition duration-300 font-medium;
+    @apply bg-neon-cyan text-white hover:bg-neon-blue px-6 py-3 rounded-md transition duration-300 font-medium;
   }
 
   .btn-secondary {
-    @apply bg-dark-300 text-white border border-neon-purple hover:bg-dark-400 px-6 py-3 rounded-md transition duration-300 font-medium;
+    @apply bg-dark-300 text-white border border-neon-cyan hover:bg-dark-400 px-6 py-3 rounded-md transition duration-300 font-medium;
   }
 
   .card-hover {
@@ -139,11 +139,11 @@
   }
 
   .nav-link {
-    @apply text-gray-300 hover:text-neon-purple transition duration-200;
+    @apply text-gray-300 hover:text-neon-cyan transition duration-200;
   }
 
   .nav-link.active {
-    @apply text-neon-purple font-medium;
+    @apply text-neon-cyan font-medium;
   }
 
   .dropdown-content {
@@ -159,15 +159,15 @@
   }
 
   .neon-glow::after {
-    @apply content-[''] absolute -inset-0.5 bg-neon-purple opacity-75 blur-sm rounded-lg -z-10;
+    @apply content-[''] absolute -inset-0.5 bg-neon-cyan opacity-75 blur-sm rounded-lg -z-10;
   }
 
   .neon-text {
-    @apply text-transparent bg-clip-text bg-gradient-to-r from-neon-purple to-neon-pink animate-glow;
+    @apply text-transparent bg-clip-text bg-gradient-to-r from-neon-cyan to-neon-blue animate-glow;
   }
 
   .neon-border {
-    @apply border border-neon-purple shadow-[0_0_10px_rgba(166,51,255,0.7)] animate-pulse-light;
+    @apply border border-neon-cyan shadow-[0_0_10px_rgba(0,216,232,0.7)] animate-pulse-light;
   }
   
   .dark-card {
@@ -178,22 +178,22 @@
     @apply bg-dark-200/80 backdrop-blur-lg border border-dark-300/50 rounded-lg;
   }
   
-  /* Enhanced cyberpunk components */
+  /* Enhanced cyberpunk components with new color theme */
   .cyberpunk-card {
-    @apply bg-dark-200/90 backdrop-blur-md border border-neon-purple/30 rounded-lg 
+    @apply bg-dark-200/90 backdrop-blur-md border border-neon-cyan/30 rounded-lg 
            shadow-lg hover:shadow-xl transition-all duration-300
-           hover:border-neon-purple/70 overflow-hidden;
+           hover:border-neon-cyan/70 overflow-hidden;
   }
   
   .cyber-button {
-    @apply bg-dark-300 text-white border border-neon-purple/60 px-6 py-3 rounded-md 
+    @apply bg-dark-300 text-white border border-neon-cyan/60 px-6 py-3 rounded-md 
            transition-all duration-300 font-medium relative overflow-hidden
-           hover:bg-dark-400 hover:border-neon-purple hover:shadow-[0_0_15px_rgba(166,51,255,0.6)]
-           focus:outline-none focus:ring-2 focus:ring-neon-purple/50 focus:ring-offset-2 focus:ring-offset-dark-200;
+           hover:bg-dark-400 hover:border-neon-cyan hover:shadow-[0_0_15px_rgba(0,216,232,0.6)]
+           focus:outline-none focus:ring-2 focus:ring-neon-cyan/50 focus:ring-offset-2 focus:ring-offset-dark-200;
   }
   
   .cyber-button::before {
-    @apply content-[''] absolute -top-1 -bottom-1 left-0 w-1 bg-gradient-to-b from-neon-purple/80 to-neon-violet/80
+    @apply content-[''] absolute -top-1 -bottom-1 left-0 w-1 bg-gradient-to-b from-neon-cyan/80 to-neon-blue/80
            translate-x-[-100%] transition-transform duration-300;
   }
   
@@ -203,13 +203,13 @@
   
   .cyber-input {
     @apply bg-dark-300 border-dark-400 text-white rounded-md px-4 py-2 
-           focus:border-neon-purple focus:ring focus:ring-neon-purple/20 focus:outline-none
+           focus:border-neon-cyan focus:ring focus:ring-neon-cyan/20 focus:outline-none
            placeholder:text-gray-500;
   }
   
   .cyber-badge {
     @apply inline-flex items-center justify-center px-2.5 py-0.5 rounded-full text-xs font-medium 
-           bg-dark-300 text-neon-purple border border-neon-purple/50;
+           bg-dark-300 text-neon-cyan border border-neon-cyan/50;
   }
   
   .scroll-reveal {
@@ -254,26 +254,26 @@
 }
 
 .glass-card {
-  background: rgba(26, 16, 37, 0.7);
+  background: rgba(12, 20, 37, 0.7);
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(166, 51, 255, 0.18);
+  border: 1px solid rgba(0, 216, 232, 0.18);
 }
 
 /* Dark theme chess background */
 .chess-bg {
   background-image: 
-    linear-gradient(45deg, rgba(166, 51, 255, 0.05) 25%, transparent 25%), 
-    linear-gradient(-45deg, rgba(166, 51, 255, 0.05) 25%, transparent 25%), 
-    linear-gradient(45deg, transparent 75%, rgba(166, 51, 255, 0.05) 75%), 
-    linear-gradient(-45deg, transparent 75%, rgba(166, 51, 255, 0.05) 75%);
+    linear-gradient(45deg, rgba(0, 216, 232, 0.05) 25%, transparent 25%), 
+    linear-gradient(-45deg, rgba(0, 216, 232, 0.05) 25%, transparent 25%), 
+    linear-gradient(45deg, transparent 75%, rgba(0, 216, 232, 0.05) 75%), 
+    linear-gradient(-45deg, transparent 75%, rgba(0, 216, 232, 0.05) 75%);
   background-size: 20px 20px;
   background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
 }
 
-/* Purple gradient overlay */
-.purple-gradient-overlay {
-  background: linear-gradient(135deg, rgba(166, 51, 255, 0.3) 0%, rgba(114, 9, 183, 0.3) 100%);
+/* Cyan gradient overlay */
+.cyan-gradient-overlay {
+  background: linear-gradient(135deg, rgba(0, 216, 232, 0.3) 0%, rgba(11, 188, 209, 0.3) 100%);
 }
 
 /* Neon underline effect */
@@ -289,8 +289,8 @@
   height: 2px;
   bottom: -2px;
   left: 0;
-  background-color: #A633FF;
-  box-shadow: 0 0 8px #A633FF;
+  background-color: #00D8E8;
+  box-shadow: 0 0 8px #00D8E8;
   transform: scaleX(0);
   transform-origin: bottom right;
   transition: transform 0.3s ease-out;
@@ -304,8 +304,8 @@
 /* Cyberpunk grid background */
 .cyber-grid {
   background-image: 
-    linear-gradient(rgba(166, 51, 255, 0.1) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(166, 51, 255, 0.1) 1px, transparent 1px);
+    linear-gradient(rgba(0, 216, 232, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 216, 232, 0.1) 1px, transparent 1px);
   background-size: 20px 20px;
   background-position: center center;
 }
@@ -314,54 +314,54 @@
 .cyber-glitch {
   position: relative;
   text-shadow: 
-    0.05em 0 0 rgba(255, 0, 255, 0.4),
-    -0.025em -0.05em 0 rgba(0, 255, 255, 0.4),
-    0.025em 0.05em 0 rgba(0, 255, 0, 0.4);
+    0.05em 0 0 rgba(0, 216, 232, 0.4),
+    -0.025em -0.05em 0 rgba(0, 216, 232, 0.4),
+    0.025em 0.05em 0 rgba(0, 216, 232, 0.4);
   animation: glitch 500ms infinite;
 }
 
 @keyframes glitch {
   0% {
     text-shadow: 
-      0.05em 0 0 rgba(166, 51, 255, 0.4),
-      -0.05em -0.025em 0 rgba(114, 9, 183, 0.4),
-      -0.025em 0.05em 0 rgba(247, 37, 133, 0.4);
+      0.05em 0 0 rgba(0, 216, 232, 0.4),
+      -0.05em -0.025em 0 rgba(11, 188, 209, 0.4),
+      -0.025em 0.05em 0 rgba(0, 216, 232, 0.4);
   }
   14% {
     text-shadow: 
-      0.05em 0 0 rgba(166, 51, 255, 0.4),
-      -0.05em -0.025em 0 rgba(114, 9, 183, 0.4),
-      -0.025em 0.05em 0 rgba(247, 37, 133, 0.4);
+      0.05em 0 0 rgba(0, 216, 232, 0.4),
+      -0.05em -0.025em 0 rgba(11, 188, 209, 0.4),
+      -0.025em 0.05em 0 rgba(0, 216, 232, 0.4);
   }
   15% {
     text-shadow: 
-      -0.05em -0.025em 0 rgba(166, 51, 255, 0.4),
-      0.025em 0.025em 0 rgba(114, 9, 183, 0.4),
-      -0.05em -0.05em 0 rgba(247, 37, 133, 0.4);
+      -0.05em -0.025em 0 rgba(0, 216, 232, 0.4),
+      0.025em 0.025em 0 rgba(11, 188, 209, 0.4),
+      -0.05em -0.05em 0 rgba(0, 216, 232, 0.4);
   }
   49% {
     text-shadow: 
-      -0.05em -0.025em 0 rgba(166, 51, 255, 0.4),
-      0.025em 0.025em 0 rgba(114, 9, 183, 0.4),
-      -0.05em -0.05em 0 rgba(247, 37, 133, 0.4);
+      -0.05em -0.025em 0 rgba(0, 216, 232, 0.4),
+      0.025em 0.025em 0 rgba(11, 188, 209, 0.4),
+      -0.05em -0.05em 0 rgba(0, 216, 232, 0.4);
   }
   50% {
     text-shadow: 
-      0.025em 0.05em 0 rgba(166, 51, 255, 0.4),
-      0.05em 0 0 rgba(114, 9, 183, 0.4),
-      0 -0.05em 0 rgba(247, 37, 133, 0.4);
+      0.025em 0.05em 0 rgba(0, 216, 232, 0.4),
+      0.05em 0 0 rgba(11, 188, 209, 0.4),
+      0 -0.05em 0 rgba(0, 216, 232, 0.4);
   }
   99% {
     text-shadow: 
-      0.025em 0.05em 0 rgba(166, 51, 255, 0.4),
-      0.05em 0 0 rgba(114, 9, 183, 0.4),
-      0 -0.05em 0 rgba(247, 37, 133, 0.4);
+      0.025em 0.05em 0 rgba(0, 216, 232, 0.4),
+      0.05em 0 0 rgba(11, 188, 209, 0.4),
+      0 -0.05em 0 rgba(0, 216, 232, 0.4);
   }
   100% {
     text-shadow: 
-      -0.025em 0 0 rgba(166, 51, 255, 0.4),
-      -0.025em -0.025em 0 rgba(114, 9, 183, 0.4),
-      -0.025em -0.05em 0 rgba(247, 37, 133, 0.4);
+      -0.025em 0 0 rgba(0, 216, 232, 0.4),
+      -0.025em -0.025em 0 rgba(11, 188, 209, 0.4),
+      -0.025em -0.05em 0 rgba(0, 216, 232, 0.4);
   }
 }
 
@@ -409,15 +409,15 @@
   }
   
   .text-shadow-neon {
-    text-shadow: 0 0 5px rgba(166, 51, 255, 0.7),
-                 0 0 10px rgba(166, 51, 255, 0.5),
-                 0 0 15px rgba(166, 51, 255, 0.3);
+    text-shadow: 0 0 5px rgba(0, 216, 232, 0.7),
+                 0 0 10px rgba(0, 216, 232, 0.5),
+                 0 0 15px rgba(0, 216, 232, 0.3);
   }
   
   .bg-cyberpunk-grid {
     background-size: 40px 40px;
     background-image: 
-      linear-gradient(to right, rgba(166, 51, 255, 0.1) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(166, 51, 255, 0.1) 1px, transparent 1px);
+      linear-gradient(to right, rgba(0, 216, 232, 0.1) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(0, 216, 232, 0.1) 1px, transparent 1px);
   }
 }

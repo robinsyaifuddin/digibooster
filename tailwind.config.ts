@@ -67,48 +67,35 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-                digiblue: {
-                    50: '#f3e6ff',
-                    100: '#e4ccff',
-                    200: '#d0a3ff',
-                    300: '#bb7aff',
-                    400: '#a652ff',
-                    500: '#9229ff',
-                    600: '#7e14e0',
-                    700: '#6b0cc4',
-                    800: '#5a09a7',
-                    900: '#43067a',
-                    950: '#2d0452',
-                    DEFAULT: '#9229ff',
+                // Replace digiblue with digicyan - our new brand color from the logo
+                digicyan: {
+                    50: '#e0fcff',
+                    100: '#c0f7fd',
+                    200: '#91f0fa',
+                    300: '#51e4f5',
+                    400: '#22d3eb',
+                    500: '#0bbcd1',
+                    600: '#0295aa',
+                    700: '#027686',
+                    800: '#05606d',
+                    900: '#084f5a',
+                    950: '#003540',
+                    DEFAULT: '#00D8E8',
                 },
-                diginavy: {
-                    DEFAULT: '#161759',
-                    50: '#f0f1ff',
-                    100: '#e2e5ff',
-                    200: '#c9ceff',
-                    300: '#a8adff',
-                    400: '#8281ff',
-                    500: '#6251fc',
-                    600: '#5234f5',
-                    700: '#4724e4',
-                    800: '#3820bc',
-                    900: '#1a1b7a',
-                    950: '#161759'
-                },
-                // New dark theme colors based on reference image
+                // Replace the dark theme colors to match our new brand
                 dark: {
-                    DEFAULT: '#0E0617',
-                    100: '#1A1025',
-                    200: '#221833',
-                    300: '#2A1E3D',
-                    400: '#352650',
-                    500: '#52336F',
+                    DEFAULT: '#030811',
+                    100: '#0c1425',
+                    200: '#101c30',
+                    300: '#152238',
+                    400: '#1d2d4b',
+                    500: '#25385f',
                 },
                 neon: {
-                    purple: '#A633FF',
-                    pink: '#F72585',
-                    blue: '#4CC9F0',
-                    violet: '#7209B7',
+                    cyan: '#00D8E8',
+                    blue: '#0bbcd1',
+                    white: '#FFFFFF',
+                    black: '#000000',
                 },
                 chess: {
                     light: '#F8F9FA',
@@ -150,9 +137,9 @@ export default {
                     '100%': { transform: 'scale(1)', opacity: '1' }
                 },
                 'glow': {
-                    '0%': { textShadow: '0 0 4px rgba(166, 51, 255, 0.6)' },
-                    '50%': { textShadow: '0 0 16px rgba(166, 51, 255, 0.8)' },
-                    '100%': { textShadow: '0 0 4px rgba(166, 51, 255, 0.6)' }
+                    '0%': { textShadow: '0 0 4px rgba(0, 216, 232, 0.6)' },
+                    '50%': { textShadow: '0 0 16px rgba(0, 216, 232, 0.8)' },
+                    '100%': { textShadow: '0 0 4px rgba(0, 216, 232, 0.6)' }
                 },
                 'float': {
                     '0%': { transform: 'translateY(0px)' },
@@ -160,9 +147,9 @@ export default {
                     '100%': { transform: 'translateY(0px)' }
                 },
                 'pulse-light': {
-                    '0%': { boxShadow: '0 0 0 0 rgba(166, 51, 255, 0.7)' },
-                    '70%': { boxShadow: '0 0 0 10px rgba(166, 51, 255, 0)' },
-                    '100%': { boxShadow: '0 0 0 0 rgba(166, 51, 255, 0)' }
+                    '0%': { boxShadow: '0 0 0 0 rgba(0, 216, 232, 0.7)' },
+                    '70%': { boxShadow: '0 0 0 10px rgba(0, 216, 232, 0)' },
+                    '100%': { boxShadow: '0 0 0 0 rgba(0, 216, 232, 0)' }
                 },
                 'rotate-3d': {
                     '0%': { transform: 'perspective(1200px) rotateY(0deg)' },
@@ -173,9 +160,9 @@ export default {
                     '50%': { transform: 'translateY(-15px)' }
                 },
                 'cyber-glow': {
-                    '0%': { boxShadow: '0 0 5px #A633FF, 0 0 10px #A633FF' },
-                    '50%': { boxShadow: '0 0 20px #A633FF, 0 0 30px #A633FF' },
-                    '100%': { boxShadow: '0 0 5px #A633FF, 0 0 10px #A633FF' }
+                    '0%': { boxShadow: '0 0 5px #00D8E8, 0 0 10px #00D8E8' },
+                    '50%': { boxShadow: '0 0 20px #00D8E8, 0 0 30px #00D8E8' },
+                    '100%': { boxShadow: '0 0 5px #00D8E8, 0 0 10px #00D8E8' }
                 }
 			},
 			animation: {

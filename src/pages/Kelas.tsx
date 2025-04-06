@@ -57,7 +57,7 @@ const Kelas = () => {
               diimplementasikan untuk pengembangan karir dan bisnis Anda."
             buttonText="Tanyakan Jadwal"
             buttonLink="/kontak"
-            theme="purple"
+            theme="cyan"
           />
         </motion.div>
       </div>
