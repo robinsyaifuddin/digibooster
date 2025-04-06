@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import swordfightGif from '/lovable-uploads/63175a8a-8817-436e-8f8b-a3246a8bf733.png'; // Pastikan untuk mengganti dengan URL GIF yang benar
+import swordfightGif from '/lovable-uploads/63175a8a-8817-436e-8f8b-a3246a8bf733.png'; // The uploaded GIF
 
 interface SplashScreenProps {
   onComplete: () => void;
@@ -13,15 +13,15 @@ const SplashScreen: React.FC<SplashScreenProps> = ({ onComplete, duration = 2500
   const [showFlash, setShowFlash] = useState(false);
 
   useEffect(() => {
-    // Tampilkan efek flash setelah 1.5 detik
+    // Show flash effect after 1.5 seconds
     const flashTimeout = setTimeout(() => {
       setShowFlash(true);
     }, 1500);
 
-    // Hilangkan splash screen setelah durasi yang ditentukan
+    // Hide splash screen after specified duration
     const splashTimeout = setTimeout(() => {
       setShowSplash(false);
-      setTimeout(onComplete, 300); // Berikan waktu untuk animasi exit
+      setTimeout(onComplete, 300); // Give time for exit animation
     }, duration);
 
     return () => {
