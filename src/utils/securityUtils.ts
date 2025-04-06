@@ -1,65 +1,99 @@
 
-// Simulasi token anti-CSRF
-export const generateCSRFToken = () => {
-  return Math.random().toString(36).substring(2, 15) + 
-         Math.random().toString(36).substring(2, 15);
-};
-
-// Mencatat percobaan login untuk rate limiting
-export const loginAttempts = new Map<string, { count: number, timestamp: number }>();
-
-// Cek kekuatan password
+/**
+ * Check password strength and provide feedback
+ * @param password The password to check
+ * @returns Object containing score (0-5) and feedback
+ */
 export const checkPasswordStrength = (password: string) => {
   let score = 0;
-  let feedback = "Password lemah";
-  
-  // Panjang minimal
-  if (password.length >= 8) score += 1;
-  if (password.length >= 12) score += 1;
-  
-  // Kompleksitas
-  if (/[A-Z]/.test(password)) score += 1;
-  if (/[a-z]/.test(password)) score += 1;
-  if (/[0-9]/.test(password)) score += 1;
-  if (/[^A-Za-z0-9]/.test(password)) score += 1;
-  
-  // Feedback berdasarkan skor
-  if (score <= 2) {
-    feedback = "Password lemah - tambahkan huruf besar, angka, dan simbol";
-  } else if (score <= 4) {
-    feedback = "Password sedang - perpanjang password dan tambahkan variasi karakter";
-  } else {
-    feedback = "Password kuat";
+  let feedback = '';
+
+  if (!password) {
+    return { score: 0, feedback: 'Password tidak boleh kosong' };
   }
-  
+
+  // Length check
+  if (password.length < 8) {
+    feedback = 'Password terlalu pendek. Gunakan minimal 8 karakter.';
+  } else {
+    score++;
+  }
+
+  // Check for uppercase letters
+  if (password.match(/[A-Z]/)) {
+    score++;
+  }
+
+  // Check for lowercase letters
+  if (password.match(/[a-z]/)) {
+    score++;
+  }
+
+  // Check for numbers
+  if (password.match(/[0-9]/)) {
+    score++;
+  }
+
+  // Check for special characters
+  if (password.match(/[^A-Za-z0-9]/)) {
+    score++;
+  }
+
+  // Generate feedback based on score
+  if (score < 2) {
+    feedback = 'Password sangat lemah. Tambahkan huruf kapital, angka, dan simbol.';
+  } else if (score < 3) {
+    feedback = 'Password lemah. Tambahkan lebih banyak variasi karakter.';
+  } else if (score < 4) {
+    feedback = 'Password cukup kuat, namun bisa ditingkatkan lagi.';
+  } else if (score < 5) {
+    feedback = 'Password kuat!';
+  } else {
+    feedback = 'Password sangat kuat!';
+  }
+
   return { score, feedback };
 };
 
-// Fungsi untuk memeriksa rate limiting
-export const applyRateLimit = (email: string): boolean => {
-  const now = Date.now();
-  const attempt = loginAttempts.get(email);
-  
-  // Reset rate limit jika sudah lebih dari 15 menit
-  if (attempt && (now - attempt.timestamp) > 15 * 60 * 1000) {
-    loginAttempts.set(email, { count: 1, timestamp: now });
-    return false;
+/**
+ * Generate a secure random password
+ * @param length Length of the password to generate
+ * @returns A secure random password
+ */
+export const generateSecurePassword = (length = 12) => {
+  const charset = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=';
+  let password = '';
+  for (let i = 0; i < length; i++) {
+    const randomIndex = Math.floor(Math.random() * charset.length);
+    password += charset[randomIndex];
   }
-  
-  // Tambah counter
-  if (attempt) {
-    // Jika ada lebih dari 5 percobaan dalam 15 menit, limit rate
-    if (attempt.count >= 5) {
-      return true;
-    }
-    
-    loginAttempts.set(email, { 
-      count: attempt.count + 1, 
-      timestamp: attempt.timestamp 
-    });
-  } else {
-    loginAttempts.set(email, { count: 1, timestamp: now });
+  return password;
+};
+
+/**
+ * Hash a string (client-side only, not secure for production)
+ * Note: This is just for demo purposes, use server-side hashing in production
+ */
+export const simpleHash = (str: string): string => {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    const char = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + char;
+    hash = hash & hash; // Convert to 32bit integer
   }
-  
-  return false;
+  return hash.toString(36);
+};
+
+/**
+ * Detect suspicious login attempts based on time and location
+ * This is a mock implementation for demo purposes
+ */
+export const detectSuspiciousLogin = () => {
+  // Random result for demo purposes
+  const isSuspicious = Math.random() > 0.8;
+  return {
+    suspicious: isSuspicious,
+    reason: isSuspicious ? 'Unusual login location detected' : null,
+    riskLevel: isSuspicious ? 'high' : 'low'
+  };
 };

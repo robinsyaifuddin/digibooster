@@ -1,200 +1,112 @@
 
-import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { useIsMobile } from "../hooks/use-mobile";
-import { useToast } from '../hooks/use-toast';
-
-// Dashboard Components
-import Sidebar from '../components/admin/Dashboard/Sidebar';
-import MobileSidebar from '../components/admin/Dashboard/MobileSidebar';
-import Header from '../components/admin/Dashboard/Header';
-import DashboardOverview from '../components/admin/Dashboard/DashboardOverview';
-import UsersManagement from '../components/admin/Dashboard/UsersManagement';
-import ContentManagement from '../components/admin/Dashboard/ContentManagement';
-import ServicesDevelopment from '../components/admin/Dashboard/ServicesDevelopment';
-import WebsiteSettings from '../components/admin/WebsiteSettings';
-import AdminProfile from '../components/admin/AdminProfile';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "@/contexts/AuthContext";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import Sidebar from "@/components/admin/Dashboard/Sidebar";
+import MobileSidebar from "@/components/admin/Dashboard/MobileSidebar";
+import Header from "@/components/admin/Dashboard/Header";
+import DashboardOverview from "@/components/admin/Dashboard/DashboardOverview";
+import UsersManagement from "@/components/admin/Dashboard/UsersManagement";
+import ContentManagement from "@/components/admin/Dashboard/ContentManagement";
+import ServicesDevelopment from "@/components/admin/Dashboard/ServicesDevelopment";
+import WebsiteSettings from "@/components/admin/WebsiteSettings";
+import AdminProfile from "@/components/admin/AdminProfile";
+import ApiDocumentation from "@/components/admin/Dashboard/Developer/ApiDocumentation";
+import DatabaseMonitor from "@/components/admin/Dashboard/Developer/DatabaseMonitor";
+import AnalyticsMonitor from "@/components/admin/Dashboard/Developer/AnalyticsMonitor";
+import Terminal from "@/components/admin/Dashboard/Developer/Terminal";
+import VersionControl from "@/components/admin/Dashboard/Developer/VersionControl";
 
 const AdminDashboard = () => {
-  const { user } = useAuth();
-  const navigate = useNavigate();
-  const { toast } = useToast();
-  const isMobile = useIsMobile();
-  const [activeTab, setActiveTab] = useState('overview');
+  const { isAuthenticated, loading } = useAuth();
+  const [activeTab, setActiveTab] = useState("overview");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
-  // Sample data for demonstration
-  const [userStats] = useState({
-    total: 1245,
-    new: 42,
-    active: 891,
-    premium: 122
-  });
-  
-  const [contentStats] = useState({
-    blogs: 28,
-    courses: 12,
-    services: 4,
-    portfolios: 16
-  });
-  
-  const [trafficStats] = useState({
-    weekly: 2467,
-    monthly: 10254,
-    conversion: 3.2
-  });
-  
-  const [recentUsers] = useState([
-    { id: 1, name: 'Andi Pratama', email: 'andi@example.com', role: 'user', joinDate: '2023-08-12', avatar: 'A' },
-    { id: 2, name: 'Dewi Lestari', email: 'dewi@example.com', role: 'user', joinDate: '2023-08-10', avatar: 'D' },
-    { id: 3, name: 'Budi Santoso', email: 'budi@example.com', role: 'premium', joinDate: '2023-08-05', avatar: 'B' },
-    { id: 4, name: 'Rina Wijaya', email: 'rina@example.com', role: 'user', joinDate: '2023-08-01', avatar: 'R' },
-    { id: 5, name: 'Ahmad Fauzi', email: 'ahmad@example.com', role: 'user', joinDate: '2023-07-28', avatar: 'A' },
-    { id: 6, name: 'Siti Nurhaliza', email: 'siti@example.com', role: 'premium', joinDate: '2023-07-22', avatar: 'S' },
-    { id: 7, name: 'Joko Widodo', email: 'joko@example.com', role: 'user', joinDate: '2023-07-15', avatar: 'J' },
-  ]);
-  
-  const [recentBlogs] = useState([
-    { id: 1, title: 'Tips Optimasi Website untuk Pemula', author: 'Admin', published: '2023-08-10', views: 234 },
-    { id: 2, title: 'Cara Membuat Konten Digital yang Menarik', author: 'Admin', published: '2023-08-07', views: 167 },
-    { id: 3, title: 'Strategi Marketing Digital di Era 2023', author: 'Admin', published: '2023-08-05', views: 321 },
-  ]);
-  
+  const location = useLocation();
+
+  // Parse tab from URL params on component mount
   useEffect(() => {
-    // Redirect if not admin
-    if (!user || user.email !== 'digibooster@123') {
-      navigate('/');
-      toast({
-        variant: "destructive",
-        title: "Akses ditolak",
-        description: "Anda tidak memiliki izin untuk mengakses halaman ini.",
-      });
+    const searchParams = new URLSearchParams(location.search);
+    const tabParam = searchParams.get('tab');
+    if (tabParam) {
+      setActiveTab(tabParam);
     }
-    
-    // Update URL with current tab using history API without refresh
-    const loadTabFromUrl = () => {
-      const params = new URLSearchParams(window.location.search);
-      const tabParam = params.get('dashboard_tab');
-      
-      if (tabParam) {
-        setActiveTab(tabParam);
-      }
-    };
-    
-    loadTabFromUrl();
-    
-    // Listen for browser navigation events
-    const handlePopState = () => {
-      loadTabFromUrl();
-    };
-    
-    window.addEventListener('popstate', handlePopState);
-    
-    // Listen for tab switch events from other components
-    const handleSwitchTab = (event: CustomEvent) => {
-      if (event.detail) {
-        setActiveTab(event.detail);
-        
-        // Update URL without refresh
-        const newUrl = new URL(window.location.href);
-        newUrl.searchParams.set('dashboard_tab', event.detail);
-        window.history.pushState({dashboard_tab: event.detail}, '', newUrl.toString());
-      }
-    };
-    
-    // Listen for triggerPublish events from ContentManagement
-    const handleTriggerPublish = (event: CustomEvent) => {
-      if (event.detail && event.detail.source) {
-        toast({
-          title: "Perubahan siap dipublikasikan",
-          description: `Perubahan dari ${event.detail.source} telah disimpan dan siap dipublikasikan.`,
-        });
-        
-        // Auto switch to publish tab
-        setActiveTab('settings');
-        
-        // Update URL without refresh
-        const newUrl = new URL(window.location.href);
-        newUrl.searchParams.set('dashboard_tab', 'settings');
-        window.history.pushState({dashboard_tab: 'settings'}, '', newUrl.toString());
-      }
-    };
-    
-    window.addEventListener('switchToTab', handleSwitchTab as EventListener);
-    window.addEventListener('triggerPublish', handleTriggerPublish as EventListener);
-    
-    return () => {
-      window.removeEventListener('switchToTab', handleSwitchTab as EventListener);
-      window.removeEventListener('triggerPublish', handleTriggerPublish as EventListener);
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, [user, navigate, toast]);
-  
-  if (!user || user.email !== 'digibooster@123') {
-    return null;
+  }, [location]);
+
+  // If loading, show loading state
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-dark">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-neon-purple"></div>
+      </div>
+    );
+  }
+
+  // If not authenticated, redirect to login page
+  if (!isAuthenticated && !loading) {
+    return <Navigate to="/login" />;
   }
 
   const handleTabChange = (tab: string) => {
     setActiveTab(tab);
-    
-    // Update URL without refresh
-    const newUrl = new URL(window.location.href);
-    newUrl.searchParams.set('dashboard_tab', tab);
-    window.history.pushState({dashboard_tab: tab}, '', newUrl.toString());
-    
-    if (isMobile) {
-      setMobileMenuOpen(false);
+
+    // Update URL without page refresh using history API
+    const searchParams = new URLSearchParams(window.location.search);
+    searchParams.set('tab', tab);
+    const newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
+    window.history.pushState(null, '', newRelativePathQuery);
+  };
+
+  // Render the content based on the active tab
+  const renderContent = () => {
+    switch (activeTab) {
+      case "overview":
+        return <DashboardOverview />;
+      case "users":
+        return <UsersManagement />;
+      case "content":
+        return <ContentManagement />;
+      case "services":
+        return <ServicesDevelopment />;
+      case "settings":
+        return <WebsiteSettings />;
+      case "profile":
+        return <AdminProfile />;
+      case "api-docs":
+        return <ApiDocumentation />;
+      case "database":
+        return <DatabaseMonitor />;
+      case "analytics":
+        return <AnalyticsMonitor />;
+      case "terminal":
+        return <Terminal />;
+      case "git":
+        return <VersionControl />;
+      default:
+        return <DashboardOverview />;
     }
   };
-  
+
   return (
-    <div className="flex min-h-screen bg-gray-50">
-      {/* Desktop Sidebar */}
+    <div className="bg-gray-50 min-h-screen flex">
+      {/* Sidebar for desktop */}
       <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
       
       {/* Mobile Sidebar */}
       <MobileSidebar 
         activeTab={activeTab} 
         mobileMenuOpen={mobileMenuOpen} 
-        setMobileMenuOpen={setMobileMenuOpen} 
-        onTabChange={handleTabChange} 
+        setMobileMenuOpen={setMobileMenuOpen}
+        onTabChange={handleTabChange}
       />
       
-      {/* Main content */}
-      <div className="flex-1 overflow-auto">
-        {/* Header */}
-        <Header activeTab={activeTab} setMobileMenuOpen={setMobileMenuOpen} />
+      <div className="flex-1 flex flex-col overflow-hidden">
+        <Header 
+          activeTab={activeTab} 
+          onMenuClick={() => setMobileMenuOpen(true)} 
+        />
         
-        {/* Dashboard content */}
-        <main className="p-4 md:p-6">
-          {/* Overview tab */}
-          {activeTab === 'overview' && (
-            <DashboardOverview 
-              userStats={userStats}
-              contentStats={contentStats}
-              trafficStats={trafficStats}
-              recentUsers={recentUsers.slice(0, 4)}
-              recentBlogs={recentBlogs}
-            />
-          )}
-          
-          {/* Users tab */}
-          {activeTab === 'users' && <UsersManagement users={recentUsers} />}
-          
-          {/* Content tab */}
-          {activeTab === 'content' && <ContentManagement blogs={recentBlogs} />}
-          
-          {/* Services Development tab (for publishing) */}
-          {activeTab === 'services' && (
-            <ServicesDevelopment onTabChange={handleTabChange} />
-          )}
-          
-          {/* Website Settings */}
-          {activeTab === 'settings' && <WebsiteSettings />}
-          
-          {/* Admin Profile */}
-          {activeTab === 'profile' && <AdminProfile />}
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
+          {renderContent()}
         </main>
       </div>
     </div>

@@ -16,12 +16,14 @@ export interface AuthContextType {
   loading: boolean;
   error: string | null;
   isAuthenticated: boolean;
-  checkPasswordStrength?: (password: string) => any;
-  updateSecurityLevel?: (level: 'standard' | 'enhanced' | 'maximum') => void;
-  logoutFromAllDevices?: () => Promise<void>;
-  login?: (email: string, password: string) => Promise<void>;
-  loginWithGoogle?: () => Promise<void>;
-  register?: (email: string, password: string, name: string) => Promise<void>;
-  logout?: () => Promise<void>; 
-  checkSession?: () => Promise<void>;
+  checkSession: () => Promise<void>;
+  
+  // Make sure these functions exist in the context
+  checkPasswordStrength: (password: string) => { score: number, feedback: string };
+  updateSecurityLevel: (level: 'standard' | 'enhanced' | 'maximum') => void;
+  logoutFromAllDevices: () => Promise<void>;
+  login: (email: string, password: string) => Promise<void>;
+  loginWithGoogle: () => Promise<void>;
+  register: (email: string, password: string, name: string) => Promise<void>;
+  logout: () => Promise<void>;
 }

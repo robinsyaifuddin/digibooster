@@ -156,7 +156,7 @@ const App = () => (
             
             {/* Admin Dashboard */}
             <Route
-              path="/admin"
+              path="/admin/*"
               element={
                 <AuthLayout>
                   <AdminDashboard />

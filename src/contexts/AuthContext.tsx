@@ -4,18 +4,10 @@ import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
 import { User } from '@supabase/supabase-js';
 import { useNavigate } from 'react-router-dom';
+import { AuthContextType } from '@/types/auth';
+import { checkPasswordStrength } from '@/utils/securityUtils';
 
-export type AuthContextType = {
-  user: User | null;
-  loading: boolean;
-  error: string | null;
-  login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string) => Promise<void>;
-  logout: () => Promise<void>;
-  isAuthenticated: boolean;
-  checkSession: () => Promise<void>;
-};
-
+// Create context with default values
 export const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: false,
@@ -23,8 +15,15 @@ export const AuthContext = createContext<AuthContextType>({
   login: async () => {},
   register: async () => {},
   logout: async () => {},
+  signIn: async () => {},
+  signUp: async () => {},
+  signOut: async () => {},
   isAuthenticated: false,
   checkSession: async () => {},
+  checkPasswordStrength: (password) => ({ score: 0, feedback: '' }),
+  updateSecurityLevel: () => {},
+  logoutFromAllDevices: async () => {},
+  loginWithGoogle: async () => {},
 });
 
 export const useAuth = () => useContext(AuthContext);
@@ -77,6 +76,35 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const login = async (email: string, password: string) => {
+    return signIn(email, password);
+  };
+
+  const loginWithGoogle = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+      });
+      
+      if (error) throw error;
+      
+      return data;
+    } catch (error: any) {
+      console.error('Login with Google error:', error);
+      setError(error.message || 'Failed to login with Google');
+      toast({
+        variant: "destructive",
+        title: "Login gagal",
+        description: error.message || "Gagal login dengan Google",
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const signIn = async (email: string, password: string) => {
     try {
       setLoading(true);
       setError(null);
@@ -112,16 +140,20 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const register = async (email: string, password: string, name: string) => {
+    return signUp(email, password, { name });
+  };
+
+  const signUp = async (email: string, password: string, data?: Record<string, any>) => {
     try {
       setLoading(true);
       setError(null);
       
-      const { data, error } = await supabase.auth.signUp({
+      const { data: authData, error } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: {
-            name,
+            name: data?.name || '',
             role: 'user',
           },
         },
@@ -131,8 +163,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         throw error;
       }
       
-      if (data?.user) {
-        setUser(data.user);
+      if (authData?.user) {
+        setUser(authData.user);
         toast({
           title: "Registrasi berhasil!",
           description: "Akun Anda telah dibuat, silahkan cek email untuk verifikasi",
@@ -152,6 +184,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const logout = async () => {
+    return signOut();
+  };
+
+  const signOut = async () => {
     try {
       setError(null);
       const { error } = await supabase.auth.signOut();
@@ -176,6 +212,44 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       });
     }
   };
+  
+  const logoutFromAllDevices = async () => {
+    try {
+      setError(null);
+      const { error } = await supabase.auth.signOut({ scope: 'global' });
+      
+      if (error) {
+        throw error;
+      }
+      
+      setUser(null);
+      navigate('/');
+      toast({
+        title: "Logout berhasil",
+        description: "Anda telah keluar dari semua perangkat",
+      });
+    } catch (error: any) {
+      console.error('Global logout error:', error);
+      setError(error.message || 'Failed to logout from all devices');
+      toast({
+        variant: "destructive",
+        title: "Logout gagal",
+        description: error.message || "Gagal keluar dari semua perangkat",
+      });
+    }
+  };
+  
+  const updateSecurityLevel = (level: 'standard' | 'enhanced' | 'maximum') => {
+    if (user) {
+      const updatedUser = { ...user, securityLevel: level };
+      setUser(updatedUser as any);
+      
+      toast({
+        title: "Level keamanan diperbarui",
+        description: `Level keamanan akun telah diubah ke ${level}`,
+      });
+    }
+  };
 
   return (
     <AuthContext.Provider 
@@ -186,8 +260,15 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         login,
         register,
         logout,
+        signIn,
+        signUp,
+        signOut,
         isAuthenticated: !!user,
         checkSession,
+        checkPasswordStrength,
+        updateSecurityLevel,
+        logoutFromAllDevices,
+        loginWithGoogle,
       }}
     >
       {children}
