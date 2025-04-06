@@ -3,16 +3,17 @@ import React from "react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
-interface BlogProps {
+interface Blog {
   id: number;
   title: string;
   author: string;
   published: string;
   views: number;
+  status?: string;
 }
 
 interface BlogsTableProps {
-  blogs: BlogProps[];
+  blogs: Blog[];
 }
 
 const BlogsTable = ({ blogs }: BlogsTableProps) => {
