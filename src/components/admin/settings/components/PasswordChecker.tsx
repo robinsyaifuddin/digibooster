@@ -1,74 +1,98 @@
 
-import React, { useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
-import { Eye, EyeOff, Fingerprint } from 'lucide-react';
-import { useAuth } from '@/contexts/AuthContext';
+import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Progress } from "@/components/ui/progress";
+import { useAuth } from "@/contexts/AuthContext";
+import { useToast } from "@/hooks/use-toast";
 
-const PasswordChecker: React.FC = () => {
-  const [showPassword, setShowPassword] = useState(false);
-  const [password, setPassword] = useState('');
-  const { checkPasswordStrength } = useAuth();
-  const [passwordStrength, setPasswordStrength] = useState({ score: 0, feedback: '' });
+const PasswordChecker = () => {
+  const [password, setPassword] = useState("");
+  const [strength, setStrength] = useState({ score: 0, feedback: "" });
+  const auth = useAuth();
+  const { toast } = useToast();
 
-  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newPassword = e.target.value;
-    setPassword(newPassword);
-    setPasswordStrength(checkPasswordStrength(newPassword));
+  const checkPassword = () => {
+    if (!password) {
+      toast({
+        title: "Password kosong",
+        description: "Masukkan password untuk memeriksa kekuatannya",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    if (auth.checkPasswordStrength) {
+      const result = auth.checkPasswordStrength(password);
+      setStrength(result);
+    } else {
+      // Fallback simple check if function not available
+      let score = 0;
+      let feedback = "";
+      
+      if (password.length > 8) score++;
+      if (password.match(/[A-Z]/)) score++;
+      if (password.match(/[a-z]/)) score++;
+      if (password.match(/[0-9]/)) score++;
+      if (password.match(/[^A-Za-z0-9]/)) score++;
+      
+      if (score < 3) {
+        feedback = "Password terlalu lemah. Tambahkan huruf kapital, angka, dan simbol.";
+      } else if (score < 5) {
+        feedback = "Password cukup kuat, namun bisa ditingkatkan lagi.";
+      } else {
+        feedback = "Password sangat kuat!";
+      }
+      
+      setStrength({ score: score, feedback });
+    }
+  };
+
+  const getProgressColor = () => {
+    const score = strength.score;
+    if (score <= 2) return "bg-red-500";
+    if (score <= 3) return "bg-yellow-500";
+    return "bg-green-500";
   };
 
   return (
-    <div className="border rounded-md p-4">
-      <h4 className="font-medium flex items-center gap-2 mb-3">
-        <Fingerprint className="h-4 w-4 text-blue-600" />
-        Password Security Check
-      </h4>
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="password-check">Periksa Kekuatan Password</Label>
-          <div className="flex gap-2">
-            <Input
-              type={showPassword ? 'text' : 'password'}
-              id="password-check"
-              placeholder="Masukkan password untuk diperiksa"
-              value={password}
-              onChange={handlePasswordChange}
-            />
-            <Button
-              variant="outline"
-              size="icon"
-              onClick={() => setShowPassword(!showPassword)}
-            >
-              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </Button>
-          </div>
-        </div>
-        
-        {password && (
-          <div className="space-y-2">
-            <div className="flex justify-between text-sm">
-              <span>Kekuatan:</span>
-              <span className={`font-medium ${
-                passwordStrength.score <= 2 ? 'text-red-600' :
-                passwordStrength.score <= 4 ? 'text-amber-600' :
-                'text-green-600'
-              }`}>
-                {passwordStrength.score <= 2 ? 'Lemah' :
-                 passwordStrength.score <= 4 ? 'Sedang' : 'Kuat'}
-              </span>
-            </div>
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
-              <div className={`h-2.5 rounded-full ${
-                passwordStrength.score <= 2 ? 'bg-red-600' :
-                passwordStrength.score <= 4 ? 'bg-amber-500' :
-                'bg-green-600'
-              }`} style={{ width: `${Math.min(passwordStrength.score * 16.6, 100)}%` }}></div>
-            </div>
-            <p className="text-xs text-gray-600">{passwordStrength.feedback}</p>
-          </div>
-        )}
+    <div className="space-y-4">
+      <h3 className="text-lg font-medium">Pemeriksa Password</h3>
+      <p className="text-sm text-muted-foreground">
+        Periksa kekuatan password untuk memastikan keamanan
+      </p>
+      
+      <div className="flex space-x-2">
+        <Input
+          type="password"
+          placeholder="Masukkan password untuk diperiksa"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="bg-dark-300 border-dark-400 text-white"
+        />
+        <Button 
+          onClick={checkPassword}
+          className="bg-neon-purple hover:bg-neon-violet text-white"
+        >
+          Periksa
+        </Button>
       </div>
+      
+      {strength.score > 0 && (
+        <div className="space-y-2">
+          <div className="flex justify-between items-center">
+            <span className="text-sm">Kekuatan:</span>
+            <span className="text-sm font-medium">
+              {strength.score <= 2 ? "Lemah" : strength.score <= 3 ? "Sedang" : "Kuat"}
+            </span>
+          </div>
+          <Progress 
+            value={strength.score * 20} 
+            className={`h-2 ${getProgressColor()}`} 
+          />
+          <p className="text-sm mt-1">{strength.feedback}</p>
+        </div>
+      )}
     </div>
   );
 };

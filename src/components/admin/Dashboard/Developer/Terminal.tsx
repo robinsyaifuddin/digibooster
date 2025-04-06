@@ -1,230 +1,171 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
-import { X, Terminal as TerminalIcon, Copy, Trash2, CheckCheck } from 'lucide-react';
-import { supabase } from '@/integrations/supabase/client';
-import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Code, Play, RotateCcw, Download } from 'lucide-react';
 
-const Terminal = () => {
-  const [command, setCommand] = useState('');
-  const [history, setHistory] = useState<Array<{type: 'command' | 'response', content: string, timestamp: Date}>>([
-    {type: 'response', content: 'DigiBooster Development Terminal', timestamp: new Date()},
-    {type: 'response', content: 'Type "help" to see available commands', timestamp: new Date()}
+type CommandType = "command" | "response";
+
+interface TerminalLine {
+  type: CommandType;
+  content: string;
+  timestamp: Date;
+}
+
+const Terminal: React.FC = () => {
+  const [command, setCommand] = useState<string>("");
+  const [history, setHistory] = useState<TerminalLine[]>([
+    { type: "response", content: "DigiBooster CLI v1.0.0", timestamp: new Date() },
+    { type: "response", content: "Type 'help' to see available commands", timestamp: new Date() }
   ]);
-  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
-  const scrollAreaRef = useRef<HTMLDivElement>(null);
-  const { toast } = useToast();
-
+  
+  const terminalRef = useRef<HTMLDivElement>(null);
+  
+  // Scroll to bottom when history changes
   useEffect(() => {
-    if (scrollAreaRef.current) {
-      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
+    if (terminalRef.current) {
+      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
     }
   }, [history]);
-
-  const handleSubmit = async (e: React.FormEvent) => {
+  
+  const handleCommand = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!command.trim()) return;
-
+    
+    if (command.trim() === "") return;
+    
     // Add command to history
-    const newHistory = [...history, {type: 'command', content: command, timestamp: new Date()}];
-    setHistory(newHistory);
-
+    const newHistory: TerminalLine[] = [
+      ...history,
+      { type: "command", content: command, timestamp: new Date() }
+    ];
+    
     // Process command
-    const response = await processCommand(command);
+    let response: string = "";
+    const lowerCmd = command.toLowerCase().trim();
+    
+    if (lowerCmd === "help") {
+      response = `
+Available commands:
+  - help: Show this help message
+  - clear: Clear terminal
+  - status: Check system status
+  - version: Show version information
+  - deploy: Simulate deploy process
+  - user list: List sample users
+  - api test: Test API connection
+`;
+    } else if (lowerCmd === "clear") {
+      setHistory([]);
+      setCommand("");
+      return;
+    } else if (lowerCmd === "status") {
+      response = "All systems operational: Database ✅ | API ✅ | Storage ✅ | Authentication ✅";
+    } else if (lowerCmd === "version") {
+      response = "DigiBooster CLI v1.0.0 | Core: v2.3.4 | API: v1.2.0 | Database: v5.1.2";
+    } else if (lowerCmd === "deploy") {
+      response = "Starting deployment process...\nBuilding project...\nOptimizing assets...\nUploading files...\nDeployment successful! Site is now live.";
+    } else if (lowerCmd === "user list") {
+      response = "Users:\n - admin@example.com (Admin)\n - user1@example.com (User)\n - user2@example.com (User)\n - moderator@example.com (Moderator)";
+    } else if (lowerCmd === "api test") {
+      response = "Testing API connection...\nEndpoints available:\n - /api/users ✅\n - /api/content ✅\n - /api/analytics ✅\n - /api/settings ✅";
+    } else {
+      response = `Command not recognized: '${command}'. Type 'help' to see available commands.`;
+    }
     
     // Add response to history
-    setHistory([...newHistory, {type: 'response', content: response, timestamp: new Date()}]);
+    newHistory.push({
+      type: "response",
+      content: response,
+      timestamp: new Date()
+    });
     
-    // Clear command input
-    setCommand('');
-  };
-  
-  const handleCopy = (index: number) => {
-    const item = history[index];
-    navigator.clipboard.writeText(item.content);
-    setCopiedIndex(index);
-    setTimeout(() => setCopiedIndex(null), 2000);
+    setHistory(newHistory);
+    setCommand("");
   };
   
   const clearTerminal = () => {
-    setHistory([
-      {type: 'response', content: 'Terminal cleared', timestamp: new Date()}
-    ]);
-    toast({
-      description: "Terminal history cleared"
-    });
+    setHistory([]);
   };
-
-  // Process terminal commands
-  const processCommand = async (cmd: string): Promise<string> => {
-    const tokens = cmd.split(' ');
-    const baseCommand = tokens[0].toLowerCase();
-
-    try {
-      switch (baseCommand) {
-        case 'help':
-          return `
-Available commands:
-- help                      Show this help message
-- status                    Check the status of services
-- version                   Show current version
-- clear                     Clear the terminal
-- test [service]           Test connection to a service (e.g. test database)
-- query [sql]              Run a SQL query (e.g. query SELECT * FROM users LIMIT 10)
-- info                     Show system information`;
-          
-        case 'status':
-          const { data: statusData, error: statusError } = await supabase
-            .from('system_status')
-            .select('*')
-            .limit(1);
-          
-          if (statusError) return `Error: ${statusError.message}`;
-          return `System status: ${statusData?.length ? JSON.stringify(statusData[0], null, 2) : 'No status data found'}`;
-          
-        case 'version':
-          return `DigiBooster v1.0.0`;
-          
-        case 'clear':
-          // This is handled separately in the UI
-          return `Terminal cleared`;
-          
-        case 'test':
-          if (tokens.length < 2) return 'Usage: test [service]';
-          
-          const service = tokens[1].toLowerCase();
-          if (service === 'database') {
-            const { data: testData, error: testError } = await supabase
-              .from('test_connection')
-              .select('*')
-              .limit(1);
-            
-            if (testError) return `Database connection test failed: ${testError.message}`;
-            return 'Database connection successful';
-          }
-          
-          return `Unknown service: ${service}`;
-          
-        case 'query':
-          if (tokens.length < 2) return 'Usage: query [sql]';
-          
-          const sql = cmd.substring(cmd.indexOf(' ') + 1);
-          try {
-            const { data: queryData, error: queryError } = await supabase.rpc('run_query', {
-              query_text: sql
-            });
-            
-            if (queryError) return `Query error: ${queryError.message}`;
-            return `Query result: ${JSON.stringify(queryData, null, 2)}`;
-          } catch (err: any) {
-            return `Failed to execute query: ${err.message}`;
-          }
-          
-        case 'info':
-          const authSessionUrl = await supabase.auth.getSession();
-          
-          return `
-System information:
-- Node version: ${process.env.NODE_ENV}
-- Browser: ${navigator.userAgent}
-- Auth status: ${authSessionUrl ? 'Authenticated' : 'Not authenticated'}
-- Date: ${new Date().toISOString()}`;
-          
-        default:
-          return `Unknown command: ${baseCommand}. Type "help" to see available commands.`;
-      }
-    } catch (error: any) {
-      return `Error executing command: ${error.message}`;
-    }
+  
+  const downloadHistory = () => {
+    const historyText = history
+      .map(line => `[${line.timestamp.toLocaleTimeString()}] ${line.type === "command" ? ">" : ""} ${line.content}`)
+      .join("\n\n");
+    
+    const blob = new Blob([historyText], { type: "text/plain" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `terminal-history-${new Date().toISOString().split("T")[0]}.txt`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   };
-
+  
+  const runDemoCommand = () => {
+    setCommand("status");
+    setTimeout(() => {
+      handleCommand({ preventDefault: () => {} } as React.FormEvent);
+    }, 100);
+  };
+  
   return (
-    <Card className="bg-dark-200 border-dark-300 shadow">
-      <CardHeader className="flex flex-row items-center justify-between">
-        <div>
-          <CardTitle className="text-lg flex items-center text-white">
-            <TerminalIcon className="mr-2 h-5 w-5 text-neon-purple" />
-            Terminal
-          </CardTitle>
-          <CardDescription className="text-gray-400">
-            Run commands and view responses
-          </CardDescription>
+    <Card className="border border-dark-300 bg-dark-200 shadow-lg overflow-hidden">
+      <CardHeader className="bg-dark-300 border-b border-dark-400 px-4 py-2 flex flex-row items-center justify-between">
+        <CardTitle className="text-sm font-medium text-white flex items-center">
+          <Code size={16} className="mr-2 text-neon-purple" />
+          Developer Terminal
+        </CardTitle>
+        <div className="flex space-x-1">
+          <Button variant="ghost" size="icon" className="h-6 w-6" onClick={runDemoCommand}>
+            <Play size={12} className="text-neon-purple" />
+          </Button>
+          <Button variant="ghost" size="icon" className="h-6 w-6" onClick={clearTerminal}>
+            <RotateCcw size={12} className="text-gray-400" />
+          </Button>
+          <Button variant="ghost" size="icon" className="h-6 w-6" onClick={downloadHistory}>
+            <Download size={12} className="text-gray-400" />
+          </Button>
         </div>
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                onClick={clearTerminal} 
-                className="text-gray-400 hover:text-white hover:bg-dark-300"
-              >
-                <Trash2 className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Clear terminal</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
       </CardHeader>
-      <CardContent className="space-y-4">
-        <ScrollArea ref={scrollAreaRef} className="h-[400px] border border-dark-300 rounded-md p-4 bg-dark-300 font-mono text-sm">
-          <div className="space-y-2">
-            {history.map((item, index) => (
-              <div key={index} className="flex items-start group">
-                <div className="flex-1">
-                  {item.type === 'command' ? (
-                    <div className="flex items-center">
-                      <span className="text-neon-purple mr-2">$</span>
-                      <span className="text-white">{item.content}</span>
-                    </div>
-                  ) : (
-                    <div className="text-gray-400 whitespace-pre-wrap pl-4 border-l-2 border-dark-400 ml-[0.4rem]">
-                      {item.content}
-                    </div>
-                  )}
-                  <div className="text-[10px] text-gray-500 mt-1">
-                    {item.timestamp.toLocaleTimeString()}
-                  </div>
-                </div>
-                <button 
-                  onClick={() => handleCopy(index)} 
-                  className="opacity-0 group-hover:opacity-100 p-1 hover:bg-dark-400 rounded transition-all ml-2"
+      <CardContent className="p-0">
+        <div 
+          ref={terminalRef}
+          className="bg-black/90 font-mono text-xs text-gray-300 p-3 h-64 overflow-y-auto"
+        >
+          {history.map((line, index) => (
+            <div key={index} className="mb-2">
+              <div className="flex items-start">
+                <span className="text-gray-500 mr-2">{line.timestamp.toLocaleTimeString()}</span>
+                {line.type === "command" && <span className="text-neon-purple mr-1">❯</span>}
+                {line.type === "response" && <span className="text-green-500 mr-1">➤</span>}
+                <span 
+                  className={line.type === "command" ? "text-white" : "text-gray-300"}
+                  style={{ whiteSpace: "pre-wrap" }}
                 >
-                  {copiedIndex === index ? (
-                    <CheckCheck className="h-3 w-3 text-green-500" />
-                  ) : (
-                    <Copy className="h-3 w-3 text-gray-400" />
-                  )}
-                </button>
+                  {line.content}
+                </span>
               </div>
-            ))}
-          </div>
-        </ScrollArea>
-        
-        <form onSubmit={handleSubmit} className="flex space-x-2">
-          <div className="relative flex-1">
-            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-neon-purple">
-              $
-            </span>
-            <Input
-              type="text"
-              value={command}
-              onChange={(e) => setCommand(e.target.value)}
-              placeholder="Type a command..."
-              className="pl-6 bg-dark-300 border-dark-400 text-white focus:border-neon-purple"
-            />
-          </div>
-          <Button type="submit" className="bg-neon-purple hover:bg-neon-violet text-white">
-            Run
+            </div>
+          ))}
+        </div>
+      </CardContent>
+      <CardFooter className="bg-dark-300 border-t border-dark-400 p-2">
+        <form onSubmit={handleCommand} className="w-full flex">
+          <span className="text-neon-purple mr-2 font-mono mt-2">❯</span>
+          <Input
+            value={command}
+            onChange={(e) => setCommand(e.target.value)}
+            placeholder="Type a command (try 'help')"
+            className="flex-1 bg-dark-300 border-dark-400 text-white focus:border-neon-purple font-mono text-xs"
+          />
+          <Button type="submit" size="sm" className="ml-2 bg-neon-purple hover:bg-neon-violet text-white">
+            Execute
           </Button>
         </form>
-      </CardContent>
+      </CardFooter>
     </Card>
   );
 };

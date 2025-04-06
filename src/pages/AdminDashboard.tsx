@@ -186,7 +186,9 @@ const AdminDashboard = () => {
           {activeTab === 'content' && <ContentManagement blogs={recentBlogs} />}
           
           {/* Services Development tab (for publishing) */}
-          {activeTab === 'services' && <ServicesDevelopment onTabChange={handleTabChange} />}
+          {activeTab === 'services' && (
+            <ServicesDevelopment onTabChange={handleTabChange} />
+          )}
           
           {/* Website Settings */}
           {activeTab === 'settings' && <WebsiteSettings />}

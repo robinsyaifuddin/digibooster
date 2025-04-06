@@ -15,11 +15,13 @@ import SecurityRecommendation from './components/SecurityRecommendation';
 import ActiveSessions from './components/ActiveSessions';
 
 const SecuritySettings: React.FC = () => {
-  const { user, updateSecurityLevel, logoutFromAllDevices } = useAuth();
+  const auth = useAuth();
   const [activeTab, setActiveTab] = useState('general');
-  
+
   const handleSecurityLevelChange = (level: 'standard' | 'enhanced' | 'maximum') => {
-    updateSecurityLevel(level);
+    if (auth.updateSecurityLevel) {
+      auth.updateSecurityLevel(level);
+    }
   };
 
   return (
@@ -45,7 +47,7 @@ const SecuritySettings: React.FC = () => {
         </CardHeader>
         <CardContent>
           <SecurityLevelSelector 
-            currentLevel={user?.securityLevel || 'standard'} 
+            currentLevel={(auth.user as any)?.securityLevel || 'standard'} 
             onChange={handleSecurityLevelChange} 
           />
         </CardContent>
