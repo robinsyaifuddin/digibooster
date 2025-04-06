@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -11,6 +10,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import SplashScreen from "./components/SplashScreen";
 import { useSplashScreen } from "./contexts/SplashScreenContext";
+import React from 'react';
 
 // Pages
 import Beranda from "./pages/Beranda";
@@ -60,141 +60,141 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false,
-      retry: 1,
+// Create QueryClient instance inside the component
+const App = () => {
+  // Create a new QueryClient instance inside the component body
+  const queryClient = React.useMemo(() => new QueryClient({
+    defaultOptions: {
+      queries: {
+        refetchOnWindowFocus: false,
+        retry: 1,
+      },
     },
-  },
-});
+  }), []);
 
-const App = () => (
-  <QueryClientProvider client={queryClient}>
-    <AuthProvider>
-      <TooltipProvider>
-        <HomeContentProvider>
-          <SplashScreenProvider>
-            <Toaster />
-            <Sonner />
-            <Routes>
-              {/* Pages with Navbar and Footer */}
-              <Route
-                path="/"
-                element={
-                  <Layout>
-                    <HomeWithSplash />
-                  </Layout>
-                }
-              />
-              
-              <Route
-                path="/blog"
-                element={
-                  <Layout>
-                    <Blog />
-                  </Layout>
-                }
-              />
-              
-              {/* Program Pages */}
-              <Route
-                path="/program/jasa-digital"
-                element={
-                  <Layout>
-                    <JasaDigital />
-                  </Layout>
-                }
-              />
-              
-              <Route
-                path="/program/motivasi-edukasi"
-                element={
-                  <Layout>
-                    <MotivasiEdukasi />
-                  </Layout>
-                }
-              />
-              
-              <Route
-                path="/program/sharing-konsultasi"
-                element={
-                  <Layout>
-                    <SharingKonsultasi />
-                  </Layout>
-                }
-              />
-              
-              <Route
-                path="/program/kelas"
-                element={
-                  <Layout>
-                    <Kelas />
-                  </Layout>
-                }
-              />
-              
-              <Route
-                path="/portofolio"
-                element={
-                  <Layout>
-                    <Portofolio />
-                  </Layout>
-                }
-              />
-              
-              <Route
-                path="/tentang"
-                element={
-                  <Layout>
-                    <Tentang />
-                  </Layout>
-                }
-              />
-              
-              {/* Auth pages without Navbar and Footer */}
-              <Route
-                path="/login"
-                element={
-                  <AuthLayout>
-                    <Login />
-                  </AuthLayout>
-                }
-              />
-              <Route
-                path="/register"
-                element={
-                  <AuthLayout>
-                    <Register />
-                  </AuthLayout>
-                }
-              />
-              
-              {/* Admin Dashboard */}
-              <Route
-                path="/admin/*"
-                element={
-                  <AuthLayout>
-                    <AdminDashboard />
-                  </AuthLayout>
-                }
-              />
-              
-              {/* 404 page with Navbar and Footer */}
-              <Route
-                path="*"
-                element={
-                  <Layout>
-                    <NotFound />
-                  </Layout>
-                }
-              />
-            </Routes>
-          </SplashScreenProvider>
-        </HomeContentProvider>
-      </TooltipProvider>
-    </AuthProvider>
-  </QueryClientProvider>
-);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <TooltipProvider>
+          <HomeContentProvider>
+            <SplashScreenProvider>
+              <Toaster />
+              <Sonner />
+              <Routes>
+                {/* Pages with Navbar and Footer */}
+                <Route
+                  path="/"
+                  element={
+                    <Layout>
+                      <HomeWithSplash />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/blog"
+                  element={
+                    <Layout>
+                      <Blog />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/program/jasa-digital"
+                  element={
+                    <Layout>
+                      <JasaDigital />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/program/motivasi-edukasi"
+                  element={
+                    <Layout>
+                      <MotivasiEdukasi />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/program/sharing-konsultasi"
+                  element={
+                    <Layout>
+                      <SharingKonsultasi />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/program/kelas"
+                  element={
+                    <Layout>
+                      <Kelas />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/portofolio"
+                  element={
+                    <Layout>
+                      <Portofolio />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/tentang"
+                  element={
+                    <Layout>
+                      <Tentang />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/login"
+                  element={
+                    <AuthLayout>
+                      <Login />
+                    </AuthLayout>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <AuthLayout>
+                      <Register />
+                    </AuthLayout>
+                  }
+                />
+                
+                <Route
+                  path="/admin/*"
+                  element={
+                    <AuthLayout>
+                      <AdminDashboard />
+                    </AuthLayout>
+                  }
+                />
+                
+                <Route
+                  path="*"
+                  element={
+                    <Layout>
+                      <NotFound />
+                    </Layout>
+                  }
+                />
+              </Routes>
+            </SplashScreenProvider>
+          </HomeContentProvider>
+        </TooltipProvider>
+      </AuthProvider>
+    </QueryClientProvider>
+  );
+};
 
 export default App;

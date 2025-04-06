@@ -46,7 +46,7 @@ const SplashScreen = ({ duration = 3000 }: SplashScreenProps) => {
             {[...Array(20)].map((_, i) => (
               <motion.div
                 key={`smoke-${i}`}
-                className="absolute rounded-full bg-gray-900/40 backdrop-blur-sm"
+                className="absolute rounded-full smoke-particle"
                 style={{
                   width: Math.random() * 300 + 100,
                   height: Math.random() * 300 + 100,

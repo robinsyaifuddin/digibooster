@@ -3,7 +3,8 @@ import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
 import './styles/splash.css' // Import gaya splash screen
-import { StrictMode, useEffect } from 'react'
+import React from 'react' // Explicitly import React
+import { StrictMode } from 'react'
 import { BrowserRouter } from 'react-router-dom'
 import { HelmetProvider } from 'react-helmet-async'
 import { initScrollEffects, initIntersectionObserver } from './utils/scrollEffects.ts'
@@ -13,7 +14,8 @@ document.documentElement.classList.add('dark');
 
 // Initialize scroll effects
 const AppWithEffects = () => {
-  useEffect(() => {
+  // Use React hooks inside a functional component
+  React.useEffect(() => {
     // Initialize scroll effects
     const cleanupScrollEffects = initScrollEffects();
     
