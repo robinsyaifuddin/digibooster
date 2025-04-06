@@ -17,7 +17,7 @@ const PublishButton = ({ isPublishing, onClick, isRealImplementation = false }: 
           <Button 
             onClick={onClick}
             disabled={isPublishing}
-            className="bg-green-600 hover:bg-green-700"
+            className="bg-neon-cyan hover:bg-neon-cyan/90 text-dark-900 font-medium"
           >
             {isPublishing ? (
               <>
@@ -32,7 +32,7 @@ const PublishButton = ({ isPublishing, onClick, isRealImplementation = false }: 
             )}
           </Button>
         </TooltipTrigger>
-        <TooltipContent className="bg-amber-50 border-amber-200 text-amber-800 max-w-xs">
+        <TooltipContent className="bg-dark-200 border-neon-cyan/20 text-gray-300 max-w-xs">
           <p className="text-xs">
             {isRealImplementation 
               ? "Perubahan akan disimpan di database dan dipublikasikan ke website sebenarnya."

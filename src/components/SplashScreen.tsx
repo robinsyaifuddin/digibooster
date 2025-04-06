@@ -60,7 +60,7 @@ const SplashScreen = ({ duration = 1500 }: SplashScreenProps) => {
             animate={{ opacity: 1 }}
             transition={{ delay: 0.2 }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-neon-purple glow-text">
+            <h1 className="text-4xl md:text-5xl font-bold text-neon-cyan glow-text">
               DigiBooster
             </h1>
             <p className="text-gray-300 mt-2">Transformasi Digital Untuk Semua</p>

@@ -90,7 +90,7 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
       {[...Array(10)].map((_, i) => (
         <motion.div 
           key={`v-line-${i}`}
-          className="absolute w-[1px] bg-neon-blue/20 h-full top-0"
+          className="absolute w-[1px] bg-neon-cyan/20 h-full top-0"
           style={{ left: `${i * 10}%` }}
           animate={{ 
             opacity: [0.1, 0.3, 0.1],
@@ -190,7 +190,7 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
       <DataCircuit />
       
       <div className="absolute top-20 right-0 w-64 h-64 bg-neon-cyan rounded-full filter blur-[100px] opacity-10 animate-pulse z-0"></div>
-      <div className="absolute bottom-20 left-0 w-80 h-80 bg-neon-blue rounded-full filter blur-[100px] opacity-10 animate-pulse z-0"></div>
+      <div className="absolute bottom-20 left-0 w-80 h-80 bg-neon-cyan rounded-full filter blur-[100px] opacity-10 animate-pulse z-0"></div>
       
       <div className="container mx-auto px-4 relative z-10 pt-6 md:pt-12">
         <motion.div 
@@ -212,7 +212,7 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
             <span className="block mb-2 text-white">
               {displayTitle.split('with')[0]}
             </span>
-            <span className="neon-text bg-gradient-to-r from-neon-cyan to-neon-blue">
+            <span className="neon-text bg-gradient-to-r from-neon-cyan to-neon-cyan">
               with <span className="text-neon-cyan">DigiBooster</span>
             </span>
           </motion.h1>
@@ -229,7 +229,7 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
             variants={fadeIn}
           >
             <Link to={displayCtaLink}>
-              <Button size="lg" className="bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-white border-none shadow-lg shadow-neon-cyan/20 group">
+              <Button size="lg" className="bg-gradient-to-r from-neon-cyan to-neon-cyan hover:from-neon-cyan/90 hover:to-neon-cyan/90 text-dark-900 font-medium border-none shadow-lg shadow-neon-cyan/20 group">
                 {displayCtaText}
                 <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
               </Button>
