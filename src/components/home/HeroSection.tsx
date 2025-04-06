@@ -235,7 +235,9 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
             className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
             variants={fadeIn}
           >
-            <span className="block mb-2 text-white">{displayTitle.split('with')[0]}</span>
+            <span className="block mb-2 text-white">
+              {displayTitle.split('with')[0]}
+            </span>
             <span className="neon-text bg-gradient-to-r from-neon-purple to-neon-pink">
               with <span className="text-neon-purple">DigiBooster</span>
             </span>

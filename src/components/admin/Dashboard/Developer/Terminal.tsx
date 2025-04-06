@@ -1,329 +1,231 @@
+
 import React, { useState, useRef, useEffect } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardDescription, CardFooter } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { AlertCircle, Terminal as TerminalIcon, Copy, Download, Trash2 } from 'lucide-react';
-import { Badge } from "@/components/ui/badge";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { useToast } from "@/hooks/use-toast";
-import { supabase } from "@/integrations/supabase/client";
-import { useImplementationSettings } from "@/hooks/useImplementationSettings";
-
-type ValidTable = 'profiles' | 'pages' | 'website_content' | 'publish_history';
-
-interface CommandResponse {
-  type: 'input' | 'output' | 'error';
-  content: string;
-  timestamp: string;
-}
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { X, Terminal as TerminalIcon, Copy, Trash2, CheckCheck } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
 
 const Terminal = () => {
-  const { toast } = useToast();
-  const { isRealImplementation } = useImplementationSettings();
-  const [command, setCommand] = useState("");
-  const [history, setHistory] = useState<CommandResponse[]>([
-    { 
-      type: 'output', 
-      content: 'DigiBooster Terminal v1.0\nKetik "help" untuk melihat daftar perintah yang tersedia.', 
-      timestamp: new Date().toLocaleTimeString()
-    }
+  const [command, setCommand] = useState('');
+  const [history, setHistory] = useState<Array<{type: 'command' | 'response', content: string, timestamp: Date}>>([
+    {type: 'response', content: 'DigiBooster Development Terminal', timestamp: new Date()},
+    {type: 'response', content: 'Type "help" to see available commands', timestamp: new Date()}
   ]);
-  const [historyIndex, setHistoryIndex] = useState(-1);
-  const [commandHistory, setCommandHistory] = useState<string[]>([]);
-  const terminalRef = useRef<HTMLDivElement>(null);
+  const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
+  const scrollAreaRef = useRef<HTMLDivElement>(null);
+  const { toast } = useToast();
 
   useEffect(() => {
-    if (terminalRef.current) {
-      terminalRef.current.scrollTop = terminalRef.current.scrollHeight;
+    if (scrollAreaRef.current) {
+      scrollAreaRef.current.scrollTop = scrollAreaRef.current.scrollHeight;
     }
   }, [history]);
 
-  const executeCommand = async () => {
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
     if (!command.trim()) return;
-    
-    const timestamp = new Date().toLocaleTimeString();
-    const newCommandEntry: CommandResponse = {
-      type: 'input',
-      content: `$ ${command}`,
-      timestamp
-    };
-    
-    // Add command to history array
-    const newCommandHistory = [command, ...commandHistory.slice(0, 9)];
-    setCommandHistory(newCommandHistory);
-    setHistoryIndex(-1);
-    
+
+    // Add command to history
+    const newHistory = [...history, {type: 'command', content: command, timestamp: new Date()}];
+    setHistory(newHistory);
+
     // Process command
-    let responseEntry: CommandResponse;
+    const response = await processCommand(command);
     
-    try {
-      if (command.toLowerCase() === 'help') {
-        responseEntry = {
-          type: 'output',
-          content: `Perintah yang tersedia:
-- help: Menampilkan bantuan
-- clear: Membersihkan terminal
-- status: Cek status koneksi database
-- tables: Daftar tabel database
-- count [table_name]: Hitung jumlah baris dalam tabel
-- version: Tampilkan versi sistem`,
-          timestamp
-        };
-      } else if (command.toLowerCase() === 'clear') {
-        setHistory([]);
-        setCommand("");
-        return;
-      } else if (command.toLowerCase() === 'status') {
-        if (!isRealImplementation) {
-          responseEntry = {
-            type: 'error',
-            content: 'Error: Mode simulasi aktif. Koneksi database tidak tersedia.',
-            timestamp
-          };
-        } else {
-          const startTime = performance.now();
-          const { data, error } = await supabase.from('website_content').select('id').limit(1);
-          const endTime = performance.now();
-          
-          if (error) {
-            responseEntry = {
-              type: 'error',
-              content: `Error: ${error.message}`,
-              timestamp
-            };
-          } else {
-            const supabaseApiUrl = new URL(supabase.getAuthApiBaseUrl());
-            responseEntry = {
-              type: 'output',
-              content: `Status koneksi: OK
-Latency: ${Math.round(endTime - startTime)}ms
-Database URL: ${supabaseApiUrl.hostname || 'tidak tersedia'}
-Mode: ${isRealImplementation ? 'Live Implementation' : 'Simulation'}`,
-              timestamp
-            };
-          }
-        }
-      } else if (command.toLowerCase() === 'tables') {
-        if (!isRealImplementation) {
-          responseEntry = {
-            type: 'error',
-            content: 'Error: Mode simulasi aktif. Daftar tabel tidak tersedia.',
-            timestamp
-          };
-        } else {
-          responseEntry = {
-            type: 'output',
-            content: `Tabel tersedia:
-- profiles
-- pages
-- publish_history
-- website_content`,
-            timestamp
-          };
-        }
-      } else if (command.toLowerCase().startsWith('count')) {
-        if (!isRealImplementation) {
-          responseEntry = {
-            type: 'error',
-            content: 'Error: Mode simulasi aktif. Count tidak tersedia.',
-            timestamp
-          };
-        } else {
-          const args = command.split(' ');
-          if (args.length < 2) {
-            responseEntry = {
-              type: 'error',
-              content: 'Error: Format perintah: count [table_name]',
-              timestamp
-            };
-          } else {
-            const tableName = args[1];
-            const validTables: ValidTable[] = ['profiles', 'pages', 'publish_history', 'website_content'];
-            
-            if (!validTables.includes(tableName as ValidTable)) {
-              responseEntry = {
-                type: 'error',
-                content: `Error: Tabel "${tableName}" tidak valid. Tabel yang tersedia: ${validTables.join(', ')}`,
-                timestamp
-              };
-            } else {
-              try {
-                const { count, error } = await supabase
-                  .from(tableName as ValidTable)
-                  .select('*', { count: 'exact', head: true });
-                
-                if (error) {
-                  responseEntry = {
-                    type: 'error',
-                    content: `Error: ${error.message}`,
-                    timestamp
-                  };
-                } else {
-                  responseEntry = {
-                    type: 'output',
-                    content: `Tabel ${tableName} memiliki ${count} baris.`,
-                    timestamp
-                  };
-                }
-              } catch (error) {
-                responseEntry = {
-                  type: 'error',
-                  content: `Error: ${error.message}`,
-                  timestamp
-                };
-              }
-            }
-          }
-        }
-      } else if (command.toLowerCase() === 'version') {
-        responseEntry = {
-          type: 'output',
-          content: `DigiBooster Admin v1.0
-Database Client: Supabase JS v2.x
-Implementasi: ${isRealImplementation ? 'Nyata' : 'Simulasi'}
-Build Date: 2025-03-31`,
-          timestamp
-        };
-      } else {
-        responseEntry = {
-          type: 'error',
-          content: `Perintah tidak dikenal: ${command}
-Ketik "help" untuk melihat daftar perintah yang tersedia.`,
-          timestamp
-        };
-      }
-    } catch (error) {
-      responseEntry = {
-        type: 'error',
-        content: `Error: ${error.message}`,
-        timestamp
-      };
-    }
+    // Add response to history
+    setHistory([...newHistory, {type: 'response', content: response, timestamp: new Date()}]);
     
-    setHistory(prev => [...prev, newCommandEntry, responseEntry]);
-    setCommand("");
+    // Clear command input
+    setCommand('');
   };
-
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      executeCommand();
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      if (commandHistory.length > 0) {
-        const newIndex = Math.min(historyIndex + 1, commandHistory.length - 1);
-        setHistoryIndex(newIndex);
-        setCommand(commandHistory[newIndex]);
-      }
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      if (historyIndex > 0) {
-        const newIndex = historyIndex - 1;
-        setHistoryIndex(newIndex);
-        setCommand(commandHistory[newIndex]);
-      } else if (historyIndex === 0) {
-        setHistoryIndex(-1);
-        setCommand('');
-      }
-    }
+  
+  const handleCopy = (index: number) => {
+    const item = history[index];
+    navigator.clipboard.writeText(item.content);
+    setCopiedIndex(index);
+    setTimeout(() => setCopiedIndex(null), 2000);
   };
-
-  const copyToClipboard = () => {
-    const textContent = history.map(entry => 
-      `[${entry.timestamp}] ${entry.content}`
-    ).join('\n');
-    
-    navigator.clipboard.writeText(textContent);
+  
+  const clearTerminal = () => {
+    setHistory([
+      {type: 'response', content: 'Terminal cleared', timestamp: new Date()}
+    ]);
     toast({
-      title: "Log disalin ke clipboard",
-      description: "Seluruh isi terminal telah disalin ke clipboard",
+      description: "Terminal history cleared"
     });
   };
 
-  const clearTerminal = () => {
-    setHistory([{
-      type: 'output', 
-      content: 'Terminal dibersihkan', 
-      timestamp: new Date().toLocaleTimeString()
-    }]);
+  // Process terminal commands
+  const processCommand = async (cmd: string): Promise<string> => {
+    const tokens = cmd.split(' ');
+    const baseCommand = tokens[0].toLowerCase();
+
+    try {
+      switch (baseCommand) {
+        case 'help':
+          return `
+Available commands:
+- help                      Show this help message
+- status                    Check the status of services
+- version                   Show current version
+- clear                     Clear the terminal
+- test [service]           Test connection to a service (e.g. test database)
+- query [sql]              Run a SQL query (e.g. query SELECT * FROM users LIMIT 10)
+- info                     Show system information`;
+          
+        case 'status':
+          const { data: statusData, error: statusError } = await supabase
+            .from('system_status')
+            .select('*')
+            .limit(1);
+          
+          if (statusError) return `Error: ${statusError.message}`;
+          return `System status: ${statusData?.length ? JSON.stringify(statusData[0], null, 2) : 'No status data found'}`;
+          
+        case 'version':
+          return `DigiBooster v1.0.0`;
+          
+        case 'clear':
+          // This is handled separately in the UI
+          return `Terminal cleared`;
+          
+        case 'test':
+          if (tokens.length < 2) return 'Usage: test [service]';
+          
+          const service = tokens[1].toLowerCase();
+          if (service === 'database') {
+            const { data: testData, error: testError } = await supabase
+              .from('test_connection')
+              .select('*')
+              .limit(1);
+            
+            if (testError) return `Database connection test failed: ${testError.message}`;
+            return 'Database connection successful';
+          }
+          
+          return `Unknown service: ${service}`;
+          
+        case 'query':
+          if (tokens.length < 2) return 'Usage: query [sql]';
+          
+          const sql = cmd.substring(cmd.indexOf(' ') + 1);
+          try {
+            const { data: queryData, error: queryError } = await supabase.rpc('run_query', {
+              query_text: sql
+            });
+            
+            if (queryError) return `Query error: ${queryError.message}`;
+            return `Query result: ${JSON.stringify(queryData, null, 2)}`;
+          } catch (err: any) {
+            return `Failed to execute query: ${err.message}`;
+          }
+          
+        case 'info':
+          const authSessionUrl = await supabase.auth.getSession();
+          
+          return `
+System information:
+- Node version: ${process.env.NODE_ENV}
+- Browser: ${navigator.userAgent}
+- Auth status: ${authSessionUrl ? 'Authenticated' : 'Not authenticated'}
+- Date: ${new Date().toISOString()}`;
+          
+        default:
+          return `Unknown command: ${baseCommand}. Type "help" to see available commands.`;
+      }
+    } catch (error: any) {
+      return `Error executing command: ${error.message}`;
+    }
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <Card className="bg-dark-200 border-dark-300 shadow">
+      <CardHeader className="flex flex-row items-center justify-between">
         <div>
-          <h2 className="text-2xl font-bold">Terminal</h2>
-          <p className="text-muted-foreground">
-            Terminal untuk manajemen dan analisis database
-          </p>
+          <CardTitle className="text-lg flex items-center text-white">
+            <TerminalIcon className="mr-2 h-5 w-5 text-neon-purple" />
+            Terminal
+          </CardTitle>
+          <CardDescription className="text-gray-400">
+            Run commands and view responses
+          </CardDescription>
         </div>
-        <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="gap-2" onClick={copyToClipboard}>
-            <Copy className="h-4 w-4" />
-            <span>Copy</span>
-          </Button>
-          <Button variant="outline" size="sm" className="gap-2" onClick={clearTerminal}>
-            <Trash2 className="h-4 w-4" />
-            <span>Clear</span>
-          </Button>
-          <Button variant="outline" size="sm" className="gap-2">
-            <Download className="h-4 w-4" />
-            <span>Export</span>
-          </Button>
-        </div>
-      </div>
-      
-      {!isRealImplementation && (
-        <Alert variant="warning">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>
-            Terminal berada dalam mode simulasi. Beberapa perintah yang berinteraksi dengan database tidak akan berfungsi. Aktifkan implementasi nyata untuk akses penuh.
-          </AlertDescription>
-        </Alert>
-      )}
-      
-      <Card className="border-2">
-        <CardHeader className="bg-black text-white py-2 px-4 rounded-t-lg border-b border-gray-700 flex flex-row items-center justify-between space-y-0">
-          <div className="flex items-center gap-2">
-            <TerminalIcon className="h-4 w-4" />
-            <CardTitle className="text-sm font-mono">DigiBooster Terminal</CardTitle>
-          </div>
-          <Badge variant="outline" className="border-gray-500 text-gray-300">
-            {isRealImplementation ? 'Live Mode' : 'Simulation Mode'}
-          </Badge>
-        </CardHeader>
-        <CardContent className="p-0">
-          <div 
-            ref={terminalRef}
-            className="bg-black text-green-400 p-4 font-mono text-sm h-[400px] overflow-y-auto whitespace-pre-wrap"
-          >
-            {history.map((entry, index) => (
-              <div key={index} className={`mb-1 ${entry.type === 'error' ? 'text-red-400' : entry.type === 'input' ? 'text-blue-400' : ''}`}>
-                {entry.content}
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button 
+                variant="ghost" 
+                size="icon" 
+                onClick={clearTerminal} 
+                className="text-gray-400 hover:text-white hover:bg-dark-300"
+              >
+                <Trash2 className="h-4 w-4" />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Clear terminal</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <ScrollArea ref={scrollAreaRef} className="h-[400px] border border-dark-300 rounded-md p-4 bg-dark-300 font-mono text-sm">
+          <div className="space-y-2">
+            {history.map((item, index) => (
+              <div key={index} className="flex items-start group">
+                <div className="flex-1">
+                  {item.type === 'command' ? (
+                    <div className="flex items-center">
+                      <span className="text-neon-purple mr-2">$</span>
+                      <span className="text-white">{item.content}</span>
+                    </div>
+                  ) : (
+                    <div className="text-gray-400 whitespace-pre-wrap pl-4 border-l-2 border-dark-400 ml-[0.4rem]">
+                      {item.content}
+                    </div>
+                  )}
+                  <div className="text-[10px] text-gray-500 mt-1">
+                    {item.timestamp.toLocaleTimeString()}
+                  </div>
+                </div>
+                <button 
+                  onClick={() => handleCopy(index)} 
+                  className="opacity-0 group-hover:opacity-100 p-1 hover:bg-dark-400 rounded transition-all ml-2"
+                >
+                  {copiedIndex === index ? (
+                    <CheckCheck className="h-3 w-3 text-green-500" />
+                  ) : (
+                    <Copy className="h-3 w-3 text-gray-400" />
+                  )}
+                </button>
               </div>
             ))}
           </div>
-        </CardContent>
-        <CardFooter className="bg-gray-900 p-3 border-t border-gray-700 rounded-b-lg">
-          <div className="flex w-full items-center gap-2">
-            <span className="text-white font-mono">$</span>
+        </ScrollArea>
+        
+        <form onSubmit={handleSubmit} className="flex space-x-2">
+          <div className="relative flex-1">
+            <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-neon-purple">
+              $
+            </span>
             <Input
+              type="text"
               value={command}
               onChange={(e) => setCommand(e.target.value)}
-              onKeyDown={handleKeyDown}
-              className="bg-gray-800 border-gray-700 text-white font-mono"
-              placeholder="Ketik perintah (ketik 'help' untuk bantuan)"
-              autoFocus
+              placeholder="Type a command..."
+              className="pl-6 bg-dark-300 border-dark-400 text-white focus:border-neon-purple"
             />
-            <Button 
-              className="bg-blue-600 hover:bg-blue-700 text-white" 
-              onClick={executeCommand}
-            >
-              Run
-            </Button>
           </div>
-        </CardFooter>
-      </Card>
-    </div>
+          <Button type="submit" className="bg-neon-purple hover:bg-neon-violet text-white">
+            Run
+          </Button>
+        </form>
+      </CardContent>
+    </Card>
   );
 };
 

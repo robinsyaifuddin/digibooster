@@ -2,12 +2,13 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { RefreshCw, Save } from "lucide-react";
+import { motion } from "framer-motion";
 
 interface SettingsHeaderProps {
   title?: string;
   saving?: boolean;
   onSave?: () => void;
-  activeTab?: string; // Menambahkan properti activeTab
+  activeTab?: string;
 }
 
 const SettingsHeader: React.FC<SettingsHeaderProps> = ({ 
@@ -32,16 +33,34 @@ const SettingsHeader: React.FC<SettingsHeaderProps> = ({
     }
   };
 
+  const headerVariants = {
+    hidden: { opacity: 0, y: -20 },
+    visible: { 
+      opacity: 1, 
+      y: 0,
+      transition: { 
+        duration: 0.5,
+        ease: "easeOut"
+      }
+    }
+  };
+
   return (
-    <div className="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-      <h1 className="text-2xl font-bold text-gray-800">{getTabTitle()}</h1>
+    <motion.div 
+      className="flex flex-col md:flex-row md:items-center md:justify-between mb-6"
+      initial="hidden"
+      animate="visible"
+      variants={headerVariants}
+    >
+      <h1 className="text-2xl font-bold text-white">{getTabTitle()}</h1>
       <div className="flex gap-2 mt-4 md:mt-0">
-        <Button variant="outline">
+        <Button variant="outline" className="border-dark-300 text-white hover:bg-dark-300">
           Lihat Preview
         </Button>
         <Button
           onClick={onSave}
           disabled={saving}
+          className="bg-neon-purple hover:bg-neon-violet text-white"
         >
           {saving ? (
             <>
@@ -56,7 +75,7 @@ const SettingsHeader: React.FC<SettingsHeaderProps> = ({
           )}
         </Button>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

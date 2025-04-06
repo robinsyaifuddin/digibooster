@@ -7,8 +7,14 @@ import { StrictMode } from 'react'
 // Add dark class to html element for dark theme
 document.documentElement.classList.add('dark');
 
-createRoot(document.getElementById("root")!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-);
+const rootElement = document.getElementById("root");
+
+if (rootElement) {
+  createRoot(rootElement).render(
+    <StrictMode>
+      <App />
+    </StrictMode>
+  );
+} else {
+  console.error("Root element with id 'root' not found");
+}

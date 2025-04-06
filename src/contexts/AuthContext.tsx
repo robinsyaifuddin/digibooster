@@ -1,180 +1,193 @@
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
-import { User } from '../types/auth';
-import { supabase } from '../integrations/supabase/client';
+import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
+import { supabase } from '@/integrations/supabase/client';
+import { useToast } from '@/hooks/use-toast';
+import { User } from '@supabase/supabase-js';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
 
-export interface AuthContextType {
+export type AuthContextType = {
   user: User | null;
-  login: (email: string, password: string) => Promise<{ success: boolean; error?: any }>;
-  register: (email: string, password: string, name: string) => Promise<{ success: boolean; error?: any }>;
-  logout: () => void;
-  signOut: () => void; // Added for compatibility
   loading: boolean;
+  error: string | null;
+  login: (email: string, password: string) => Promise<void>;
+  register: (email: string, password: string, name: string) => Promise<void>;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
-  checkPasswordStrength?: (password: string) => { score: number; feedback: string };
-  updateSecurityLevel?: (level: string) => Promise<boolean>;
-  logoutFromAllDevices?: () => Promise<boolean>;
-}
-
-const defaultAuthContext: AuthContextType = {
-  user: null,
-  login: async () => ({ success: false }),
-  register: async () => ({ success: false }),
-  logout: () => {},
-  signOut: () => {}, // Added for compatibility
-  loading: true,
-  isAuthenticated: false
+  checkSession: () => Promise<void>;
 };
 
-const AuthContext = createContext<AuthContextType>(defaultAuthContext);
+export const AuthContext = createContext<AuthContextType>({
+  user: null,
+  loading: false,
+  error: null,
+  login: async () => {},
+  register: async () => {},
+  logout: async () => {},
+  isAuthenticated: false,
+  checkSession: async () => {},
+});
 
 export const useAuth = () => useContext(AuthContext);
 
 interface AuthProviderProps {
-  children: React.ReactNode;
+  children: ReactNode;
 }
 
-export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
+export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string | null>(null);
+  const { toast } = useToast();
+  const navigate = useNavigate();
 
+  // Check session on mount
   useEffect(() => {
-    // Check if there's a user already logged in
-    const checkUser = async () => {
-      try {
-        // For now, simulate a logged-in user for demo purposes
-        const storedUser = localStorage.getItem('digibooster_user');
-        
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
-        } else if (window.location.pathname.includes('/admin')) {
-          // Auto-login as admin for demo purposes when visiting admin page
-          const demoAdminUser = {
-            id: 'admin-123',
-            email: 'digibooster@123',
-            name: 'Admin DigiBooster',
-            role: 'admin',
-            securityLevel: 'high' // Added security level
-          };
-          setUser(demoAdminUser);
-          localStorage.setItem('digibooster_user', JSON.stringify(demoAdminUser));
-        }
-      } catch (error) {
-        console.error('Error checking authentication:', error);
-      } finally {
-        setLoading(false);
+    checkSession();
+    
+    // Set up auth state change listener
+    const { data: authListener } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        setUser(session.user);
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null);
       }
+    });
+    
+    return () => {
+      authListener?.subscription.unsubscribe();
     };
-
-    checkUser();
   }, []);
+
+  const checkSession = async () => {
+    try {
+      setLoading(true);
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        setUser(session.user);
+      } else {
+        setUser(null);
+      }
+    } catch (error) {
+      console.error('Error checking auth session:', error);
+      setError('Failed to check authentication status');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const login = async (email: string, password: string) => {
     try {
-      // For demo purposes, we'll just simulate a login
-      if (email === 'digibooster@123' && password === 'admin123') {
-        const adminUser = {
-          id: 'admin-123',
-          email: 'digibooster@123',
-          name: 'Admin DigiBooster',
-          role: 'admin',
-          securityLevel: 'high' // Added security level
-        };
-        
-        setUser(adminUser);
-        localStorage.setItem('digibooster_user', JSON.stringify(adminUser));
-        return { success: true };
+      setLoading(true);
+      setError(null);
+      
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) {
+        throw error;
       }
       
-      return { success: false, error: 'Invalid email or password' };
-    } catch (error) {
+      if (data?.user) {
+        setUser(data.user);
+        toast({
+          title: "Login berhasil!",
+          description: "Selamat datang kembali di DigiBooster",
+        });
+        navigate('/admin');
+      }
+    } catch (error: any) {
       console.error('Login error:', error);
-      return { success: false, error };
+      setError(error.message || 'Failed to login');
+      toast({
+        variant: "destructive",
+        title: "Login gagal",
+        description: error.message || "Email atau password salah",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   const register = async (email: string, password: string, name: string) => {
     try {
-      // For demo purposes, we'll just simulate a registration
-      const newUser = {
-        id: `user-${Date.now()}`,
-        email,
-        name,
-        role: 'user',
-        securityLevel: 'medium' // Added security level
-      };
+      setLoading(true);
+      setError(null);
       
-      setUser(newUser);
-      localStorage.setItem('digibooster_user', JSON.stringify(newUser));
-      return { success: true };
-    } catch (error) {
-      console.error('Registration error:', error);
-      return { success: false, error };
-    }
-  };
-
-  const logout = () => {
-    setUser(null);
-    localStorage.removeItem('digibooster_user');
-  };
-
-  // Adding the missing functions to fix TypeScript errors
-  const checkPasswordStrength = (password: string) => {
-    // Simple implementation for demo
-    const score = password.length >= 8 ? 
-      (password.match(/[A-Z]/) && password.match(/[a-z]/) && password.match(/[0-9]/) ? 4 : 
-       password.match(/[A-Za-z]/) && password.match(/[0-9]/) ? 3 : 2) : 1;
-       
-    let feedback = '';
-    switch(score) {
-      case 1: feedback = 'Lemah - gunakan minimal 8 karakter'; break;
-      case 2: feedback = 'Sedang - tambahkan angka dan huruf'; break;
-      case 3: feedback = 'Kuat - tambahkan huruf kapital'; break;
-      case 4: feedback = 'Sangat kuat'; break;
-      default: feedback = 'Tidak valid';
-    }
-    
-    return { score, feedback };
-  };
-
-  const updateSecurityLevel = async (level: string) => {
-    try {
-      if (user) {
-        const updatedUser = { ...user, securityLevel: level };
-        setUser(updatedUser);
-        localStorage.setItem('digibooster_user', JSON.stringify(updatedUser));
-        return true;
+      const { data, error } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            name,
+            role: 'user',
+          },
+        },
+      });
+      
+      if (error) {
+        throw error;
       }
-      return false;
-    } catch (error) {
-      console.error('Error updating security level:', error);
-      return false;
+      
+      if (data?.user) {
+        setUser(data.user);
+        toast({
+          title: "Registrasi berhasil!",
+          description: "Akun Anda telah dibuat, silahkan cek email untuk verifikasi",
+        });
+      }
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      setError(error.message || 'Failed to register');
+      toast({
+        variant: "destructive",
+        title: "Registrasi gagal",
+        description: error.message || "Gagal membuat akun",
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
-  const logoutFromAllDevices = async () => {
+  const logout = async () => {
     try {
-      logout(); // For demo, just normal logout
-      return true;
-    } catch (error) {
-      console.error('Error logging out from all devices:', error);
-      return false;
+      setError(null);
+      const { error } = await supabase.auth.signOut();
+      
+      if (error) {
+        throw error;
+      }
+      
+      setUser(null);
+      navigate('/');
+      toast({
+        title: "Logout berhasil",
+        description: "Anda telah keluar dari akun",
+      });
+    } catch (error: any) {
+      console.error('Logout error:', error);
+      setError(error.message || 'Failed to logout');
+      toast({
+        variant: "destructive",
+        title: "Logout gagal",
+        description: error.message,
+      });
     }
   };
 
   return (
-    <AuthContext.Provider
+    <AuthContext.Provider 
       value={{
         user,
+        loading,
+        error,
         login,
         register,
         logout,
-        signOut: logout, // Make signOut an alias of logout
-        loading,
         isAuthenticated: !!user,
-        checkPasswordStrength,
-        updateSecurityLevel,
-        logoutFromAllDevices
+        checkSession,
       }}
     >
       {children}

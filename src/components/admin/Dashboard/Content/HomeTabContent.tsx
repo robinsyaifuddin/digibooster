@@ -6,6 +6,7 @@ import HeroEditor from "./HeroEditor";
 import ServicesEditor from "./ServicesEditor";
 import TestimonialsEditor from "./TestimonialsEditor";
 import { ServiceItem, TestimonialItem } from "@/types/websiteTypes";
+import { motion } from "framer-motion";
 
 interface HomeTabContentProps {
   heroContent: {
@@ -35,26 +36,56 @@ const HomeTabContent = ({
   handlePublishContent,
   setActiveTab
 }: HomeTabContentProps) => {
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.2
+      }
+    }
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 }
+    }
+  };
+
   return (
     <TabsContent value="home" className="space-y-6">
-      <div className="space-y-6">
-        <HeroEditor 
-          heroContent={heroContent} 
-          handleHeroChange={handleHeroChange} 
-          saveHeroChanges={saveHeroChanges} 
-        />
+      <motion.div 
+        className="space-y-6"
+        initial="hidden"
+        animate="visible"
+        variants={containerVariants}
+      >
+        <motion.div variants={itemVariants}>
+          <HeroEditor 
+            heroContent={heroContent} 
+            handleHeroChange={handleHeroChange} 
+            saveHeroChanges={saveHeroChanges} 
+          />
+        </motion.div>
         
-        <ServicesEditor 
-          services={services} 
-          handleServiceChange={handleServiceChange} 
-        />
+        <motion.div variants={itemVariants}>
+          <ServicesEditor 
+            services={services} 
+            handleServiceChange={handleServiceChange} 
+          />
+        </motion.div>
         
-        <TestimonialsEditor 
-          testimonials={testimonials}
-          handleTestimonialChange={handleTestimonialChange}
-        />
+        <motion.div variants={itemVariants}>
+          <TestimonialsEditor 
+            testimonials={testimonials}
+            handleTestimonialChange={handleTestimonialChange}
+          />
+        </motion.div>
         
-        <div className="flex justify-between">
+        <motion.div variants={itemVariants} className="flex justify-between">
           <Button variant="outline" onClick={() => setActiveTab("blog")} className="border-dark-300 text-white hover:bg-dark-300">
             Kembali ke Blog
           </Button>
@@ -62,8 +93,8 @@ const HomeTabContent = ({
             <Save className="w-4 h-4 mr-2" />
             Siap Publikasi
           </Button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
     </TabsContent>
   );
 };
