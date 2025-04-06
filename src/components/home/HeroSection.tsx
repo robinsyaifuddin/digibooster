@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -57,19 +58,6 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
       }
     }
   };
-
-  const ChessPiece = ({ className }: { className: string }) => (
-    <motion.div 
-      className={`absolute opacity-20 ${className}`}
-      animate={controls}
-    >
-      <img 
-        src="/lovable-uploads/b9e99a39-1bea-4a66-a055-a70e8d5ac4ab.png" 
-        alt="Chess piece" 
-        className="w-full h-full object-contain" 
-      />
-    </motion.div>
-  );
 
   const CyberGrid = () => (
     <div className="absolute inset-0 overflow-hidden">
@@ -188,18 +176,21 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
 
   return (
     <section className="relative bg-dark text-white overflow-hidden pt-12 pb-32">
+      {/* GIF Background */}
+      <div className="absolute inset-0 w-full h-full z-0">
+        <div className="absolute inset-0 bg-gradient-to-br from-dark-300/80 to-dark/90 z-10"></div>
+        <img 
+          src="https://i.gifer.com/DMV.gif" 
+          alt="Cyberpunk Background" 
+          className="w-full h-full object-cover object-center"
+        />
+      </div>
+      
       <CyberGrid />
       <DataCircuit />
       
-      <div className="absolute inset-0 chess-bg opacity-5"></div>
-      
-      <div className="absolute inset-0 bg-gradient-to-br from-dark-300/50 to-dark/90"></div>
-      
-      <div className="absolute top-20 right-0 w-64 h-64 bg-neon-cyan rounded-full filter blur-[100px] opacity-10 animate-pulse"></div>
-      <div className="absolute bottom-20 left-0 w-80 h-80 bg-neon-blue rounded-full filter blur-[100px] opacity-10 animate-pulse"></div>
-      
-      <ChessPiece className="right-[5%] top-[15%] w-40 md:w-64" />
-      <ChessPiece className="left-[8%] bottom-[10%] w-40 md:w-56" />
+      <div className="absolute top-20 right-0 w-64 h-64 bg-neon-cyan rounded-full filter blur-[100px] opacity-10 animate-pulse z-0"></div>
+      <div className="absolute bottom-20 left-0 w-80 h-80 bg-neon-blue rounded-full filter blur-[100px] opacity-10 animate-pulse z-0"></div>
       
       <div className="container mx-auto px-4 relative z-10 pt-6 md:pt-12">
         <motion.div 
