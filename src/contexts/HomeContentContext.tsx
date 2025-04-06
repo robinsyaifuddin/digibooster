@@ -20,10 +20,11 @@ const HomeContentContext = createContext<HomeContentContextType>({
 
 // Create a provider component
 export const HomeContentProvider = ({ children }: { children: ReactNode }) => {
-  const [homeContent, setHomeContent] = useState<WebsiteData['homeContent'] | null>(null);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const websiteData = useWebsiteDataStore();
-
+  // Initialize with data from the store to prevent null values
+  const [homeContent, setHomeContent] = useState<WebsiteData['homeContent']>(websiteData.homeContent);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  
   useEffect(() => {
     // Initialize with data from the store
     setHomeContent(websiteData.homeContent);
@@ -52,6 +53,8 @@ export const HomeContentProvider = ({ children }: { children: ReactNode }) => {
         setHomeContent(parsedContent);
       } catch (error) {
         console.error('Error parsing permanent home content:', error);
+        // If parsing fails, fallback to the store data
+        setHomeContent(websiteData.homeContent);
       }
     } 
     // Otherwise, check for any stored data
@@ -65,6 +68,8 @@ export const HomeContentProvider = ({ children }: { children: ReactNode }) => {
           }
         } catch (error) {
           console.error('Error parsing stored website data:', error);
+          // If parsing fails, fallback to the store data
+          setHomeContent(websiteData.homeContent);
         }
       }
     }

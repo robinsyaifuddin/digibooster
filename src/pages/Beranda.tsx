@@ -59,6 +59,11 @@ const Beranda = () => {
     }
   };
 
+  // If homeContent isn't loaded yet, we can use default data from websiteDataStore
+  const heroData = homeContent?.hero || websiteData.homeContent.hero;
+  const servicesData = homeContent?.services || websiteData.homeContent.services;
+  const testimonialsData = homeContent?.testimonials || websiteData.homeContent.testimonials;
+
   return (
     <>
       <Helmet>
@@ -74,22 +79,22 @@ const Beranda = () => {
       >
         <motion.div variants={itemVariants}>
           <HeroSection 
-            title={homeContent.hero.title} 
-            subtitle={homeContent.hero.subtitle}
-            ctaText={homeContent.hero.ctaText}
-            ctaLink={homeContent.hero.ctaLink}
+            title={heroData.title} 
+            subtitle={heroData.subtitle}
+            ctaText={heroData.ctaText}
+            ctaLink={heroData.ctaLink}
           />
         </motion.div>
         
         <motion.div variants={itemVariants}>
-          <ServicesSection services={homeContent.services} />
+          <ServicesSection services={servicesData} />
         </motion.div>
         
         {/* Removed AboutSection */}
         
         <motion.div variants={itemVariants}>
           <TestimonialsSection 
-            testimonials={homeContent.testimonials}
+            testimonials={testimonialsData}
             companyName={companyName} 
           />
         </motion.div>
