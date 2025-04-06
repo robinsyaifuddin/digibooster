@@ -5,6 +5,7 @@ import './index.css'
 import './styles/splash.css' // Import gaya splash screen
 import { StrictMode, useEffect } from 'react'
 import { BrowserRouter } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
 import { initScrollEffects, initIntersectionObserver } from './utils/scrollEffects.ts'
 
 // Add dark class to html element for dark theme
@@ -28,7 +29,9 @@ const AppWithEffects = () => {
   
   return (
     <BrowserRouter>
-      <App />
+      <HelmetProvider>
+        <App />
+      </HelmetProvider>
     </BrowserRouter>
   );
 };

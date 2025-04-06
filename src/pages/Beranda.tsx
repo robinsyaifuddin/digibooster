@@ -7,7 +7,7 @@ import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import CtaSection from '@/components/home/CtaSection';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { useWebsiteDataStore } from '@/stores/websiteDataStore';
 
 const Beranda = () => {
@@ -18,6 +18,7 @@ const Beranda = () => {
   
   // Handle refresh action
   useEffect(() => {
+    // Setup storage listener to detect page refreshes
     const handleBeforeUnload = () => {
       // This will run before page refresh
       sessionStorage.setItem('shouldShowSplash', 'true');

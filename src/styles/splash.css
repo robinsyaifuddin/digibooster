@@ -1,7 +1,7 @@
 
 /* Gaya tambahan untuk splash screen */
 .glow-text {
-  text-shadow: 0 0 10px rgba(166, 51, 255, 0.7), 0 0 20px rgba(166, 51, 255, 0.5);
+  text-shadow: 0 0 10px rgba(166, 51, 255, 0.8), 0 0 20px rgba(166, 51, 255, 0.6), 0 0 30px rgba(166, 51, 255, 0.4);
   animation: pulsate 2s infinite alternate;
 }
 
@@ -10,7 +10,7 @@
     text-shadow: 0 0 10px rgba(166, 51, 255, 0.7), 0 0 20px rgba(166, 51, 255, 0.5);
   }
   100% {
-    text-shadow: 0 0 15px rgba(166, 51, 255, 0.9), 0 0 30px rgba(166, 51, 255, 0.7), 0 0 40px rgba(166, 51, 255, 0.5);
+    text-shadow: 0 0 15px rgba(166, 51, 255, 0.9), 0 0 30px rgba(166, 51, 255, 0.7), 0 0 40px rgba(166, 51, 255, 0.5), 0 0 50px rgba(166, 51, 255, 0.3);
   }
 }
 
@@ -21,4 +21,62 @@
   border-radius: 50%;
   box-shadow: 0 0 10px 2px rgba(166, 51, 255, 0.8), 0 0 20px 6px rgba(166, 51, 255, 0.6);
   pointer-events: none;
+  filter: blur(1px);
+}
+
+/* Cyberpunk glitch effect */
+.glitch-effect {
+  position: relative;
+  animation: glitch 3s infinite;
+}
+
+.glitch-effect::before,
+.glitch-effect::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch-effect::before {
+  left: 2px;
+  text-shadow: -1px 0 rgba(255, 0, 0, 0.7);
+  animation: glitch-animation 3s infinite linear alternate-reverse;
+}
+
+.glitch-effect::after {
+  left: -2px;
+  text-shadow: 1px 0 rgba(0, 255, 255, 0.7);
+  animation: glitch-animation 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-animation {
+  0% {
+    clip-path: inset(10% 0 80% 0);
+  }
+  20% {
+    clip-path: inset(30% 0 50% 0);
+  }
+  40% {
+    clip-path: inset(70% 0 20% 0);
+  }
+  60% {
+    clip-path: inset(10% 0 70% 0);
+  }
+  80% {
+    clip-path: inset(50% 0 40% 0);
+  }
+  100% {
+    clip-path: inset(20% 0 60% 0);
+  }
+}
+
+/* Smoke effect */
+.smoke-particle {
+  opacity: 0.4;
+  filter: blur(8px);
+  mix-blend-mode: screen;
+  background: radial-gradient(circle, rgba(30,30,35,0.8) 0%, rgba(10,10,15,0) 70%);
 }

@@ -5,6 +5,7 @@ import { useLocation } from 'react-router-dom';
 type SplashScreenContextType = {
   showSplash: boolean;
   triggerSplash: () => void;
+  hideSplash: () => void;
 };
 
 const SplashScreenContext = createContext<SplashScreenContextType | undefined>(undefined);
@@ -18,24 +19,26 @@ export const SplashScreenProvider = ({ children }: { children: ReactNode }) => {
   const isHomePage = location.pathname === '/';
   
   useEffect(() => {
-    // Show splash when we navigate to the home page from another page
-    // or when the page is initially loaded
-    if (isHomePage && (lastPathVisited !== '/' || lastPathVisited === null)) {
+    // Always show splash on initial load or when navigating to homepage
+    if (isHomePage) {
       setShowSplash(true);
     }
     
     setLastPathVisited(location.pathname);
-  }, [location.pathname, isHomePage, lastPathVisited]);
+  }, [location.pathname, isHomePage]);
   
   // Function to manually trigger splash screen
   const triggerSplash = () => {
-    if (isHomePage) {
-      setShowSplash(true);
-    }
+    setShowSplash(true);
+  };
+  
+  // Function to manually hide splash screen
+  const hideSplash = () => {
+    setShowSplash(false);
   };
 
   return (
-    <SplashScreenContext.Provider value={{ showSplash, triggerSplash }}>
+    <SplashScreenContext.Provider value={{ showSplash, triggerSplash, hideSplash }}>
       {children}
     </SplashScreenContext.Provider>
   );
