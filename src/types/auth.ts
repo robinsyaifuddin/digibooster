@@ -18,7 +18,6 @@ export interface AuthContextType {
   isAuthenticated: boolean;
   checkSession: () => Promise<void>;
   
-  // Make sure these functions exist in the context
   checkPasswordStrength: (password: string) => { score: number, feedback: string };
   updateSecurityLevel: (level: 'standard' | 'enhanced' | 'maximum') => void;
   logoutFromAllDevices: () => Promise<void>;

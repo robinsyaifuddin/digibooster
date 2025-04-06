@@ -79,18 +79,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     return signIn(email, password);
   };
 
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (): Promise<void> => {
     try {
       setLoading(true);
       setError(null);
       
-      const { data, error } = await supabase.auth.signInWithOAuth({
+      const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
       });
       
       if (error) throw error;
-      
-      return data;
     } catch (error: any) {
       console.error('Login with Google error:', error);
       setError(error.message || 'Failed to login with Google');

@@ -10,7 +10,7 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
 // Pages
-import Index from "./pages/index";
+import Beranda from "./pages/Beranda";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
@@ -67,7 +67,7 @@ const App = () => (
               path="/"
               element={
                 <Layout>
-                  <Index />
+                  <Beranda />
                 </Layout>
               }
             />

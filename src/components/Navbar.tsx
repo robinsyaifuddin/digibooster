@@ -3,7 +3,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X, ChevronDown, Home } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion } from "framer-motion";
@@ -76,6 +76,19 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
+            <Link 
+              to="/" 
+              className={cn(
+                "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center", 
+                isActive("/") 
+                  ? "text-neon-purple bg-dark-300" 
+                  : "text-gray-300 hover:text-white hover:bg-dark-300"
+              )}
+            >
+              <Home className="h-4 w-4 mr-1" />
+              Beranda
+            </Link>
+            
             <NavigationMenu>
               <NavigationMenuList>
                 <NavigationMenuItem>
@@ -238,6 +251,20 @@ const Navbar = () => {
         variants={mobileMenuVariants}
       >
         <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-dark-200 border-t border-dark-300">
+          <Link
+            to="/"
+            className={cn(
+              "flex items-center px-3 py-2 rounded-md text-base font-medium",
+              isActive("/") 
+                ? "text-neon-purple bg-dark-300" 
+                : "text-gray-300 hover:text-white hover:bg-dark-300"
+            )}
+            onClick={toggleMobileMenu}
+          >
+            <Home className="h-4 w-4 mr-1" />
+            Beranda
+          </Link>
+          
           <div className="px-3 py-2 font-medium text-gray-300">Program</div>
           <Link
             to="/program/jasa-digital"
