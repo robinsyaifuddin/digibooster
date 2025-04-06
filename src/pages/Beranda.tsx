@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -35,9 +34,9 @@ const Beranda = () => {
   };
 
   return (
-    <main className="overflow-x-hidden pt-16">
+    <main className="overflow-x-hidden pt-0">
       {/* Hero Section */}
-      <section className="min-h-screen bg-dark relative overflow-hidden flex items-center">
+      <section className="min-h-screen bg-dark relative overflow-hidden flex items-center pt-16">
         {/* Background Elements */}
         <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
         

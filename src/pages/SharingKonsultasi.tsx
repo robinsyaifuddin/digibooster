@@ -1,3 +1,4 @@
+
 import React, { useEffect } from 'react';
 import ClassHero from '@/components/class/ClassHero';
 import ClassGrid from '@/components/class/ClassGrid';
@@ -28,7 +29,7 @@ const SharingKonsultasi = () => {
   }, []);
   
   return (
-    <div className="pt-24 md:pt-32 bg-dark min-h-screen">
+    <div className="pt-16 md:pt-20 bg-dark min-h-screen">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <ClassHero />

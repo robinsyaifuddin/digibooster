@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
@@ -20,7 +19,6 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
   const websiteStore = useWebsiteDataStore();
   const controls = useAnimation();
   
-  // Use passed props or fallback to the store data
   const storeGeneralInfo = generalInfo || websiteStore.generalInfo;
   const storeHero = hero || websiteStore.homeContent.hero;
   
@@ -60,7 +58,6 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
     }
   };
 
-  // Create chess piece component for the background
   const ChessPiece = ({ className }: { className: string }) => (
     <motion.div 
       className={`absolute opacity-20 ${className}`}
@@ -74,68 +71,60 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
     </motion.div>
   );
 
-  // Cyberpunk grid background animation component
   const CyberGrid = () => (
     <div className="absolute inset-0 overflow-hidden">
       <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
       
-      {/* Horizontal lines animation */}
-      <div className="absolute inset-0">
-        {[...Array(10)].map((_, i) => (
-          <motion.div 
-            key={`h-line-${i}`}
-            className="absolute h-[1px] bg-neon-cyan/20 w-full left-0"
-            style={{ top: `${i * 10}%` }}
-            animate={{ 
-              opacity: [0.1, 0.3, 0.1],
-              scaleX: [1, 1.05, 1],
-              boxShadow: [
-                "0 0 2px rgba(0, 216, 232, 0.2)",
-                "0 0 8px rgba(0, 216, 232, 0.6)",
-                "0 0 2px rgba(0, 216, 232, 0.2)"
-              ]
-            }}
-            transition={{ 
-              duration: 3 + i,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-              delay: i * 0.2
-            }}
-          />
-        ))}
-      </div>
+      {[...Array(10)].map((_, i) => (
+        <motion.div 
+          key={`h-line-${i}`}
+          className="absolute h-[1px] bg-neon-cyan/20 w-full left-0"
+          style={{ top: `${i * 10}%` }}
+          animate={{ 
+            opacity: [0.1, 0.3, 0.1],
+            scaleX: [1, 1.05, 1],
+            boxShadow: [
+              "0 0 2px rgba(0, 216, 232, 0.2)",
+              "0 0 8px rgba(0, 216, 232, 0.6)",
+              "0 0 2px rgba(0, 216, 232, 0.2)"
+            ]
+          }}
+          transition={{ 
+            duration: 3 + i,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+            delay: i * 0.2
+          }}
+        />
+      ))}
       
-      {/* Vertical lines animation */}
-      <div className="absolute inset-0">
-        {[...Array(10)].map((_, i) => (
-          <motion.div 
-            key={`v-line-${i}`}
-            className="absolute w-[1px] bg-neon-blue/20 h-full top-0"
-            style={{ left: `${i * 10}%` }}
-            animate={{ 
-              opacity: [0.1, 0.3, 0.1],
-              scaleY: [1, 1.05, 1],
-              boxShadow: [
-                "0 0 2px rgba(11, 188, 209, 0.2)",
-                "0 0 8px rgba(11, 188, 209, 0.6)",
-                "0 0 2px rgba(11, 188, 209, 0.2)"
-              ]
-            }}
-            transition={{ 
-              duration: 4 + i,
-              repeat: Infinity,
-              repeatType: "reverse",
-              ease: "easeInOut",
-              delay: i * 0.3
-            }}
-          />
-        ))}
-      </div>
+      {[...Array(10)].map((_, i) => (
+        <motion.div 
+          key={`v-line-${i}`}
+          className="absolute w-[1px] bg-neon-blue/20 h-full top-0"
+          style={{ left: `${i * 10}%` }}
+          animate={{ 
+            opacity: [0.1, 0.3, 0.1],
+            scaleY: [1, 1.05, 1],
+            boxShadow: [
+              "0 0 2px rgba(11, 188, 209, 0.2)",
+              "0 0 8px rgba(11, 188, 209, 0.6)",
+              "0 0 2px rgba(11, 188, 209, 0.2)"
+            ]
+          }}
+          transition={{ 
+            duration: 4 + i,
+            repeat: Infinity,
+            repeatType: "reverse",
+            ease: "easeInOut",
+            delay: i * 0.3
+          }}
+        />
+      ))}
     </div>
   );
 
-  // Data circuit animation
   const DataCircuit = () => (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
       {[...Array(15)].map((_, i) => (
@@ -164,7 +153,6 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
         />
       ))}
       
-      {/* Data flow lines */}
       {[...Array(5)].map((_, i) => {
         const startX = Math.random() * 100;
         const startY = Math.random() * 100;
@@ -199,26 +187,21 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
   );
 
   return (
-    <section className="relative bg-dark text-white overflow-hidden pt-20 pb-32">
-      {/* Background elements */}
+    <section className="relative bg-dark text-white overflow-hidden pt-12 pb-32">
       <CyberGrid />
       <DataCircuit />
       
-      {/* Background pattern */}
       <div className="absolute inset-0 chess-bg opacity-5"></div>
       
-      {/* Cyan gradient background */}
       <div className="absolute inset-0 bg-gradient-to-br from-dark-300/50 to-dark/90"></div>
       
-      {/* Large blurred circles for abstract background */}
       <div className="absolute top-20 right-0 w-64 h-64 bg-neon-cyan rounded-full filter blur-[100px] opacity-10 animate-pulse"></div>
       <div className="absolute bottom-20 left-0 w-80 h-80 bg-neon-blue rounded-full filter blur-[100px] opacity-10 animate-pulse"></div>
       
-      {/* Chess pieces in background */}
       <ChessPiece className="right-[5%] top-[15%] w-40 md:w-64" />
       <ChessPiece className="left-[8%] bottom-[10%] w-40 md:w-56" />
       
-      <div className="container mx-auto px-4 relative z-10 pt-16 md:pt-24">
+      <div className="container mx-auto px-4 relative z-10 pt-6 md:pt-12">
         <motion.div 
           className="max-w-4xl mx-auto"
           initial="hidden"
@@ -270,7 +253,6 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
         </motion.div>
       </div>
       
-      {/* Bottom wave decoration */}
       <div className="absolute bottom-0 left-0 right-0">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
           <path fill="#0c1425" fillOpacity="1" d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,229.3C672,245,768,267,864,266.7C960,267,1056,245,1152,229.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>

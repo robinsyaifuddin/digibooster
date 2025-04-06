@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown, Home, ExternalLink } from "lucide-react";
+import { Menu, X, Home, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -31,7 +30,6 @@ const Navbar = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Animation variants for the navbar
   const navbarVariants = {
     hidden: { opacity: 0, y: -20 },
     visible: {
@@ -45,7 +43,6 @@ const Navbar = () => {
     }
   };
 
-  // Animation variants for navigation items
   const itemVariants = {
     hidden: { opacity: 0, y: -10 },
     visible: (i: number) => ({
@@ -65,7 +62,6 @@ const Navbar = () => {
     }
   };
 
-  // Animation variants for mobile menu
   const mobileMenuVariants = {
     closed: {
       opacity: 0,
@@ -85,7 +81,6 @@ const Navbar = () => {
     }
   };
 
-  // Navigation links for desktop and mobile
   const navLinks = [
     { path: "/", label: "Beranda", icon: <Home className="h-4 w-4 mr-1" /> },
     { 
@@ -116,7 +111,6 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
-          {/* Logo */}
           <Link to="/" className="flex items-center">
             <img
               src="/lovable-uploads/63175a8a-8817-436e-8f8b-a3246a8bf733.png"
@@ -125,7 +119,6 @@ const Navbar = () => {
             />
           </Link>
 
-          {/* Desktop Navigation */}
           <nav className="hidden md:flex items-center space-x-1">
             {navLinks.map((item, index) => (
               !item.isDropdown ? (
@@ -176,7 +169,7 @@ const Navbar = () => {
                           "text-gray-300 hover:text-white",
                           "data-[state=open]:bg-dark-300 data-[state=open]:text-neon-cyan"
                         )}>
-                          {item.label} <ChevronDown className="h-4 w-4 ml-1 transition-transform duration-200" />
+                          {item.label}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
                           <ul className="grid grid-cols-1 gap-1 p-2 min-w-[180px] bg-dark-200/90 backdrop-blur-xl border border-dark-300 rounded-md shadow-lg">
@@ -209,7 +202,6 @@ const Navbar = () => {
             ))}
           </nav>
 
-          {/* Auth Buttons */}
           <div className="hidden md:flex items-center space-x-4">
             {isAuthenticated ? (
               <>
@@ -250,7 +242,6 @@ const Navbar = () => {
             )}
           </div>
 
-          {/* Mobile Menu Button */}
           <div className="flex md:hidden">
             <button
               onClick={toggleMobileMenu}
@@ -285,7 +276,6 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile Menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
@@ -356,7 +346,6 @@ const Navbar = () => {
                 )
               ))}
               
-              {/* Auth buttons for mobile */}
               <div className="border-t border-dark-300 pt-3 mt-3">
                 {isAuthenticated ? (
                   <>
