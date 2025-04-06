@@ -1,19 +1,20 @@
+
 import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useHomeContent } from '@/contexts/HomeContentContext';
 import { useSplashScreen } from '../contexts/SplashScreenContext';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
-import AboutSection from '@/components/home/AboutSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
 import CtaSection from '@/components/home/CtaSection';
-import PartnersSection from '@/components/home/PartnersSection';
-import BlogPreviewSection from '@/components/home/BlogPreviewSection';
 import { Helmet } from 'react-helmet';
+import { useWebsiteDataStore } from '@/stores/websiteDataStore';
 
 const Beranda = () => {
   const { homeContent } = useHomeContent();
   const { triggerSplash } = useSplashScreen();
+  const websiteData = useWebsiteDataStore();
+  const companyName = websiteData.generalInfo.title;
   
   // Handle refresh action
   useEffect(() => {
@@ -83,24 +84,21 @@ const Beranda = () => {
           <ServicesSection services={homeContent.services} />
         </motion.div>
         
-        <motion.div variants={itemVariants}>
-          <AboutSection />
-        </motion.div>
+        {/* Removed AboutSection */}
         
         <motion.div variants={itemVariants}>
-          <TestimonialsSection testimonials={homeContent.testimonials} />
+          <TestimonialsSection 
+            testimonials={homeContent.testimonials}
+            companyName={companyName} 
+          />
         </motion.div>
         
-        <motion.div variants={itemVariants}>
-          <BlogPreviewSection />
-        </motion.div>
+        {/* Removed BlogPreviewSection */}
+        
+        {/* Removed PartnersSection */}
         
         <motion.div variants={itemVariants}>
-          <PartnersSection partners={homeContent.partners} />
-        </motion.div>
-        
-        <motion.div variants={itemVariants}>
-          <CtaSection />
+          <CtaSection companyName={companyName} />
         </motion.div>
       </motion.div>
     </>

@@ -11,7 +11,7 @@ const SplashScreenContext = createContext<SplashScreenContextType | undefined>(u
 
 export const SplashScreenProvider = ({ children }: { children: ReactNode }) => {
   const [showSplash, setShowSplash] = useState(true);
-  const [lastPathVisited, setLastPathVisited] = useState('');
+  const [lastPathVisited, setLastPathVisited] = useState<string | null>(null);
   const location = useLocation();
 
   // Check if we're on the home page
@@ -20,7 +20,7 @@ export const SplashScreenProvider = ({ children }: { children: ReactNode }) => {
   useEffect(() => {
     // Show splash when we navigate to the home page from another page
     // or when the page is initially loaded
-    if (isHomePage && (lastPathVisited !== '/' || lastPathVisited === '')) {
+    if (isHomePage && (lastPathVisited !== '/' || lastPathVisited === null)) {
       setShowSplash(true);
     }
     
