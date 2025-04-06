@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { BookOpen, Coffee, Brain, Video, Award, Lightbulb } from 'lucide-react';
 import { motion } from 'framer-motion';
@@ -6,7 +7,7 @@ import CtaComponent from '@/components/common/CtaComponent';
 const MotivasiEdukasi = () => {
   const services = [
     {
-      icon: <BookOpen className="h-8 w-8 text-digiblue-600" />,
+      icon: <BookOpen className="h-8 w-8 text-neon-purple" />,
       title: 'E-Book dan Modul Digital',
       description: 'Panduan dan modul pembelajaran digital untuk berbagai topik bisnis dan teknologi digital.',
       items: [
@@ -19,7 +20,7 @@ const MotivasiEdukasi = () => {
       ]
     },
     {
-      icon: <Video className="h-8 w-8 text-digiblue-600" />,
+      icon: <Video className="h-8 w-8 text-neon-purple" />,
       title: 'Webinar dan Workshop Online',
       description: 'Sesi pembelajaran interaktif dengan pakar industri digital tentang berbagai topik terkini.',
       items: [
@@ -32,7 +33,7 @@ const MotivasiEdukasi = () => {
       ]
     },
     {
-      icon: <Brain className="h-8 w-8 text-digiblue-600" />,
+      icon: <Brain className="h-8 w-8 text-neon-purple" />,
       title: 'Podcast dan Audio Learning',
       description: 'Konten pembelajaran format audio yang bisa diakses kapan saja dan di mana saja.',
       items: [
@@ -45,7 +46,7 @@ const MotivasiEdukasi = () => {
       ]
     },
     {
-      icon: <Award className="h-8 w-8 text-digiblue-600" />,
+      icon: <Award className="h-8 w-8 text-neon-purple" />,
       title: 'Sertifikasi Digital Skills',
       description: 'Program sertifikasi untuk memvalidasi keahlian digital dan meningkatkan kredibilitas profesional.',
       items: [
@@ -58,7 +59,7 @@ const MotivasiEdukasi = () => {
       ]
     },
     {
-      icon: <Lightbulb className="h-8 w-8 text-digiblue-600" />,
+      icon: <Lightbulb className="h-8 w-8 text-neon-purple" />,
       title: 'Motivasi Bisnis Digital',
       description: 'Konten inspiratif dan motivasi untuk membangun mindset sukses di era digital.',
       items: [
@@ -71,7 +72,7 @@ const MotivasiEdukasi = () => {
       ]
     },
     {
-      icon: <Coffee className="h-8 w-8 text-digiblue-600" />,
+      icon: <Coffee className="h-8 w-8 text-neon-purple" />,
       title: 'Coffee Talk Digital',
       description: 'Diskusi santai namun mendalam tentang berbagai aspek bisnis dan karir digital.',
       items: [
@@ -101,19 +102,31 @@ const MotivasiEdukasi = () => {
   };
 
   return (
-    <div className="pt-24 md:pt-32 bg-white">
+    <div className="pt-24 md:pt-32 bg-dark">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
-        <div className="max-w-4xl mx-auto mb-16 text-center">
-          <span className="inline-block py-1 px-3 text-xs font-medium text-digiblue-600 bg-digiblue-100 rounded-full mb-3">PROGRAM KAMI</span>
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gray-900">
-            Motivasi & <span className="text-digiblue-600">Edukasi Digital</span>
-          </h1>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Tingkatkan pengetahuan dan keterampilan digital Anda melalui berbagai program motivasi dan edukasi
-            yang dirancang untuk membantu Anda tumbuh dalam ekosistem digital.
-          </p>
-        </div>
+        <motion.div 
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="max-w-4xl mx-auto mb-16 text-center"
+        >
+          <div className="bg-gradient-to-br from-dark-300 to-dark-500 rounded-xl py-16 px-6 shadow-lg border border-neon-purple/30 relative overflow-hidden">
+            <div className="absolute -top-10 -right-10 w-40 h-40 bg-neon-purple rounded-full filter blur-[80px] opacity-20"></div>
+            <div className="absolute -bottom-10 -left-10 w-40 h-40 bg-neon-violet rounded-full filter blur-[80px] opacity-20"></div>
+            
+            <span className="inline-block py-1 px-3 text-xs font-medium text-white bg-neon-purple/30 border border-neon-purple/50 rounded-full mb-3 backdrop-blur-sm animate-pulse-light">
+              PROGRAM KAMI
+            </span>
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white">
+              Motivasi & <span className="text-neon-purple animate-glow">Edukasi Digital</span>
+            </h1>
+            <p className="text-lg text-white/80 max-w-3xl mx-auto">
+              Tingkatkan pengetahuan dan keterampilan digital Anda melalui berbagai program motivasi dan edukasi
+              yang dirancang untuk membantu Anda tumbuh dalam ekosistem digital.
+            </p>
+          </div>
+        </motion.div>
 
         {/* Services Grid */}
         <motion.div 
@@ -126,20 +139,24 @@ const MotivasiEdukasi = () => {
             <motion.div
               key={index}
               variants={item}
-              className="bg-white rounded-xl p-7 shadow-lg hover:shadow-xl transition-shadow border border-gray-100"
+              className="bg-dark-200 rounded-xl p-7 shadow-lg hover:shadow-xl transition-shadow border border-dark-400 relative overflow-hidden group"
             >
-              <div className="bg-digiblue-50 w-16 h-16 rounded-lg flex items-center justify-center mb-6">
-                {service.icon}
+              <div className="absolute inset-0 bg-neon-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              
+              <div className="bg-dark-300 w-16 h-16 rounded-lg flex items-center justify-center mb-6 border border-neon-purple/30 group-hover:border-neon-purple/60 transition-colors">
+                <div className="text-neon-purple group-hover:scale-110 transition-transform">
+                  {service.icon}
+                </div>
               </div>
               
-              <h3 className="text-xl font-bold mb-3 text-gray-900">{service.title}</h3>
-              <p className="text-gray-600 mb-5">{service.description}</p>
+              <h3 className="text-xl font-bold mb-3 text-white">{service.title}</h3>
+              <p className="text-gray-400 mb-5">{service.description}</p>
               
               <ul className="space-y-2">
                 {service.items.map((item, idx) => (
                   <li key={idx} className="flex items-start">
-                    <span className="text-digiblue-600 mr-2">•</span>
-                    <span className="text-gray-700">{item}</span>
+                    <span className="text-neon-purple mr-2">•</span>
+                    <span className="text-gray-300">{item}</span>
                   </li>
                 ))}
               </ul>

@@ -7,7 +7,7 @@ import { jasaDigitalServices } from '@/data/jasaDigitalData';
 
 const JasaDigital = () => {
   return (
-    <div className="pt-24 md:pt-32 bg-white">
+    <div className="pt-24 md:pt-32 bg-dark">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
         <JasaDigitalHero />

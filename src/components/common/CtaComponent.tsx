@@ -23,17 +23,17 @@ const CtaComponent = ({
     switch(theme) {
       case 'light':
         return {
-          container: 'bg-dark-200 border border-dark-300',
+          container: 'bg-dark-200 border border-neon-purple/30',
           title: 'text-white',
           description: 'text-gray-300',
           button: 'bg-neon-purple hover:bg-neon-violet text-white'
         };
       case 'blue':
         return {
-          container: 'bg-gradient-to-br from-dark-300 to-dark-400 border border-dark-500',
+          container: 'bg-gradient-to-br from-dark-300 to-dark-400 border border-neon-purple/30',
           title: 'text-white',
           description: 'text-gray-300',
-          button: 'bg-neon-blue hover:bg-blue-600 text-white'
+          button: 'bg-neon-purple hover:bg-neon-violet text-white'
         };
       case 'dark':
       default:
