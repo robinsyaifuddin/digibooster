@@ -1,3 +1,4 @@
+
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -8,8 +9,6 @@ import { HomeContentProvider } from "./contexts/HomeContentContext";
 import { SplashScreenProvider } from "./contexts/SplashScreenContext";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import SplashScreen from "./components/SplashScreen";
-import { useSplashScreen } from "./contexts/SplashScreenContext";
 import React from 'react';
 
 // Pages
@@ -27,18 +26,6 @@ import Portofolio from "./pages/Portofolio";
 import PortfolioDetail from "./pages/PortfolioDetail";
 import Tentang from "./pages/Tentang";
 import { BlogDetail } from "./pages";
-
-// HomeWithSplash component to conditionally render splash screen
-const HomeWithSplash = () => {
-  const { showSplash } = useSplashScreen();
-  
-  return (
-    <>
-      {showSplash && <SplashScreen duration={3000} />}
-      <Beranda />
-    </>
-  );
-};
 
 // Layout component to wrap content with Navbar and Footer
 const Layout = ({ children }: { children: React.ReactNode }) => {
@@ -82,14 +69,13 @@ function App() {
             <SplashScreenProvider>
               <Toaster />
               <Sonner />
-              {/* Removed Router component as it's already in main.tsx */}
               <Routes>
                 {/* Pages with Navbar and Footer */}
                 <Route
                   path="/"
                   element={
                     <Layout>
-                      <HomeWithSplash />
+                      <Beranda />
                     </Layout>
                   }
                 />

@@ -1,4 +1,3 @@
-
 import { Link } from 'react-router-dom';
 import { 
   Phone, 
@@ -106,7 +105,7 @@ const Footer = () => {
         >
           <motion.div variants={itemVariants}>
             <Link to="/" className="inline-block mb-6">
-              <img src="/lovable-uploads/eb7d859a-60c0-4007-afe4-522ffdd5afda.png" alt="DigiBooster Logo" className="h-12" />
+              <h2 className="text-2xl font-bold text-neon-purple">DigiBooster</h2>
             </Link>
             <p className="text-gray-400 mb-6">
               DigiBooster adalah platform agensi dan pengembangan ekosistem digital Indonesia. Kami membantu masyarakat mengoptimalkan digitalisasi.

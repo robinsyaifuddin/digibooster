@@ -1,26 +1,14 @@
 
 import { useState, useEffect } from 'react';
 
-// Hook untuk mengelola logika splash screen
+// Hook untuk mengelola logika splash screen (disabled)
 export const useSplashScreen = () => {
-  const [showSplash, setShowSplash] = useState(true);
-  const [isFirstVisit, setIsFirstVisit] = useState(true);
-  const [isLoading, setIsLoading] = useState(true);
+  const [showSplash, setShowSplash] = useState(false); // Always start as false
+  const [isFirstVisit, setIsFirstVisit] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   
+  // No need to check for first visit anymore
   useEffect(() => {
-    // Periksa apakah ini kunjungan pertama ke halaman beranda
-    const hasVisitedHome = sessionStorage.getItem('visitedHome');
-    
-    if (!hasVisitedHome) {
-      // Ini adalah kunjungan pertama
-      setShowSplash(true);
-      sessionStorage.setItem('visitedHome', 'true');
-    } else {
-      // Bukan kunjungan pertama
-      setIsFirstVisit(false);
-      setShowSplash(false);
-    }
-    
     setIsLoading(false);
   }, []);
   
@@ -29,9 +17,10 @@ export const useSplashScreen = () => {
   };
   
   return {
-    showSplash,
-    isFirstVisit,
-    isLoading,
+    showSplash: false, // Always return false
+    isFirstVisit: false,
+    isLoading: false,
     onSplashComplete
   };
 };
+

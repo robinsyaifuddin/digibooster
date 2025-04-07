@@ -1,4 +1,3 @@
-
 import { Home, Menu, Users, FileText, LayoutDashboard, Settings, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent } from "@/components/ui/sheet";
@@ -30,11 +29,7 @@ const MobileSidebar = ({
         <SheetContent side="left" className="p-0 w-[260px] bg-dark-100 border-dark-300 text-white">
           <div className="flex flex-col h-full">
             <div className="p-6 border-b border-dark-300">
-              <img 
-                src="/lovable-uploads/eb7d859a-60c0-4007-afe4-522ffdd5afda.png" 
-                alt="DigiBooster Logo" 
-                className="h-8" 
-              />
+              <h2 className="text-xl font-bold text-neon-purple">DigiBooster</h2>
             </div>
             
             <nav className="flex-1 py-4">
