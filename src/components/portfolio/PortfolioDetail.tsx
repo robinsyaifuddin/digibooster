@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, Tool, Calendar, User, Tag } from 'lucide-react';
-import { portfolioItems } from '@/data/portfolioData';
 import { motion } from 'framer-motion';
+import { ArrowLeft, Calendar, User, Tag, Wrench } from 'lucide-react'; // Changed Tool to Wrench
+import { portfolioItems } from '@/data/portfolioData';
 
 const PortfolioDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -143,7 +143,7 @@ const PortfolioDetail = () => {
           className="cyberpunk-card p-8 mb-12"
         >
           <div className="flex items-center mb-6">
-            <Tool className="h-6 w-6 mr-2 text-digicyan" />
+            <Wrench className="h-6 w-6 mr-2 text-digicyan" /> {/* Changed Tool to Wrench */}
             <h2 className="text-2xl font-bold text-white">Tools & Teknologi</h2>
           </div>
           

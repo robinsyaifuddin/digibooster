@@ -10,9 +10,9 @@ export { default as Tentang } from './Tentang';
 export { default as NotFound } from './NotFound';
 export { default as Login } from './Login';
 export { default as Register } from './Register';
+export { default as PortfolioDetail } from './PortfolioDetail';
 
-// Import the new detail pages
-import PortfolioDetail from '../components/portfolio/PortfolioDetail';
+// Import the blog detail page
 import BlogDetail from '../components/blog/BlogDetail';
 
-export { PortfolioDetail, BlogDetail };
+export { BlogDetail };
