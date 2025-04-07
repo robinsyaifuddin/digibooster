@@ -3,7 +3,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Routes, Route, BrowserRouter as Router } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { HomeContentProvider } from "./contexts/HomeContentContext";
 import { SplashScreenProvider } from "./contexts/SplashScreenContext";
@@ -82,126 +82,125 @@ function App() {
             <SplashScreenProvider>
               <Toaster />
               <Sonner />
-              <Router>
-                <Routes>
-                  {/* Pages with Navbar and Footer */}
-                  <Route
-                    path="/"
-                    element={
-                      <Layout>
-                        <HomeWithSplash />
-                      </Layout>
-                    }
-                  />
-                  
-                  <Route
-                    path="/blog"
-                    element={
-                      <Layout>
-                        <Blog />
-                      </Layout>
-                    }
-                  />
-                  
-                  <Route
-                    path="/program/jasa-digital"
-                    element={
-                      <Layout>
-                        <JasaDigital />
-                      </Layout>
-                    }
-                  />
-                  
-                  <Route
-                    path="/program/motivasi-edukasi"
-                    element={
-                      <Layout>
-                        <MotivasiEdukasi />
-                      </Layout>
-                    }
-                  />
-                  
-                  <Route
-                    path="/program/sharing-konsultasi"
-                    element={
-                      <Layout>
-                        <SharingKonsultasi />
-                      </Layout>
-                    }
-                  />
-                  
-                  <Route
-                    path="/program/kelas"
-                    element={
-                      <Layout>
-                        <Kelas />
-                      </Layout>
-                    }
-                  />
-                  
-                  <Route
-                    path="/portofolio"
-                    element={
-                      <Layout>
-                        <Portofolio />
-                      </Layout>
-                    }
-                  />
-                  
-                  <Route
-                    path="/portofolio/:id"
-                    element={
-                      <Layout>
-                        <PortfolioDetail />
-                      </Layout>
-                    }
-                  />
-                  
-                  <Route
-                    path="/tentang"
-                    element={
-                      <Layout>
-                        <Tentang />
-                      </Layout>
-                    }
-                  />
-                  
-                  <Route
-                    path="/login"
-                    element={
-                      <AuthLayout>
-                        <Login />
-                      </AuthLayout>
-                    }
-                  />
-                  <Route
-                    path="/register"
-                    element={
-                      <AuthLayout>
-                        <Register />
-                      </AuthLayout>
-                    }
-                  />
-                  
-                  <Route
-                    path="/admin/*"
-                    element={
-                      <AuthLayout>
-                        <AdminDashboard />
-                      </AuthLayout>
-                    }
-                  />
-                  
-                  <Route
-                    path="*"
-                    element={
-                      <Layout>
-                        <NotFound />
-                      </Layout>
-                    }
-                  />
-                </Routes>
-              </Router>
+              {/* Removed Router component here as it's already in main.tsx */}
+              <Routes>
+                {/* Pages with Navbar and Footer */}
+                <Route
+                  path="/"
+                  element={
+                    <Layout>
+                      <HomeWithSplash />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/blog"
+                  element={
+                    <Layout>
+                      <Blog />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/program/jasa-digital"
+                  element={
+                    <Layout>
+                      <JasaDigital />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/program/motivasi-edukasi"
+                  element={
+                    <Layout>
+                      <MotivasiEdukasi />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/program/sharing-konsultasi"
+                  element={
+                    <Layout>
+                      <SharingKonsultasi />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/program/kelas"
+                  element={
+                    <Layout>
+                      <Kelas />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/portofolio"
+                  element={
+                    <Layout>
+                      <Portofolio />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/portofolio/:id"
+                  element={
+                    <Layout>
+                      <PortfolioDetail />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/tentang"
+                  element={
+                    <Layout>
+                      <Tentang />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/login"
+                  element={
+                    <AuthLayout>
+                      <Login />
+                    </AuthLayout>
+                  }
+                />
+                <Route
+                  path="/register"
+                  element={
+                    <AuthLayout>
+                      <Register />
+                    </AuthLayout>
+                  }
+                />
+                
+                <Route
+                  path="/admin/*"
+                  element={
+                    <AuthLayout>
+                      <AdminDashboard />
+                    </AuthLayout>
+                  }
+                />
+                
+                <Route
+                  path="*"
+                  element={
+                    <Layout>
+                      <NotFound />
+                    </Layout>
+                  }
+                />
+              </Routes>
             </SplashScreenProvider>
           </HomeContentProvider>
         </TooltipProvider>
