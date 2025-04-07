@@ -6,25 +6,24 @@ import BlogSearch from '@/components/blog/BlogSearch';
 import BlogGrid from '@/components/blog/BlogGrid';
 import BlogPagination from '@/components/blog/BlogPagination';
 import { blogPosts } from '@/data/blogData';
+import { BlogCategory } from '@/types/blogTypes';
 
 const Blog = () => {
   const isMobile = useIsMobile();
   const [searchQuery, setSearchQuery] = useState('');
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeCategory, setActiveCategory] = useState<BlogCategory>('all');
   
   // Filter posts based on search query and active category
   const filteredPosts = blogPosts.filter(post => {
     const matchesSearch = post.title.toLowerCase().includes(searchQuery.toLowerCase()) || 
                          post.excerpt.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                         post.content.some(paragraph => paragraph.toLowerCase().includes(searchQuery.toLowerCase())) ||
                          post.tags.some(tag => tag.toLowerCase().includes(searchQuery.toLowerCase()));
     
     const matchesCategory = activeCategory === 'all' || post.category.toLowerCase() === activeCategory.toLowerCase();
     
     return matchesSearch && matchesCategory;
   });
-
-  // Get unique categories for filter - ensure each category has a valid string value
-  const categories = ['all', ...Array.from(new Set(blogPosts.map(post => post.category.toLowerCase())))];
 
   // Reset filters function
   const resetFilters = () => {
@@ -41,7 +40,6 @@ const Blog = () => {
       <BlogSearch 
         searchQuery={searchQuery}
         setSearchQuery={setSearchQuery}
-        categories={categories}
         activeCategory={activeCategory}
         setActiveCategory={setActiveCategory}
       />

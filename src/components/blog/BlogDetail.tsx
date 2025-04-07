@@ -2,8 +2,12 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Clock, User } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, User, Tag, Share2 } from 'lucide-react';
 import { blogPosts } from '@/data/blogData';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Separator } from '@/components/ui/separator';
+import RelatedArticles from './RelatedArticles';
 
 const BlogDetail = () => {
   const { id } = useParams<{ id: string }>();
@@ -25,15 +29,11 @@ const BlogDetail = () => {
       </div>
     );
   }
-  
-  // Mock content for blog post
-  const paragraphs = [
-    post.excerpt,
-    "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam euismod, nisl eget ultricies aliquam, nunc nisl ultricies nisl, vitae aliquam nisl nisl vitae nisl. Nullam euismod, nisl eget ultricies aliquam, nunc nisl ultricies nisl, vitae aliquam nisl nisl vitae nisl.",
-    "Proin consectetur, nibh vel ultricies ultricies, nisl nisl ultricies nisl, vitae aliquam nisl nisl vitae nisl. Nullam euismod, nisl eget ultricies aliquam, nunc nisl ultricies nisl, vitae aliquam nisl nisl vitae nisl.",
-    "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo."
-  ];
+
+  // Calculate related posts (same category, excluding current post)
+  const relatedPosts = blogPosts
+    .filter(p => p.category === post.category && p.id !== post.id)
+    .slice(0, 3);
   
   return (
     <div className="pt-24 md:pt-32 pb-20 bg-dark min-h-screen">
@@ -56,6 +56,7 @@ const BlogDetail = () => {
           transition={{ duration: 0.5 }}
           className="mb-8"
         >
+          <Badge className="mb-4 bg-digicyan/20 text-digicyan hover:bg-digicyan/30">{post.category}</Badge>
           <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">{post.title}</h1>
           
           <div className="flex flex-wrap gap-4 mb-6 text-white">
@@ -72,12 +73,6 @@ const BlogDetail = () => {
             <div className="flex items-center">
               <User className="h-4 w-4 mr-2 text-digicyan" />
               <span>{post.author || "Admin"}</span>
-            </div>
-            
-            <div className="flex items-center">
-              <span className="bg-digicyan/10 text-digicyan px-2 py-0.5 rounded text-sm">
-                {post.category}
-              </span>
             </div>
           </div>
         </motion.div>
@@ -105,31 +100,60 @@ const BlogDetail = () => {
           transition={{ duration: 0.5, delay: 0.2 }}
           className="prose prose-lg max-w-none text-white mb-12"
         >
-          {paragraphs.map((paragraph, index) => (
-            <p key={index} className="mb-6">{paragraph}</p>
+          {post.content.map((paragraph, index) => (
+            <p key={index} className="mb-6 text-gray-300">{paragraph}</p>
           ))}
           
-          <h2 className="text-2xl font-bold text-white mt-10 mb-4">Kesimpulan</h2>
-          <p>
-            {post.excerpt} Penerapan strategi digital yang tepat dapat memberikan dampak
-            signifikan pada pertumbuhan bisnis di era digital saat ini.
-          </p>
+          {/* Additional Images */}
+          {post.relatedImages && post.relatedImages.length > 0 && (
+            <div className="my-8 grid grid-cols-1 md:grid-cols-2 gap-4">
+              {post.relatedImages.map((image, index) => (
+                <div key={index} className="rounded-lg overflow-hidden">
+                  <img 
+                    src={image} 
+                    alt={`${post.title} - image ${index + 1}`} 
+                    className="w-full h-64 object-cover hover:scale-105 transition-transform duration-300"
+                  />
+                </div>
+              ))}
+            </div>
+          )}
         </motion.div>
         
-        {/* Tags */}
-        <div className="mb-12">
-          <h3 className="text-lg font-semibold text-white mb-4">Tags</h3>
-          <div className="flex flex-wrap gap-2">
-            {post.tags.map((tag, index) => (
-              <span 
-                key={index}
-                className="bg-dark-300 border border-digicyan/30 text-digicyan px-3 py-1 rounded-md text-sm"
-              >
-                #{tag}
-              </span>
-            ))}
+        <Separator className="my-8 bg-gray-700" />
+        
+        {/* Tags and Share */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
+          <div className="mb-4 md:mb-0">
+            <h3 className="text-lg font-semibold text-white mb-3">Tags</h3>
+            <div className="flex flex-wrap gap-2">
+              {post.tags.map((tag, index) => (
+                <Badge 
+                  key={index}
+                  variant="outline"
+                  className="bg-dark-300 border border-digicyan/30 text-digicyan px-3 py-1 rounded-md text-sm"
+                >
+                  <Tag className="h-3 w-3 mr-1" />
+                  {tag}
+                </Badge>
+              ))}
+            </div>
+          </div>
+          
+          <div>
+            <h3 className="text-lg font-semibold text-white mb-3">Bagikan</h3>
+            <div className="flex gap-2">
+              <Button size="icon" variant="outline" className="rounded-full h-9 w-9">
+                <Share2 className="h-4 w-4 text-digicyan" />
+              </Button>
+            </div>
           </div>
         </div>
+        
+        {/* Related Articles */}
+        {relatedPosts.length > 0 && (
+          <RelatedArticles posts={relatedPosts} />
+        )}
       </div>
     </div>
   );

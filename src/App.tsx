@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -25,8 +24,9 @@ import MotivasiEdukasi from "./pages/MotivasiEdukasi";
 import SharingKonsultasi from "./pages/SharingKonsultasi";
 import Kelas from "./pages/Kelas";
 import Portofolio from "./pages/Portofolio";
-import PortfolioDetail from "./pages/PortfolioDetail"; // Fixed import path
+import PortfolioDetail from "./pages/PortfolioDetail";
 import Tentang from "./pages/Tentang";
+import { BlogDetail } from "./pages";
 
 // HomeWithSplash component to conditionally render splash screen
 const HomeWithSplash = () => {
@@ -82,7 +82,7 @@ function App() {
             <SplashScreenProvider>
               <Toaster />
               <Sonner />
-              {/* Removed Router component here as it's already in main.tsx */}
+              {/* Removed Router component as it's already in main.tsx */}
               <Routes>
                 {/* Pages with Navbar and Footer */}
                 <Route
@@ -99,6 +99,15 @@ function App() {
                   element={
                     <Layout>
                       <Blog />
+                    </Layout>
+                  }
+                />
+                
+                <Route
+                  path="/blog/:id"
+                  element={
+                    <Layout>
+                      <BlogDetail />
                     </Layout>
                   }
                 />
