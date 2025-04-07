@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSplashScreen } from '@/contexts/SplashScreenContext';
-import logoImage from '/lovable-uploads/d8594156-9e37-49bf-96bf-adacbdd478e8.png';
+import logoImage from '/lovable-uploads/63175a8a-8817-436e-8f8b-a3246a8bf733.png';
 
 interface SplashScreenProps {
   duration?: number;
