@@ -5,11 +5,11 @@ const OurStorySection = () => {
   return (
     <div className="max-w-4xl mx-auto mb-20">
       <div className="mb-12 text-center">
-        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-gray-900">Cerita Kami</h2>
-        <div className="w-20 h-1 bg-digiblue-600 mx-auto"></div>
+        <h2 className="text-3xl md:text-4xl font-bold mb-6 text-white">Cerita Kami</h2>
+        <div className="w-20 h-1 bg-digicyan-300 mx-auto"></div>
       </div>
       
-      <div className="prose prose-lg max-w-none text-gray-600">
+      <div className="prose prose-lg max-w-none text-white">
         <p>
           DigiBooster didirikan pada tahun 2018 dengan visi sederhana: membantu bisnis memanfaatkan teknologi digital 
           untuk pertumbuhan yang lebih cepat dan berkelanjutan. Diawali dengan tim kecil yang berfokus pada 

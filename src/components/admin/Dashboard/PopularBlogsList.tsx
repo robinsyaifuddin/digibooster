@@ -30,10 +30,10 @@ const PopularBlogsList = ({ blogs }: PopularBlogsListProps) => {
             <div key={blog.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
               <p className="text-sm font-medium">{blog.title}</p>
               <div className="flex justify-between mt-1">
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-white">
                   {blog.published}
                 </p>
-                <p className="text-xs text-gray-500">
+                <p className="text-xs text-white">
                   {blog.views} kunjungan
                 </p>
               </div>

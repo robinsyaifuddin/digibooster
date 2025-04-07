@@ -16,7 +16,7 @@ const PortfolioItem = ({ project }: PortfolioItemProps) => {
         hidden: { opacity: 0, y: 20 },
         show: { opacity: 1, y: 0 }
       }}
-      className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all group"
+      className="bg-dark-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all group"
     >
       <PortfolioImage 
         image={project.image}
@@ -26,6 +26,7 @@ const PortfolioItem = ({ project }: PortfolioItemProps) => {
       />
       
       <PortfolioItemDetails 
+        id={project.id}
         description={project.description}
         services={project.services}
       />

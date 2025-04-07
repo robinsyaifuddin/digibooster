@@ -1,24 +1,29 @@
 
 import React from 'react';
 import { ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
 import PortfolioServiceTags from './PortfolioServiceTags';
 
 interface PortfolioItemDetailsProps {
+  id: number;
   description: string;
   services: string[];
 }
 
-const PortfolioItemDetails = ({ description, services }: PortfolioItemDetailsProps) => {
+const PortfolioItemDetails = ({ id, description, services }: PortfolioItemDetailsProps) => {
   return (
     <div className="p-6">
-      <p className="text-gray-600 mb-4">{description}</p>
+      <p className="text-white mb-4">{description}</p>
       
       <PortfolioServiceTags services={services} />
       
-      <button className="inline-flex items-center text-digiblue-600 hover:text-digiblue-800 font-medium">
+      <Link 
+        to={`/portofolio/${id}`} 
+        className="inline-flex items-center text-digicyan hover:text-digicyan-300 font-medium transition-colors"
+      >
         Lihat Detail 
         <ExternalLink className="ml-2 h-4 w-4" />
-      </button>
+      </Link>
     </div>
   );
 };
