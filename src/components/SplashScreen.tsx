@@ -2,12 +2,13 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useSplashScreen } from '@/contexts/SplashScreenContext';
+import logoImage from '/lovable-uploads/d8594156-9e37-49bf-96bf-adacbdd478e8.png';
 
 interface SplashScreenProps {
   duration?: number;
 }
 
-const SplashScreen = ({ duration = 1500 }: SplashScreenProps) => {
+const SplashScreen = ({ duration = 2000 }: SplashScreenProps) => {
   const [showAnimation, setShowAnimation] = useState(true);
   const [showParticles, setShowParticles] = useState(false);
   const { hideSplash } = useSplashScreen();
@@ -36,34 +37,140 @@ const SplashScreen = ({ duration = 1500 }: SplashScreenProps) => {
     <AnimatePresence>
       {showAnimation && (
         <motion.div
-          initial={{ opacity: 1 }}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className="fixed inset-0 flex items-center justify-center z-[9999] w-full h-full"
+          className="fixed inset-0 flex items-center justify-center z-[9999] w-full h-full bg-dark"
         >
-          {/* Full screen GIF background */}
-          <div className="absolute inset-0 w-full h-full">
-            <div className="relative w-full h-full">
-              <img 
-                src="https://i.gifer.com/3UsO.gif" 
-                alt="Cyberpunk Animation" 
-                className="w-full h-full object-cover"
+          {/* Animated background */}
+          <div className="absolute inset-0 overflow-hidden">
+            {/* Grid lines for cyber effect */}
+            <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
+            
+            {/* Horizontal grid lines */}
+            {[...Array(10)].map((_, i) => (
+              <motion.div 
+                key={`h-line-${i}`}
+                className="absolute h-[1px] bg-neon-cyan/20 w-full left-0"
+                style={{ top: `${i * 10}%` }}
+                animate={{ 
+                  opacity: [0.1, 0.3, 0.1],
+                  scaleX: [1, 1.05, 1],
+                  boxShadow: [
+                    "0 0 2px rgba(0, 216, 232, 0.2)",
+                    "0 0 8px rgba(0, 216, 232, 0.6)",
+                    "0 0 2px rgba(0, 216, 232, 0.2)"
+                  ]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: 1,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                  delay: i * 0.05
+                }}
               />
-              <div className="absolute inset-0 bg-black/30"></div>
-            </div>
+            ))}
+            
+            {/* Vertical grid lines */}
+            {[...Array(10)].map((_, i) => (
+              <motion.div 
+                key={`v-line-${i}`}
+                className="absolute w-[1px] bg-neon-cyan/20 h-full top-0"
+                style={{ left: `${i * 10}%` }}
+                animate={{ 
+                  opacity: [0.1, 0.3, 0.1],
+                  scaleY: [1, 1.05, 1],
+                  boxShadow: [
+                    "0 0 2px rgba(0, 216, 232, 0.2)",
+                    "0 0 8px rgba(0, 216, 232, 0.6)",
+                    "0 0 2px rgba(0, 216, 232, 0.2)"
+                  ]
+                }}
+                transition={{ 
+                  duration: 2,
+                  repeat: 1,
+                  repeatType: "reverse",
+                  ease: "easeInOut",
+                  delay: i * 0.05
+                }}
+              />
+            ))}
+            
+            {/* Glowing orbs in background for depth */}
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={`orb-${i}`}
+                className="absolute rounded-full bg-neon-cyan/5"
+                style={{
+                  width: Math.random() * 200 + 100,
+                  height: Math.random() * 200 + 100,
+                  filter: "blur(40px)",
+                  left: `${Math.random() * 100}%`,
+                  top: `${Math.random() * 100}%`,
+                }}
+                animate={{
+                  scale: [1, 1.2, 1],
+                  opacity: [0.3, 0.7, 0.3],
+                }}
+                transition={{
+                  duration: 2,
+                  ease: "easeInOut",
+                  repeat: 1,
+                  repeatType: "reverse",
+                }}
+              />
+            ))}
           </div>
 
-          {/* Logo overlay */}
-          <motion.div
-            className="absolute inset-0 flex flex-col items-center justify-center z-10"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
+          {/* 3D Animated Logo */}
+          <motion.div 
+            className="relative z-10 w-[80%] max-w-[500px]"
+            initial={{ scale: 0.9, y: 20, opacity: 0 }}
+            animate={{ 
+              scale: 1, 
+              y: 0, 
+              opacity: 1,
+              rotateY: [0, 5, 0, -5, 0],
+              rotateX: [0, -5, 0, 5, 0],
+            }}
+            transition={{
+              duration: 2,
+              ease: "easeInOut",
+              times: [0, 0.25, 0.5, 0.75, 1],
+            }}
           >
-            <h1 className="text-4xl md:text-5xl font-bold text-neon-cyan glow-text">
-              DigiBooster
-            </h1>
-            <p className="text-gray-300 mt-2">Transformasi Digital Untuk Semua</p>
+            <div className="relative">
+              {/* Shadow effect */}
+              <motion.div
+                className="absolute -bottom-4 left-0 right-0 mx-auto h-4 bg-neon-cyan/20 rounded-full filter blur-md"
+                style={{ width: '90%' }}
+                animate={{ 
+                  opacity: [0.2, 0.6, 0.2],
+                  width: ['80%', '90%', '80%']
+                }}
+                transition={{ duration: 2, repeat: 1, repeatType: "reverse" }}
+              />
+              
+              {/* Logo with glow effect */}
+              <motion.img 
+                src={logoImage} 
+                alt="DigiBooster Logo" 
+                className="w-full h-auto object-contain relative z-10"
+                style={{ 
+                  filter: "drop-shadow(0 0 10px rgba(0, 216, 232, 0.5))",
+                }}
+                animate={{ 
+                  filter: [
+                    "drop-shadow(0 0 5px rgba(0, 216, 232, 0.3))",
+                    "drop-shadow(0 0 20px rgba(0, 216, 232, 0.7))",
+                    "drop-shadow(0 0 5px rgba(0, 216, 232, 0.3))"
+                  ]
+                }}
+                transition={{ duration: 2, repeat: 1, repeatType: "reverse" }}
+              />
+            </div>
           </motion.div>
           
           {/* Particles effect for exit animation */}

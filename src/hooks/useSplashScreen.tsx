@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 // Hook untuk mengelola logika splash screen
 export const useSplashScreen = () => {
-  const [showSplash, setShowSplash] = useState(false);
+  const [showSplash, setShowSplash] = useState(true);
   const [isFirstVisit, setIsFirstVisit] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
   
@@ -18,6 +18,7 @@ export const useSplashScreen = () => {
     } else {
       // Bukan kunjungan pertama
       setIsFirstVisit(false);
+      setShowSplash(false);
     }
     
     setIsLoading(false);
