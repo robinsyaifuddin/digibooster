@@ -59,9 +59,42 @@ const Beranda = () => {
     }
   };
 
-  // If homeContent isn't loaded yet, we can use default data from websiteDataStore
+  // If homeContent isn't loaded yet, we can use default data with updated service cards
   const heroData = homeContent?.hero || websiteData.homeContent.hero;
-  const servicesData = homeContent?.services || websiteData.homeContent.services;
+  
+  // Updated service cards to match program submenu names
+  const servicesFallback = [
+    {
+      id: '1',
+      title: 'Layanan Jasa Digital',
+      description: 'Tingkatkan presence digital Anda dengan layanan jasa design, web development, dan digital marketing kami.',
+      icon: 'Code',
+      link: '/program/jasa-digital',
+    },
+    {
+      id: '2',
+      title: 'Motivasi dan Edukasi Digital',
+      description: 'Dapatkan inspirasi dan pengetahuan digital melalui seminar dan workshop yang kami selenggarakan.',
+      icon: 'Lightbulb',
+      link: '/program/motivasi-edukasi',
+    },
+    {
+      id: '3',
+      title: 'Sharing dan Konsultasi Bisnis Digital',
+      description: 'Konsultasikan kebutuhan digital bisnis Anda dengan pakar kami untuk solusi terbaik.',
+      icon: 'MessagesSquare',
+      link: '/program/sharing-konsultasi',
+    },
+    {
+      id: '4',
+      title: 'Short Class dan Mini Bootcamp',
+      description: 'Pelajari keterampilan digital terbaru melalui kelas intensif dan bootcamp dari para ahli.',
+      icon: 'GraduationCap',
+      link: '/program/kelas',
+    },
+  ];
+  
+  const servicesData = homeContent?.services || servicesFallback;
   const testimonialsData = homeContent?.testimonials || websiteData.homeContent.testimonials;
 
   return (

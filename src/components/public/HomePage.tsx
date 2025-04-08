@@ -1,4 +1,3 @@
-
 import React from 'react';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
@@ -17,35 +16,34 @@ const HomePage = () => {
   const websiteData = useWebsiteDataStore();
   const companyName = websiteData.generalInfo.title;
   
-  // Fallback data jika homeContent masih loading
   const servicesFallback = [
     {
       id: '1',
       title: 'Layanan Jasa Digital',
       description: 'Tingkatkan presence digital Anda dengan layanan jasa design, web development, dan digital marketing kami.',
       icon: 'Code',
-      link: '/layanan/jasa-digital',
+      link: '/program/jasa-digital',
     },
     {
       id: '2',
       title: 'Motivasi dan Edukasi Digital',
       description: 'Dapatkan inspirasi dan pengetahuan digital melalui seminar dan workshop yang kami selenggarakan.',
       icon: 'Lightbulb',
-      link: '/layanan/motivasi-edukasi',
+      link: '/program/motivasi-edukasi',
     },
     {
       id: '3',
       title: 'Sharing dan Konsultasi Bisnis Digital',
       description: 'Konsultasikan kebutuhan digital bisnis Anda dengan pakar kami untuk solusi terbaik.',
-      icon: 'Users',
-      link: '/layanan/sharing-konsultasi',
+      icon: 'MessagesSquare',
+      link: '/program/sharing-konsultasi',
     },
     {
       id: '4',
       title: 'Short Class dan Mini Bootcamp',
       description: 'Pelajari keterampilan digital terbaru melalui kelas intensif dan bootcamp dari para ahli.',
-      icon: 'PenTool',
-      link: '/layanan/kelas',
+      icon: 'GraduationCap',
+      link: '/program/kelas',
     },
   ];
   
@@ -101,7 +99,6 @@ const HomePage = () => {
     },
   ];
 
-  // Create the alternating colored title for the logo marquee
   const logoMarqueeTitle: ReactNode = (
     <>
       <span className="text-gray-900">Dipercaya</span>{" "}
@@ -114,13 +111,11 @@ const HomePage = () => {
 
   return (
     <main className="overflow-x-hidden">
-      {/* Hero Section */}
       <HeroSection 
         generalInfo={websiteData.generalInfo}
         hero={homeContent?.hero}
       />
       
-      {/* Logo Marquee - Trusted by Companies */}
       <LogoMarquee
         logos={homeContent?.partners || partnersFallback}
         title={logoMarqueeTitle}
@@ -129,10 +124,8 @@ const HomePage = () => {
         bgColor="bg-gray-50"
       />
       
-      {/* Services Section */}
       <ServicesSection services={homeContent?.services || servicesFallback} />
       
-      {/* Benefits Section with Animation */}
       <ScrollAnimation>
         <BenefitsSection 
           benefits={homeContent?.benefits || []} 
@@ -140,16 +133,13 @@ const HomePage = () => {
         />
       </ScrollAnimation>
       
-      {/* Testimonials Section */}
       <TestimonialsSection 
         testimonials={homeContent?.testimonials || testimonialsFallback}
         companyName={companyName}
       />
       
-      {/* Contact Section */}
       <ContactSection companyName={companyName} />
       
-      {/* CTA Section */}
       <CtaSection companyName={companyName} />
     </main>
   );
