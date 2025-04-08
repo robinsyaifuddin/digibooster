@@ -1,33 +1,49 @@
 
-import { createContext, useContext, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-type SplashScreenContextType = {
-  showSplash: boolean;
+interface SplashScreenContextType {
+  isVisible: boolean;
   triggerSplash: () => void;
   hideSplash: () => void;
-};
+}
 
-const SplashScreenContext = createContext<SplashScreenContextType | undefined>(undefined);
-
-export const SplashScreenProvider = ({ children }: { children: ReactNode }) => {
-  // Disable splash screen functionality by always setting showSplash to false
-  const showSplash = false;
-  
-  // Empty functions to maintain API compatibility
-  const triggerSplash = () => {};
-  const hideSplash = () => {};
-
-  return (
-    <SplashScreenContext.Provider value={{ showSplash, triggerSplash, hideSplash }}>
-      {children}
-    </SplashScreenContext.Provider>
-  );
-};
+// Create context with default values
+const SplashScreenContext = createContext<SplashScreenContextType>({
+  isVisible: false,
+  triggerSplash: () => {},
+  hideSplash: () => {},
+});
 
 export const useSplashScreen = () => {
   const context = useContext(SplashScreenContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useSplashScreen must be used within a SplashScreenProvider');
   }
   return context;
+};
+
+interface SplashScreenProviderProps {
+  children: ReactNode;
+}
+
+export const SplashScreenProvider: React.FC<SplashScreenProviderProps> = ({ children }) => {
+  const [isVisible, setIsVisible] = useState(false);
+
+  const triggerSplash = () => {
+    setIsVisible(true);
+    // Auto-hide after animation completes
+    setTimeout(() => {
+      setIsVisible(false);
+    }, 3000); // Adjust time to match animation duration
+  };
+
+  const hideSplash = () => {
+    setIsVisible(false);
+  };
+
+  return (
+    <SplashScreenContext.Provider value={{ isVisible, triggerSplash, hideSplash }}>
+      {children}
+    </SplashScreenContext.Provider>
+  );
 };
