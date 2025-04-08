@@ -1,146 +1,47 @@
 
-import React, { useEffect } from 'react';
-import { motion } from 'framer-motion';
-import { useHomeContent } from '@/contexts/HomeContentContext';
-import { useSplashScreen } from '../contexts/SplashScreenContext';
+import React from 'react';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
 import TestimonialsSection from '@/components/home/TestimonialsSection';
+import BenefitsSection from '@/components/home/BenefitsSection';
+import ContactSection from '@/components/home/ContactSection';
+import LogoMarquee from '@/components/home/LogoMarquee';
 import CtaSection from '@/components/home/CtaSection';
-import { Helmet } from 'react-helmet-async';
-import { useWebsiteDataStore } from '@/stores/websiteDataStore';
+import ScrollAnimation from '@/components/home/ScrollAnimation';
+import { motion } from 'framer-motion';
 
 const Beranda = () => {
-  const { homeContent } = useHomeContent();
-  const { triggerSplash } = useSplashScreen();
-  const websiteData = useWebsiteDataStore();
-  const companyName = websiteData.generalInfo.title;
-  
-  // Handle refresh action
-  useEffect(() => {
-    // Setup storage listener to detect page refreshes
-    const handleBeforeUnload = () => {
-      // This will run before page refresh
-      sessionStorage.setItem('shouldShowSplash', 'true');
-    };
-    
-    window.addEventListener('beforeunload', handleBeforeUnload);
-    
-    // Check if we should show splash after refresh
-    const shouldShowSplash = sessionStorage.getItem('shouldShowSplash');
-    if (shouldShowSplash === 'true') {
-      triggerSplash();
-      sessionStorage.removeItem('shouldShowSplash');
-    }
-    
-    return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
-    };
-  }, [triggerSplash]);
-
-  // Animation variants for staggered animations
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3,
-        delayChildren: 0.3
-      }
-    }
-  };
-  
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.6 }
-    }
-  };
-
-  // If homeContent isn't loaded yet, we can use default data with updated service cards
-  const heroData = homeContent?.hero || websiteData.homeContent.hero;
-  
-  // Updated service cards to match program submenu names
-  const servicesFallback = [
-    {
-      id: '1',
-      title: 'Layanan Jasa Digital',
-      description: 'Tingkatkan presence digital Anda dengan layanan jasa design, web development, dan digital marketing kami.',
-      icon: 'Code',
-      link: '/program/jasa-digital',
-    },
-    {
-      id: '2',
-      title: 'Motivasi dan Edukasi Digital',
-      description: 'Dapatkan inspirasi dan pengetahuan digital melalui seminar dan workshop yang kami selenggarakan.',
-      icon: 'Lightbulb',
-      link: '/program/motivasi-edukasi',
-    },
-    {
-      id: '3',
-      title: 'Sharing dan Konsultasi Bisnis Digital',
-      description: 'Konsultasikan kebutuhan digital bisnis Anda dengan pakar kami untuk solusi terbaik.',
-      icon: 'MessagesSquare',
-      link: '/program/sharing-konsultasi',
-    },
-    {
-      id: '4',
-      title: 'Short Class dan Mini Bootcamp',
-      description: 'Pelajari keterampilan digital terbaru melalui kelas intensif dan bootcamp dari para ahli.',
-      icon: 'GraduationCap',
-      link: '/program/kelas',
-    },
-  ];
-  
-  const servicesData = homeContent?.services || servicesFallback;
-  const testimonialsData = homeContent?.testimonials || websiteData.homeContent.testimonials;
-
   return (
-    <>
-      <Helmet>
-        <title>DigiBooster - Platform Digital Marketing & Education</title>
-        <meta name="description" content="DigiBooster adalah platform agensi dan pengembangan ekosistem digital Indonesia. Kami membantu masyarakat mengoptimalkan digitalisasi." />
-      </Helmet>
-      
-      <motion.div
-        initial="hidden"
-        animate="visible"
-        variants={containerVariants}
-        className="overflow-hidden"
-      >
-        <motion.div variants={itemVariants}>
-          <HeroSection 
-            title={heroData.title} 
-            subtitle={heroData.subtitle}
-            ctaText={heroData.ctaText}
-            ctaLink={heroData.ctaLink}
-          />
+    <ScrollAnimation>
+      <main>
+        {/* Hero Section */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.6 }}
+        >
+          <HeroSection />
         </motion.div>
-        
-        <motion.div variants={itemVariants}>
-          <ServicesSection services={servicesData} />
-        </motion.div>
-        
-        {/* Removed AboutSection */}
-        
-        <motion.div variants={itemVariants}>
-          <TestimonialsSection 
-            testimonials={testimonialsData}
-            companyName={companyName} 
-          />
-        </motion.div>
-        
-        {/* Removed BlogPreviewSection */}
-        
-        {/* Removed PartnersSection */}
-        
-        <motion.div variants={itemVariants}>
-          <CtaSection companyName={companyName} />
-        </motion.div>
-      </motion.div>
-    </>
+
+        {/* Logo Marquee - Show our trusted partners */}
+        <LogoMarquee />
+
+        {/* Services Section */}
+        <ServicesSection />
+
+        {/* Benefits Section */}
+        <BenefitsSection />
+
+        {/* Testimonials Section */}
+        <TestimonialsSection />
+
+        {/* CTA Section */}
+        <CtaSection companyName="DigiCore" />
+
+        {/* Contact Section */}
+        <ContactSection />
+      </main>
+    </ScrollAnimation>
   );
 };
 

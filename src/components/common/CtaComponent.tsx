@@ -48,7 +48,7 @@ const CtaComponent = ({
           "inline-flex items-center px-6 py-3 rounded-full font-medium transition-colors shadow-md",
           theme === 'light' 
             ? "bg-digicyan-500 hover:bg-digicyan-600 text-white" 
-            : "bg-neon-cyan hover:bg-neon-cyan/90 text-dark-900"
+            : "bg-neon-cyan hover:bg-neon-cyan/90 text-gray-900"
         )}
       >
         {buttonText} <ArrowRight className="ml-2 h-4 w-4" />

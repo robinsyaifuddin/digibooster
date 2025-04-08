@@ -66,7 +66,7 @@ export const initIntersectionObserver = () => {
           el.classList.add(`animate-${animType}`);
         }
         
-        if (delay) {
+        if (delay && el instanceof HTMLElement) {
           el.style.animationDelay = `${delay}ms`;
         }
         

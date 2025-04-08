@@ -58,7 +58,7 @@ const CtaSection = ({ companyName }: CtaSectionProps) => {
                 "shadow-lg group",
                 theme === 'light'
                   ? "bg-gradient-to-r from-digicyan-500 to-digicyan-600 hover:from-digicyan-600 hover:to-digicyan-700 text-white"
-                  : "bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-dark-500"
+                  : "bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-gray-900"
               )}>
                 Daftar Sekarang
                 <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />

@@ -52,7 +52,7 @@ const AnimatedSection: React.FC<AnimatedSectionProps> = ({
       className={cn(className)}
       initial="hidden"
       whileInView="visible"
-      viewport={{ once, threshold }}
+      viewport={{ once, amount: threshold }}
       variants={variants[animation]}
       transition={{ duration: 0.5, delay: delay / 1000 }}
     >

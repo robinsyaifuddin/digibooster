@@ -133,7 +133,7 @@
   }
 
   .dark .btn-primary {
-    @apply bg-neon-cyan text-dark-900 hover:bg-neon-blue px-6 py-3 rounded-md transition duration-300 font-medium shadow-md;
+    @apply bg-neon-cyan hover:bg-neon-blue px-6 py-3 rounded-md transition duration-300 font-medium shadow-md text-gray-900;
   }
 
   .btn-secondary {
