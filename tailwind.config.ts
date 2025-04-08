@@ -2,7 +2,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-	darkMode: ["class"],
+	darkMode: ["class", ".dark"],
 	content: [
 		"./pages/**/*.{ts,tsx}",
 		"./components/**/*.{ts,tsx}",
@@ -159,6 +159,10 @@ export default {
                     '0%, 100%': { transform: 'translateY(0)' },
                     '50%': { transform: 'translateY(-15px)' }
                 },
+                'flip': {
+                    '0%': { transform: 'rotateY(0deg)' },
+                    '100%': { transform: 'rotateY(180deg)' }
+                },
                 'cyber-glow': {
                     '0%': { boxShadow: '0 0 5px #00D8E8, 0 0 10px #00D8E8' },
                     '50%': { boxShadow: '0 0 20px #00D8E8, 0 0 30px #00D8E8' },
@@ -180,8 +184,13 @@ export default {
                 'pulse-light': 'pulse-light 2s infinite',
                 'rotate-3d': 'rotate-3d 15s linear infinite',
                 'bounce-slow': 'bounce-slow 4s ease-in-out infinite',
+                'flip': 'flip 0.6s ease-in-out',
                 'cyber-glow': 'cyber-glow 2s infinite'
-			}
+			},
+            transitionProperty: {
+                'height': 'height',
+                'spacing': 'margin, padding',
+            }
 		}
 	},
 	plugins: [require("tailwindcss-animate")],

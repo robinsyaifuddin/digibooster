@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
@@ -6,12 +7,18 @@ import { Menu, X, Home, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
+import ThemeToggle from "./ui/ThemeToggle";
+import LanguageToggle from "./ui/LanguageToggle";
+import { useLanguage } from "@/contexts/LanguageContext";
+import { useTheme } from "@/contexts/ThemeContext";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
   const { user, isAuthenticated, logout } = useAuth();
+  const { t } = useLanguage();
+  const { theme } = useTheme();
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -82,28 +89,30 @@ const Navbar = () => {
   };
 
   const navLinks = [
-    { path: "/", label: "Beranda", icon: <Home className="h-4 w-4 mr-1" /> },
+    { path: "/", label: "beranda", icon: <Home className="h-4 w-4 mr-1" /> },
     { 
-      label: "Program",
+      label: "program",
       icon: null,
       isDropdown: true,
       children: [
-        { path: "/program/jasa-digital", label: "Jasa Digital" },
-        { path: "/program/motivasi-edukasi", label: "Motivasi & Edukasi" },
-        { path: "/program/sharing-konsultasi", label: "Sharing & Konsultasi" },
-        { path: "/program/kelas", label: "Kelas" },
+        { path: "/program/jasa-digital", label: "jasa-digital" },
+        { path: "/program/motivasi-edukasi", label: "motivasi-edukasi" },
+        { path: "/program/sharing-konsultasi", label: "sharing-konsultasi" },
+        { path: "/program/kelas", label: "kelas" },
       ]
     },
-    { path: "/blog", label: "Blog", icon: null },
-    { path: "/portofolio", label: "Portofolio", icon: null },
-    { path: "/tentang", label: "Tentang", icon: null },
+    { path: "/blog", label: "blog", icon: null },
+    { path: "/portofolio", label: "portofolio", icon: null },
+    { path: "/tentang", label: "tentang", icon: null },
   ];
   
   return (
     <motion.header 
       className={cn(
         "fixed top-0 left-0 w-full backdrop-blur-lg border-b z-50 transition-all duration-300",
-        scrolled ? "bg-dark/90 border-dark-300/50" : "bg-dark/70 border-transparent"
+        theme === 'dark'
+          ? scrolled ? "bg-dark/90 border-dark-300/50" : "bg-dark/70 border-transparent"
+          : scrolled ? "bg-white/90 border-gray-200" : "bg-white/70 border-transparent"
       )}
       initial="hidden"
       animate="visible"
@@ -135,22 +144,30 @@ const Navbar = () => {
                     className={cn(
                       "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center relative group", 
                       isActive(item.path) 
-                        ? "text-neon-cyan" 
-                        : "text-gray-300 hover:text-white"
+                        ? theme === 'dark' ? "text-neon-cyan" : "text-digicyan" 
+                        : theme === 'dark' ? "text-gray-300 hover:text-white" : "text-gray-700 hover:text-black"
                     )}
                   >
                     {item.icon}
-                    {item.label}
+                    {t(item.label)}
                     {isActive(item.path) && (
                       <motion.div 
-                        className="absolute bottom-0 left-0 w-full h-0.5 bg-neon-cyan rounded-full" 
+                        className={cn(
+                          "absolute bottom-0 left-0 w-full h-0.5 rounded-full",
+                          theme === 'dark' ? "bg-neon-cyan" : "bg-digicyan"
+                        )}
                         layoutId="underline"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.3 }}
                       />
                     )}
-                    <span className="absolute inset-0 rounded-md bg-white/0 group-hover:bg-white/5 transition-colors duration-200"></span>
+                    <span className={cn(
+                      "absolute inset-0 rounded-md transition-colors duration-200",
+                      theme === 'dark' 
+                        ? "group-hover:bg-white/5" 
+                        : "group-hover:bg-black/5"
+                    )}></span>
                   </Link>
                 </motion.div>
               ) : (
@@ -165,14 +182,20 @@ const Navbar = () => {
                     <NavigationMenuList>
                       <NavigationMenuItem>
                         <NavigationMenuTrigger className={cn(
-                          "bg-transparent hover:bg-white/5 focus:bg-dark-300 transition-colors duration-200",
-                          "text-gray-300 hover:text-white",
-                          "data-[state=open]:bg-dark-300 data-[state=open]:text-neon-cyan"
+                          "transition-colors duration-200",
+                          theme === 'dark' 
+                            ? "bg-transparent hover:bg-white/5 focus:bg-dark-300 text-gray-300 hover:text-white data-[state=open]:bg-dark-300 data-[state=open]:text-neon-cyan" 
+                            : "bg-transparent hover:bg-black/5 focus:bg-gray-100 text-gray-700 hover:text-black data-[state=open]:bg-gray-100 data-[state=open]:text-digicyan"
                         )}>
-                          {item.label}
+                          {t(item.label)}
                         </NavigationMenuTrigger>
                         <NavigationMenuContent>
-                          <ul className="grid grid-cols-1 gap-1 p-2 min-w-[180px] bg-dark-200/90 backdrop-blur-xl border border-dark-300 rounded-md shadow-lg">
+                          <ul className={cn(
+                            "grid grid-cols-1 gap-1 p-2 min-w-[180px] rounded-md shadow-lg", 
+                            theme === 'dark' 
+                              ? "bg-dark-200/90 backdrop-blur-xl border border-dark-300" 
+                              : "bg-white/90 backdrop-blur-xl border border-gray-200"
+                          )}>
                             {item.children.map((child) => (
                               <li key={child.label}>
                                 <NavigationMenuLink asChild>
@@ -181,12 +204,16 @@ const Navbar = () => {
                                     className={cn(
                                       "block w-full select-none space-y-1 rounded-md px-3 py-2.5 leading-none no-underline outline-none transition-colors",
                                       isActive(child.path) 
-                                        ? "bg-neon-cyan/10 text-neon-cyan font-medium" 
-                                        : "text-gray-300 hover:bg-white/5 hover:text-white focus:bg-dark-300 focus:text-white"
+                                        ? theme === 'dark'
+                                          ? "bg-neon-cyan/10 text-neon-cyan font-medium" 
+                                          : "bg-digicyan/10 text-digicyan font-medium" 
+                                        : theme === 'dark'
+                                          ? "text-gray-300 hover:bg-white/5 hover:text-white focus:bg-dark-300 focus:text-white"
+                                          : "text-gray-700 hover:bg-black/5 hover:text-black focus:bg-gray-100 focus:text-black"
                                     )}
                                   >
                                     <div className="text-sm font-medium">
-                                      {child.label}
+                                      {t(child.label)}
                                     </div>
                                   </Link>
                                 </NavigationMenuLink>
@@ -203,22 +230,38 @@ const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
+            {/* Theme and language toggles */}
+            <div className="flex items-center space-x-2 mr-2">
+              <ThemeToggle />
+              <LanguageToggle />
+            </div>
+
             {isAuthenticated ? (
               <>
                 <Link to="/admin">
                   <Button 
                     variant="outline" 
-                    className="border-neon-cyan/40 bg-dark-300/50 text-white hover:bg-dark-300 hover:border-neon-cyan/80 transition-all duration-200"
+                    className={cn(
+                      "transition-all duration-200",
+                      theme === 'dark'
+                        ? "border-neon-cyan/40 bg-dark-300/50 text-white hover:bg-dark-300 hover:border-neon-cyan/80"
+                        : "border-digicyan/40 bg-gray-100 text-gray-800 hover:bg-gray-200 hover:border-digicyan/80"
+                    )}
                   >
-                    Dashboard
+                    {t('dashboard')}
                   </Button>
                 </Link>
                 <Button 
                   onClick={logout} 
                   variant="ghost" 
-                  className="text-white hover:bg-dark-300 transition-all duration-200"
+                  className={cn(
+                    "transition-all duration-200",
+                    theme === 'dark'
+                      ? "text-white hover:bg-dark-300"
+                      : "text-gray-800 hover:bg-gray-200"
+                  )}
                 >
-                  Keluar
+                  {t('keluar')}
                 </Button>
               </>
             ) : (
@@ -226,26 +269,45 @@ const Navbar = () => {
                 <Link to="/login">
                   <Button 
                     variant="ghost" 
-                    className="text-white hover:bg-dark-300 transition-all duration-200"
+                    className={cn(
+                      "transition-all duration-200",
+                      theme === 'dark'
+                        ? "text-white hover:bg-dark-300"
+                        : "text-gray-800 hover:bg-gray-200"
+                    )}
                   >
-                    Masuk
+                    {t('masuk')}
                   </Button>
                 </Link>
                 <Link to="/register">
                   <Button 
-                    className="bg-neon-cyan hover:bg-neon-blue text-white transition-all duration-200 shadow-lg shadow-neon-cyan/20 hover:shadow-neon-blue/30"
+                    className={cn(
+                      "transition-all duration-200 shadow-lg",
+                      theme === 'dark'
+                        ? "bg-neon-cyan hover:bg-neon-blue text-white shadow-neon-cyan/20 hover:shadow-neon-blue/30"
+                        : "bg-digicyan hover:bg-digicyan-600 text-white shadow-digicyan/20 hover:shadow-digicyan/30"
+                    )}
                   >
-                    Daftar
+                    {t('daftar')}
                   </Button>
                 </Link>
               </>
             )}
           </div>
 
-          <div className="flex md:hidden">
+          <div className="flex md:hidden items-center space-x-2">
+            {/* Mobile theme and language toggles */}
+            <ThemeToggle />
+            <LanguageToggle />
+
             <button
               onClick={toggleMobileMenu}
-              className="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-white hover:bg-dark-300 transition-colors duration-200"
+              className={cn(
+                "inline-flex items-center justify-center p-2 rounded-md transition-colors duration-200",
+                theme === 'dark'
+                  ? "text-gray-400 hover:text-white hover:bg-dark-300"
+                  : "text-gray-600 hover:text-black hover:bg-gray-200"
+              )}
               aria-label="Toggle menu"
             >
               <AnimatePresence initial={false} mode="wait">
@@ -279,7 +341,12 @@ const Navbar = () => {
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
-            className="md:hidden bg-dark-200/95 backdrop-blur-lg border-t border-dark-300"
+            className={cn(
+              "md:hidden border-t backdrop-blur-lg",
+              theme === 'dark'
+                ? "bg-dark-200/95 border-dark-300"
+                : "bg-white/95 border-gray-200"
+            )}
             initial="closed"
             animate="open"
             exit="closed"
@@ -299,13 +366,17 @@ const Navbar = () => {
                       className={cn(
                         "flex items-center px-3 py-2.5 rounded-md text-base font-medium",
                         isActive(item.path) 
-                          ? "text-neon-cyan bg-dark-300" 
-                          : "text-gray-300 hover:text-white hover:bg-dark-300"
+                          ? theme === 'dark'
+                            ? "text-neon-cyan bg-dark-300" 
+                            : "text-digicyan bg-gray-100"
+                          : theme === 'dark'
+                            ? "text-gray-300 hover:text-white hover:bg-dark-300"
+                            : "text-gray-700 hover:text-black hover:bg-gray-100"
                       )}
                       onClick={toggleMobileMenu}
                     >
                       {item.icon}
-                      {item.label}
+                      {t(item.label)}
                     </Link>
                   </motion.div>
                 ) : (
@@ -314,9 +385,14 @@ const Navbar = () => {
                       initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
-                      className="px-3 py-1.5 font-medium text-gray-300"
+                      className={cn(
+                        "px-3 py-1.5 font-medium",
+                        theme === 'dark'
+                          ? "text-gray-300"
+                          : "text-gray-700"
+                      )}
                     >
-                      {item.label}
+                      {t(item.label)}
                     </motion.div>
                     
                     <div className="mt-1 space-y-1">
@@ -331,13 +407,17 @@ const Navbar = () => {
                             to={child.path}
                             className={cn(
                               "block px-4 py-2.5 rounded-md text-base font-medium transition-all",
-                              isActive(child.path) 
-                                ? "text-neon-cyan bg-neon-cyan/10" 
-                                : "text-gray-300 hover:text-white hover:bg-dark-300/70"
+                              isActive(child.path)
+                                ? theme === 'dark'
+                                  ? "text-neon-cyan bg-neon-cyan/10" 
+                                  : "text-digicyan bg-digicyan/10"
+                                : theme === 'dark'
+                                  ? "text-gray-300 hover:text-white hover:bg-dark-300/70"
+                                  : "text-gray-700 hover:text-black hover:bg-gray-100/70"
                             )}
                             onClick={toggleMobileMenu}
                           >
-                            {child.label}
+                            {t(child.label)}
                           </Link>
                         </motion.div>
                       ))}
@@ -346,51 +426,79 @@ const Navbar = () => {
                 )
               ))}
               
-              <div className="border-t border-dark-300 pt-3 mt-3">
+              <div className={cn(
+                "border-t pt-3 mt-3",
+                theme === 'dark' ? "border-dark-300" : "border-gray-200"
+              )}>
                 {isAuthenticated ? (
                   <>
                     <Link
                       to="/admin"
-                      className="block px-3 py-2.5 rounded-md text-base font-medium text-white bg-neon-cyan/20 hover:bg-neon-cyan/30 mb-1"
+                      className={cn(
+                        "block px-3 py-2.5 rounded-md text-base font-medium mb-1",
+                        theme === 'dark'
+                          ? "text-white bg-neon-cyan/20 hover:bg-neon-cyan/30"
+                          : "text-gray-800 bg-digicyan/20 hover:bg-digicyan/30"
+                      )}
                       onClick={toggleMobileMenu}
                     >
-                      Dashboard
+                      {t('dashboard')}
                     </Link>
                     <button
                       onClick={() => {
                         logout();
                         toggleMobileMenu();
                       }}
-                      className="w-full text-left px-3 py-2.5 rounded-md text-base font-medium text-gray-300 hover:text-white hover:bg-dark-300"
+                      className={cn(
+                        "w-full text-left px-3 py-2.5 rounded-md text-base font-medium",
+                        theme === 'dark'
+                          ? "text-gray-300 hover:text-white hover:bg-dark-300"
+                          : "text-gray-700 hover:text-black hover:bg-gray-100"
+                      )}
                     >
-                      Keluar
+                      {t('keluar')}
                     </button>
                   </>
                 ) : (
                   <div className="grid grid-cols-2 gap-2">
                     <Link
                       to="/login"
-                      className="flex items-center justify-center px-3 py-2.5 rounded-md text-base font-medium text-gray-300 hover:text-white border border-gray-700 hover:bg-dark-300"
+                      className={cn(
+                        "flex items-center justify-center px-3 py-2.5 rounded-md text-base font-medium",
+                        theme === 'dark'
+                          ? "text-gray-300 hover:text-white border border-gray-700 hover:bg-dark-300"
+                          : "text-gray-700 hover:text-black border border-gray-300 hover:bg-gray-100"
+                      )}
                       onClick={toggleMobileMenu}
                     >
-                      Masuk
+                      {t('masuk')}
                     </Link>
                     <Link
                       to="/register"
-                      className="flex items-center justify-center px-3 py-2.5 rounded-md text-base font-medium text-white bg-neon-cyan hover:bg-neon-blue transition-all"
+                      className={cn(
+                        "flex items-center justify-center px-3 py-2.5 rounded-md text-base font-medium text-white transition-all",
+                        theme === 'dark'
+                          ? "bg-neon-cyan hover:bg-neon-blue"
+                          : "bg-digicyan hover:bg-digicyan-600"
+                      )}
                       onClick={toggleMobileMenu}
                     >
-                      Daftar
+                      {t('daftar')}
                     </Link>
                   </div>
                 )}
                 
                 <Link
                   to="/"
-                  className="flex items-center justify-center gap-1.5 px-3 py-2.5 mt-2 rounded-md text-sm font-medium text-gray-400 hover:text-white"
+                  className={cn(
+                    "flex items-center justify-center gap-1.5 px-3 py-2.5 mt-2 rounded-md text-sm font-medium",
+                    theme === 'dark'
+                      ? "text-gray-400 hover:text-white"
+                      : "text-gray-500 hover:text-black"
+                  )}
                   onClick={toggleMobileMenu}
                 >
-                  <span>Beranda</span>
+                  <span>{t('lihat-website')}</span>
                   <ExternalLink className="w-3.5 h-3.5" />
                 </Link>
               </div>
