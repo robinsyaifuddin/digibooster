@@ -47,10 +47,10 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <LanguageProvider>
-            <AuthProvider>
-              <HomeContentProvider>
-                <SplashScreenProvider>
-                  <BrowserRouter>
+            <BrowserRouter>
+              <AuthProvider>
+                <HomeContentProvider>
+                  <SplashScreenProvider>
                     <Navbar />
                     <Suspense fallback={<LoadingScreen />}>
                       <div className="pt-16">
@@ -74,10 +74,10 @@ function App() {
                       <Footer />
                       <SplashScreen />
                     </Suspense>
-                  </BrowserRouter>
-                </SplashScreenProvider>
-              </HomeContentProvider>
-            </AuthProvider>
+                  </SplashScreenProvider>
+                </HomeContentProvider>
+              </AuthProvider>
+            </BrowserRouter>
           </LanguageProvider>
         </ThemeProvider>
         <Toaster position="top-center" />
