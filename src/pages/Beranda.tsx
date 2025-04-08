@@ -9,8 +9,14 @@ import LogoMarquee from '@/components/home/LogoMarquee';
 import CtaSection from '@/components/home/CtaSection';
 import ScrollAnimation from '@/components/home/ScrollAnimation';
 import { motion } from 'framer-motion';
+import defaultWebsiteData from '@/data/defaultWebsiteData';
+import AnimatedSection from '@/components/animation/AnimatedSection';
 
 const Beranda = () => {
+  // Get the website data from the default data
+  const { homeContent, generalInfo } = defaultWebsiteData;
+  const companyName = generalInfo.title;
+  
   return (
     <ScrollAnimation>
       <main>
@@ -24,22 +30,32 @@ const Beranda = () => {
         </motion.div>
 
         {/* Logo Marquee - Show our trusted partners */}
-        <LogoMarquee />
+        <LogoMarquee 
+          logos={homeContent.partners} 
+          title="Dipercaya oleh Brand Terkemuka"
+          description="Berkolaborasi dengan berbagai perusahaan dan organisasi untuk mengembangkan solusi digital." 
+        />
 
         {/* Services Section */}
-        <ServicesSection />
+        <ServicesSection services={homeContent.services} />
 
         {/* Benefits Section */}
-        <BenefitsSection />
+        <BenefitsSection 
+          companyName={companyName} 
+          benefits={homeContent.benefits}
+        />
 
         {/* Testimonials Section */}
-        <TestimonialsSection />
+        <TestimonialsSection 
+          companyName={companyName}
+          testimonials={homeContent.testimonials} 
+        />
 
         {/* CTA Section */}
-        <CtaSection companyName="DigiCore" />
+        <CtaSection companyName={companyName} />
 
         {/* Contact Section */}
-        <ContactSection />
+        <ContactSection companyName={companyName} />
       </main>
     </ScrollAnimation>
   );
