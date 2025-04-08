@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { ArrowRight, MessageCircle } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface ContactSectionProps {
@@ -12,6 +13,7 @@ interface ContactSectionProps {
 
 const ContactSection = ({ companyName }: ContactSectionProps) => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
 
   return (
     <section className="py-24 relative overflow-hidden">
@@ -51,12 +53,12 @@ const ContactSection = ({ companyName }: ContactSectionProps) => {
               theme === 'light' 
                 ? "bg-gradient-to-r from-digiblue to-digiblue-400 bg-clip-text text-transparent"
                 : "bg-gradient-to-r from-neon-cyan to-neon-blue bg-clip-text text-transparent"
-            )}>Ada pertanyaan?</h2>
+            )}>{t('questions')}</h2>
             <p className={cn(
               "mb-8 text-lg",
               theme === 'light' ? "text-gray-600" : "text-gray-300"
             )}>
-              Tim kami siap membantu Anda dengan segala pertanyaan tentang layanan {companyName}.
+              {t('team-ready').replace('{companyName}', companyName)}
             </p>
             <Link to="/kontak">
               <Button size="lg" className={cn(
@@ -65,7 +67,7 @@ const ContactSection = ({ companyName }: ContactSectionProps) => {
                   ? "bg-digiblue text-white hover:bg-digiblue-700"
                   : "bg-neon-cyan text-gray-900 hover:bg-neon-cyan/90"
               )}>
-                Hubungi Kami
+                {t('contact-us')}
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>

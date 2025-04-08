@@ -1,50 +1,50 @@
 
 import React from 'react';
-import { ServiceItem } from '@/types/websiteTypes';
 import ServiceCard from './ServiceCard';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
+import { ServiceItem } from '@/types/websiteTypes';
+import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
+import { cn } from '@/lib/utils';
+import AnimatedSection from '@/components/animation/AnimatedSection';
 
 interface ServicesSectionProps {
   services: ServiceItem[];
 }
 
 const ServicesSection = ({ services }: ServicesSectionProps) => {
+  const { theme } = useTheme();
+  const { t } = useLanguage();
+  
   return (
-    <section className="py-24 md:py-32 bg-gradient-to-br from-dark-950 to-dark-900 overflow-hidden relative">
-      {/* Decorative elements */}
-      <div className="absolute top-0 left-1/4 w-96 h-96 rounded-full bg-neon-cyan/5 blur-3xl"></div>
-      <div className="absolute bottom-0 right-1/4 w-96 h-96 rounded-full bg-neon-cyan/5 blur-3xl"></div>
-      
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="max-w-3xl mx-auto text-center mb-16 scroll-animation">
-          <span className="inline-block py-1 px-3 text-xs font-medium text-neon-cyan bg-dark-300/50 rounded-full mb-3 backdrop-blur-sm border border-neon-cyan/10">PROGRAM KAMI</span>
-          <h2 className="text-3xl md:text-5xl font-bold mb-6 text-white">
-            Solusi Digital <span className="text-neon-cyan">Komprehensif</span> untuk Bisnis Anda
+    <section className={cn(
+      "py-20",
+      theme === 'light' ? "bg-white" : "bg-dark-400/40"
+    )}>
+      <div className="container mx-auto px-4 mb-16">
+        <AnimatedSection className="text-center max-w-3xl mx-auto" animation="fadeIn" delay={200}>
+          <h2 className={cn(
+            "text-3xl md:text-4xl font-bold mb-4",
+            theme === 'light' ? "text-gray-800" : "text-white"
+          )}>
+            {t('our-services')}
           </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto text-lg">
-            Kami menawarkan berbagai program digital terintegrasi untuk membantu bisnis Anda berkembang di era digital dengan strategi yang terukur dan berkelanjutan.
+          <p className={cn(
+            "text-lg",
+            theme === 'light' ? "text-gray-600" : "text-gray-300"
+          )}>
+            {t('services-subtitle')}
           </p>
-        </div>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        </AnimatedSection>
+      </div>
+      
+      <div className="container mx-auto px-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
           {services.map((service, index) => (
-            <ServiceCard 
-              key={service.id} 
-              service={service} 
-              index={index} 
-            />
+            <AnimatedSection key={index} delay={200 + index * 100} animation="fadeIn">
+              <ServiceCard service={service} index={index} />
+            </AnimatedSection>
           ))}
         </div>
-
-        {services.length > 4 && (
-          <div className="mt-10 text-center">
-            <Link to="/program/jasa-digital" className="inline-flex items-center px-6 py-3 bg-dark-300/30 backdrop-blur-sm hover:bg-dark-300/40 text-neon-cyan rounded-full transition-all group border border-neon-cyan/20">
-              Lihat Semua Program 
-              <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-            </Link>
-          </div>
-        )}
       </div>
     </section>
   );

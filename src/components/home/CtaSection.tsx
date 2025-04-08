@@ -4,6 +4,7 @@ import { Zap, ChevronRight, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface CtaSectionProps {
@@ -12,6 +13,7 @@ interface CtaSectionProps {
 
 const CtaSection = ({ companyName }: CtaSectionProps) => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   
   return (
     <section className={cn(
@@ -43,13 +45,13 @@ const CtaSection = ({ companyName }: CtaSectionProps) => {
             "text-3xl md:text-4xl font-bold mb-4",
             theme === 'light' ? "text-gray-800" : "text-white"
           )}>
-            Siap Tingkatkan Keterampilan Digital Anda?
+            {t('ready-to-improve')}
           </h2>
           <p className={cn(
             "text-lg mb-8",
             theme === 'light' ? "text-gray-600" : "text-gray-100"
           )}>
-            Bergabunglah dengan ribuan orang yang telah meningkatkan kemampuan digitalnya bersama {companyName}.
+            {t('join-thousands').replace('{companyName}', companyName)}
           </p>
           
           <div className="flex flex-col sm:flex-row justify-center gap-4">
@@ -60,7 +62,7 @@ const CtaSection = ({ companyName }: CtaSectionProps) => {
                   ? "bg-gradient-to-r from-digicyan-500 to-digicyan-600 hover:from-digicyan-600 hover:to-digicyan-700 text-white"
                   : "bg-gradient-to-r from-neon-cyan to-neon-blue hover:from-neon-blue hover:to-neon-cyan text-gray-900"
               )}>
-                Daftar Sekarang
+                {t('register-now')}
                 <ChevronRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
@@ -71,7 +73,7 @@ const CtaSection = ({ companyName }: CtaSectionProps) => {
                   ? "border-digicyan-300 bg-white/50 text-digicyan-700 hover:bg-white/80 hover:border-digicyan-400"
                   : "border-white/40 bg-white/10 text-white hover:bg-white/20 hover:border-white/60"
               )}>
-                Lihat Kelas
+                {t('view-classes')}
                 <ArrowRight className="ml-1 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>

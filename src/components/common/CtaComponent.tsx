@@ -2,6 +2,7 @@
 import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface CtaSectionProps {
@@ -20,6 +21,7 @@ const CtaComponent = ({
   theme: ctaTheme = 'cyan'
 }: CtaSectionProps) => {
   const { theme } = useTheme();
+  const { language } = useLanguage();
   
   return (
     <div className={cn(

@@ -11,11 +11,13 @@ import ScrollAnimation from '@/components/home/ScrollAnimation';
 import { motion } from 'framer-motion';
 import defaultWebsiteData from '@/data/defaultWebsiteData';
 import AnimatedSection from '@/components/animation/AnimatedSection';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 const Beranda = () => {
   // Get the website data from the default data
   const { homeContent, generalInfo } = defaultWebsiteData;
   const companyName = generalInfo.title;
+  const { t } = useLanguage();
   
   return (
     <ScrollAnimation>
@@ -32,8 +34,8 @@ const Beranda = () => {
         {/* Logo Marquee - Show our trusted partners */}
         <LogoMarquee 
           logos={homeContent.partners} 
-          title="Dipercaya oleh Brand Terkemuka"
-          description="Berkolaborasi dengan berbagai perusahaan dan organisasi untuk mengembangkan solusi digital." 
+          title={t('trusted-partners')}
+          description={t('partners-description')} 
         />
 
         {/* Services Section */}

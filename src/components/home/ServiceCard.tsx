@@ -4,6 +4,7 @@ import { ArrowRight, Code, Lightbulb, Users, PenTool, DollarSign, Shield, Gift, 
 import { Link } from 'react-router-dom';
 import { ServiceItem } from '@/types/websiteTypes';
 import { useTheme } from '@/contexts/ThemeContext';
+import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
 interface ServiceCardProps {
@@ -13,6 +14,7 @@ interface ServiceCardProps {
 
 const ServiceCard = ({ service, index }: ServiceCardProps) => {
   const { theme } = useTheme();
+  const { t } = useLanguage();
   
   const getIconComponent = (iconName: string) => {
     const iconClass = theme === 'dark' ? "h-6 w-6 text-neon-cyan" : "h-6 w-6 text-digicyan-500";
@@ -37,7 +39,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
   };
 
   const darkCardStyle = {
-    background: "linear-gradient(145deg, rgba(11, 20, 38, 0.95), rgba(7, 14, 30, 0.98))"
+    background: "linear-gradient(145deg, rgba(21, 34, 56, 0.95), rgba(16, 28, 48, 0.98))"
   };
   
   const lightCardStyle = {
@@ -77,12 +79,19 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
           </div>
         </div>
         
-        <h3 className="text-xl font-bold mb-3">{service.title}</h3>
+        <h3 className={cn(
+          "text-xl font-bold mb-3",
+          theme === 'dark' ? "text-white" : "text-gray-800"
+        )}>
+          {service.title}
+        </h3>
         
         <p className={cn(
           "mb-6 flex-grow",
           theme === 'dark' ? "text-gray-300" : "text-gray-600"
-        )}>{service.description}</p>
+        )}>
+          {service.description}
+        </p>
         
         <Link to={service.link} className={cn(
           "font-medium flex items-center transition-colors group mt-auto",
@@ -90,7 +99,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
             ? "text-neon-cyan hover:text-neon-blue" 
             : "text-digicyan-600 hover:text-digicyan-800"
         )}>
-          Selengkapnya 
+          {t('learn-more')}
           <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </Link>
       </div>

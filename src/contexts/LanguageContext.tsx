@@ -11,7 +11,7 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-// Simple translation dictionary
+// Enhanced translation dictionary
 const translations = {
   id: {
     // Navbar
@@ -35,6 +35,38 @@ const translations = {
     'dark-mode': 'Mode Gelap',
     'english': 'Bahasa Inggris',
     'indonesian': 'Bahasa Indonesia',
+    'switch-to-light': 'Beralih ke Mode Terang',
+    'switch-to-dark': 'Beralih ke Mode Gelap',
+    
+    // CTA Section
+    'ready-to-improve': 'Siap Tingkatkan Keterampilan Digital Anda?',
+    'join-thousands': 'Bergabunglah dengan ribuan orang yang telah meningkatkan kemampuan digitalnya bersama {companyName}.',
+    'register-now': 'Daftar Sekarang',
+    'view-classes': 'Lihat Kelas',
+    
+    // Contact Section
+    'questions': 'Ada pertanyaan?',
+    'team-ready': 'Tim kami siap membantu Anda dengan segala pertanyaan tentang layanan {companyName}.',
+    'contact-us': 'Hubungi Kami',
+    
+    // Services Section
+    'our-services': 'Layanan Kami',
+    'services-subtitle': 'Solusi digital komprehensif untuk kebutuhan Anda',
+    'learn-more': 'Selengkapnya',
+    
+    // Benefits Section
+    'our-advantages': 'Keunggulan Kami',
+    'why-company': 'Mengapa {companyName}?',
+    'company-description': '{companyName} hadir sebagai solusi terpadu untuk kebutuhan digitalisasi Anda. Dengan pendekatan yang komprehensif, kami membantu baik individu maupun bisnis mencapai potensi maksimal di era digital.',
+    'learn-more-about': 'Pelajari Lebih Lanjut',
+    
+    // Testimonials Section
+    'what-clients-say': 'Apa Kata Klien Kami',
+    'clients-testimonials': 'Klien kami telah merasakan manfaat dari layanan yang kami berikan. Berikut adalah beberapa testimoni dari mereka.',
+    
+    // Partners Section
+    'trusted-partners': 'Dipercaya oleh Brand Terkemuka',
+    'partners-description': 'Berkolaborasi dengan berbagai perusahaan dan organisasi untuk mengembangkan solusi digital.'
   },
   en: {
     // Navbar
@@ -58,6 +90,38 @@ const translations = {
     'dark-mode': 'Dark Mode',
     'english': 'English',
     'indonesian': 'Indonesian',
+    'switch-to-light': 'Switch to Light Mode',
+    'switch-to-dark': 'Switch to Dark Mode',
+    
+    // CTA Section
+    'ready-to-improve': 'Ready to Improve Your Digital Skills?',
+    'join-thousands': 'Join thousands of people who have enhanced their digital capabilities with {companyName}.',
+    'register-now': 'Register Now',
+    'view-classes': 'View Classes',
+    
+    // Contact Section
+    'questions': 'Have questions?',
+    'team-ready': 'Our team is ready to help you with any questions about {companyName} services.',
+    'contact-us': 'Contact Us',
+    
+    // Services Section
+    'our-services': 'Our Services',
+    'services-subtitle': 'Comprehensive digital solutions for your needs',
+    'learn-more': 'Learn More',
+    
+    // Benefits Section
+    'our-advantages': 'Our Advantages',
+    'why-company': 'Why {companyName}?',
+    'company-description': '{companyName} provides an integrated solution for your digitalization needs. With a comprehensive approach, we help both individuals and businesses reach their maximum potential in the digital era.',
+    'learn-more-about': 'Learn More About Us',
+    
+    // Testimonials Section
+    'what-clients-say': 'What Our Clients Say',
+    'clients-testimonials': 'Our clients have experienced the benefits of our services. Here are some testimonials from them.',
+    
+    // Partners Section
+    'trusted-partners': 'Trusted by Leading Brands',
+    'partners-description': 'Collaborating with various companies and organizations to develop digital solutions.'
   }
 };
 
@@ -67,8 +131,14 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   // Initialize language from localStorage if available
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language') as Language | null;
-    if (savedLanguage) {
+    if (savedLanguage && (savedLanguage === 'id' || savedLanguage === 'en')) {
       setLanguage(savedLanguage);
+    } else {
+      // If no language is set, try to detect from browser
+      const browserLanguage = navigator.language.split('-')[0];
+      if (browserLanguage === 'en') {
+        setLanguage('en');
+      }
     }
   }, []);
 
@@ -81,9 +151,19 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     setLanguage(prevLanguage => prevLanguage === 'id' ? 'en' : 'id');
   };
 
-  // Translation function
-  const t = (key: string): string => {
-    return translations[language][key as keyof typeof translations.id] || key;
+  // Enhanced translation function with parameter support
+  const t = (key: string, params?: Record<string, string>): string => {
+    const langDict = translations[language] as Record<string, string>;
+    let translated = langDict[key as keyof typeof translations.id] || key;
+    
+    // Replace any parameters in the translated string
+    if (params) {
+      Object.entries(params).forEach(([param, value]) => {
+        translated = translated.replace(`{${param}}`, value);
+      });
+    }
+    
+    return translated;
   };
 
   return (
