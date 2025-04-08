@@ -13,6 +13,21 @@ export const initScrollEffects = () => {
       }
     });
     
+    // Generic animation triggers based on viewport
+    const animatedElements = document.querySelectorAll('[data-animate]');
+    animatedElements.forEach(element => {
+      const windowHeight = window.innerHeight;
+      const elementTop = element.getBoundingClientRect().top;
+      const elementVisible = 100;
+      
+      if (elementTop < windowHeight - elementVisible) {
+        const animationType = element.getAttribute('data-animate');
+        if (animationType) {
+          element.classList.add(`animate-${animationType}`);
+        }
+      }
+    });
+    
     // Parallax effects
     const parallaxElements = document.querySelectorAll('.parallax');
     parallaxElements.forEach(element => {
@@ -23,14 +38,6 @@ export const initScrollEffects = () => {
         element.style.transform = `translateY(${scrollY * parseFloat(speed)}px)`;
       }
     });
-    
-    // Sticky header effect
-    const header = document.querySelector('header');
-    if (header && window.scrollY > 100) {
-      header.classList.add('sticky-active');
-    } else if (header) {
-      header.classList.remove('sticky-active');
-    }
   };
   
   window.addEventListener('scroll', handleScroll);
@@ -50,15 +57,44 @@ export const initIntersectionObserver = () => {
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        entry.target.classList.add('in-view');
+        // Add animation classes based on data attributes
+        const el = entry.target;
+        const animType = el.getAttribute('data-anim');
+        const delay = el.getAttribute('data-delay');
+        
+        if (animType) {
+          el.classList.add(`animate-${animType}`);
+        }
+        
+        if (delay) {
+          el.style.animationDelay = `${delay}ms`;
+        }
+        
+        el.classList.add('in-view');
       }
     });
   }, options);
   
-  // Observe all elements with the 'observe-element' class
-  document.querySelectorAll('.observe-element').forEach(element => {
+  // Observe all elements with animation attributes
+  document.querySelectorAll('[data-anim]').forEach(element => {
     observer.observe(element);
   });
   
   return observer;
+};
+
+// Helper function to apply sequential animations to children
+export const applySequentialAnimations = (selector: string, animationClass: string, delayBetween = 100) => {
+  const elements = document.querySelectorAll(selector);
+  
+  elements.forEach((parent) => {
+    const children = parent.children;
+    Array.from(children).forEach((child, index) => {
+      if (child instanceof HTMLElement) {
+        child.style.opacity = '0';
+        child.style.animationDelay = `${index * delayBetween}ms`;
+        child.classList.add(animationClass);
+      }
+    });
+  });
 };

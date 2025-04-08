@@ -2,10 +2,9 @@
 import { createRoot } from 'react-dom/client'
 import App from './App.tsx'
 import './index.css'
-import './styles/splash.css' // Import gaya splash screen
 import React from 'react' // Explicitly import React
 import { StrictMode } from 'react'
-import { initScrollEffects, initIntersectionObserver } from './utils/scrollEffects.ts'
+import { initScrollEffects, initIntersectionObserver, applySequentialAnimations } from './utils/scrollEffects.ts'
 
 // Initialize scroll effects
 const AppWithEffects = () => {
@@ -16,6 +15,12 @@ const AppWithEffects = () => {
     
     // Initialize intersection observer
     const observer = initIntersectionObserver();
+    
+    // Apply sequential animations to lists, grids, etc.
+    setTimeout(() => {
+      applySequentialAnimations('.staggered-list > *', 'animate-fade-up', 100);
+      applySequentialAnimations('.staggered-grid > *', 'animate-scale-in', 100);
+    }, 100);
     
     // Cleanup function
     return () => {

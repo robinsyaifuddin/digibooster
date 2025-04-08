@@ -10,12 +10,10 @@ import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import { LanguageProvider } from "./contexts/LanguageContext";
 import { HomeContentProvider } from "./contexts/HomeContentContext";
-import { SplashScreenProvider } from "./contexts/SplashScreenContext";
 
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-import LoadingScreen from "./components/common/LoadingScreen";
-import SplashScreen from "./components/SplashScreen";
+import { PageTransition } from "./components/animation/PageTransition";
 
 // Root pages
 const Beranda = lazy(() => import("./pages/Beranda"));
@@ -41,6 +39,12 @@ const queryClient = new QueryClient({
   },
 });
 
+const FallbackComponent = () => (
+  <div className="min-h-[70vh] flex items-center justify-center">
+    <div className="animate-pulse text-primary text-xl font-medium">Loading...</div>
+  </div>
+);
+
 function App() {
   return (
     <HelmetProvider>
@@ -50,10 +54,10 @@ function App() {
             <BrowserRouter>
               <AuthProvider>
                 <HomeContentProvider>
-                  <SplashScreenProvider>
-                    <Navbar />
-                    <Suspense fallback={<LoadingScreen />}>
-                      <div className="pt-16">
+                  <Navbar />
+                  <Suspense fallback={<FallbackComponent />}>
+                    <div className="pt-16">
+                      <PageTransition>
                         <Routes>
                           <Route path="/" element={<Beranda />} />
                           <Route path="/tentang" element={<Tentang />} />
@@ -70,11 +74,10 @@ function App() {
                           <Route path="/404" element={<NotFound />} />
                           <Route path="*" element={<Navigate to="/404" replace />} />
                         </Routes>
-                      </div>
-                      <Footer />
-                      <SplashScreen />
-                    </Suspense>
-                  </SplashScreenProvider>
+                      </PageTransition>
+                    </div>
+                    <Footer />
+                  </Suspense>
                 </HomeContentProvider>
               </AuthProvider>
             </BrowserRouter>

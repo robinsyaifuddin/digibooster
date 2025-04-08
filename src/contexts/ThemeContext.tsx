@@ -27,8 +27,8 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
       }
     }
     
-    // Default to dark mode to match current site design
-    return 'dark';
+    // Default to light mode now
+    return 'light';
   };
   
   const [theme, setTheme] = useState<Theme>(getInitialTheme);
