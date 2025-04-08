@@ -17,30 +17,30 @@ const ServiceCard = ({ icon, title, description, items }: ServiceProps) => {
       className="cyberpunk-card p-7 relative overflow-hidden group"
     >
       {/* Background glow effect */}
-      <div className="absolute -inset-1 bg-gradient-to-r from-neon-cyan/5 to-neon-blue/5 opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-300"></div>
+      <div className="absolute -inset-1 bg-gradient-to-r from-primary/5 to-primary/5 opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-300"></div>
       
       {/* Corner accent */}
       <div className="absolute top-0 right-0 w-16 h-16">
-        <div className="absolute transform rotate-45 translate-x-8 -translate-y-8 w-16 h-16 bg-neon-cyan/20"></div>
+        <div className="absolute transform rotate-45 translate-x-8 -translate-y-8 w-16 h-16 bg-primary/20"></div>
       </div>
       
       {/* Icon container */}
       <motion.div 
         whileHover={{ scale: 1.1, rotate: 5 }}
         transition={{ type: "spring", stiffness: 300 }}
-        className="bg-dark-300 w-16 h-16 rounded-lg flex items-center justify-center mb-6 border border-neon-cyan/30 group-hover:border-neon-cyan/60 transition-colors relative z-10"
+        className="bg-secondary/80 w-16 h-16 rounded-lg flex items-center justify-center mb-6 border border-primary/30 group-hover:border-primary/60 transition-colors relative z-10"
       >
-        <div className="text-neon-cyan group-hover:scale-110 transition-transform">
+        <div className="text-primary group-hover:scale-110 transition-transform">
           {icon}
         </div>
         
         {/* Inner glow */}
-        <div className="absolute inset-0 bg-neon-cyan/5 rounded-lg opacity-0 group-hover:opacity-100 blur-md transition-opacity"></div>
+        <div className="absolute inset-0 bg-primary/5 rounded-lg opacity-0 group-hover:opacity-100 blur-md transition-opacity"></div>
       </motion.div>
       
       {/* Content */}
-      <h3 className="text-xl font-bold mb-3 text-white group-hover:text-shadow-neon transition-all">{title}</h3>
-      <p className="text-gray-400 mb-5">{description}</p>
+      <h3 className="text-xl font-bold mb-3 text-card-foreground group-hover:text-shadow-neon transition-all">{title}</h3>
+      <p className="text-muted-foreground mb-5">{description}</p>
       
       <ul className="space-y-2">
         {items.map((item, idx) => (
@@ -52,15 +52,15 @@ const ServiceCard = ({ icon, title, description, items }: ServiceProps) => {
             viewport={{ once: true }}
             className="flex items-start"
           >
-            <span className="text-neon-cyan mr-2 group-hover:animate-pulse">•</span>
-            <span className="text-gray-300">{item}</span>
+            <span className="text-primary mr-2 group-hover:animate-pulse">•</span>
+            <span className="text-card-foreground/80">{item}</span>
           </motion.li>
         ))}
       </ul>
       
       {/* Bottom accent line */}
       <motion.div 
-        className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-neon-cyan to-neon-blue"
+        className="absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary to-primary/70"
         initial={{ width: "0%" }}
         whileInView={{ width: "100%" }}
         transition={{ duration: 0.5, delay: 0.2 }}

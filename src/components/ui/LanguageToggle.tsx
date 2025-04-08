@@ -39,10 +39,10 @@ const LanguageToggle = () => {
           <motion.div
             className={cn(
               "relative h-9 w-9 rounded-full flex items-center justify-center cursor-pointer overflow-hidden",
+              "transition-colors duration-300",
               theme === 'dark' 
                 ? "bg-gradient-to-r from-dark-300 to-dark-400 border border-dark-300" 
-                : "bg-gradient-to-r from-gray-100 to-gray-200 border border-gray-300",
-              "transition-colors duration-300"
+                : "bg-gradient-to-r from-slate-100 to-slate-200 border border-slate-300"
             )}
             onClick={handleClick}
             onHoverStart={handleHoverStart}
@@ -65,7 +65,7 @@ const LanguageToggle = () => {
               <Globe 
                 className={cn(
                   "h-4 w-4 transition-colors",
-                  theme === 'dark' ? "text-neon-cyan" : "text-blue-500"
+                  theme === 'dark' ? "text-neon-cyan" : "text-digicyan-500"
                 )} 
               />
               
@@ -73,7 +73,7 @@ const LanguageToggle = () => {
               <motion.div 
                 className={cn(
                   "absolute -bottom-1 left-1/2 transform -translate-x-1/2 text-[8px] font-bold",
-                  theme === 'dark' ? "text-neon-cyan" : "text-blue-600"
+                  theme === 'dark' ? "text-neon-cyan" : "text-digicyan-600"
                 )}
               >
                 {language.toUpperCase()}
@@ -87,7 +87,7 @@ const LanguageToggle = () => {
                   "absolute inset-0 opacity-30 rounded-full",
                   theme === 'dark' 
                     ? "bg-neon-cyan animate-pulse-light" 
-                    : "bg-blue-300"
+                    : "bg-digicyan-300"
                 )}
                 initial={{ scale: 0.5, opacity: 0 }}
                 animate={{ scale: 1, opacity: 0.2 }}

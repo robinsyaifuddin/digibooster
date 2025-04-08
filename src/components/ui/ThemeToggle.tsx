@@ -34,11 +34,10 @@ const ThemeToggle = () => {
           <motion.div
             className={cn(
               "relative h-9 w-9 rounded-full flex items-center justify-center cursor-pointer",
-              "bg-gradient-to-r",
+              "bg-gradient-to-r transition-colors duration-300",
               theme === 'dark' 
                 ? "from-dark-300 to-dark-400 border border-dark-300" 
-                : "from-gray-100 to-gray-200 border border-gray-300",
-              "transition-colors duration-300"
+                : "from-slate-100 to-slate-200 border border-slate-300"
             )}
             onClick={toggleTheme}
             animate={{ 
@@ -63,7 +62,7 @@ const ThemeToggle = () => {
                   "bg-gradient-to-br",
                   theme === 'dark' 
                     ? "from-dark-200 to-dark-400"
-                    : "from-white to-gray-50"
+                    : "from-white to-slate-50"
                 )}
               />
             </div>
@@ -133,7 +132,7 @@ const ThemeToggle = () => {
           </motion.div>
         </TooltipTrigger>
         <TooltipContent side="bottom">
-          <p>{theme === 'dark' ? t('light-mode') : t('dark-mode')}</p>
+          <p>{theme === 'dark' ? t('switch-to-light') : t('switch-to-dark')}</p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
