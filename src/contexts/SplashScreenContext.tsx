@@ -41,8 +41,14 @@ export const SplashScreenProvider: React.FC<SplashScreenProviderProps> = ({ chil
     setIsVisible(false);
   };
 
+  const contextValue = {
+    isVisible,
+    triggerSplash,
+    hideSplash
+  };
+
   return (
-    <SplashScreenContext.Provider value={{ isVisible, triggerSplash, hideSplash }}>
+    <SplashScreenContext.Provider value={contextValue}>
       {children}
     </SplashScreenContext.Provider>
   );

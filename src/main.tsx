@@ -7,9 +7,6 @@ import React from 'react' // Explicitly import React
 import { StrictMode } from 'react'
 import { initScrollEffects, initIntersectionObserver } from './utils/scrollEffects.ts'
 
-// Add dark class to html element for dark theme
-document.documentElement.classList.add('dark');
-
 // Initialize scroll effects
 const AppWithEffects = () => {
   // Use React hooks inside a functional component
@@ -23,7 +20,9 @@ const AppWithEffects = () => {
     // Cleanup function
     return () => {
       cleanupScrollEffects();
-      observer.disconnect();
+      if (observer) {
+        observer.disconnect();
+      }
     };
   }, []);
   

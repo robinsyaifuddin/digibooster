@@ -43,8 +43,8 @@ const queryClient = new QueryClient({
 
 function App() {
   return (
-    <QueryClientProvider client={queryClient}>
-      <HelmetProvider>
+    <HelmetProvider>
+      <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <LanguageProvider>
             <AuthProvider>
@@ -81,8 +81,8 @@ function App() {
           </LanguageProvider>
         </ThemeProvider>
         <Toaster position="top-center" />
-      </HelmetProvider>
-    </QueryClientProvider>
+      </QueryClientProvider>
+    </HelmetProvider>
   );
 }
 
