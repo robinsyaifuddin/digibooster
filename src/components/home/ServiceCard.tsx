@@ -51,7 +51,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
       className={cn(
         "backdrop-blur-md rounded-lg overflow-hidden relative transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 scroll-animation",
         theme === 'dark' 
-          ? "bg-dark-900/80 border border-neon-cyan/20 hover:shadow-neon-cyan/10" 
+          ? "bg-dark-300/80 border border-neon-cyan/20 hover:shadow-neon-cyan/10" 
           : "bg-white border border-digicyan-200/40 hover:shadow-digicyan-300/10"
       )}
       style={{ 
@@ -72,7 +72,7 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
           <div className={cn(
             "w-14 h-14 rounded-lg flex items-center justify-center",
             theme === 'dark' 
-              ? "bg-dark-800/80 border border-neon-cyan/20" 
+              ? "bg-dark-400 border border-neon-cyan/20" 
               : "bg-gray-50 border border-digicyan-200/30"
           )}>
             {getIconComponent(service.icon)}

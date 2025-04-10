@@ -16,25 +16,36 @@ const ContactSection = ({ companyName }: ContactSectionProps) => {
   const { t } = useLanguage();
 
   return (
-    <section className="py-24 relative overflow-hidden">
+    <section className={cn(
+      "py-24 relative overflow-hidden",
+      theme === 'light'
+        ? "bg-gradient-to-r from-sky-50 to-blue-50"
+        : "bg-gradient-to-r from-dark-300 to-dark-200"
+    )}>
       {/* Background with gradient */}
       <div className={cn(
-        "absolute inset-0 z-0",
+        "absolute inset-0 z-0 opacity-70",
         theme === 'light' 
           ? "bg-gradient-to-r from-sky-50 to-blue-50" 
-          : "bg-gradient-to-r from-dark-800 to-dark-700"
+          : "bg-gradient-to-r from-dark-300 to-dark-200"
       )}></div>
       
       {/* Decorative elements */}
-      <div className="absolute top-20 right-20 w-64 h-64 bg-digiblue/5 rounded-full filter blur-3xl"></div>
-      <div className="absolute bottom-10 left-10 w-72 h-72 bg-digiblue-100/20 rounded-full filter blur-3xl"></div>
+      <div className={cn(
+        "absolute top-20 right-20 w-64 h-64 rounded-full filter blur-3xl",
+        theme === 'light' ? "bg-digiblue/5" : "bg-neon-cyan/5"
+      )}></div>
+      <div className={cn(
+        "absolute bottom-10 left-10 w-72 h-72 rounded-full filter blur-3xl",
+        theme === 'light' ? "bg-digiblue-100/20" : "bg-neon-cyan/10"
+      )}></div>
       
       <div className="container mx-auto px-4 relative z-10">
         <div className={cn(
           "max-w-4xl mx-auto p-12 rounded-2xl shadow-xl border",
           theme === 'light'
             ? "bg-white border-blue-100"
-            : "bg-dark-300 border-dark-200"
+            : "bg-dark-200 border-dark-100"
         )}>
           <div className="flex flex-col items-center text-center">
             <div className={cn(

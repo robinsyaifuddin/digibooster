@@ -20,7 +20,7 @@ const CtaSection = ({ companyName }: CtaSectionProps) => {
       "py-20 relative overflow-hidden",
       theme === 'light' 
         ? "bg-gradient-to-r from-digicyan-100 to-digicyan-50" 
-        : "bg-gradient-to-r from-dark-400 to-dark-500"
+        : "bg-gradient-to-r from-dark-400 to-dark-300"
     )}>
       {/* Decorative elements */}
       <div className="absolute top-0 right-0 w-80 h-80 bg-white rounded-full filter blur-3xl opacity-5"></div>
@@ -37,7 +37,7 @@ const CtaSection = ({ companyName }: CtaSectionProps) => {
           )}>
             <Zap className={cn(
               "h-8 w-8",
-              theme === 'light' ? "text-digicyan-500" : "text-white"
+              theme === 'light' ? "text-digicyan-600" : "text-neon-cyan"
             )} />
           </div>
           
@@ -49,7 +49,7 @@ const CtaSection = ({ companyName }: CtaSectionProps) => {
           </h2>
           <p className={cn(
             "text-lg mb-8",
-            theme === 'light' ? "text-gray-600" : "text-gray-100"
+            theme === 'light' ? "text-gray-600" : "text-gray-300"
           )}>
             {t('join-thousands').replace('{companyName}', companyName)}
           </p>

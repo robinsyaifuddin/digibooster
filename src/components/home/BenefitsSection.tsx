@@ -20,7 +20,7 @@ const BenefitsSection = ({ companyName, benefits }: BenefitsSectionProps) => {
   return (
     <section className={cn(
       "py-20 md:py-28",
-      theme === 'light' ? "bg-gradient-to-r from-sky-50 to-blue-50" : "bg-gradient-to-r from-dark-400/40 to-dark-500/40"
+      theme === 'light' ? "bg-gradient-to-r from-sky-50 to-blue-50" : "bg-gradient-to-r from-dark-300 to-dark-400"
     )}>
       <div className="container mx-auto px-4">
         <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-12 lg:gap-20">
@@ -62,7 +62,7 @@ const BenefitsSection = ({ companyName, benefits }: BenefitsSectionProps) => {
           <AnimatedSection className="md:w-6/12" animation="slideRight">
             <div className={cn(
               "p-8 rounded-xl shadow-sm",
-              theme === 'light' ? "bg-white border border-blue-100" : "bg-dark-300 border border-dark-200"
+              theme === 'light' ? "bg-white border border-blue-100" : "bg-dark-200 border border-dark-100"
             )}>
               <ul className="space-y-5">
                 {benefits.map((benefit, index) => (

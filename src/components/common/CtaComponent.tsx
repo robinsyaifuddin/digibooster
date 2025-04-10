@@ -31,8 +31,8 @@ const CtaComponent = ({
           ? "bg-gradient-to-r from-digicyan-50/80 to-blue-50/80 border border-digicyan-100 shadow-lg" 
           : "bg-gradient-to-r from-slate-50/90 to-gray-50/90 border border-slate-100 shadow-lg"
         : ctaTheme === 'cyan'
-          ? "bg-gradient-to-r from-dark-300 to-dark-200 border border-neon-cyan/20" 
-          : "bg-gradient-to-r from-dark-400 to-dark-200 border border-neon-cyan/20"
+          ? "bg-gradient-to-r from-dark-200 to-dark-300 border border-neon-cyan/20" 
+          : "bg-gradient-to-r from-dark-300 to-dark-200 border border-dark-100"
     )}>
       <h2 className={cn(
         "text-2xl md:text-3xl font-bold mb-4",

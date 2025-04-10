@@ -1,4 +1,3 @@
-
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -249,7 +248,7 @@
   }
   
   .cyber-button::before {
-    @apply content-[''] absolute -top-1 -bottom-1 left-0 w-1 bg-gradient-to-b from-digicyan-400 to-digicyan-600
+    @apply content-[''] absolute -top-1 -bottom-1 left-0 w-1 bg-gradient-to-b from-digicyan-400 to-digicyyan-600
            translate-x-[-100%] transition-transform duration-300;
   }
   
