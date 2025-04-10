@@ -1,3 +1,4 @@
+
 import React from 'react';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
@@ -101,11 +102,10 @@ const HomePage = () => {
 
   const logoMarqueeTitle: ReactNode = (
     <>
-      <span className="text-gray-900">Dipercaya</span>{" "}
-      <span className="text-digiblue">oleh</span>{" "}
-      <span className="text-gray-900">Perusahaan</span>{" "}
-      <span className="text-digiblue">Teknologi</span>{" "}
-      <span className="text-gray-900">Terkemuka</span>
+      <span className="text-neon-cyan">Dipercaya</span>{" "}
+      <span className="text-white">oleh</span>{" "}
+      <span className="text-neon-cyan">Brand</span>{" "}
+      <span className="text-white">Terkemuka</span>
     </>
   );
 
@@ -119,9 +119,9 @@ const HomePage = () => {
       <LogoMarquee
         logos={homeContent?.partners || partnersFallback}
         title={logoMarqueeTitle}
-        description="Bekerja sama dengan berbagai perusahaan teknologi untuk menghadirkan solusi terbaik"
+        description="Berkolaborasi dengan berbagai perusahaan dan organisasi untuk mengembangkan solusi digital."
         speed="slow"
-        bgColor="bg-gray-50"
+        bgColor="bg-dark-300"
       />
       
       <ServicesSection services={homeContent?.services || servicesFallback} />

@@ -19,6 +19,15 @@ const Beranda = () => {
   const companyName = generalInfo.title;
   const { t } = useLanguage();
   
+  const logoMarqueeTitle = (
+    <>
+      <span className="text-neon-cyan">Dipercaya</span>{" "}
+      <span className="text-white">oleh</span>{" "}
+      <span className="text-neon-cyan">Brand</span>{" "}
+      <span className="text-white">Terkemuka</span>
+    </>
+  );
+  
   return (
     <ScrollAnimation>
       <main>
@@ -34,8 +43,10 @@ const Beranda = () => {
         {/* Logo Marquee - Show our trusted partners */}
         <LogoMarquee 
           logos={homeContent.partners} 
-          title={t('trusted-partners')}
-          description={t('partners-description')} 
+          title={logoMarqueeTitle}
+          description="Berkolaborasi dengan berbagai perusahaan dan organisasi untuk mengembangkan solusi digital."
+          speed="slow"
+          bgColor="bg-dark-300"
         />
 
         {/* Services Section */}

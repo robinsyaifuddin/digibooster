@@ -17,7 +17,7 @@ const LogoMarquee = ({
   title, 
   description, 
   speed = 'medium',
-  bgColor = 'bg-white'
+  bgColor = 'bg-dark-300'
 }: LogoMarqueeProps) => {
   // Speed mapping
   const speedMap = {
@@ -37,18 +37,18 @@ const LogoMarquee = ({
   return (
     <section className={cn("py-12 md:py-16 overflow-hidden", bgColor)}>
       <div className="container mx-auto px-4 mb-8 text-center">
-        <h3 className="text-2xl md:text-3xl font-bold mb-3">{title}</h3>
+        <h3 className="text-2xl md:text-3xl font-bold mb-3 text-white">{title}</h3>
         {description && (
-          <p className="text-gray-600 mb-6 max-w-2xl mx-auto">{description}</p>
+          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">{description}</p>
         )}
       </div>
       
       <div className="relative w-full overflow-hidden">
-        <div className={cn("flex space-x-12 whitespace-nowrap", animationClass)}>
+        <div className={cn("flex space-x-6 md:space-x-12 whitespace-nowrap", animationClass)}>
           {duplicatedLogos.map((logo, index) => (
             <Card 
               key={`${logo.id}-${index}`} 
-              className="inline-flex items-center justify-center p-4 rounded-lg shadow-sm border-gray-100 min-w-[160px] h-20"
+              className="inline-flex items-center justify-center p-3 md:p-4 rounded-lg shadow-md bg-white min-w-[120px] md:min-w-[160px] h-16 md:h-20"
             >
               {logo.link ? (
                 <a 
@@ -60,14 +60,14 @@ const LogoMarquee = ({
                   <img 
                     src={logo.image} 
                     alt={logo.name} 
-                    className="max-h-12 max-w-[120px] object-contain"
+                    className="max-h-10 md:max-h-12 max-w-[100px] md:max-w-[120px] object-contain"
                   />
                 </a>
               ) : (
                 <img 
                   src={logo.image} 
                   alt={logo.name} 
-                  className="max-h-12 max-w-[120px] object-contain"
+                  className="max-h-10 md:max-h-12 max-w-[100px] md:max-w-[120px] object-contain"
                 />
               )}
             </Card>

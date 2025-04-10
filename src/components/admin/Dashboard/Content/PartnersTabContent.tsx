@@ -29,6 +29,15 @@ const PartnersTabContent = ({
   return (
     <TabsContent value="partners">
       <div className="space-y-6">
+        <div className="bg-dark-300 p-4 rounded-md mb-6">
+          <h3 className="text-xl font-semibold text-white mb-2">Format Tampilan Partner</h3>
+          <p className="text-gray-300 mb-4">Partner akan ditampilkan dalam format marquee dengan background gelap dan logo pada card putih.</p>
+          <div className="flex items-center gap-2 text-sm text-gray-300">
+            <div className="w-4 h-4 bg-white rounded-sm"></div>
+            <span>Pastikan logo memiliki background transparan untuk tampilan terbaik</span>
+          </div>
+        </div>
+        
         <PartnersEditor 
           partners={partners}
           handlePartnerChange={handlePartnerChange}
