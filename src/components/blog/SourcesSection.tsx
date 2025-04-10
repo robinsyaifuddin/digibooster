@@ -1,6 +1,6 @@
 
-import { Source } from '@/types/blogTypes';
 import { ExternalLink } from 'lucide-react';
+import { Source } from '@/types/blogTypes';
 
 interface SourcesSectionProps {
   sources: Source[];
@@ -10,26 +10,23 @@ const SourcesSection = ({ sources }: SourcesSectionProps) => {
   if (!sources || sources.length === 0) return null;
   
   return (
-    <div className="mt-8 p-4 bg-dark-300 rounded-lg">
-      <h3 className="text-lg font-semibold text-white mb-4">Sumber & Referensi</h3>
+    <div className="mt-10 pt-6 border-t border-gray-700">
+      <h3 className="text-xl font-bold text-white mb-4">Sumber</h3>
       <ul className="space-y-2">
         {sources.map((source) => (
-          <li key={source.id} className="flex items-start">
-            <span className="text-digicyan mr-2">[{source.id}]</span>
-            <div>
-              <span className="text-gray-300">{source.text}</span>
-              {source.url && (
-                <a 
-                  href={source.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="ml-2 inline-flex items-center text-digicyan hover:underline"
-                >
-                  <ExternalLink className="h-3 w-3 mr-1" />
-                  <span>Kunjungi</span>
-                </a>
-              )}
-            </div>
+          <li key={source.id} className="text-gray-300 text-sm">
+            <a 
+              href={source.url} 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="inline-flex items-start hover:text-digicyan transition-colors"
+            >
+              <span className="mr-2">•</span>
+              <span>
+                {source.text}
+                <ExternalLink className="inline-block ml-1 h-3 w-3 text-digicyan" />
+              </span>
+            </a>
           </li>
         ))}
       </ul>

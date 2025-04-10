@@ -11,8 +11,4 @@ export { default as NotFound } from './NotFound';
 export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as PortfolioDetail } from './PortfolioDetail';
-
-// Import the blog detail page
-import BlogDetail from '../components/blog/BlogDetail';
-
-export { BlogDetail };
+export { default as BlogDetail } from './BlogDetail';

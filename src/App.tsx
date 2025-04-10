@@ -20,6 +20,7 @@ const Beranda = lazy(() => import("./pages/Beranda"));
 const Tentang = lazy(() => import("./pages/Tentang"));
 const Portofolio = lazy(() => import("./pages/Portofolio"));
 const Blog = lazy(() => import("./pages/Blog"));
+const BlogDetail = lazy(() => import("./pages/BlogDetail"));
 const JasaDigital = lazy(() => import("./pages/JasaDigital"));
 const MotivasiEdukasi = lazy(() => import("./pages/MotivasiEdukasi"));
 const SharingKonsultasi = lazy(() => import("./pages/SharingKonsultasi"));
@@ -64,6 +65,7 @@ function App() {
                           <Route path="/portofolio" element={<Portofolio />} />
                           <Route path="/portofolio/:id" element={<PortfolioDetail />} />
                           <Route path="/blog" element={<Blog />} />
+                          <Route path="/blog/:id" element={<BlogDetail />} />
                           <Route path="/program/jasa-digital" element={<JasaDigital />} />
                           <Route path="/program/motivasi-edukasi" element={<MotivasiEdukasi />} />
                           <Route path="/program/sharing-konsultasi" element={<SharingKonsultasi />} />

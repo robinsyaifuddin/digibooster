@@ -1,62 +1,62 @@
 
-import React from 'react';
 import { Link } from 'react-router-dom';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { ChevronRight, Clock } from 'lucide-react';
-import { BlogPost } from '@/types/blogTypes';
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+import { Calendar, Clock, ChevronRight } from "lucide-react";
+import { BlogPost } from "@/types/blogTypes";
+import { motion } from "framer-motion";
 
 interface BlogCardProps {
   post: BlogPost;
+  index: number;
 }
 
-const BlogCard = ({ post }: BlogCardProps) => {
+const BlogCard = ({ post, index }: BlogCardProps) => {
   return (
-    <Card className="overflow-hidden hover:shadow-lg transition-shadow duration-300 border-gray-700 hover:border-digicyan">
+    <motion.div 
+      className="bg-dark-300 rounded-lg overflow-hidden shadow-lg h-full flex flex-col"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.4, delay: index * 0.1 }}
+    >
       <div className="h-48 overflow-hidden">
-        <img
-          src={post.image}
-          alt={post.title}
+        <img 
+          src={post.image} 
+          alt={post.title} 
           className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
         />
       </div>
-      <CardHeader className="pb-2">
-        <div className="flex items-center justify-between mb-2">
-          <span className="text-xs font-medium bg-digicyan/10 text-digicyan px-2 py-1 rounded capitalize">
+      <div className="p-5 flex flex-col flex-grow">
+        <div className="mb-4">
+          <Badge className="bg-digicyan/20 text-digicyan hover:bg-digicyan/30">
             {post.category}
-          </span>
-          <div className="flex items-center text-white text-xs">
-            <Clock className="h-3 w-3 mr-1" />
-            {post.readTime}
+          </Badge>
+        </div>
+        <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">{post.title}</h3>
+        <p className="text-gray-300 mb-4 line-clamp-3">{post.excerpt}</p>
+        
+        <div className="flex flex-wrap items-center text-gray-400 text-sm mb-4 mt-auto">
+          <div className="flex items-center mr-4 mb-1">
+            <Calendar className="h-4 w-4 mr-1 text-digicyan" />
+            <span>{post.date}</span>
+          </div>
+          <div className="flex items-center mb-1">
+            <Clock className="h-4 w-4 mr-1 text-digicyan" />
+            <span>{post.readTime}</span>
           </div>
         </div>
-        <CardTitle className="text-xl font-bold text-white hover:text-digicyan transition-colors">
-          <Link to={`/blog/${post.id}`}>
-            {post.title}
-          </Link>
-        </CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription className="text-white">
-          {post.excerpt}
-        </CardDescription>
-        <div className="flex flex-wrap gap-2 mt-4">
-          {post.tags.slice(0, 3).map((tag, index) => (
-            <span key={index} className="text-xs bg-digicyan/10 text-digicyan px-2 py-1 rounded">
-              #{tag}
-            </span>
-          ))}
-        </div>
-      </CardContent>
-      <CardFooter className="flex justify-between items-center pt-2 border-t border-gray-700">
-        <div className="text-sm text-white">{post.date}</div>
-        <Link to={`/blog/${post.id}`}>
-          <Button variant="ghost" className="text-digicyan hover:text-digicyan-300 p-0">
-            Baca Selengkapnya <ChevronRight className="h-4 w-4 ml-1" />
+        
+        <Link to={`/blog/${post.id}`} className="mt-auto">
+          <Button 
+            variant="ghost" 
+            className="text-digicyan hover:text-digicyan-600 hover:bg-digicyan/10 p-0 flex items-center"
+          >
+            Baca Selengkapnya
+            <ChevronRight className="ml-1 h-4 w-4" />
           </Button>
         </Link>
-      </CardFooter>
-    </Card>
+      </div>
+    </motion.div>
   );
 };
 

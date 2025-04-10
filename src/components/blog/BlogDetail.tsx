@@ -1,41 +1,26 @@
 
 import React, { useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { ArrowLeft, Calendar, Clock, User, Tag, Share2, BookOpen } from 'lucide-react';
 import { blogPosts } from '@/data/blogData';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
+import { BlogPost } from '@/types/blogTypes';
 import RelatedArticles from './RelatedArticles';
 import CommentSection from './CommentSection';
 import SourcesSection from './SourcesSection';
 
-const BlogDetail = () => {
-  const { id } = useParams<{ id: string }>();
-  const blogId = parseInt(id || '0');
-  
-  const post = blogPosts.find(post => post.id === blogId);
-  
+interface BlogDetailProps {
+  post: BlogPost;
+}
+
+const BlogDetail = ({ post }: BlogDetailProps) => {
   useEffect(() => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
-  }, [id]);
-  
-  if (!post) {
-    return (
-      <div className="container mx-auto px-4 py-20 min-h-screen flex flex-col items-center justify-center">
-        <h2 className="text-2xl font-bold text-white mb-4">Artikel tidak ditemukan</h2>
-        <Link 
-          to="/blog" 
-          className="inline-flex items-center text-digicyan hover:text-digicyan-300"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Kembali ke Blog
-        </Link>
-      </div>
-    );
-  }
+  }, [post.id]);
 
   // Calculate related posts based on tags and category similarity
   const relatedPosts = blogPosts
