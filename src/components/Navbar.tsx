@@ -7,7 +7,6 @@ import { Menu, X, Home, ExternalLink } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
-import ThemeToggle from "./ui/ThemeToggle";
 import LanguageToggle from "./ui/LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -230,9 +229,8 @@ const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
-            {/* Theme and language toggles */}
+            {/* Language toggle */}
             <div className="flex items-center space-x-2 mr-2">
-              <ThemeToggle />
               <LanguageToggle />
             </div>
 
@@ -296,8 +294,7 @@ const Navbar = () => {
           </div>
 
           <div className="flex md:hidden items-center space-x-2">
-            {/* Mobile theme and language toggles */}
-            <ThemeToggle />
+            {/* Mobile language toggle */}
             <LanguageToggle />
 
             <button

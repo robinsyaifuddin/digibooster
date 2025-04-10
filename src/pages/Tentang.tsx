@@ -112,7 +112,6 @@ const Tentang = () => {
             description="Kami siap membantu bisnis Anda berkembang di dunia digital. Hubungi kami untuk mendiskusikan kebutuhan dan tujuan bisnis Anda."
             buttonText="Hubungi Kami Sekarang"
             buttonLink="/kontak"
-            theme="dark"
           />
         </motion.div>
       </div>

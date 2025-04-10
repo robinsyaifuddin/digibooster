@@ -57,7 +57,6 @@ const MotivasiEdukasi = () => {
               diimplementasikan untuk pengembangan karir dan bisnis Anda."
             buttonText="Tanyakan Jadwal"
             buttonLink="/kontak"
-            theme="cyan"
           />
         </motion.div>
       </div>

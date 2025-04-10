@@ -49,7 +49,6 @@ const Portofolio = () => {
             description="Kami siap membantu mewujudkan ide dan kebutuhan digital Anda dengan solusi kreatif dan profesional sesuai standar industri."
             buttonText="Diskusikan Proyek Anda"
             buttonLink="/kontak"
-            theme="dark"
           />
         </motion.div>
       </div>

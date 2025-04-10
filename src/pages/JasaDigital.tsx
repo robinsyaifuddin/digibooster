@@ -56,7 +56,6 @@ const JasaDigital = () => {
             description="Konsultasikan kebutuhan digital Anda dengan tim ahli kami dan dapatkan solusi yang sesuai dengan bisnis Anda."
             buttonText="Hubungi Kami"
             buttonLink="/kontak"
-            theme="cyan"
           />
         </motion.div>
       </div>

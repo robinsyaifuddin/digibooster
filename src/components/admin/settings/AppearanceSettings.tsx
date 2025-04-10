@@ -9,7 +9,7 @@ import { useTheme } from '@/contexts/ThemeContext';
 import { CheckIcon } from 'lucide-react';
 
 const AppearanceSettings = () => {
-  const { theme, toggleTheme } = useTheme();
+  const { theme } = useTheme();
   const [selectedColor, setSelectedColor] = useState("#00D8E8");
   
   const containerVariants = {
@@ -84,22 +84,10 @@ const AppearanceSettings = () => {
             
             <div className="space-y-2">
               <Label>Mode Tampilan</Label>
-              <RadioGroup defaultValue={theme} className="flex flex-wrap gap-4" onValueChange={(value) => {
-                if (value !== theme) {
-                  toggleTheme();
-                }
-              }}>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="light" id="light-mode" />
-                  <Label htmlFor="light-mode" className="font-normal">Mode Terang</Label>
-                </div>
+              <RadioGroup defaultValue={theme} className="flex flex-wrap gap-4">
                 <div className="flex items-center space-x-2">
                   <RadioGroupItem value="dark" id="dark-mode" />
                   <Label htmlFor="dark-mode" className="font-normal">Mode Gelap</Label>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <RadioGroupItem value="auto" id="auto-mode" />
-                  <Label htmlFor="auto-mode" className="font-normal">Otomatis</Label>
                 </div>
               </RadioGroup>
             </div>

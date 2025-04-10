@@ -9,7 +9,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Always use dark theme
-  const theme = 'dark';
+  const theme = 'dark' as const;
 
   // Set dark theme on document element
   if (typeof document !== 'undefined') {
