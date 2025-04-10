@@ -3,7 +3,6 @@ import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import BlogDetailComponent from '@/components/blog/BlogDetail';
 import { blogPosts } from '@/data/blogData';
-import { BlogPost } from '@/types/blogTypes';
 import { motion } from 'framer-motion';
 
 const BlogDetail = () => {

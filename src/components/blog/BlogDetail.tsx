@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Clock, User, Tag, Share2, BookOpen } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, User, Tag, Share2 } from 'lucide-react';
 import { blogPosts } from '@/data/blogData';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -148,29 +148,9 @@ const BlogDetail = ({ post }: BlogDetailProps) => {
             <img 
               src={post.image} 
               alt={post.title} 
-              className="w-full h-[300px] md:h-[400px] object-cover"
+              className="w-full h-[250px] md:h-[400px] object-cover"
             />
           </div>
-        </motion.div>
-        
-        {/* Table of Contents */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="mb-8 bg-dark-300 p-4 rounded-lg"
-        >
-          <h2 className="text-lg font-semibold text-white mb-3 flex items-center">
-            <BookOpen className="mr-2 h-4 w-4 text-digicyan" />
-            Daftar Isi
-          </h2>
-          <ol className="list-decimal list-inside pl-4 space-y-1 text-gray-300">
-            <li className="hover:text-digicyan cursor-pointer">Pendahuluan</li>
-            <li className="hover:text-digicyan cursor-pointer">Pembahasan Utama</li>
-            <li className="hover:text-digicyan cursor-pointer">Studi Kasus</li>
-            <li className="hover:text-digicyan cursor-pointer">Analisis Mendalam</li>
-            <li className="hover:text-digicyan cursor-pointer">Kesimpulan</li>
-          </ol>
         </motion.div>
         
         {/* Article Content */}
@@ -180,106 +160,97 @@ const BlogDetail = ({ post }: BlogDetailProps) => {
           transition={{ duration: 0.5, delay: 0.3 }}
           className="prose prose-lg max-w-none text-white mb-12"
         >
-          {post.content.map((paragraph, index) => {
-            // Add subheadings for the first few paragraphs
-            if (index === 0) {
-              return (
-                <React.Fragment key={index}>
-                  <h2 className="text-2xl font-bold text-white mt-8 mb-4">Pendahuluan</h2>
-                  <p className="mb-6 text-gray-300">{paragraph}</p>
-                </React.Fragment>
-              );
-            } else if (index === 1) {
-              return (
-                <React.Fragment key={index}>
-                  <h2 className="text-2xl font-bold text-white mt-10 mb-4">Pembahasan Utama</h2>
-                  <p className="mb-6 text-gray-300">{paragraph}</p>
-                  
-                  {/* Interactive element - Quote */}
-                  <blockquote className="border-l-4 border-digicyan pl-4 py-2 my-6 italic bg-dark-300 rounded-r-lg">
-                    <p className="mb-2 text-gray-200">
-                      "Transformasi digital bukan hanya tentang teknologi, tetapi juga tentang bagaimana kita beradaptasi dan mengubah cara kerja untuk menghasilkan nilai yang lebih besar."
-                    </p>
-                    <cite className="text-sm text-digicyan">- Pakar Teknologi Digital</cite>
-                  </blockquote>
-                </React.Fragment>
-              );
-            } else if (index === 2) {
-              return (
-                <React.Fragment key={index}>
-                  <h2 className="text-2xl font-bold text-white mt-10 mb-4">Studi Kasus</h2>
-                  <p className="mb-6 text-gray-300">{paragraph}</p>
-                  
-                  {/* Interactive element - Statistic Cards */}
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4 my-8">
-                    <div className="bg-dark-300 p-4 rounded-lg border border-digicyan/30">
-                      <h4 className="text-digicyan text-lg mb-1">85%</h4>
-                      <p className="text-sm text-gray-300">Peningkatan efisiensi kerja</p>
-                    </div>
-                    <div className="bg-dark-300 p-4 rounded-lg border border-digicyan/30">
-                      <h4 className="text-digicyan text-lg mb-1">3.5x</h4>
-                      <p className="text-sm text-gray-300">Peningkatan ROI</p>
-                    </div>
-                    <div className="bg-dark-300 p-4 rounded-lg border border-digicyan/30">
-                      <h4 className="text-digicyan text-lg mb-1">62%</h4>
-                      <p className="text-sm text-gray-300">Pengurangan biaya operasional</p>
-                    </div>
-                  </div>
-                </React.Fragment>
-              );
-            } else if (index === 3) {
-              return (
-                <React.Fragment key={index}>
-                  <h2 className="text-2xl font-bold text-white mt-10 mb-4">Analisis Mendalam</h2>
-                  <p className="mb-6 text-gray-300">{paragraph}</p>
-                  
-                  {/* Interactive element - Image with caption */}
-                  {post.relatedImages && post.relatedImages[0] && (
-                    <figure className="my-8">
-                      <div className="rounded-lg overflow-hidden">
-                        <img 
-                          src={post.relatedImages[0]} 
-                          alt="Ilustrasi analisis data" 
-                          className="w-full h-auto"
-                        />
-                      </div>
-                      <figcaption className="text-sm text-center mt-2 text-gray-400">
-                        Gambar 1: Visualisasi data dari implementasi teknologi terkini
-                      </figcaption>
-                    </figure>
-                  )}
-                  
-                  {/* Interactive element - Key points */}
-                  <div className="bg-dark-300 p-5 rounded-lg my-8 border-l-4 border-digicyan">
-                    <h3 className="font-semibold text-white mb-3">Poin-poin Penting:</h3>
-                    <ul className="list-disc pl-5 space-y-2 text-gray-300">
-                      <li>Transformasi digital memerlukan perubahan budaya organisasi</li>
-                      <li>Teknologi cloud menjadi tulang punggung inovasi di era digital</li>
-                      <li>Keamanan data tetap menjadi prioritas utama dalam adopsi teknologi baru</li>
-                      <li>Kolaborasi lintas departemen sangat penting untuk kesuksesan implementasi</li>
-                    </ul>
-                  </div>
-                </React.Fragment>
-              );
-            } else {
-              return (
-                <React.Fragment key={index}>
-                  <h2 className="text-2xl font-bold text-white mt-10 mb-4">Kesimpulan</h2>
-                  <p className="mb-6 text-gray-300">{paragraph}</p>
-                  
-                  {/* Interactive element - Call to action */}
-                  <div className="bg-gradient-to-r from-digicyan/20 to-dark-300 p-6 rounded-lg my-8 border border-digicyan/40">
-                    <h3 className="text-xl font-bold text-white mb-2">Mulai Perjalanan Digital Anda Sekarang</h3>
-                    <p className="text-gray-300 mb-4">Ingin mengetahui lebih lanjut tentang bagaimana kami dapat membantu transformasi digital Anda?</p>
-                    <div className="flex flex-wrap gap-4">
-                      <Button className="bg-digicyan hover:bg-digicyan-600">Konsultasi Gratis</Button>
-                      <Button variant="outline" className="border-digicyan text-digicyan hover:bg-digicyan/20">Pelajari Layanan Kami</Button>
-                    </div>
-                  </div>
-                </React.Fragment>
-              );
-            }
-          })}
+          <div className="space-y-6">
+            {/* Introduction */}
+            <p className="text-gray-300 leading-relaxed">
+              {post.content[0]}
+            </p>
+            
+            {/* First section with quote */}
+            <h2 className="text-2xl font-bold text-white mt-8 mb-4">Transformasi Digital dalam Bisnis Modern</h2>
+            <p className="text-gray-300 leading-relaxed">
+              {post.content[1] || "Transformasi digital telah menjadi kebutuhan vital bagi setiap bisnis yang ingin tetap relevan di era digital. Ini bukan sekadar tentang mengadopsi teknologi baru, tetapi tentang mengubah model bisnis dan proses untuk mengoptimalkan operasi dan memberikan nilai lebih kepada pelanggan. Perusahaan yang berhasil dalam transformasi digital tidak hanya melihat teknologi sebagai alat, tetapi sebagai pendorong inovasi yang terintegrasi dalam setiap aspek bisnis."}
+            </p>
+            
+            {/* Interactive element - Quote */}
+            <blockquote className="border-l-4 border-digicyan pl-4 py-2 my-6 italic bg-dark-300 rounded-r-lg">
+              <p className="mb-2 text-gray-200">
+                "Transformasi digital bukan hanya tentang teknologi, tetapi juga tentang bagaimana kita beradaptasi dan mengubah cara kerja untuk menghasilkan nilai yang lebih besar."
+              </p>
+              <cite className="text-sm text-digicyan">- Pakar Teknologi Digital</cite>
+            </blockquote>
+            
+            {/* Second section with stats */}
+            <h2 className="text-2xl font-bold text-white mt-10 mb-4">Dampak Konkret dalam Bisnis</h2>
+            <p className="text-gray-300 leading-relaxed">
+              {post.content[2] || "Implementasi transformasi digital telah menunjukkan hasil yang signifikan di berbagai sektor industri. Dari peningkatan efisiensi operasional hingga pengalaman pelanggan yang lebih baik, manfaatnya sangat nyata. Studi kasus menunjukkan bagaimana perusahaan yang mengadopsi pendekatan digital-first mampu meningkatkan produktivitas karyawan, mengurangi biaya operasional, dan membuka aliran pendapatan baru."}
+            </p>
+            
+            {/* Interactive element - Statistic Cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8">
+              <div className="bg-dark-300 p-4 rounded-lg border border-digicyan/30">
+                <h4 className="text-digicyan text-lg mb-1">85%</h4>
+                <p className="text-sm text-gray-300">Peningkatan efisiensi kerja</p>
+              </div>
+              <div className="bg-dark-300 p-4 rounded-lg border border-digicyan/30">
+                <h4 className="text-digicyan text-lg mb-1">3.5x</h4>
+                <p className="text-sm text-gray-300">Peningkatan ROI</p>
+              </div>
+              <div className="bg-dark-300 p-4 rounded-lg border border-digicyan/30">
+                <h4 className="text-digicyan text-lg mb-1">62%</h4>
+                <p className="text-sm text-gray-300">Pengurangan biaya operasional</p>
+              </div>
+            </div>
+            
+            {/* Third section with image */}
+            <h2 className="text-2xl font-bold text-white mt-10 mb-4">Strategi Implementasi yang Efektif</h2>
+            <p className="text-gray-300 leading-relaxed">
+              {post.content[3] || "Mengimplementasikan transformasi digital memerlukan pendekatan strategis dan terencana. Penting untuk mengidentifikasi area prioritas yang akan memberikan dampak terbesar pada bisnis. Melibatkan semua pemangku kepentingan dan memastikan dukungan dari manajemen senior sangat penting untuk kesuksesan. Perubahan budaya organisasi menjadi salah satu tantangan terbesar, oleh karena itu komunikasi dan pelatihan menjadi komponen penting dalam proses transformasi."}
+            </p>
+            
+            {/* Interactive element - Image with caption */}
+            {post.relatedImages && post.relatedImages[0] && (
+              <figure className="my-8">
+                <div className="rounded-lg overflow-hidden">
+                  <img 
+                    src={post.relatedImages[0]} 
+                    alt="Ilustrasi analisis data" 
+                    className="w-full h-auto"
+                  />
+                </div>
+                <figcaption className="text-sm text-center mt-2 text-gray-400">
+                  Gambar 1: Visualisasi data dari implementasi teknologi terkini
+                </figcaption>
+              </figure>
+            )}
+            
+            {/* Interactive element - Key points */}
+            <div className="bg-dark-300 p-5 rounded-lg my-8 border-l-4 border-digicyan">
+              <h3 className="font-semibold text-white mb-3">Poin-poin Penting:</h3>
+              <ul className="list-disc pl-5 space-y-2 text-gray-300">
+                <li>Transformasi digital memerlukan perubahan budaya organisasi</li>
+                <li>Teknologi cloud menjadi tulang punggung inovasi di era digital</li>
+                <li>Keamanan data tetap menjadi prioritas utama dalam adopsi teknologi baru</li>
+                <li>Kolaborasi lintas departemen sangat penting untuk kesuksesan implementasi</li>
+              </ul>
+            </div>
+            
+            {/* Conclusion */}
+            <h2 className="text-2xl font-bold text-white mt-10 mb-4">Kesimpulan</h2>
+            <p className="text-gray-300 leading-relaxed">
+              {post.content[4] || "Transformasi digital bukan lagi pilihan, tetapi keharusan dalam lanskap bisnis yang terus berubah. Organisasi yang dapat mengadaptasi teknologi dengan cepat dan mengintegrasikannya secara efektif ke dalam operasi mereka akan memiliki keunggulan kompetitif yang signifikan. Namun, penting untuk diingat bahwa transformasi digital adalah perjalanan, bukan tujuan akhir. Perlu ada komitmen untuk terus belajar, berkembang, dan beradaptasi dengan perkembangan teknologi terbaru."}
+            </p>
+            
+            {/* Call to action */}
+            <div className="bg-gradient-to-r from-digicyan/20 to-dark-300 p-6 rounded-lg my-8 border border-digicyan/40">
+              <h3 className="text-xl font-bold text-white mb-2">Mulai Perjalanan Digital Anda Sekarang</h3>
+              <p className="text-gray-300 mb-4">Ingin mengetahui lebih lanjut tentang bagaimana kami dapat membantu transformasi digital Anda?</p>
+              <div className="flex flex-wrap gap-4">
+                <Button className="bg-digicyan hover:bg-digicyan-600">Konsultasi Gratis</Button>
+                <Button variant="outline" className="border-digicyan text-digicyan hover:bg-digicyan/20">Pelajari Layanan Kami</Button>
+              </div>
+            </div>
+          </div>
           
           {/* Sources Section */}
           <SourcesSection sources={demoSources} />
