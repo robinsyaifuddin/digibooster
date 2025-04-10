@@ -3,7 +3,6 @@ import React from 'react';
 import { ArrowRight, Code, Lightbulb, Users, PenTool, DollarSign, Shield, Gift, LayoutGrid, Megaphone, FileText, FileCog, BookOpen, MessagesSquare, GraduationCap } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { ServiceItem } from '@/types/websiteTypes';
-import { useTheme } from '@/contexts/ThemeContext';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 
@@ -13,11 +12,10 @@ interface ServiceCardProps {
 }
 
 const ServiceCard = ({ service, index }: ServiceCardProps) => {
-  const { theme } = useTheme();
   const { t } = useLanguage();
   
   const getIconComponent = (iconName: string) => {
-    const iconClass = theme === 'dark' ? "h-6 w-6 text-neon-cyan" : "h-6 w-6 text-digicyan-500";
+    const iconClass = "h-6 w-6 text-neon-cyan";
     
     switch (iconName) {
       case 'Code': return <Code className={iconClass} />;
@@ -41,64 +39,34 @@ const ServiceCard = ({ service, index }: ServiceCardProps) => {
   const darkCardStyle = {
     background: "linear-gradient(145deg, rgba(21, 34, 56, 0.95), rgba(16, 28, 48, 0.98))"
   };
-  
-  const lightCardStyle = {
-    background: "linear-gradient(145deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.98))"
-  };
 
   return (
     <div 
-      className={cn(
-        "backdrop-blur-md rounded-lg overflow-hidden relative transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 scroll-animation",
-        theme === 'dark' 
-          ? "bg-dark-300/80 border border-neon-cyan/20 hover:shadow-neon-cyan/10" 
-          : "bg-white border border-digicyan-200/40 hover:shadow-digicyan-300/10"
-      )}
+      className="backdrop-blur-md rounded-lg overflow-hidden relative transform transition-all duration-300 hover:shadow-lg hover:-translate-y-1 scroll-animation bg-dark-300/80 border border-neon-cyan/20 hover:shadow-neon-cyan/10"
       style={{ 
         animationDelay: `${index * 100}ms`,
-        ...(theme === 'dark' ? darkCardStyle : lightCardStyle)
+        ...darkCardStyle
       }}
     >
       {/* Accent corner */}
-      <div className={cn(
-        "absolute top-0 right-0 w-16 h-16",
-        theme === 'dark' 
-          ? "bg-gradient-to-bl from-neon-cyan/20 to-transparent" 
-          : "bg-gradient-to-bl from-digicyan-300/20 to-transparent"
-      )}></div>
+      <div className="absolute top-0 right-0 w-16 h-16 bg-gradient-to-bl from-neon-cyan/20 to-transparent"></div>
       
       <div className="flex flex-col h-full p-7">
         <div className="mb-5">
-          <div className={cn(
-            "w-14 h-14 rounded-lg flex items-center justify-center",
-            theme === 'dark' 
-              ? "bg-dark-400 border border-neon-cyan/20" 
-              : "bg-gray-50 border border-digicyan-200/30"
-          )}>
+          <div className="w-14 h-14 rounded-lg flex items-center justify-center bg-dark-400 border border-neon-cyan/20">
             {getIconComponent(service.icon)}
           </div>
         </div>
         
-        <h3 className={cn(
-          "text-xl font-bold mb-3",
-          theme === 'dark' ? "text-white" : "text-gray-800"
-        )}>
+        <h3 className="text-xl font-bold mb-3 text-white">
           {service.title}
         </h3>
         
-        <p className={cn(
-          "mb-6 flex-grow",
-          theme === 'dark' ? "text-gray-300" : "text-gray-600"
-        )}>
+        <p className="mb-6 flex-grow text-gray-300">
           {service.description}
         </p>
         
-        <Link to={service.link} className={cn(
-          "font-medium flex items-center transition-colors group mt-auto",
-          theme === 'dark' 
-            ? "text-neon-cyan hover:text-neon-blue" 
-            : "text-digicyan-600 hover:text-digicyan-800"
-        )}>
+        <Link to={service.link} className="font-medium flex items-center transition-colors group mt-auto text-neon-cyan hover:text-neon-blue">
           {t('learn-more')}
           <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
         </Link>

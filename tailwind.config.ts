@@ -67,40 +67,7 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-                // DigiCyan - our brand color from the logo
-                digicyan: {
-                    50: '#e0fcff',
-                    100: '#c0f7fd',
-                    200: '#91f0fa',
-                    300: '#51e4f5',
-                    400: '#22d3eb',
-                    500: '#0bbcd1',
-                    600: '#0295aa',
-                    700: '#027686',
-                    800: '#05606d',
-                    900: '#084f5a',
-                    950: '#003540',
-                    DEFAULT: '#00D8E8',
-                },
-                // DigiBlue - for gradients and accents
-                digiblue: {
-                    50: '#e6f2ff',
-                    100: '#cce4ff',
-                    200: '#99c9ff',
-                    300: '#66adff',
-                    400: '#3392ff',
-                    500: '#0077ff',
-                    600: '#005fcc',
-                    700: '#004799',
-                    800: '#003066',
-                    900: '#001833',
-                    DEFAULT: '#0077ff',
-                },
-                diginavy: {
-                    900: '#001941',
-                    DEFAULT: '#001941',
-                },
-                // Dark theme colors
+                // Dark theme colors for consistency
                 dark: {
                     DEFAULT: '#030811',
                     100: '#0f1b30',

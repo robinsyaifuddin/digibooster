@@ -7,7 +7,6 @@ import {
   CarouselContent,
   CarouselItem,
 } from '@/components/ui/carousel';
-import { useTheme } from '@/contexts/ThemeContext';
 import { cn } from '@/lib/utils';
 
 interface TestimonialsSectionProps {
@@ -16,17 +15,11 @@ interface TestimonialsSectionProps {
 }
 
 const TestimonialsSection = ({ companyName, testimonials }: TestimonialsSectionProps) => {
-  const { theme } = useTheme();
   // Duplicate testimonials for continuous flow
   const extendedTestimonials = [...testimonials, ...testimonials];
 
   return (
-    <section className={cn(
-      "py-16 md:py-24 overflow-hidden",
-      theme === 'light' 
-        ? "bg-gradient-to-b from-digicyan-900 to-digicyan-800 text-white" 
-        : "bg-gradient-to-b from-dark-300 to-dark-400 text-white"
-    )}>
+    <section className="py-16 md:py-24 overflow-hidden bg-gradient-to-b from-dark-300 to-dark-400 text-white">
       <div className="container mx-auto px-4">
         <div className="text-center mb-10 md:mb-14 scroll-animation">
           <span className="inline-block py-1 px-3 text-xs font-medium text-white bg-white/10 rounded-full mb-3">TESTIMONI</span>
@@ -48,16 +41,8 @@ const TestimonialsSection = ({ companyName, testimonials }: TestimonialsSectionP
             <CarouselContent className="-ml-4">
               {extendedTestimonials.map((testimonial, index) => (
                 <CarouselItem key={index} className="pl-4 md:basis-1/2 lg:basis-1/3">
-                  <div className={cn(
-                    "rounded-xl p-6 h-full shadow-lg border",
-                    theme === 'light'
-                      ? "bg-gradient-to-br from-digicyan-700 to-digicyan-900 border-digicyan-600/30"
-                      : "bg-gradient-to-br from-dark-200 to-dark-300 border-neon-cyan/20"
-                  )}>
-                    <Quote className={cn(
-                      "w-8 h-8 mb-3 opacity-50",
-                      theme === 'light' ? "text-digicyan-300" : "text-neon-cyan/70"
-                    )} />
+                  <div className="rounded-xl p-6 h-full shadow-lg border bg-gradient-to-br from-dark-200 to-dark-300 border-neon-cyan/20">
+                    <Quote className="w-8 h-8 mb-3 opacity-50 text-neon-cyan/70" />
                     
                     <div className="flex mb-4">
                       {[...Array(5)].map((_, i) => (
@@ -72,10 +57,7 @@ const TestimonialsSection = ({ companyName, testimonials }: TestimonialsSectionP
                         <img 
                           src={testimonial.image} 
                           alt={testimonial.name} 
-                          className={cn(
-                            "w-10 h-10 rounded-full mr-3 shadow-sm border",
-                            theme === 'light' ? "border-digicyan-400/30" : "border-neon-cyan/30"
-                          )}
+                          className="w-10 h-10 rounded-full mr-3 shadow-sm border border-neon-cyan/30"
                         />
                       )}
                       <div>
