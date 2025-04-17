@@ -15,21 +15,23 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { PageTransition } from "./components/animation/PageTransition";
 
-// Root pages
-const Beranda = lazy(() => import("./pages/Beranda"));
-const Tentang = lazy(() => import("./pages/Tentang"));
-const Portofolio = lazy(() => import("./pages/Portofolio"));
-const Blog = lazy(() => import("./pages/Blog"));
-const BlogDetail = lazy(() => import("./pages/BlogDetail"));
-const JasaDigital = lazy(() => import("./pages/JasaDigital"));
-const MotivasiEdukasi = lazy(() => import("./pages/MotivasiEdukasi"));
-const SharingKonsultasi = lazy(() => import("./pages/SharingKonsultasi"));
-const Kelas = lazy(() => import("./pages/Kelas"));
-const PortfolioDetail = lazy(() => import("./pages/PortfolioDetail"));
-const Login = lazy(() => import("./pages/Login"));
-const Register = lazy(() => import("./pages/Register"));
+// Root pages - Import directly instead of using dynamic imports
+import Beranda from "./pages/Beranda";
+import Tentang from "./pages/Tentang";
+import Portofolio from "./pages/Portofolio";
+import Blog from "./pages/Blog";
+import BlogDetail from "./pages/BlogDetail";
+import JasaDigital from "./pages/JasaDigital";
+import MotivasiEdukasi from "./pages/MotivasiEdukasi";
+import SharingKonsultasi from "./pages/SharingKonsultasi";
+import Kelas from "./pages/Kelas";
+import PortfolioDetail from "./pages/PortfolioDetail";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import NotFound from "./pages/NotFound";
+
+// Use lazy loading only for admin dashboard
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
-const NotFound = lazy(() => import("./pages/NotFound"));
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -56,30 +58,35 @@ function App() {
               <AuthProvider>
                 <HomeContentProvider>
                   <Navbar />
-                  <Suspense fallback={<FallbackComponent />}>
-                    <div className="pt-16">
-                      <PageTransition>
-                        <Routes>
-                          <Route path="/" element={<Beranda />} />
-                          <Route path="/tentang" element={<Tentang />} />
-                          <Route path="/portofolio" element={<Portofolio />} />
-                          <Route path="/portofolio/:id" element={<PortfolioDetail />} />
-                          <Route path="/blog" element={<Blog />} />
-                          <Route path="/blog/:id" element={<BlogDetail />} />
-                          <Route path="/program/jasa-digital" element={<JasaDigital />} />
-                          <Route path="/program/motivasi-edukasi" element={<MotivasiEdukasi />} />
-                          <Route path="/program/sharing-konsultasi" element={<SharingKonsultasi />} />
-                          <Route path="/program/kelas" element={<Kelas />} />
-                          <Route path="/login" element={<Login />} />
-                          <Route path="/register" element={<Register />} />
-                          <Route path="/admin/*" element={<AdminDashboard />} />
-                          <Route path="/404" element={<NotFound />} />
-                          <Route path="*" element={<Navigate to="/404" replace />} />
-                        </Routes>
-                      </PageTransition>
-                    </div>
-                    <Footer />
-                  </Suspense>
+                  <div className="pt-16">
+                    <PageTransition>
+                      <Routes>
+                        <Route path="/" element={<Beranda />} />
+                        <Route path="/tentang" element={<Tentang />} />
+                        <Route path="/portofolio" element={<Portofolio />} />
+                        <Route path="/portofolio/:id" element={<PortfolioDetail />} />
+                        <Route path="/blog" element={<Blog />} />
+                        <Route path="/blog/:id" element={<BlogDetail />} />
+                        <Route path="/program/jasa-digital" element={<JasaDigital />} />
+                        <Route path="/program/motivasi-edukasi" element={<MotivasiEdukasi />} />
+                        <Route path="/program/sharing-konsultasi" element={<SharingKonsultasi />} />
+                        <Route path="/program/kelas" element={<Kelas />} />
+                        <Route path="/login" element={<Login />} />
+                        <Route path="/register" element={<Register />} />
+                        <Route path="/404" element={<NotFound />} />
+                        <Route path="*" element={<Navigate to="/404" replace />} />
+                        <Route 
+                          path="/admin/*" 
+                          element={
+                            <Suspense fallback={<FallbackComponent />}>
+                              <AdminDashboard />
+                            </Suspense>
+                          } 
+                        />
+                      </Routes>
+                    </PageTransition>
+                  </div>
+                  <Footer />
                 </HomeContentProvider>
               </AuthProvider>
             </BrowserRouter>
