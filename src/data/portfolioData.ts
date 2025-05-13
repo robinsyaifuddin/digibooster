@@ -1,73 +1,50 @@
 
-import { PortfolioItemType } from '@/types/portfolioTypes';
+import type { PortfolioItemType } from '@/types/portfolioTypes';
 
 export const portfolioItems: PortfolioItemType[] = [
   {
     id: 1,
-    title: "E-Commerce Platform Redesign",
-    client: "TechStore Indonesia",
-    category: "Web Development",
-    image: "https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2089&q=80",
-    description: "Complete redesign of an e-commerce platform with focus on user experience and conversion optimization.",
-    services: ["UI/UX Design", "Frontend Development", "Backend Development", "SEO Optimization"]
+    title: "Digital Decade",
+    client: "Anthony Gargasz",
+    category: "3D Design",
+    image: "https://images.unsplash.com/photo-1618005198919-d3d4b5a92ead?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1374&q=80",
+    description: "An exploration of the intersection of technology and art through 3D modeling and digital design. This project visualizes how digital technology has transformed our world over the past decade.",
+    services: ["3D Modeling", "Digital Art", "Visual Design"]
   },
   {
     id: 2,
-    title: "Corporate Branding & Website",
-    client: "InvestBiz Group",
-    category: "Branding",
-    image: "https://images.unsplash.com/photo-1542744094-24638eff58bb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80",
-    description: "Full branding package and responsive website design for a financial consulting firm.",
-    services: ["Brand Strategy", "Logo Design", "Website Design", "Marketing Materials"]
+    title: "Neon Future",
+    client: "Astera Studios",
+    category: "UI Design",
+    image: "https://images.unsplash.com/photo-1633421878489-37e60bc43089?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    description: "A futuristic UI design concept for a digital platform focused on emerging technologies. The design incorporates neon aesthetics and cyberpunk influences.",
+    services: ["UI Design", "Brand Identity", "Motion Graphics"]
   },
   {
     id: 3,
-    title: "Restaurant Online Ordering System",
-    client: "Spice Garden Restaurant",
-    category: "App Development",
-    image: "https://images.unsplash.com/photo-1555421689-491a97ff2040?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    description: "Custom online ordering system with integrated payment processing and order management dashboard.",
-    services: ["Mobile App Development", "Payment Integration", "Backend Development", "UI/UX Design"]
+    title: "Cyber Genesis",
+    client: "Eliott Rivers",
+    category: "Motion Design",
+    image: "https://images.unsplash.com/photo-1620121692029-d088224ddc74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80",
+    description: "A motion design project that visualizes the evolution of cyberspace and digital environments. This animated experience takes viewers through various stages of digital evolution.",
+    services: ["Motion Design", "Animation", "Sound Design"]
   },
   {
     id: 4,
-    title: "Digital Marketing Campaign",
-    client: "EcoLife Products",
-    category: "Digital Marketing",
-    image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2426&q=80",
-    description: "Comprehensive digital marketing campaign across multiple channels to promote sustainable products.",
-    services: ["Social Media Marketing", "Content Strategy", "SEO", "PPC Advertising"]
+    title: "Virtual Dreams",
+    client: "Aria Daniels",
+    category: "VR Experience",
+    image: "https://images.unsplash.com/photo-1643310873098-be8e2089b9c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1466&q=80",
+    description: "An immersive VR experience that blends reality and imagination in a dreamlike digital environment. Users can explore surreal landscapes and interact with dynamic elements.",
+    services: ["VR Development", "3D Environment", "Interactive Design"]
   },
   {
     id: 5,
-    title: "Educational Platform",
-    client: "LearnSmart Academy",
-    category: "Web Development",
-    image: "https://images.unsplash.com/photo-1501504905252-473c47e087f8?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2074&q=80",
-    description: "Online learning platform with course management, student tracking, and interactive learning features.",
-    services: ["E-Learning Development", "Frontend Development", "Backend Development", "UI/UX Design"]
-  },
-  {
-    id: 6,
-    title: "Real Estate Virtual Tours",
-    client: "PrimeProperties",
-    category: "3D & Visualization",
-    image: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2073&q=80",
-    description: "360° virtual property tours with interactive features for a premium real estate agency.",
-    services: ["3D Modeling", "VR Development", "Interactive Design", "Web Integration"]
+    title: "Pastel Wefty",
+    client: "Sean Evelyn",
+    category: "Digital Art",
+    image: "https://images.unsplash.com/photo-1633985871928-8e07ccf7e2b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    description: "A digital art collection featuring pastel colors and abstract formations, inspired by natural textures and technological patterns.",
+    services: ["Digital Painting", "NFT Creation", "Exhibition Design"]
   }
 ];
-
-export const portfolioFilters = [
-  "All",
-  "Web Development",
-  "Branding",
-  "App Development",
-  "Digital Marketing",
-  "3D & Visualization"
-];
-
-export default {
-  portfolioItems,
-  portfolioFilters
-};

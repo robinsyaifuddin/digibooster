@@ -8,9 +8,11 @@ import BenefitsSection from '@/components/home/BenefitsSection';
 import ContactSection from '@/components/home/ContactSection';
 import ScrollAnimation from '@/components/home/ScrollAnimation';
 import LogoMarquee from '@/components/home/LogoMarquee';
+import PopularPortfolioSection from '@/components/home/PopularPortfolioSection';
 import { useHomeContent } from '@/contexts/HomeContentContext';
 import { ReactNode } from 'react';
 import { useWebsiteDataStore } from '@/stores/websiteDataStore';
+import { portfolioItems } from '@/data/portfolioData';
 
 const HomePage = () => {
   const { homeContent, isLoading } = useHomeContent();
@@ -123,6 +125,8 @@ const HomePage = () => {
         speed="slow"
         bgColor="bg-dark-300"
       />
+      
+      <PopularPortfolioSection portfolioItems={portfolioItems} />
       
       <ServicesSection services={homeContent?.services || servicesFallback} />
       

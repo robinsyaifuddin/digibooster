@@ -7,10 +7,12 @@ import BenefitsSection from '@/components/home/BenefitsSection';
 import ContactSection from '@/components/home/ContactSection';
 import LogoMarquee from '@/components/home/LogoMarquee';
 import CtaSection from '@/components/home/CtaSection';
+import PopularPortfolioSection from '@/components/home/PopularPortfolioSection';
 import { motion } from 'framer-motion';
 import defaultWebsiteData from '@/data/defaultWebsiteData';
 import AnimatedSection from '@/components/animation/AnimatedSection';
 import { useLanguage } from '@/contexts/LanguageContext';
+import { portfolioItems } from '@/data/portfolioData';
 
 const Beranda = () => {
   // Get the website data from the default data
@@ -46,6 +48,11 @@ const Beranda = () => {
         speed="slow"
         bgColor="bg-dark-300"
       />
+
+      {/* Popular Portfolio Section */}
+      <AnimatedSection>
+        <PopularPortfolioSection portfolioItems={portfolioItems} />
+      </AnimatedSection>
 
       {/* Services Section */}
       <ServicesSection services={homeContent.services} />
