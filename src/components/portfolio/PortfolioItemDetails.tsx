@@ -12,18 +12,20 @@ interface PortfolioItemDetailsProps {
 
 const PortfolioItemDetails = ({ id, description, services }: PortfolioItemDetailsProps) => {
   return (
-    <div className="p-6">
-      <p className="text-white mb-4">{description}</p>
+    <div className="p-6 h-48 flex flex-col justify-between">
+      <p className="text-white mb-4 line-clamp-2">{description}</p>
       
-      <PortfolioServiceTags services={services} />
-      
-      <Link 
-        to={`/portofolio/${id}`} 
-        className="inline-flex items-center text-digicyan hover:text-digicyan-300 font-medium transition-colors"
-      >
-        Lihat Detail 
-        <ExternalLink className="ml-2 h-4 w-4" />
-      </Link>
+      <div className="mt-auto">
+        <PortfolioServiceTags services={services} />
+        
+        <Link 
+          to={`/portofolio/${id}`} 
+          className="inline-flex items-center text-digicyan hover:text-digicyan-300 font-medium transition-colors mt-3"
+        >
+          Lihat Detail 
+          <ExternalLink className="ml-2 h-4 w-4" />
+        </Link>
+      </div>
     </div>
   );
 };

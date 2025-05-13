@@ -70,9 +70,9 @@ const PopularPortfolioSection = ({
                           isCenter && !isMobile ? "scale-110 z-10" : ""
                         )}
                       >
-                        <Card className="h-full border-0 bg-transparent relative cyberpunk-card overflow-hidden group">
-                          <div className="relative">
-                            <AspectRatio ratio={3/4} className="bg-gradient-to-tr from-purple-900/40 to-cyan-900/40">
+                        <Card className="h-[28rem] border-0 bg-transparent relative cyberpunk-card overflow-hidden group">
+                          <div className="relative h-full">
+                            <AspectRatio ratio={3/4} className="bg-gradient-to-tr from-purple-900/40 to-cyan-900/40 h-full">
                               <img 
                                 src={item.image} 
                                 alt={item.title} 
@@ -92,7 +92,7 @@ const PopularPortfolioSection = ({
                                   <span>{Math.floor(Math.random() * 50) + 10}k</span>
                                 </div>
                               </div>
-                              <h3 className="text-xl font-bold mb-1 group-hover:text-cyan-400 transition-colors">
+                              <h3 className="text-xl font-bold mb-1 group-hover:text-cyan-400 transition-colors line-clamp-1">
                                 {item.title}
                               </h3>
                               <p className="text-sm text-gray-300 opacity-80">by {item.client}</p>

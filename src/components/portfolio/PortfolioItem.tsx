@@ -16,7 +16,7 @@ const PortfolioItem = ({ project }: PortfolioItemProps) => {
         hidden: { opacity: 0, y: 20 },
         show: { opacity: 1, y: 0 }
       }}
-      className="bg-dark-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all group"
+      className="bg-dark-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all group h-[28rem] flex flex-col"
     >
       <PortfolioImage 
         image={project.image}

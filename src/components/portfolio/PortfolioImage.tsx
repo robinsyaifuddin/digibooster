@@ -21,7 +21,7 @@ const PortfolioImage = ({ image, title, category, client }: PortfolioImageProps)
           <span className="text-xs font-medium text-digiblue-300 bg-digiblue-900/40 px-2 py-1 rounded-full">
             {category}
           </span>
-          <h3 className="text-xl font-bold text-white mt-2">{title}</h3>
+          <h3 className="text-xl font-bold text-white mt-2 line-clamp-1">{title}</h3>
           <p className="text-gray-300 text-sm">{client}</p>
         </div>
       </div>
