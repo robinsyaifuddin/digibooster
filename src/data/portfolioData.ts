@@ -48,3 +48,6 @@ export const portfolioItems: PortfolioItemType[] = [
     services: ["Digital Painting", "NFT Creation", "Exhibition Design"]
   }
 ];
+
+// Add the missing portfolioFilters array
+export const portfolioFilters: string[] = ["All", "3D Design", "UI Design", "Motion Design", "VR Experience", "Digital Art"];
