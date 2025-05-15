@@ -26,6 +26,7 @@ import MotivasiEdukasi from "./pages/MotivasiEdukasi";
 import SharingKonsultasi from "./pages/SharingKonsultasi";
 import Kelas from "./pages/Kelas";
 import PortfolioDetail from "./pages/PortfolioDetail";
+import OrderForm from "./pages/OrderForm";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
@@ -71,6 +72,7 @@ function App() {
                         <Route path="/program/motivasi-edukasi" element={<MotivasiEdukasi />} />
                         <Route path="/program/sharing-konsultasi" element={<SharingKonsultasi />} />
                         <Route path="/program/kelas" element={<Kelas />} />
+                        <Route path="/order-form" element={<OrderForm />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                         <Route path="/404" element={<NotFound />} />

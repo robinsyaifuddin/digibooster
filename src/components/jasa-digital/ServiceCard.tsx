@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { SendIcon } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 export interface ServiceProps {
   icon: React.ReactNode;
@@ -13,13 +14,11 @@ export interface ServiceProps {
 }
 
 const ServiceCard = ({ icon, title, description, items }: ServiceProps) => {
+  const navigate = useNavigate();
+  
   const handleOrder = () => {
-    // Format the WhatsApp message with service details
-    const message = `Halo Admin, saya tertarik dengan layanan *${title}* di DigiBooster. Mohon informasi lebih lanjut.`;
-    const encodedMessage = encodeURIComponent(message);
-    // Using a placeholder number - replace with actual WhatsApp number
-    const whatsappUrl = `https://wa.me/628123456789?text=${encodedMessage}`;
-    window.open(whatsappUrl, '_blank');
+    // Navigate to order form with the selected service as a URL parameter
+    navigate(`/order-form?service=${encodeURIComponent(title)}`);
   };
 
   return (
