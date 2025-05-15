@@ -1,9 +1,8 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Home, ExternalLink } from "lucide-react";
+import { Menu, X, Home, ExternalLink, Briefcase, GraduationCap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
@@ -94,10 +93,8 @@ const Navbar = () => {
       icon: null,
       isDropdown: true,
       children: [
-        { path: "/program/jasa-digital", label: "jasa-digital" },
-        { path: "/program/motivasi-edukasi", label: "motivasi-edukasi" },
-        { path: "/program/sharing-konsultasi", label: "sharing-konsultasi" },
-        { path: "/program/kelas", label: "kelas" },
+        { path: "/program/jasa-digital", label: "jasa-digital", icon: <Briefcase className="h-4 w-4 mr-2" /> },
+        { path: "/program/kelas", label: "shortclass-bootcamp", icon: <GraduationCap className="h-4 w-4 mr-2" /> },
       ]
     },
     { path: "/blog", label: "blog", icon: null },
@@ -211,6 +208,7 @@ const Navbar = () => {
                                           : "text-gray-700 hover:bg-black/5 hover:text-black focus:bg-gray-100 focus:text-black"
                                     )}
                                   >
+                                    {child.icon}
                                     <div className="text-sm font-medium">
                                       {t(child.label)}
                                     </div>
@@ -403,7 +401,7 @@ const Navbar = () => {
                           <Link
                             to={child.path}
                             className={cn(
-                              "block px-4 py-2.5 rounded-md text-base font-medium transition-all",
+                              "block px-4 py-2.5 rounded-md text-base font-medium transition-all flex items-center",
                               isActive(child.path)
                                 ? theme === 'dark'
                                   ? "text-neon-cyan bg-neon-cyan/10" 
@@ -414,6 +412,7 @@ const Navbar = () => {
                             )}
                             onClick={toggleMobileMenu}
                           >
+                            {child.icon}
                             {t(child.label)}
                           </Link>
                         </motion.div>
