@@ -5,8 +5,11 @@ import ServicesGrid from '@/components/jasa-digital/ServicesGrid';
 import CtaComponent from '@/components/common/CtaComponent';
 import { jasaDigitalServices } from '@/data/jasaDigitalData';
 import { motion } from 'framer-motion';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 const JasaDigital = () => {
+  const isMobile = useIsMobile();
+  
   // Add scroll reveal effect
   useEffect(() => {
     const handleScroll = () => {
@@ -40,7 +43,11 @@ const JasaDigital = () => {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
+          className="mt-16"
         >
+          <h2 className="text-2xl md:text-3xl font-bold mb-8 text-center text-white">
+            Layanan Digital Yang Kami Sediakan
+          </h2>
           <ServicesGrid services={jasaDigitalServices} />
         </motion.div>
 

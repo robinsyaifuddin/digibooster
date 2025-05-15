@@ -2,6 +2,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button';
+import { SendIcon } from 'lucide-react';
 
 export interface ServiceProps {
   icon: React.ReactNode;
@@ -11,11 +13,20 @@ export interface ServiceProps {
 }
 
 const ServiceCard = ({ icon, title, description, items }: ServiceProps) => {
+  const handleOrder = () => {
+    // Format the WhatsApp message with service details
+    const message = `Halo Admin, saya tertarik dengan layanan *${title}* di DigiBooster. Mohon informasi lebih lanjut.`;
+    const encodedMessage = encodeURIComponent(message);
+    // Using a placeholder number - replace with actual WhatsApp number
+    const whatsappUrl = `https://wa.me/628123456789?text=${encodedMessage}`;
+    window.open(whatsappUrl, '_blank');
+  };
+
   return (
     <motion.div
       whileHover={{ translateY: -8 }}
       transition={{ duration: 0.3 }}
-      className="p-7 relative overflow-hidden group cyberpunk-card"
+      className="p-7 relative overflow-hidden group cyberpunk-card h-full flex flex-col"
     >
       {/* Background glow effect */}
       <div className="absolute -inset-1 opacity-0 group-hover:opacity-100 blur-lg transition-opacity duration-300 bg-gradient-to-r from-primary/5 to-primary/5"></div>
@@ -43,11 +54,11 @@ const ServiceCard = ({ icon, title, description, items }: ServiceProps) => {
       <h3 className="text-xl font-bold mb-3 group-hover:transition-all text-card-foreground group-hover:text-shadow-neon">
         {title}
       </h3>
-      <p className="mb-5 text-muted-foreground">
+      <p className="mb-5 text-muted-foreground line-clamp-3">
         {description}
       </p>
       
-      <ul className="space-y-2">
+      <ul className="space-y-2 mb-6 flex-grow">
         {items.map((item, idx) => (
           <motion.li 
             key={idx} 
@@ -64,6 +75,15 @@ const ServiceCard = ({ icon, title, description, items }: ServiceProps) => {
           </motion.li>
         ))}
       </ul>
+      
+      {/* Order Button */}
+      <Button 
+        onClick={handleOrder}
+        className="w-full mt-auto bg-primary hover:bg-primary/90 text-dark font-medium group"
+      >
+        Pesan Sekarang
+        <SendIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+      </Button>
       
       {/* Bottom accent line */}
       <motion.div 

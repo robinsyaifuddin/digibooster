@@ -28,12 +28,13 @@ const ServicesGrid = ({ services }: ServicesGridProps) => {
       variants={container}
       initial="hidden"
       animate="show"
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24"
+      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-24 auto-rows-fr"
     >
       {services.map((service, index) => (
         <motion.div
           key={index}
           variants={item}
+          className="h-full"
         >
           <ServiceCard 
             icon={service.icon}
