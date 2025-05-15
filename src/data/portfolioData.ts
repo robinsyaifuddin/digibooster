@@ -21,15 +21,6 @@ export const portfolioItems: PortfolioItemType[] = [
     services: ["UI Design", "Brand Identity", "Motion Graphics"]
   },
   {
-    id: 3,
-    title: "Cyber Genesis",
-    client: "Eliott Rivers",
-    category: "Motion Design",
-    image: "https://images.unsplash.com/photo-1620121692029-d088224ddc74?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1632&q=80",
-    description: "A motion design project that visualizes the evolution of cyberspace and digital environments. This animated experience takes viewers through various stages of digital evolution.",
-    services: ["Motion Design", "Animation", "Sound Design"]
-  },
-  {
     id: 4,
     title: "Virtual Dreams",
     client: "Aria Daniels",
