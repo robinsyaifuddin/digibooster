@@ -25,7 +25,7 @@ export const portfolioItems: PortfolioItemType[] = [
     title: "Virtual Dreams",
     client: "Aria Daniels",
     category: "VR Experience",
-    image: "https://images.unsplash.com/photo-1643310873098-be8e2089b9c1?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1466&q=80",
+    image: "https://images.unsplash.com/photo-1593508512255-86ab42a8e620?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1498&q=80",
     description: "An immersive VR experience that blends reality and imagination in a dreamlike digital environment. Users can explore surreal landscapes and interact with dynamic elements.",
     services: ["VR Development", "3D Environment", "Interactive Design"]
   },
@@ -37,8 +37,17 @@ export const portfolioItems: PortfolioItemType[] = [
     image: "https://images.unsplash.com/photo-1633985871928-8e07ccf7e2b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
     description: "A digital art collection featuring pastel colors and abstract formations, inspired by natural textures and technological patterns.",
     services: ["Digital Painting", "NFT Creation", "Exhibition Design"]
+  },
+  {
+    id: 6,
+    title: "Tech Wave",
+    client: "Solaris Digital",
+    category: "Web Design",
+    image: "https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
+    description: "A responsive web design project showcasing the latest advancements in technology with an emphasis on user experience and interactive elements.",
+    services: ["Web Design", "Front-end Development", "UX Research"]
   }
 ];
 
-// Add the missing portfolioFilters array
-export const portfolioFilters: string[] = ["All", "3D Design", "UI Design", "Motion Design", "VR Experience", "Digital Art"];
+// Add the portfolioFilters array
+export const portfolioFilters: string[] = ["All", "3D Design", "UI Design", "Motion Design", "VR Experience", "Digital Art", "Web Design"];

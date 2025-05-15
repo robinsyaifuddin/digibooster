@@ -1,19 +1,21 @@
 
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { 
   Carousel, 
   CarouselContent, 
-  CarouselItem, 
+  CarouselItem,
   CarouselPrevious, 
   CarouselNext 
 } from '@/components/ui/carousel';
 import { Card } from '@/components/ui/card';
 import { AspectRatio } from '@/components/ui/aspect-ratio';
-import { Heart } from 'lucide-react';
+import { Heart, Eye, CornerDownRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { useIsMobile } from '@/hooks/use-mobile';
 import type { PortfolioItemType } from '@/types/portfolioTypes';
 import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 
 interface PopularPortfolioSectionProps {
   title?: string;
@@ -27,35 +29,70 @@ const PopularPortfolioSection = ({
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const isMobile = useIsMobile();
   
-  const visibleItems = portfolioItems.slice(0, 5);
+  const visibleItems = portfolioItems;
   
   return (
-    <section className="py-16 relative bg-gradient-to-b from-dark-400/50 to-dark-300">
-      <div className="container max-w-7xl mx-auto px-4 md:px-6">
-        <h2 className="text-center text-4xl md:text-5xl font-bold mb-12 text-white">
-          {title}
-        </h2>
+    <section className="py-20 relative overflow-hidden">
+      {/* Background decorative elements */}
+      <div className="absolute inset-0 bg-gradient-to-b from-dark-400 to-dark-300 z-0"></div>
+      <div className="absolute top-0 left-0 w-full h-20 bg-gradient-to-b from-dark-300 to-transparent"></div>
+      <div className="absolute bottom-0 left-0 w-full h-20 bg-gradient-to-t from-dark-300 to-transparent"></div>
+      <div className="absolute top-40 -left-32 w-64 h-64 rounded-full bg-primary/5 filter blur-3xl"></div>
+      <div className="absolute bottom-40 -right-32 w-64 h-64 rounded-full bg-primary/5 filter blur-3xl"></div>
+      
+      <div className="container max-w-7xl mx-auto px-4 md:px-6 relative z-10">
+        <div className="flex flex-col items-center justify-center mb-12">
+          <motion.span 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            viewport={{ once: true }}
+            className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary mb-3"
+          >
+            SHOWCASE
+          </motion.span>
+          <motion.h2 
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.1 }}
+            viewport={{ once: true }}
+            className="text-center text-3xl md:text-4xl lg:text-5xl font-bold text-white"
+          >
+            {title}
+          </motion.h2>
+          <motion.div 
+            initial={{ width: 0 }}
+            whileInView={{ width: "80px" }}
+            transition={{ duration: 0.5, delay: 0.3 }}
+            viewport={{ once: true }}
+            className="h-1 bg-gradient-to-r from-primary/80 to-primary/30 mt-4 rounded-full"
+          />
+        </div>
         
-        <div className="mt-8 relative">
+        <div className="mt-12 relative">
           <Carousel
             opts={{
-              align: "start",
+              align: "center",
               loop: true,
             }}
             className="w-full"
           >
             <CarouselContent className="-ml-2 md:-ml-4">
-              {visibleItems.map((item, index) => {
-                const isCenter = index === 2;
-                
-                return (
-                  <CarouselItem 
-                    key={item.id}
-                    className={cn(
-                      "pl-2 md:pl-4",
-                      isMobile ? "basis-4/5" : isCenter ? "basis-1/3" : "basis-1/4",
-                      "transition-all duration-300"
-                    )}
+              {visibleItems.map((item, index) => (
+                <CarouselItem 
+                  key={item.id}
+                  className={cn(
+                    "pl-2 md:pl-4",
+                    isMobile ? "basis-full sm:basis-3/4" : "basis-full md:basis-1/3 lg:basis-1/4",
+                    "transition-all duration-300 py-10"
+                  )}
+                >
+                  <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5, delay: index * 0.1 }}
+                    className="h-full"
+                    whileHover={{ y: -10, transition: { duration: 0.3 } }}
                   >
                     <Link 
                       to={`/portofolio/${item.id}`}
@@ -63,51 +100,98 @@ const PopularPortfolioSection = ({
                       onMouseEnter={() => setHoveredItem(item.id)}
                       onMouseLeave={() => setHoveredItem(null)}
                     >
-                      <div
-                        className={cn(
-                          "h-full rounded-lg overflow-hidden transition-all duration-500",
-                          hoveredItem === item.id ? "scale-[1.03] shadow-lg shadow-cyan-500/20" : "",
-                          isCenter && !isMobile ? "scale-110 z-10" : ""
-                        )}
-                      >
-                        <Card className="h-[28rem] border-0 bg-transparent relative cyberpunk-card overflow-hidden group">
-                          <div className="relative h-full">
-                            <AspectRatio ratio={3/4} className="bg-gradient-to-tr from-purple-900/40 to-cyan-900/40 h-full">
-                              <img 
-                                src={item.image} 
-                                alt={item.title} 
-                                className="object-cover w-full h-full rounded-t-lg group-hover:scale-105 transition-all duration-500"
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-dark-300/90 via-dark-300/30 to-transparent" />
-                            </AspectRatio>
-                            
-                            <div className="absolute top-2 right-2 bg-dark-300/80 backdrop-blur-sm p-2 rounded-full">
-                              <Heart className="w-5 h-5 text-white hover:text-red-500 transition-colors cursor-pointer" />
-                            </div>
-
-                            <div className="absolute left-0 bottom-0 w-full p-4 text-white">
-                              <div className="mb-2 flex items-center justify-between">
-                                <span className="text-xs text-cyan-400 uppercase tracking-wider">{item.category}</span>
-                                <div className="bg-cyan-500/30 backdrop-blur-sm py-1 px-2 rounded text-xs font-medium text-white flex items-center">
-                                  <span>{Math.floor(Math.random() * 50) + 10}k</span>
-                                </div>
-                              </div>
-                              <h3 className="text-xl font-bold mb-1 group-hover:text-cyan-400 transition-colors line-clamp-1">
-                                {item.title}
-                              </h3>
-                              <p className="text-sm text-gray-300 opacity-80">by {item.client}</p>
+                      <Card className="h-[400px] md:h-[450px] border-0 bg-dark-400/50 rounded-xl overflow-hidden relative group cyberpunk-card">
+                        <div className="absolute inset-0 bg-gradient-to-br from-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-10"></div>
+                        
+                        <div className="relative h-full">
+                          {/* Image container */}
+                          <AspectRatio ratio={3/4} className="h-full">
+                            <img 
+                              src={item.image} 
+                              alt={item.title} 
+                              className="object-cover w-full h-full rounded-xl group-hover:scale-105 transition-all duration-700"
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-t from-dark-400 via-dark-400/60 to-transparent"></div>
+                          </AspectRatio>
+                          
+                          {/* Top badges */}
+                          <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-20">
+                            <span className="px-3 py-1 rounded-full text-xs font-medium bg-dark-300/70 backdrop-blur-sm text-primary border border-primary/20">
+                              {item.category}
+                            </span>
+                            <div className="flex space-x-2">
+                              <span className="w-8 h-8 flex items-center justify-center rounded-full bg-dark-300/70 backdrop-blur-sm">
+                                <Eye className="w-4 h-4 text-white/70" />
+                              </span>
+                              <span className="w-8 h-8 flex items-center justify-center rounded-full bg-dark-300/70 backdrop-blur-sm">
+                                <Heart className="w-4 h-4 text-white/70 group-hover:text-primary transition-colors" />
+                              </span>
                             </div>
                           </div>
-                        </Card>
-                      </div>
+                          
+                          {/* Content */}
+                          <div className="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 z-20">
+                            <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-primary transition-colors mb-2">
+                              {item.title}
+                            </h3>
+                            
+                            <p className="text-sm text-white/70 mb-3">
+                              by <span className="text-primary/80">{item.client}</span>
+                            </p>
+                            
+                            <div className="max-h-0 overflow-hidden group-hover:max-h-32 transition-all duration-500 ease-in-out">
+                              <p className="text-sm text-white/80 mb-4 line-clamp-3">
+                                {item.description}
+                              </p>
+                              
+                              <div className="flex flex-wrap gap-2 mb-4">
+                                {item.services.map((service, i) => (
+                                  <span 
+                                    key={i} 
+                                    className="px-2 py-1 rounded text-xs bg-dark-300/70 text-white/70 border border-primary/10"
+                                  >
+                                    {service}
+                                  </span>
+                                ))}
+                              </div>
+                              
+                              <Button 
+                                variant="outline" 
+                                size="sm" 
+                                className="group/btn w-full border-primary/40 hover:border-primary hover:bg-primary/10"
+                              >
+                                <span>Lihat Detail</span> 
+                                <CornerDownRight className="w-3 h-3 ml-1 group-hover/btn:translate-x-1 transition-transform" />
+                              </Button>
+                            </div>
+                          </div>
+                          
+                          {/* Decorative elements */}
+                          <div className="absolute top-0 left-0 w-4 h-1 bg-primary/50 rounded-tr-md rounded-bl-md"></div>
+                          <div className="absolute bottom-0 right-0 w-4 h-1 bg-primary/50 rounded-tl-md rounded-br-md"></div>
+                          <div className="absolute bottom-[-1px] left-0 w-full h-[2px] bg-gradient-to-r from-primary/80 via-primary/20 to-transparent scale-x-0 group-hover:scale-x-100 transition-transform duration-500 origin-left"></div>
+                        </div>
+                      </Card>
                     </Link>
-                  </CarouselItem>
-                );
-              })}
+                  </motion.div>
+                </CarouselItem>
+              ))}
             </CarouselContent>
-            <CarouselPrevious className="absolute left-0 top-1/2 -translate-y-1/2 bg-dark-300/80 backdrop-blur-sm text-white border-cyan-500/30 hover:bg-cyan-900/50 hover:text-white" />
-            <CarouselNext className="absolute right-0 top-1/2 -translate-y-1/2 bg-dark-300/80 backdrop-blur-sm text-white border-cyan-500/30 hover:bg-cyan-900/50 hover:text-white" />
+            
+            <CarouselPrevious className="absolute -left-4 top-1/2 -translate-y-1/2 bg-dark-300/80 backdrop-blur-sm text-white border-primary/30 hover:bg-primary/10 hover:text-white" />
+            <CarouselNext className="absolute -right-4 top-1/2 -translate-y-1/2 bg-dark-300/80 backdrop-blur-sm text-white border-primary/30 hover:bg-primary/10 hover:text-white" />
           </Carousel>
+        </div>
+        
+        <div className="flex justify-center mt-12">
+          <Link to="/portofolio">
+            <Button 
+              variant="outline" 
+              className="border-primary/40 hover:border-primary hover:bg-primary/10"
+            >
+              Lihat Semua Portfolio
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
