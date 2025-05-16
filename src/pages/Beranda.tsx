@@ -2,11 +2,18 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Play, Star, Plus, ChevronRight, ChevronLeft } from 'lucide-react';
+import { Play, Star, Plus, ChevronRight, ChevronLeft, Newspaper, Users2, Image, MessageSquare } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import defaultWebsiteData from '@/data/defaultWebsiteData';
 import { ServiceItem } from '@/types/websiteTypes';
+import { latestNews, partners, testimonials } from '@/data/homepageData';
+import { portfolioItems } from '@/data/portfolioData';
+import CardSlider from '@/components/ui/card-slider';
+import NewsCard from '@/components/home/NewsCard';
+import PartnerCard from '@/components/home/PartnerCard';
+import TestimonialCard from '@/components/home/TestimonialCard';
+import FeaturedPortfolioCard from '@/components/home/FeaturedPortfolioCard';
 
 // Featured service data
 const featuredService = {
@@ -107,6 +114,9 @@ const subscriptionPlans = [
     ]
   }
 ];
+
+// Get featured portfolio items
+const featuredPortfolio = portfolioItems.slice(0, 6);
 
 const Beranda = () => {
   const { t } = useLanguage();
@@ -282,6 +292,145 @@ const Beranda = () => {
         </div>
       </section>
       
+      {/* Latest News Section */}
+      <section className="py-16 bg-black border-t border-gray-800">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="bg-sky-500/20 p-3 rounded-full">
+              <Newspaper size={24} className="text-sky-400" />
+            </div>
+            <h2 className="text-3xl font-bold">Berita Terbaru</h2>
+          </div>
+          
+          <CardSlider
+            title=""
+            slidesPerView={3}
+            cardClassName="md:basis-1/3 lg:basis-1/4"
+          >
+            {latestNews.map((news) => (
+              <NewsCard
+                key={news.id}
+                id={news.id}
+                title={news.title}
+                excerpt={news.excerpt}
+                image={news.image}
+                date={news.date}
+                category={news.category}
+                link={news.link}
+              />
+            ))}
+          </CardSlider>
+          
+          <div className="text-center mt-10">
+            <Button asChild variant="outline" className="rounded-full border-gray-700 hover:bg-sky-500/20 hover:border-sky-500">
+              <Link to="/berita">
+                Lihat Semua Berita <ChevronRight size={16} className="ml-1" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+      
+      {/* Partners Section */}
+      <section className="py-16 bg-black/80 border-t border-gray-800/50">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="bg-sky-500/20 p-3 rounded-full">
+              <Users2 size={24} className="text-sky-400" />
+            </div>
+            <h2 className="text-3xl font-bold">Mitra Kami</h2>
+          </div>
+          
+          <p className="text-gray-400 max-w-2xl mb-10">
+            DigiBooster berkolaborasi dengan berbagai perusahaan teknologi terkemuka untuk menyediakan solusi digital terbaik bagi klien kami.
+          </p>
+          
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+            {partners.map((partner) => (
+              <PartnerCard
+                key={partner.id}
+                id={partner.id}
+                name={partner.name}
+                logo={partner.logo}
+                description={partner.description}
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+      
+      {/* Portfolio Showcase */}
+      <section className="py-16 bg-black border-t border-gray-800/50">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="bg-sky-500/20 p-3 rounded-full">
+              <Image size={24} className="text-sky-400" />
+            </div>
+            <h2 className="text-3xl font-bold">Portofolio Unggulan</h2>
+          </div>
+          
+          <CardSlider
+            title=""
+            slidesPerView={3}
+            cardClassName="md:basis-1/3 lg:basis-1/3"
+          >
+            {featuredPortfolio.map((item) => (
+              <FeaturedPortfolioCard
+                key={item.id}
+                id={item.id}
+                title={item.title}
+                description={item.description}
+                image={item.image}
+                category={item.category}
+                link={`/portofolio/${item.id}`}
+              />
+            ))}
+          </CardSlider>
+          
+          <div className="text-center mt-10">
+            <Button asChild variant="outline" className="rounded-full border-gray-700 hover:bg-sky-500/20 hover:border-sky-500">
+              <Link to="/portofolio">
+                Lihat Semua Portofolio <ChevronRight size={16} className="ml-1" />
+              </Link>
+            </Button>
+          </div>
+        </div>
+      </section>
+      
+      {/* Testimonials Section */}
+      <section className="py-16 bg-black/80 border-t border-gray-800/50">
+        <div className="container mx-auto px-4">
+          <div className="flex items-center gap-3 mb-8">
+            <div className="bg-sky-500/20 p-3 rounded-full">
+              <MessageSquare size={24} className="text-sky-400" />
+            </div>
+            <h2 className="text-3xl font-bold">Testimoni Klien</h2>
+          </div>
+          
+          <p className="text-gray-400 max-w-2xl mb-10">
+            Dengarkan pengalaman klien kami yang telah merasakan dampak positif dari layanan digital DigiBooster.
+          </p>
+          
+          <CardSlider
+            title=""
+            slidesPerView={3}
+            cardClassName="md:basis-1/3 lg:basis-1/3"
+          >
+            {testimonials.map((testimonial) => (
+              <TestimonialCard
+                key={testimonial.id}
+                id={testimonial.id}
+                name={testimonial.name}
+                role={testimonial.role}
+                content={testimonial.content}
+                image={testimonial.image}
+                rating={testimonial.rating}
+              />
+            ))}
+          </CardSlider>
+        </div>
+      </section>
+      
       {/* Recommendations Section */}
       <section className="py-16 bg-black">
         <div className="container mx-auto px-4">
@@ -310,23 +459,23 @@ const Beranda = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-8">
+          <div className="film-card-grid">
             {popularServices.map((service) => (
               <motion.div
                 key={service.id}
                 whileHover={{ y: -5 }}
-                className="relative rounded-xl overflow-hidden bg-gray-900/50 border border-gray-800"
+                className="filmbox-card"
               >
                 <div className="aspect-[2/3] overflow-hidden">
                   <img 
                     src={service.image} 
                     alt={service.title} 
-                    className="w-full h-full object-cover transition-transform duration-300 hover:scale-110"
+                    className="w-full h-full object-cover filmbox-image"
                   />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent"></div>
+                  <div className="filmbox-overlay"></div>
                   
                   <div className="absolute top-2 right-2">
-                    <button className="w-7 h-7 flex items-center justify-center rounded-full bg-black/50 hover:bg-sky-500/50 transition-colors">
+                    <button className="filmbox-icon-button w-7 h-7">
                       <Plus size={14} />
                     </button>
                   </div>
