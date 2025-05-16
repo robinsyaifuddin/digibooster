@@ -14,6 +14,7 @@ import PartnerCard from '@/components/home/PartnerCard';
 import TestimonialCard from '@/components/home/TestimonialCard';
 import FeaturedPortfolioCard from '@/components/home/FeaturedPortfolioCard';
 import { useIsMobile } from '@/hooks/use-mobile';
+import LogoMarquee from '@/components/home/LogoMarquee';
 
 // Featured service data
 const featuredService = {
@@ -346,17 +347,18 @@ const Beranda = () => {
             DigiBooster berkolaborasi dengan berbagai perusahaan teknologi terkemuka untuk menyediakan solusi digital terbaik bagi klien kami.
           </p>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
-            {partners.map((partner) => (
-              <PartnerCard
-                key={partner.id}
-                id={partner.id}
-                name={partner.name}
-                logo={partner.logo}
-                description={partner.description}
-              />
-            ))}
-          </div>
+          {/* Replace the grid with the marquee component */}
+          <LogoMarquee
+            logos={partners.map(partner => ({
+              id: partner.id,
+              name: partner.name, 
+              image: partner.logo,
+              link: ''
+            }))}
+            title=""
+            speed="medium"
+            bgColor="bg-transparent"
+          />
         </div>
       </section>
       

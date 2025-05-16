@@ -20,11 +20,11 @@ const PartnerCard: React.FC<PartnerCardProps> = ({
       whileHover={{ y: -5 }}
       className="p-3 md:p-4 bg-gray-900/30 border border-gray-800 rounded-xl hover:border-sky-500/30 transition-all duration-300"
     >
-      <div className="aspect-video flex items-center justify-center p-2 md:p-4 bg-black/30 rounded-lg mb-2 md:mb-3">
+      <div className="aspect-video flex items-center justify-center p-2 md:p-3 bg-black/30 rounded-lg mb-2 md:mb-3">
         <img 
           src={logo} 
           alt={name} 
-          className="max-h-12 md:max-h-16 max-w-full object-contain filter brightness-100 hover:brightness-110 transition-all"
+          className="max-h-8 md:max-h-10 max-w-full object-contain filter brightness-100 hover:brightness-110 transition-all"
         />
       </div>
       

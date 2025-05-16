@@ -10,6 +10,7 @@ interface LogoMarqueeProps {
   description?: string;
   speed?: 'slow' | 'medium' | 'fast';
   bgColor?: string;
+  direction?: 'left' | 'right';
 }
 
 const LogoMarquee = ({ 
@@ -17,13 +18,14 @@ const LogoMarquee = ({
   title, 
   description, 
   speed = 'medium',
-  bgColor = 'bg-dark-300'
+  bgColor = 'bg-dark-300',
+  direction = 'left'
 }: LogoMarqueeProps) => {
   // Speed mapping
   const speedMap = {
-    slow: 'animate-marquee-slow',
-    medium: 'animate-marquee-medium',
-    fast: 'animate-marquee-fast'
+    slow: direction === 'left' ? 'animate-marquee-slow-left' : 'animate-marquee-slow-right',
+    medium: direction === 'left' ? 'animate-marquee-medium-left' : 'animate-marquee-medium-right',
+    fast: direction === 'left' ? 'animate-marquee-fast-left' : 'animate-marquee-fast-right'
   };
   
   const animationClass = speedMap[speed];
@@ -48,7 +50,7 @@ const LogoMarquee = ({
           {duplicatedLogos.map((logo, index) => (
             <Card 
               key={`${logo.id}-${index}`} 
-              className="inline-flex items-center justify-center p-3 md:p-4 rounded-lg shadow-md bg-white min-w-[120px] md:min-w-[160px] h-16 md:h-20"
+              className="inline-flex items-center justify-center p-2 md:p-3 rounded-lg shadow-md bg-white min-w-[100px] md:min-w-[140px] h-12 md:h-16"
             >
               {logo.link ? (
                 <a 
@@ -60,14 +62,14 @@ const LogoMarquee = ({
                   <img 
                     src={logo.image} 
                     alt={logo.name} 
-                    className="max-h-10 md:max-h-12 max-w-[100px] md:max-w-[120px] object-contain"
+                    className="max-h-8 md:max-h-9 max-w-[80px] md:max-w-[100px] object-contain"
                   />
                 </a>
               ) : (
                 <img 
                   src={logo.image} 
                   alt={logo.name} 
-                  className="max-h-10 md:max-h-12 max-w-[100px] md:max-w-[120px] object-contain"
+                  className="max-h-8 md:max-h-9 max-w-[80px] md:max-w-[100px] object-contain"
                 />
               )}
             </Card>
