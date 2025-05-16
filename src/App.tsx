@@ -15,8 +15,10 @@ import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { PageTransition } from "./components/animation/PageTransition";
 
-// Root pages - Import directly instead of using dynamic imports
-import Beranda from "./pages/Beranda";
+// Import directly instead of using dynamic imports for core pages
+import Home from "./pages/Home";
+import Services from "./pages/Services";
+import ServiceDetails from "./pages/ServiceDetails";
 import Tentang from "./pages/Tentang";
 import Portofolio from "./pages/Portofolio";
 import Blog from "./pages/Blog";
@@ -62,7 +64,9 @@ function App() {
                   <div className="pt-16">
                     <PageTransition>
                       <Routes>
-                        <Route path="/" element={<Beranda />} />
+                        <Route path="/" element={<Home />} />
+                        <Route path="/services" element={<Services />} />
+                        <Route path="/services/:id" element={<ServiceDetails />} />
                         <Route path="/tentang" element={<Tentang />} />
                         <Route path="/portofolio" element={<Portofolio />} />
                         <Route path="/portofolio/:id" element={<PortfolioDetail />} />

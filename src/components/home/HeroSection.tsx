@@ -1,255 +1,134 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Button } from '@/components/ui/button';
+import { Play, ChevronRight, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import { ChevronRight, ArrowRight } from 'lucide-react';
-import { WebsiteData } from '@/stores/websiteDataStore';
-import { useWebsiteDataStore } from '@/stores/websiteDataStore';
-import { motion, useAnimation } from 'framer-motion';
+import { motion } from 'framer-motion';
 
 interface HeroSectionProps {
-  title?: string;
-  subtitle?: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+  rating?: number;
+  year?: string;
   ctaText?: string;
   ctaLink?: string;
-  generalInfo?: WebsiteData['generalInfo'];
-  hero?: WebsiteData['homeContent']['hero'];
 }
 
-const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: HeroSectionProps) => {
-  const websiteStore = useWebsiteDataStore();
-  const controls = useAnimation();
-  
-  const storeGeneralInfo = generalInfo || websiteStore.generalInfo;
-  const storeHero = hero || websiteStore.homeContent.hero;
-  
-  const displayTitle = title || storeHero.title;
-  const displaySubtitle = subtitle || storeHero.subtitle;
-  const displayCtaText = ctaText || storeHero.ctaText;
-  const displayCtaLink = ctaLink || storeHero.ctaLink;
-
-  useEffect(() => {
-    controls.start({
-      y: [0, -15, 0],
-      transition: {
-        duration: 4,
-        repeat: Infinity,
-        repeatType: "reverse",
-        ease: "easeInOut"
-      }
-    });
-  }, [controls]);
-
-  const fadeIn = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
-      y: 0,
-      transition: { duration: 0.6 }
-    }
-  };
-
-  const staggerChildren = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.3
-      }
-    }
-  };
-
-  const CyberGrid = () => (
-    <div className="absolute inset-0 overflow-hidden">
-      <div className="absolute inset-0 bg-grid-pattern opacity-5"></div>
-      
-      {[...Array(10)].map((_, i) => (
-        <motion.div 
-          key={`h-line-${i}`}
-          className="absolute h-[1px] bg-neon-cyan/20 w-full left-0"
-          style={{ top: `${i * 10}%` }}
-          animate={{ 
-            opacity: [0.1, 0.3, 0.1],
-            scaleX: [1, 1.05, 1],
-            boxShadow: [
-              "0 0 2px rgba(0, 216, 232, 0.2)",
-              "0 0 8px rgba(0, 216, 232, 0.6)",
-              "0 0 2px rgba(0, 216, 232, 0.2)"
-            ]
-          }}
-          transition={{ 
-            duration: 3 + i,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "easeInOut",
-            delay: i * 0.2
-          }}
-        />
-      ))}
-      
-      {[...Array(10)].map((_, i) => (
-        <motion.div 
-          key={`v-line-${i}`}
-          className="absolute w-[1px] bg-neon-cyan/20 h-full top-0"
-          style={{ left: `${i * 10}%` }}
-          animate={{ 
-            opacity: [0.1, 0.3, 0.1],
-            scaleY: [1, 1.05, 1],
-            boxShadow: [
-              "0 0 2px rgba(11, 188, 209, 0.2)",
-              "0 0 8px rgba(11, 188, 209, 0.6)",
-              "0 0 2px rgba(11, 188, 209, 0.2)"
-            ]
-          }}
-          transition={{ 
-            duration: 4 + i,
-            repeat: Infinity,
-            repeatType: "reverse",
-            ease: "easeInOut",
-            delay: i * 0.3
-          }}
-        />
-      ))}
-    </div>
-  );
-
-  const DataCircuit = () => (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      {[...Array(15)].map((_, i) => (
-        <motion.div 
-          key={`data-point-${i}`}
-          className="absolute h-1 w-1 rounded-full bg-neon-cyan"
-          style={{ 
-            left: `${Math.random() * 100}%`, 
-            top: `${Math.random() * 100}%`,
-            opacity: 0
-          }}
-          animate={{ 
-            opacity: [0, 1, 0],
-            scale: [0.5, 1.5, 0.5],
-            boxShadow: [
-              "0 0 0px rgba(0, 216, 232, 0)",
-              "0 0 10px rgba(0, 216, 232, 0.8)",
-              "0 0 0px rgba(0, 216, 232, 0)"
-            ]
-          }}
-          transition={{ 
-            duration: 2 + Math.random() * 3,
-            repeat: Infinity,
-            delay: i * 0.6
-          }}
-        />
-      ))}
-      
-      {[...Array(5)].map((_, i) => {
-        const startX = Math.random() * 100;
-        const startY = Math.random() * 100;
-        const endX = Math.random() * 100;
-        const endY = Math.random() * 100;
-        
-        return (
-          <motion.div 
-            key={`data-line-${i}`}
-            className="absolute h-[2px] bg-gradient-to-r from-neon-cyan/0 via-neon-cyan to-neon-cyan/0"
-            style={{ 
-              top: `${startY}%`,
-              left: `${startX}%`,
-              width: `${Math.sqrt(Math.pow(endX - startX, 2) + Math.pow(endY - startY, 2))}%`,
-              transform: `rotate(${Math.atan2(endY - startY, endX - startX) * (180 / Math.PI)}deg)`,
-              transformOrigin: 'left center',
-              opacity: 0
-            }}
-            animate={{ 
-              opacity: [0, 0.7, 0],
-              scaleX: [0, 1, 0]
-            }}
-            transition={{ 
-              duration: 4,
-              repeat: Infinity,
-              delay: i * 2
-            }}
-          />
-        );
-      })}
-    </div>
-  );
+const HeroSection = ({
+  title,
+  subtitle,
+  description,
+  image,
+  rating = 4.5,
+  year = "2023",
+  ctaText = "Explore Services",
+  ctaLink = "/services"
+}: HeroSectionProps) => {
+  const formattedRating = rating.toFixed(1);
 
   return (
-    <section className="relative bg-black text-white overflow-hidden pt-12 pb-32">
-      {/* GIF Background */}
-      <div className="absolute inset-0 w-full h-full z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-black/90 to-dark-400/95 z-10"></div>
-        <img 
-          src="https://i.gifer.com/DMV.gif" 
-          alt="Cyberpunk Background" 
-          className="w-full h-full object-cover object-center"
-        />
+    <div className="w-full relative overflow-hidden min-h-[80vh] rounded-xl mb-16">
+      {/* Background Image with Gradient Overlay */}
+      <div className="absolute inset-0 z-0">
+        <img src={image} alt="DigiBooster Hero" className="w-full h-full object-cover object-center" />
+        <div className="absolute inset-0 hero-gradient"></div>
       </div>
       
-      <CyberGrid />
-      <DataCircuit />
-      
-      <div className="absolute top-20 right-0 w-64 h-64 bg-neon-cyan rounded-full filter blur-[100px] opacity-10 animate-pulse z-0"></div>
-      <div className="absolute bottom-20 left-0 w-80 h-80 bg-neon-cyan rounded-full filter blur-[100px] opacity-10 animate-pulse z-0"></div>
-      
-      <div className="container mx-auto px-4 relative z-10 pt-6 md:pt-12">
-        <motion.div 
-          className="max-w-4xl mx-auto"
-          initial="hidden"
-          animate="visible"
-          variants={staggerChildren}
-        >
-          <motion.div className="mb-6 md:mb-8" variants={fadeIn}>
-            <span className="inline-block px-4 py-1 rounded-full bg-dark-300/80 backdrop-blur-sm text-neon-cyan font-medium text-sm mb-3 border border-neon-cyan/30 neon-border">
-              {storeGeneralInfo.description}
+      {/* Content Container */}
+      <div className="container mx-auto px-4 relative z-10 h-full flex flex-col justify-center py-20">
+        <div className="max-w-3xl">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.2 }}
+            className="mb-4"
+          >
+            <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-white bg-sky-500/80 rounded-full">
+              <span className="animate-pulse mr-2 h-2 w-2 rounded-full bg-white"></span>
+              {subtitle}
             </span>
           </motion.div>
           
-          <motion.h1 
-            className="text-4xl md:text-6xl lg:text-7xl font-bold mb-6 leading-tight"
-            variants={fadeIn}
+          <motion.h1
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4"
           >
-            <span className="block mb-2 text-white">
-              {displayTitle.split('with')[0]}
-            </span>
-            <span className="neon-text bg-gradient-to-r from-neon-cyan to-neon-cyan">
-              with <span className="text-neon-cyan">DigiBooster</span>
-            </span>
+            {title}
           </motion.h1>
           
-          <motion.p 
-            className="text-lg md:text-xl mb-8 text-gray-300 max-w-3xl"
-            variants={fadeIn}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="flex items-center gap-4 mb-4"
           >
-            {displaySubtitle}
+            <div className="flex items-center">
+              {[...Array(5)].map((_, i) => (
+                <svg
+                  key={i}
+                  className={`w-4 h-4 ${i < Math.floor(rating) ? "text-yellow-500" : "text-gray-400"}`}
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                >
+                  <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                </svg>
+              ))}
+              <span className="ml-2 text-white">{formattedRating}</span>
+            </div>
+            
+            <span className="text-gray-400">{year}</span>
+            
+            <span className="px-2 py-1 text-xs rounded-full bg-sky-500/20 border border-sky-500/30 text-sky-300">
+              Premium
+            </span>
+          </motion.div>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
+            className="text-gray-300 mb-8 max-w-2xl"
+          >
+            {description}
           </motion.p>
           
-          <motion.div 
-            className="flex flex-col sm:flex-row gap-4"
-            variants={fadeIn}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1 }}
+            className="flex flex-wrap gap-4"
           >
-            <Link to={displayCtaLink}>
-              <Button size="lg" className="bg-gradient-to-r from-neon-cyan to-neon-cyan hover:from-neon-cyan/90 hover:to-neon-cyan/90 text-dark-900 font-medium border-none shadow-lg shadow-neon-cyan/20 group">
-                {displayCtaText}
-                <ChevronRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+            <Link to={ctaLink}>
+              <Button size="lg" className="bg-sky-500 hover:bg-sky-600 rounded-full text-white">
+                <Play className="mr-2 h-5 w-5" />
+                {ctaText}
               </Button>
             </Link>
-            <Link to="/register">
-              <Button size="lg" variant="outline" className="border-neon-cyan/40 bg-dark-300/50 backdrop-blur-sm text-white hover:bg-dark-300 hover:border-neon-cyan/80 group transition-all duration-300">
-                Mulai Sekarang
-                <ArrowRight className="h-4 w-4 ml-1 group-hover:translate-x-1 transition-transform" />
+            
+            <Link to="/about">
+              <Button size="lg" variant="outline" className="rounded-full border-gray-600 text-white hover:bg-sky-500/20 hover:border-sky-500">
+                <Info className="mr-2 h-5 w-5" />
+                Learn More
               </Button>
             </Link>
           </motion.div>
-        </motion.div>
+        </div>
       </div>
       
-      <div className="absolute bottom-0 left-0 right-0">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320" className="w-full">
-          <path fill="#0c1425" fillOpacity="1" d="M0,288L48,272C96,256,192,224,288,213.3C384,203,480,213,576,229.3C672,245,768,267,864,266.7C960,267,1056,245,1152,229.3C1248,213,1344,203,1392,197.3L1440,192L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
-        </svg>
+      {/* Bottom indicator */}
+      <div className="absolute bottom-0 left-0 w-full">
+        <motion.div 
+          className="h-1 bg-gradient-to-r from-sky-500 via-sky-400 to-sky-500"
+          initial={{ width: "0%" }}
+          animate={{ width: "100%" }}
+          transition={{ duration: 1, delay: 1.2 }}
+        />
       </div>
-    </section>
+    </div>
   );
 };
 

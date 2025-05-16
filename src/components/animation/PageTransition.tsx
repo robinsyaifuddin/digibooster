@@ -31,7 +31,7 @@ export const PageTransition = ({
         duration: 0.4,
         ease: "easeInOut"
       }} 
-      className="bg-black"
+      className="bg-black min-h-screen"
     >
       {children}
     </motion.div>
