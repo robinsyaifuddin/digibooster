@@ -8,7 +8,16 @@ import {
   Camera, 
   Share2 
 } from 'lucide-react';
-import { ServiceProps } from '@/components/jasa-digital/ServiceCard';
+
+export interface ServiceProps {
+  icon: React.ReactNode;
+  title: string;
+  description: string;
+  items: string[];
+  slug?: string;
+  image?: string;
+  category?: string;
+}
 
 export const jasaDigitalServices: ServiceProps[] = [
   {
@@ -22,7 +31,10 @@ export const jasaDigitalServices: ServiceProps[] = [
       'Sistem Informasi & Database',
       'Integrasi API',
       'Website Maintenance'
-    ]
+    ],
+    slug: 'website-dan-aplikasi',
+    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    category: 'Development'
   },
   {
     icon: <PenTool className="h-6 w-6 text-red-500" />,
@@ -35,7 +47,10 @@ export const jasaDigitalServices: ServiceProps[] = [
       'Desain Kemasan Produk',
       'Infografis & Presentasi',
       'Desain Marketing Materials'
-    ]
+    ],
+    slug: 'desain-grafis',
+    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    category: 'Design'
   },
   {
     icon: <Megaphone className="h-6 w-6 text-red-500" />,
@@ -48,7 +63,10 @@ export const jasaDigitalServices: ServiceProps[] = [
       'Email Marketing',
       'Content Marketing',
       'Influencer Marketing'
-    ]
+    ],
+    slug: 'digital-marketing',
+    image: 'https://images.unsplash.com/photo-1533750516457-a7f992034fec?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    category: 'Marketing'
   },
   {
     icon: <FileText className="h-6 w-6 text-red-500" />,
@@ -61,7 +79,10 @@ export const jasaDigitalServices: ServiceProps[] = [
       'Content Optimization (SEO)',
       'Newsletter Creation',
       'Product Description'
-    ]
+    ],
+    slug: 'manajemen-konten',
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    category: 'Content'
   },
   {
     icon: <Camera className="h-6 w-6 text-red-500" />,
@@ -74,7 +95,10 @@ export const jasaDigitalServices: ServiceProps[] = [
       'Motion Graphics',
       'Social Media Video',
       'Company Profile Video'
-    ]
+    ],
+    slug: 'foto-dan-videografi',
+    image: 'https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    category: 'Video'
   },
   {
     icon: <Share2 className="h-6 w-6 text-red-500" />,
@@ -87,7 +111,10 @@ export const jasaDigitalServices: ServiceProps[] = [
       'Performance Analytics',
       'Social Media Ads',
       'Growth Strategy'
-    ]
+    ],
+    slug: 'manajemen-sosial-media',
+    image: 'https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    category: 'Marketing'
   },
   {
     icon: <Code className="h-6 w-6 text-red-500" />,
@@ -100,7 +127,10 @@ export const jasaDigitalServices: ServiceProps[] = [
       'Custom API Development',
       'Webhook Setup',
       'API Maintenance'
-    ]
+    ],
+    slug: 'api-integration',
+    image: 'https://images.unsplash.com/photo-1517292987719-0369a794ec0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    category: 'Development'
   },
   {
     icon: <PenTool className="h-6 w-6 text-red-500" />,
@@ -113,7 +143,10 @@ export const jasaDigitalServices: ServiceProps[] = [
       'Usability Testing',
       'Interaction Design',
       'Design Implementation'
-    ]
+    ],
+    slug: 'ui-ux-design',
+    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    category: 'Design'
   },
   {
     icon: <Megaphone className="h-6 w-6 text-red-500" />,
@@ -126,7 +159,10 @@ export const jasaDigitalServices: ServiceProps[] = [
       'Link Building',
       'Local SEO',
       'SEO Audit & Reporting'
-    ]
+    ],
+    slug: 'seo-management',
+    image: 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    category: 'SEO'
   },
   {
     icon: <FileText className="h-6 w-6 text-red-500" />,
@@ -139,6 +175,9 @@ export const jasaDigitalServices: ServiceProps[] = [
       'Content Performance Analysis',
       'Content Trend Research',
       'Content Optimization'
-    ]
+    ],
+    slug: 'content-strategy',
+    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+    category: 'Content'
   }
 ];

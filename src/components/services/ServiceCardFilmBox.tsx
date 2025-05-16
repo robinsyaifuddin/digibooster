@@ -13,6 +13,7 @@ interface ServiceCardFilmBoxProps {
   year?: string;
   category?: string;
   link?: string;
+  slug?: string;
 }
 
 const ServiceCardFilmBox: React.FC<ServiceCardFilmBoxProps> = ({
@@ -23,7 +24,8 @@ const ServiceCardFilmBox: React.FC<ServiceCardFilmBoxProps> = ({
   rating = 4.7,
   year = '2023',
   category = 'Premium',
-  link = '#'
+  link = '#',
+  slug
 }) => {
   return (
     <motion.div
