@@ -6,6 +6,7 @@ import { ServiceItem } from '@/types/websiteTypes';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import { motion } from 'framer-motion';
+import { Button } from '@/components/ui/button';
 
 interface ServiceCardProps {
   service: ServiceItem;
@@ -76,18 +77,18 @@ const ServiceCard = ({
       whileHover={{ y: -5 }}
       onClick={onClick}
       style={{ 
-        minHeight: '320px',
-        maxWidth: isActive ? '100%' : '280px',
+        minHeight: '280px',
+        maxWidth: isActive ? '100%' : '240px',
         backdropFilter: 'blur(10px)'
       }}
     >
       {/* Card content */}
-      <div className="p-6 z-10 relative h-full flex flex-col">
-        <div className="mb-5 p-4 rounded-xl bg-gradient-to-br from-primary/20 to-dark-300/50 inline-block border border-primary/20 group-hover:border-primary/40 transition-all duration-300">
+      <div className="p-4 z-10 relative h-full flex flex-col">
+        <div className="mb-3 p-3 rounded-xl bg-gradient-to-br from-primary/20 to-dark-300/50 inline-block border border-primary/20 group-hover:border-primary/40 transition-all duration-300">
           {getIconComponent(service.icon)}
         </div>
         
-        <h3 className="text-xl font-bold mb-4 text-white group-hover:text-primary transition-colors">
+        <h3 className="text-lg font-bold mb-3 text-white group-hover:text-primary transition-colors">
           {service.title}
         </h3>
         
@@ -95,11 +96,11 @@ const ServiceCard = ({
           "transition-all duration-300",
           isActive ? "opacity-100" : "opacity-80 line-clamp-3"
         )}>
-          <p className="text-gray-300 mb-4 group-hover:text-gray-200 transition-colors">
+          <p className="text-sm text-gray-300 mb-4 group-hover:text-gray-200 transition-colors">
             {service.description}
           </p>
           
-          {isActive && (
+          {isActive ? (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
@@ -114,6 +115,19 @@ const ServiceCard = ({
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Link>
             </motion.div>
+          ) : (
+            <div className="mt-auto pt-2">
+              <Link to={service.link}>
+                <Button 
+                  variant="ghost" 
+                  size="sm" 
+                  className="text-primary hover:text-white hover:bg-primary/20 p-0 h-auto text-xs font-medium flex items-center"
+                >
+                  {t('learn-more')}
+                  <ArrowRight className="ml-1 h-3 w-3" />
+                </Button>
+              </Link>
+            </div>
           )}
         </div>
       </div>

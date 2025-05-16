@@ -7,6 +7,7 @@ import AnimatedSection from '@/components/animation/AnimatedSection';
 import { motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
 import {
   Carousel,
   CarouselContent,
@@ -72,29 +73,48 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
             </motion.div>
           </div>
         ) : (
-          <Carousel
-            opts={{
-              align: "center",
-              loop: true,
-            }}
-            className="w-full"
-          >
-            <CarouselContent className="py-8 px-4">
-              {services.map((service, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-6">
-                  <div className="h-full">
-                    <ServiceCard 
-                      service={service} 
-                      index={index} 
-                      onClick={() => handleServiceClick(index)}
-                    />
-                  </div>
-                </CarouselItem>
-              ))}
-            </CarouselContent>
-            <CarouselPrevious className="left-4 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
-            <CarouselNext className="right-4 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
-          </Carousel>
+          <div className="relative">
+            <Carousel
+              opts={{
+                align: "center",
+                loop: true,
+              }}
+              className="w-full"
+            >
+              <CarouselContent className="py-4 px-2">
+                {services.map((service, index) => (
+                  <CarouselItem key={index} className="md:basis-1/3 lg:basis-1/4 pl-2 pr-2">
+                    <div className="h-full">
+                      <ServiceCard 
+                        service={service} 
+                        index={index} 
+                        onClick={() => handleServiceClick(index)}
+                      />
+                    </div>
+                  </CarouselItem>
+                ))}
+              </CarouselContent>
+            </Carousel>
+            
+            {/* Navigation buttons positioned at the bottom */}
+            <div className="flex justify-center items-center mt-6 gap-4">
+              <CarouselPrevious className="static translate-y-0 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
+              <CarouselNext className="static translate-y-0 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
+            </div>
+
+            {/* CTA Button */}
+            <div className="text-center mt-10">
+              <Link to="/program/jasa-digital">
+                <Button 
+                  variant="outline" 
+                  className="bg-dark-300/80 border-primary/40 hover:bg-primary/20 hover:border-primary/60 group backdrop-blur-sm"
+                >
+                  <span>{t('explore-all-services')}</span>
+                  <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </div>
+          </div>
         )}
       </div>
     </section>
