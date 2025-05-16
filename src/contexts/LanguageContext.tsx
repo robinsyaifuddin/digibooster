@@ -66,7 +66,16 @@ const translations = {
     
     // Partners Section
     'trusted-partners': 'Dipercaya oleh Brand Terkemuka',
-    'partners-description': 'Berkolaborasi dengan berbagai perusahaan dan organisasi untuk mengembangkan solusi digital.'
+    'partners-description': 'Berkolaborasi dengan berbagai perusahaan dan organisasi untuk mengembangkan solusi digital.',
+    
+    // Portfolio Section
+    'popular-portfolio': 'Portfolio Terpopuler Minggu Ini',
+    'view-all-portfolio': 'Lihat Semua Portfolio',
+    'view-details': 'Lihat Detail',
+    'by': 'oleh',
+    
+    // Order Form
+    'order-now': 'Pesan Sekarang'
   },
   en: {
     // Navbar
@@ -121,25 +130,29 @@ const translations = {
     
     // Partners Section
     'trusted-partners': 'Trusted by Leading Brands',
-    'partners-description': 'Collaborating with various companies and organizations to develop digital solutions.'
+    'partners-description': 'Collaborating with various companies and organizations to develop digital solutions.',
+    
+    // Portfolio Section
+    'popular-portfolio': 'Popular Portfolio This Week',
+    'view-all-portfolio': 'View All Portfolio',
+    'view-details': 'View Details',
+    'by': 'by',
+    
+    // Order Form
+    'order-now': 'Order Now'
   }
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>('id');
+  const [language, setLanguage] = useState<Language>('id');  // Changed default language to 'id'
 
   // Initialize language from localStorage if available
   useEffect(() => {
     const savedLanguage = localStorage.getItem('language') as Language | null;
     if (savedLanguage && (savedLanguage === 'id' || savedLanguage === 'en')) {
       setLanguage(savedLanguage);
-    } else {
-      // If no language is set, try to detect from browser
-      const browserLanguage = navigator.language.split('-')[0];
-      if (browserLanguage === 'en') {
-        setLanguage('en');
-      }
     }
+    // Removed browser language detection since we want to default to Indonesian
   }, []);
 
   // Update language in localStorage when it changes

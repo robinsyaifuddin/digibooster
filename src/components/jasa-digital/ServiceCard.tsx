@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { SendIcon } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 export interface ServiceProps {
   icon: React.ReactNode;
@@ -15,6 +16,7 @@ export interface ServiceProps {
 
 const ServiceCard = ({ icon, title, description, items }: ServiceProps) => {
   const navigate = useNavigate();
+  const { t } = useLanguage();
   
   const handleOrder = () => {
     // Navigate to order form with the selected service as a URL parameter
@@ -80,7 +82,7 @@ const ServiceCard = ({ icon, title, description, items }: ServiceProps) => {
         onClick={handleOrder}
         className="w-full mt-auto bg-primary hover:bg-primary/90 text-dark font-medium group"
       >
-        Pesan Sekarang
+        {t('order-now')}
         <SendIcon className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
       </Button>
       

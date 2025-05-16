@@ -16,6 +16,7 @@ import type { PortfolioItemType } from '@/types/portfolioTypes';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
+import { useLanguage } from '@/contexts/LanguageContext';
 
 interface PopularPortfolioSectionProps {
   title?: string;
@@ -23,11 +24,11 @@ interface PopularPortfolioSectionProps {
 }
 
 const PopularPortfolioSection = ({ 
-  title = "Portfolio Terpopuler Minggu Ini", 
   portfolioItems 
 }: PopularPortfolioSectionProps) => {
   const [hoveredItem, setHoveredItem] = useState<number | null>(null);
   const isMobile = useIsMobile();
+  const { t } = useLanguage();
   
   const visibleItems = portfolioItems;
   
@@ -58,7 +59,7 @@ const PopularPortfolioSection = ({
             viewport={{ once: true }}
             className="text-center text-3xl md:text-4xl lg:text-5xl font-bold text-white"
           >
-            {title}
+            {t('popular-portfolio')}
           </motion.h2>
           <motion.div 
             initial={{ width: 0 }}
@@ -136,7 +137,7 @@ const PopularPortfolioSection = ({
                             </h3>
                             
                             <p className="text-sm text-white/70 mb-3">
-                              by <span className="text-primary/80">{item.client}</span>
+                              {t('by')} <span className="text-primary/80">{item.client}</span>
                             </p>
                             
                             <div className="max-h-0 overflow-hidden group-hover:max-h-32 transition-all duration-500 ease-in-out">
@@ -160,7 +161,7 @@ const PopularPortfolioSection = ({
                                 size="sm" 
                                 className="group/btn w-full border-primary/40 hover:border-primary hover:bg-primary/10"
                               >
-                                <span>Lihat Detail</span> 
+                                <span>{t('view-details')}</span> 
                                 <CornerDownRight className="w-3 h-3 ml-1 group-hover/btn:translate-x-1 transition-transform" />
                               </Button>
                             </div>
@@ -189,7 +190,7 @@ const PopularPortfolioSection = ({
               variant="outline" 
               className="border-primary/40 hover:border-primary hover:bg-primary/10"
             >
-              Lihat Semua Portfolio
+              {t('view-all-portfolio')}
             </Button>
           </Link>
         </div>
