@@ -3,13 +3,28 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Menu, X, Home, ExternalLink, Briefcase, GraduationCap, ChevronDown, ChevronUp } from "lucide-react";
+import { 
+  Menu, 
+  X, 
+  Home, 
+  ExternalLink, 
+  Briefcase, 
+  GraduationCap, 
+  ChevronDown, 
+  ChevronUp,
+  Book,
+  FolderPortfolio,
+  Info,
+  Search
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useAuth } from "@/contexts/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import LanguageToggle from "./ui/LanguageToggle";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
+import { CommandMenu } from "./ui/CommandMenu";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -19,6 +34,7 @@ const Navbar = () => {
   const { user, isAuthenticated, logout } = useAuth();
   const { t } = useLanguage();
   const { theme } = useTheme();
+  const isMobile = useIsMobile();
 
   const isActive = (path: string) => {
     return location.pathname === path;
@@ -117,27 +133,61 @@ const Navbar = () => {
     }
   };
 
+  // Icon styling for navbar
+  const iconStyle = "h-4 w-4 mr-1.5";
+  const iconClasses = cn(
+    iconStyle,
+    scrolled ? "text-primary" : "group-hover:text-primary transition-colors duration-300"
+  );
+
   const navLinks = [
-    { path: "/", label: "beranda", icon: <Home className="h-4 w-4 mr-1" /> },
+    { 
+      path: "/", 
+      label: "beranda", 
+      icon: <Home className={iconClasses} style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+    },
     { 
       label: "program",
       icon: null,
       isDropdown: true,
       children: [
-        { path: "/program/jasa-digital", label: "jasa-digital", icon: <Briefcase className="h-4 w-4 mr-2" /> },
-        { path: "/program/kelas", label: "shortclass-bootcamp", icon: <GraduationCap className="h-4 w-4 mr-2" /> },
+        { 
+          path: "/program/jasa-digital", 
+          label: "jasa-digital", 
+          icon: <Briefcase className="h-4 w-4 mr-2" style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+        },
+        { 
+          path: "/program/kelas", 
+          label: "shortclass-bootcamp", 
+          icon: <GraduationCap className="h-4 w-4 mr-2" style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+        },
       ]
     },
-    { path: "/blog", label: "blog", icon: null },
-    { path: "/portofolio", label: "portofolio", icon: null },
-    { path: "/tentang", label: "tentang", icon: null },
+    { 
+      path: "/blog", 
+      label: "blog", 
+      icon: <Book className={iconClasses} style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+    },
+    { 
+      path: "/portofolio", 
+      label: "portofolio", 
+      icon: <FolderPortfolio className={iconClasses} style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+    },
+    { 
+      path: "/tentang", 
+      label: "tentang", 
+      icon: <Info className={iconClasses} style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+    },
   ];
   
   return (
     <motion.header 
       className={cn(
         "fixed top-0 left-0 w-full backdrop-blur-lg border-b z-50 transition-all duration-300",
-        "bg-black border-dark-300/50"
+        scrolled 
+          ? "bg-black/90 border-sky-500/20 shadow-lg shadow-sky-500/5" 
+          : "bg-black/70 border-dark-300/50",
+        "after:absolute after:inset-0 after:bg-gradient-to-r after:from-sky-500/10 after:via-transparent after:to-sky-500/10 after:opacity-70 after:z-[-1]"
       )}
       initial="hidden"
       animate="visible"
@@ -167,7 +217,7 @@ const Navbar = () => {
                   <Link 
                     to={item.path} 
                     className={cn(
-                      "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center relative group nav-item-hover", 
+                      "px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center relative group", 
                       isActive(item.path) 
                         ? "text-primary" 
                         : "text-gray-300 hover:text-white"
@@ -177,7 +227,7 @@ const Navbar = () => {
                     {t(item.label)}
                     {isActive(item.path) && (
                       <motion.div 
-                        className="absolute bottom-0 left-0 w-full h-0.5 rounded-full bg-primary"
+                        className="absolute bottom-0 left-0 w-full h-0.5 rounded-full bg-primary shadow-glow"
                         layoutId="underline"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
@@ -237,6 +287,9 @@ const Navbar = () => {
           </nav>
 
           <div className="hidden md:flex items-center space-x-4">
+            {/* Search Command */}
+            <CommandMenu />
+
             {/* Language toggle */}
             <div className="flex items-center space-x-2 mr-2">
               <LanguageToggle />
@@ -281,7 +334,10 @@ const Navbar = () => {
             )}
           </div>
 
-          <div className="flex md:hidden items-center space-x-2">
+          <div className="flex md:hidden items-center space-x-3">
+            {/* Mobile search */}
+            <CommandMenu />
+            
             {/* Mobile language toggle */}
             <LanguageToggle />
 
@@ -341,7 +397,7 @@ const Navbar = () => {
                       className={cn(
                         "flex items-center px-3 py-2.5 rounded-md text-base font-medium",
                         isActive(item.path) 
-                          ? "text-primary bg-dark-300" 
+                          ? "text-primary bg-dark-300 shadow-inner" 
                           : "text-gray-300 hover:text-white hover:bg-dark-300"
                       )}
                       onClick={toggleMobileMenu}
@@ -440,7 +496,7 @@ const Navbar = () => {
                     </Link>
                     <Link
                       to="/register"
-                      className="flex items-center justify-center px-3 py-2.5 rounded-md text-base font-medium text-white transition-all bg-primary hover:bg-primary/90"
+                      className="flex items-center justify-center px-3 py-2.5 rounded-md text-base font-medium text-white transition-all bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
                       onClick={toggleMobileMenu}
                     >
                       {t('daftar')}
