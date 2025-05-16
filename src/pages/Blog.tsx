@@ -24,7 +24,7 @@ const Blog = () => {
     return matchesSearch && matchesCategory;
   });
 
-  // Categories
+  // Categories - updated to match the BlogCategory type
   const categories: BlogCategory[] = ['all', 'technology', 'design', 'business', 'marketing'];
 
   return (

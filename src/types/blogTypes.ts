@@ -42,4 +42,4 @@ export interface Reply {
   likes: number;
 }
 
-export type BlogCategory = 'all' | 'teknologi' | 'pengembangan diri' | 'wirausaha' | 'prestasi' | 'informasi';
+export type BlogCategory = 'all' | 'technology' | 'design' | 'business' | 'marketing' | 'teknologi' | 'pengembangan diri' | 'wirausaha' | 'prestasi' | 'informasi';
