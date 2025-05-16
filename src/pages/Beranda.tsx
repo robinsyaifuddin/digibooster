@@ -13,6 +13,7 @@ import NewsCard from '@/components/home/NewsCard';
 import PartnerCard from '@/components/home/PartnerCard';
 import TestimonialCard from '@/components/home/TestimonialCard';
 import FeaturedPortfolioCard from '@/components/home/FeaturedPortfolioCard';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 // Featured service data
 const featuredService = {
@@ -121,6 +122,7 @@ const Beranda = () => {
   const { t } = useLanguage();
   const { homeContent, generalInfo } = defaultWebsiteData;
   const companyName = generalInfo.title;
+  const isMobile = useIsMobile();
 
   // DigiBooster specific digital services with proper links
   const digiBoosterServices: ServiceItem[] = [
@@ -182,50 +184,50 @@ const Beranda = () => {
             <div className="w-full lg:w-1/2">
               <span className="text-sky-400 font-medium mb-3 inline-block">DIGIBOOSTER INDONESIA</span>
               
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4">
+              <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4 leading-tight">
                 Layanan Jasa Digital Terbaik
               </h1>
               
-              <div className="flex items-center mb-4">
-                <div className="flex items-center mr-4">
+              <div className="flex flex-wrap items-center mb-4 gap-2">
+                <div className="flex items-center mr-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star 
                       key={star} 
-                      size={16} 
+                      size={isMobile ? 14 : 16} 
                       className={star <= 4.5 ? "text-yellow-400 fill-yellow-400" : "text-gray-400"} 
                     />
                   ))}
-                  <span className="ml-2 text-white">4.5</span>
+                  <span className="ml-2 text-white text-sm md:text-base">4.5</span>
                 </div>
-                <span className="text-gray-400">•</span>
-                <span className="mx-3 text-white">2023</span>
+                <span className="text-gray-400 hidden sm:inline-block">•</span>
+                <span className="text-white text-sm md:text-base">2023</span>
                 <span className="bg-sky-500/20 text-sky-400 text-xs py-1 px-2 rounded">Premium</span>
               </div>
               
-              <p className="text-gray-300 mb-6 max-w-xl">
+              <p className="text-gray-300 mb-6 max-w-xl text-sm md:text-base">
                 Percepatan Digitalisasi Indonesia melalui solusi digital komprehensif 
                 dan profesional untuk bisnis Anda. DigiBooster hadir sebagai partner 
                 digital terpercaya untuk pertumbuhan bisnis Anda.
               </p>
               
               <div className="flex flex-wrap gap-4">
-                <Button asChild className="bg-sky-500 hover:bg-sky-600 text-white rounded-full">
+                <Button asChild className="bg-sky-500 hover:bg-sky-600 text-white rounded-full text-xs md:text-sm">
                   <Link to="/kontak">
-                    <Play size={18} className="mr-1" /> Konsultasi Sekarang
+                    <Play size={isMobile ? 14 : 18} className="mr-1" /> Konsultasi Sekarang
                   </Link>
                 </Button>
                 
-                <Button asChild variant="outline" className="rounded-full border-gray-700 hover:bg-sky-500/20 hover:border-sky-500">
+                <Button asChild variant="outline" className="rounded-full border-gray-700 hover:bg-sky-500/20 hover:border-sky-500 text-xs md:text-sm">
                   <Link to="/program/jasa-digital">
-                    <Plus size={18} className="mr-1" /> Lihat Layanan
+                    <Plus size={isMobile ? 14 : 18} className="mr-1" /> Lihat Layanan
                   </Link>
                 </Button>
               </div>
             </div>
             
-            <div className="w-full lg:w-1/2 relative">
+            <div className="w-full lg:w-1/2 relative mt-8 lg:mt-0">
               {/* Main featured image */}
-              <div className="relative aspect-[3/4] md:aspect-square rounded-2xl overflow-hidden">
+              <div className="relative aspect-[3/4] sm:aspect-video md:aspect-square rounded-2xl overflow-hidden">
                 <img 
                   src={featuredService.image} 
                   alt="Digital Services" 
@@ -233,11 +235,11 @@ const Beranda = () => {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                 
-                <div className="absolute bottom-0 left-0 w-full p-6">
-                  <h3 className="text-xl font-bold mb-1">{featuredService.title}</h3>
-                  <div className="flex items-center text-sm text-gray-300">
+                <div className="absolute bottom-0 left-0 w-full p-4 md:p-6">
+                  <h3 className="text-base md:text-xl font-bold mb-1">{featuredService.title}</h3>
+                  <div className="flex items-center text-xs md:text-sm text-gray-300">
                     <div className="flex items-center mr-3">
-                      <Star size={14} className="text-yellow-400 fill-yellow-400 mr-1" />
+                      <Star size={isMobile ? 12 : 14} className="text-yellow-400 fill-yellow-400 mr-1" />
                       <span>{featuredService.rating}</span>
                     </div>
                     <span>{featuredService.year}</span>
@@ -252,10 +254,10 @@ const Beranda = () => {
                   whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                             w-16 h-16 flex items-center justify-center rounded-full 
+                             w-12 h-12 md:w-16 md:h-16 flex items-center justify-center rounded-full 
                              bg-sky-500/80 text-white hover:bg-sky-600 transition-colors"
                 >
-                  <Play size={24} className="ml-1" />
+                  <Play size={isMobile ? 20 : 24} className="ml-1" />
                 </motion.button>
               </div>
               
@@ -265,7 +267,7 @@ const Beranda = () => {
                   <motion.div 
                     key={index}
                     whileHover={{ scale: 1.05 }}
-                    className="w-24 h-16 rounded-lg overflow-hidden bg-gray-800 border border-gray-700"
+                    className="w-16 md:w-24 h-12 md:h-16 rounded-lg overflow-hidden bg-gray-800 border border-gray-700"
                   >
                     <img 
                       src={`https://images.unsplash.com/photo-${1550745165 + index * 100}?auto=format&fit=crop&w=300&q=60`}
@@ -282,7 +284,7 @@ const Beranda = () => {
           <div className="flex justify-center gap-2 mt-10">
             {[1, 2, 3].map(dot => (
               <button 
-                key={dot} 
+                key={dot.toString()} 
                 className={`w-2 h-2 rounded-full ${dot === 1 ? 'bg-sky-400' : 'bg-gray-600'}`}
                 aria-label={`Go to slide ${dot}`}
               />
@@ -292,19 +294,19 @@ const Beranda = () => {
       </section>
       
       {/* Latest News Section */}
-      <section className="py-16 bg-black border-t border-gray-800">
+      <section className="py-10 md:py-16 bg-black border-t border-gray-800">
         <div className="container mx-auto px-4">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="bg-sky-500/20 p-3 rounded-full">
-              <Newspaper size={24} className="text-sky-400" />
+          <div className="flex items-center gap-3 mb-6 md:mb-8">
+            <div className="bg-sky-500/20 p-2 md:p-3 rounded-full">
+              <Newspaper size={isMobile ? 18 : 24} className="text-sky-400" />
             </div>
-            <h2 className="text-3xl font-bold">Berita Terbaru</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">Berita Terbaru</h2>
           </div>
           
           <CardSlider
             title=""
-            slidesPerView={3}
-            cardClassName="md:basis-1/3 lg:basis-1/4"
+            slidesPerView={isMobile ? 1 : 3}
+            cardClassName={isMobile ? "md:basis-1/2" : "md:basis-1/3 lg:basis-1/4"}
           >
             {latestNews.map((news) => (
               <NewsCard
@@ -320,10 +322,10 @@ const Beranda = () => {
             ))}
           </CardSlider>
           
-          <div className="text-center mt-10">
-            <Button asChild variant="outline" className="rounded-full border-gray-700 hover:bg-sky-500/20 hover:border-sky-500">
+          <div className="text-center mt-8 md:mt-10">
+            <Button asChild variant="outline" className="rounded-full border-gray-700 hover:bg-sky-500/20 hover:border-sky-500 text-xs md:text-sm">
               <Link to="/berita">
-                Lihat Semua Berita <ChevronRight size={16} className="ml-1" />
+                Lihat Semua Berita <ChevronRight size={isMobile ? 14 : 16} className="ml-1" />
               </Link>
             </Button>
           </div>
@@ -331,20 +333,20 @@ const Beranda = () => {
       </section>
       
       {/* Partners Section */}
-      <section className="py-16 bg-black/80 border-t border-gray-800/50">
+      <section className="py-10 md:py-16 bg-black/80 border-t border-gray-800/50">
         <div className="container mx-auto px-4">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="bg-sky-500/20 p-3 rounded-full">
-              <Users2 size={24} className="text-sky-400" />
+          <div className="flex items-center gap-3 mb-6 md:mb-8">
+            <div className="bg-sky-500/20 p-2 md:p-3 rounded-full">
+              <Users2 size={isMobile ? 18 : 24} className="text-sky-400" />
             </div>
-            <h2 className="text-3xl font-bold">Mitra Kami</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">Mitra Kami</h2>
           </div>
           
-          <p className="text-gray-400 max-w-2xl mb-10">
+          <p className="text-gray-400 max-w-2xl mb-6 md:mb-10 text-sm md:text-base">
             DigiBooster berkolaborasi dengan berbagai perusahaan teknologi terkemuka untuk menyediakan solusi digital terbaik bagi klien kami.
           </p>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3 md:gap-4">
             {partners.map((partner) => (
               <PartnerCard
                 key={partner.id}
@@ -359,19 +361,19 @@ const Beranda = () => {
       </section>
       
       {/* Portfolio Showcase */}
-      <section className="py-16 bg-black border-t border-gray-800/50">
+      <section className="py-10 md:py-16 bg-black border-t border-gray-800/50">
         <div className="container mx-auto px-4">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="bg-sky-500/20 p-3 rounded-full">
-              <Image size={24} className="text-sky-400" />
+          <div className="flex items-center gap-3 mb-6 md:mb-8">
+            <div className="bg-sky-500/20 p-2 md:p-3 rounded-full">
+              <Image size={isMobile ? 18 : 24} className="text-sky-400" />
             </div>
-            <h2 className="text-3xl font-bold">Portofolio Unggulan</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">Portofolio Unggulan</h2>
           </div>
           
           <CardSlider
             title=""
-            slidesPerView={3}
-            cardClassName="md:basis-1/3 lg:basis-1/3"
+            slidesPerView={isMobile ? 1 : 3}
+            cardClassName={isMobile ? "md:basis-1/2" : "md:basis-1/3"}
           >
             {featuredPortfolio.map((item) => (
               <FeaturedPortfolioCard
@@ -386,10 +388,10 @@ const Beranda = () => {
             ))}
           </CardSlider>
           
-          <div className="text-center mt-10">
-            <Button asChild variant="outline" className="rounded-full border-gray-700 hover:bg-sky-500/20 hover:border-sky-500">
+          <div className="text-center mt-8 md:mt-10">
+            <Button asChild variant="outline" className="rounded-full border-gray-700 hover:bg-sky-500/20 hover:border-sky-500 text-xs md:text-sm">
               <Link to="/portofolio">
-                Lihat Semua Portofolio <ChevronRight size={16} className="ml-1" />
+                Lihat Semua Portofolio <ChevronRight size={isMobile ? 14 : 16} className="ml-1" />
               </Link>
             </Button>
           </div>
@@ -397,23 +399,23 @@ const Beranda = () => {
       </section>
       
       {/* Testimonials Section */}
-      <section className="py-16 bg-black/80 border-t border-gray-800/50">
+      <section className="py-10 md:py-16 bg-black/80 border-t border-gray-800/50">
         <div className="container mx-auto px-4">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="bg-sky-500/20 p-3 rounded-full">
-              <MessageSquare size={24} className="text-sky-400" />
+          <div className="flex items-center gap-3 mb-6 md:mb-8">
+            <div className="bg-sky-500/20 p-2 md:p-3 rounded-full">
+              <MessageSquare size={isMobile ? 18 : 24} className="text-sky-400" />
             </div>
-            <h2 className="text-3xl font-bold">Testimoni Klien</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">Testimoni Klien</h2>
           </div>
           
-          <p className="text-gray-400 max-w-2xl mb-10">
+          <p className="text-gray-400 max-w-2xl mb-6 md:mb-10 text-sm md:text-base">
             Dengarkan pengalaman klien kami yang telah merasakan dampak positif dari layanan digital DigiBooster.
           </p>
           
           <CardSlider
             title=""
-            slidesPerView={3}
-            cardClassName="md:basis-1/3 lg:basis-1/3"
+            slidesPerView={isMobile ? 1 : 3}
+            cardClassName={isMobile ? "md:basis-1/2" : "md:basis-1/3"}
           >
             {testimonials.map((testimonial) => (
               <TestimonialCard
@@ -431,34 +433,34 @@ const Beranda = () => {
       </section>
       
       {/* Recommendations Section */}
-      <section className="py-16 bg-black">
+      <section className="py-10 md:py-16 bg-black">
         <div className="container mx-auto px-4">
-          <div className="flex justify-between items-center mb-8">
-            <h2 className="text-3xl font-bold">Rekomendasi Layanan</h2>
+          <div className="flex justify-between items-center mb-6 md:mb-8">
+            <h2 className="text-2xl md:text-3xl font-bold">Rekomendasi Layanan</h2>
             
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="rounded-full border-gray-700 hover:bg-gray-800 hidden md:flex">
+              <Button variant="outline" size="sm" className="rounded-full border-gray-700 hover:bg-gray-800 hidden md:flex text-xs">
                 Semua
               </Button>
-              <Button size="sm" className="rounded-full bg-sky-500 hover:bg-sky-600 hidden md:flex">
+              <Button size="sm" className="rounded-full bg-sky-500 hover:bg-sky-600 hidden md:flex text-xs">
                 Terpopuler
               </Button>
-              <Button variant="outline" size="sm" className="rounded-full border-gray-700 hover:bg-gray-800 hidden md:flex">
+              <Button variant="outline" size="sm" className="rounded-full border-gray-700 hover:bg-gray-800 hidden md:flex text-xs">
                 Terbaru
               </Button>
               
               <div className="flex gap-2 ml-2">
                 <Button size="icon" variant="outline" className="rounded-full border-gray-700 hover:bg-gray-800">
-                  <ChevronLeft size={18} />
+                  <ChevronLeft size={isMobile ? 14 : 18} />
                 </Button>
                 <Button size="icon" variant="outline" className="rounded-full border-gray-700 hover:bg-gray-800">
-                  <ChevronRight size={18} />
+                  <ChevronRight size={isMobile ? 14 : 18} />
                 </Button>
               </div>
             </div>
           </div>
           
-          <div className="film-card-grid">
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
             {popularServices.map((service) => (
               <motion.div
                 key={service.id}
@@ -474,21 +476,21 @@ const Beranda = () => {
                   <div className="filmbox-overlay"></div>
                   
                   <div className="absolute top-2 right-2">
-                    <button className="filmbox-icon-button w-7 h-7">
-                      <Plus size={14} />
+                    <button className="filmbox-icon-button w-6 h-6 md:w-7 md:h-7">
+                      <Plus size={isMobile ? 12 : 14} />
                     </button>
                   </div>
                   
-                  <div className="absolute bottom-0 left-0 p-3">
-                    <h3 className="text-sm md:text-base font-semibold mb-1 line-clamp-2">{service.title}</h3>
+                  <div className="absolute bottom-0 left-0 p-2 md:p-3">
+                    <h3 className="text-xs md:text-sm font-semibold mb-1 line-clamp-2">{service.title}</h3>
                     <div className="flex items-center text-xs text-gray-300">
-                      <Star size={12} className="text-yellow-400 fill-yellow-400 mr-1" />
+                      <Star size={10} className="text-yellow-400 fill-yellow-400 mr-1" />
                       <span className="mr-2">{service.rating}</span>
                       <span>{service.year}</span>
                     </div>
                     <Link 
                       to={`/program/jasa-digital#${service.id}`} 
-                      className="mt-2 text-xs bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded-full inline-flex items-center"
+                      className="mt-2 text-xs bg-sky-500 hover:bg-sky-600 text-white px-2 py-1 rounded-full inline-flex items-center"
                     >
                       Lihat Detail
                     </Link>
@@ -502,25 +504,25 @@ const Beranda = () => {
             {[1, 2, 3, 4, 5].map(page => (
               <button 
                 key={page.toString()}
-                className={`w-8 h-8 flex items-center justify-center rounded-full text-sm 
+                className={`w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-full text-sm 
                            ${page === 1 ? 'bg-sky-500 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
               >
                 {page}
               </button>
             ))}
-            <button className="w-8 h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-400 hover:bg-gray-700">
-              <ChevronRight size={16} />
+            <button className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-400 hover:bg-gray-700">
+              <ChevronRight size={isMobile ? 12 : 16} />
             </button>
           </div>
         </div>
       </section>
       
       {/* Subscription Plans */}
-      <section className="py-16 bg-black/80">
+      <section className="py-10 md:py-16 bg-black/80">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold mb-4">Pilih Paket Anda</h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl md:text-3xl font-bold mb-3 md:mb-4">Pilih Paket Anda</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto text-sm md:text-base">
               Maksimalkan potensi digital bisnis Anda dengan paket layanan yang sesuai kebutuhan dan anggaran Anda
             </p>
           </div>
@@ -528,9 +530,9 @@ const Beranda = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {subscriptionPlans.map((plan, index) => (
               <motion.div
-                key={index}
+                key={index.toString()}
                 whileHover={{ y: -10 }}
-                className={`relative p-6 rounded-xl ${
+                className={`relative p-4 md:p-6 rounded-xl ${
                   plan.featured 
                     ? 'bg-gradient-to-b from-sky-900/40 to-black border-2 border-sky-500/50' 
                     : 'bg-gray-900/30 border border-gray-800'
@@ -542,23 +544,23 @@ const Beranda = () => {
                   </div>
                 )}
                 
-                <h3 className="text-xl font-bold mb-2">{plan.name}</h3>
-                <div className="mb-6">
-                  <span className={`text-3xl font-bold ${plan.color}`}>{plan.price}</span>
-                  <span className="text-gray-400 text-sm">{plan.period}</span>
+                <h3 className="text-lg md:text-xl font-bold mb-2">{plan.name}</h3>
+                <div className="mb-4 md:mb-6">
+                  <span className={`text-2xl md:text-3xl font-bold ${plan.color}`}>{plan.price}</span>
+                  <span className="text-gray-400 text-xs md:text-sm">{plan.period}</span>
                 </div>
                 
-                <ul className="space-y-3 mb-6">
+                <ul className="space-y-2 md:space-y-3 mb-6">
                   {plan.features.map((feature, idx) => (
-                    <li key={idx} className="flex items-start">
-                      <span className={`mr-2 text-lg ${plan.color}`}>•</span>
-                      <span className="text-gray-300 text-sm">{feature}</span>
+                    <li key={idx.toString()} className="flex items-start">
+                      <span className={`mr-2 text-base md:text-lg ${plan.color}`}>•</span>
+                      <span className="text-gray-300 text-xs md:text-sm">{feature}</span>
                     </li>
                   ))}
                 </ul>
                 
                 <Button 
-                  className={`w-full ${
+                  className={`w-full text-xs md:text-sm ${
                     plan.featured 
                       ? 'bg-sky-500 hover:bg-sky-600 text-white' 
                       : 'bg-gray-800 hover:bg-gray-700 text-white'

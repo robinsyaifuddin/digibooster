@@ -3,6 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { ExternalLink } from 'lucide-react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface FeaturedPortfolioCardProps {
   id: string;
@@ -21,6 +22,8 @@ const FeaturedPortfolioCard: React.FC<FeaturedPortfolioCardProps> = ({
   category,
   link
 }) => {
+  const isMobile = useIsMobile();
+  
   return (
     <motion.div
       whileHover={{ y: -5 }}
@@ -34,21 +37,21 @@ const FeaturedPortfolioCard: React.FC<FeaturedPortfolioCardProps> = ({
         />
         <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent opacity-80 group-hover:opacity-70 transition-opacity"></div>
         
-        <div className="absolute top-3 left-3">
-          <span className="bg-sky-500/20 text-sky-400 text-xs px-2 py-1 rounded-md border border-sky-500/30">
+        <div className="absolute top-2 md:top-3 left-2 md:left-3">
+          <span className="bg-sky-500/20 text-sky-400 text-xs px-2 py-0.5 md:py-1 rounded-md border border-sky-500/30">
             {category}
           </span>
         </div>
         
-        <div className="absolute bottom-0 left-0 p-4">
-          <h3 className="text-lg font-bold mb-1 text-white group-hover:text-sky-400 transition-colors">{title}</h3>
-          <p className="text-gray-300 text-sm line-clamp-2 mb-3">{description}</p>
+        <div className="absolute bottom-0 left-0 p-3 md:p-4">
+          <h3 className="text-base md:text-lg font-bold mb-1 text-white group-hover:text-sky-400 transition-colors line-clamp-1">{title}</h3>
+          <p className="text-gray-300 text-xs md:text-sm line-clamp-2 mb-2 md:mb-3">{description}</p>
           
           <Link 
             to={link} 
-            className="inline-flex items-center text-sky-400 hover:text-sky-300 text-sm"
+            className="inline-flex items-center text-sky-400 hover:text-sky-300 text-xs md:text-sm"
           >
-            Lihat Project <ExternalLink size={14} className="ml-1" />
+            Lihat Project <ExternalLink size={isMobile ? 12 : 14} className="ml-1" />
           </Link>
         </div>
       </div>
