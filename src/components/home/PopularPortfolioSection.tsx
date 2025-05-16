@@ -1,4 +1,3 @@
-
 import React, { useState, useRef, useEffect } from 'react';
 import { 
   Carousel, 
@@ -30,7 +29,8 @@ const PopularPortfolioSection = ({
   const isMobile = useIsMobile();
   const { t } = useLanguage();
   
-  const visibleItems = portfolioItems;
+  // Only show the first 3 portfolio items
+  const visibleItems = portfolioItems.slice(0, 3);
   
   return (
     <section className="py-20 relative overflow-hidden">
