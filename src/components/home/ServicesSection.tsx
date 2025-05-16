@@ -94,13 +94,13 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
                   </CarouselItem>
                 ))}
               </CarouselContent>
+              
+              {/* Navigation buttons positioned at the bottom */}
+              <div className="flex justify-center items-center mt-6 gap-4">
+                <CarouselPrevious className="static translate-y-0 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
+                <CarouselNext className="static translate-y-0 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
+              </div>
             </Carousel>
-            
-            {/* Navigation buttons positioned at the bottom */}
-            <div className="flex justify-center items-center mt-6 gap-4">
-              <CarouselPrevious className="static translate-y-0 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
-              <CarouselNext className="static translate-y-0 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
-            </div>
 
             {/* CTA Button */}
             <div className="text-center mt-10">
