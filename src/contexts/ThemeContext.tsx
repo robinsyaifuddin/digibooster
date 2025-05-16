@@ -1,18 +1,18 @@
 
-import React, { createContext, useContext, useEffect } from 'react';
+import * as React from 'react';
 
 interface ThemeContextType {
   theme: 'dark';
 }
 
-const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+const ThemeContext = React.createContext<ThemeContextType | undefined>(undefined);
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Always use dark theme for DigiBooster
   const theme = 'dark' as const;
 
   // Set dark theme on document element
-  useEffect(() => {
+  React.useEffect(() => {
     document.documentElement.classList.add('dark');
   }, []);
 
@@ -28,7 +28,7 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
 }
 
 export function useTheme() {
-  const context = useContext(ThemeContext);
+  const context = React.useContext(ThemeContext);
   if (context === undefined) {
     throw new Error('useTheme must be used within a ThemeProvider');
   }
