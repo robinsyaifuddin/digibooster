@@ -43,34 +43,46 @@ const ServicesGrid = ({ services }: ServicesGridProps) => {
   };
 
   return (
-    <div id="services-section" className="relative py-6">
-      <div className="flex justify-between items-center mb-8">
-        <h2 className="text-2xl font-bold text-white">DigiBooster Services</h2>
+    <div id="services-section" className="relative py-10">
+      <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div>
+          <h2 className="text-2xl md:text-3xl font-bold text-white">DigiBooster Services</h2>
+          <p className="text-gray-400 mt-2">Solusi digital terbaik untuk kebutuhan bisnis Anda</p>
+        </div>
         
         <div className="flex items-center gap-2">
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8 rounded-full border-gray-700 text-white hover:bg-red-600/20 hover:border-red-600"
-            onClick={prevPage}
-          >
-            <ChevronLeft className="h-4 w-4" />
-          </Button>
-          
-          <div className="text-sm text-gray-400">
-            <span className="text-white">{currentPage + 1}</span>
-            <span>/</span>
-            <span>{totalPages}</span>
+          <div className="flex items-center space-x-2 bg-gray-800/50 rounded-full p-1">
+            {Array.from({ length: totalPages }).map((_, idx) => (
+              <button
+                key={idx}
+                onClick={() => setCurrentPage(idx)}
+                className={`h-2 rounded-full transition-all ${
+                  idx === currentPage ? "w-8 bg-red-600" : "w-2 bg-gray-600"
+                }`}
+                aria-label={`Page ${idx + 1}`}
+              />
+            ))}
           </div>
           
-          <Button
-            variant="outline"
-            size="icon"
-            className="h-8 w-8 rounded-full border-gray-700 text-white hover:bg-red-600/20 hover:border-red-600"
-            onClick={nextPage}
-          >
-            <ChevronRight className="h-4 w-4" />
-          </Button>
+          <div className="flex items-center gap-2 ml-4">
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 rounded-full border-gray-700 bg-gray-800/50 text-white hover:bg-red-600/20 hover:border-red-600"
+              onClick={prevPage}
+            >
+              <ChevronLeft className="h-4 w-4" />
+            </Button>
+            
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-8 w-8 rounded-full border-gray-700 bg-gray-800/50 text-white hover:bg-red-600/20 hover:border-red-600"
+              onClick={nextPage}
+            >
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
         </div>
       </div>
       
@@ -102,20 +114,6 @@ const ServicesGrid = ({ services }: ServicesGridProps) => {
           </motion.div>
         ))}
       </motion.div>
-      
-      {/* Pagination indicators */}
-      <div className="flex justify-center gap-1">
-        {Array.from({ length: totalPages }).map((_, idx) => (
-          <button
-            key={idx}
-            onClick={() => setCurrentPage(idx)}
-            className={`h-1.5 rounded-full transition-all ${
-              idx === currentPage ? "w-6 bg-red-600" : "w-1.5 bg-gray-600"
-            }`}
-            aria-label={`Page ${idx + 1}`}
-          />
-        ))}
-      </div>
     </div>
   );
 };
