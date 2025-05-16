@@ -6,7 +6,7 @@ type Language = 'id' | 'en';
 interface LanguageContextType {
   language: Language;
   toggleLanguage: () => void;
-  t: (key: string) => string;
+  t: (key: string, params?: Record<string, string>) => string;
 }
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
@@ -50,9 +50,21 @@ const translations = {
     'contact-us': 'Hubungi Kami',
     
     // Services Section
-    'our-services': 'Layanan Kami',
-    'services-subtitle': 'Solusi digital komprehensif untuk kebutuhan Anda',
+    'our-services': 'Layanan Digital Kami',
+    'services-subtitle': 'Solusi digital terbaik untuk percepatan digitalisasi Indonesia',
     'learn-more': 'Selengkapnya',
+    'website-app-development': 'Pembuatan Website & Aplikasi',
+    'website-app-desc': 'Kami mengembangkan website responsif dan aplikasi yang sesuai dengan kebutuhan bisnis Anda.',
+    'graphic-design': 'Desain Grafis',
+    'graphic-design-desc': 'Layanan desain visual berkualitas tinggi untuk brand, logo, dan kebutuhan marketing Anda.',
+    'digital-marketing': 'Digital Marketing & Branding',
+    'digital-marketing-desc': 'Strategi pemasaran digital yang efektif untuk meningkatkan awareness dan penjualan.',
+    'content-management': 'Manajemen Konten',
+    'content-management-desc': 'Pengelolaan konten berkualitas untuk website dan media sosial bisnis Anda.',
+    'photo-video': 'Foto dan Videografi',
+    'photo-video-desc': 'Layanan foto dan video profesional untuk kebutuhan promosi produk dan bisnis.',
+    'social-media': 'Manajemen Sosial Media',
+    'social-media-desc': 'Pengelolaan akun media sosial untuk meningkatkan engagement dan brand awareness.',
     
     // Benefits Section
     'our-advantages': 'Keunggulan Kami',
@@ -114,9 +126,21 @@ const translations = {
     'contact-us': 'Contact Us',
     
     // Services Section
-    'our-services': 'Our Services',
-    'services-subtitle': 'Comprehensive digital solutions for your needs',
+    'our-services': 'Our Digital Services',
+    'services-subtitle': 'Best digital solutions for accelerating Indonesia\'s digitalization',
     'learn-more': 'Learn More',
+    'website-app-development': 'Website & App Development',
+    'website-app-desc': 'We develop responsive websites and applications tailored to your business needs.',
+    'graphic-design': 'Graphic Design',
+    'graphic-design-desc': 'High-quality visual design services for your brand, logo, and marketing needs.',
+    'digital-marketing': 'Digital Marketing & Branding',
+    'digital-marketing-desc': 'Effective digital marketing strategies to increase awareness and sales.',
+    'content-management': 'Content Management',
+    'content-management-desc': 'Quality content management for your business website and social media.',
+    'photo-video': 'Photography & Videography',
+    'photo-video-desc': 'Professional photo and video services for product and business promotion.',
+    'social-media': 'Social Media Management',
+    'social-media-desc': 'Management of social media accounts to increase engagement and brand awareness.',
     
     // Benefits Section
     'our-advantages': 'Our Advantages',
@@ -144,7 +168,7 @@ const translations = {
 };
 
 export function LanguageProvider({ children }: { children: React.ReactNode }) {
-  const [language, setLanguage] = useState<Language>('id');  // Changed default language to 'id'
+  const [language, setLanguage] = useState<Language>('id');
 
   // Initialize language from localStorage if available
   useEffect(() => {
@@ -152,7 +176,6 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
     if (savedLanguage && (savedLanguage === 'id' || savedLanguage === 'en')) {
       setLanguage(savedLanguage);
     }
-    // Removed browser language detection since we want to default to Indonesian
   }, []);
 
   // Update language in localStorage when it changes
@@ -167,7 +190,7 @@ export function LanguageProvider({ children }: { children: React.ReactNode }) {
   // Enhanced translation function with parameter support
   const t = (key: string, params?: Record<string, string>): string => {
     const langDict = translations[language] as Record<string, string>;
-    let translated = langDict[key as keyof typeof translations.id] || key;
+    let translated = langDict[key] || key;
     
     // Replace any parameters in the translated string
     if (params) {

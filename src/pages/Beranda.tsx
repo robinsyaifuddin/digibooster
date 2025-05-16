@@ -13,12 +13,59 @@ import defaultWebsiteData from '@/data/defaultWebsiteData';
 import AnimatedSection from '@/components/animation/AnimatedSection';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { portfolioItems } from '@/data/portfolioData';
+import { ServiceItem } from '@/types/websiteTypes';
 
 const Beranda = () => {
   // Get the website data from the default data
   const { homeContent, generalInfo } = defaultWebsiteData;
   const companyName = generalInfo.title;
   const { t } = useLanguage();
+  
+  // DigiBooster specific digital services
+  const digiBoosterServices: ServiceItem[] = [
+    {
+      id: '1',
+      title: t('website-app-development'),
+      description: t('website-app-desc'),
+      icon: 'Code',
+      link: '/program/jasa-digital',
+    },
+    {
+      id: '2',
+      title: t('graphic-design'),
+      description: t('graphic-design-desc'),
+      icon: 'PenTool',
+      link: '/program/jasa-digital',
+    },
+    {
+      id: '3',
+      title: t('digital-marketing'),
+      description: t('digital-marketing-desc'),
+      icon: 'Megaphone',
+      link: '/program/jasa-digital',
+    },
+    {
+      id: '4',
+      title: t('content-management'),
+      description: t('content-management-desc'),
+      icon: 'FileText',
+      link: '/program/jasa-digital',
+    },
+    {
+      id: '5',
+      title: t('photo-video'),
+      description: t('photo-video-desc'),
+      icon: 'Camera',
+      link: '/program/jasa-digital',
+    },
+    {
+      id: '6',
+      title: t('social-media'),
+      description: t('social-media-desc'),
+      icon: 'Share2',
+      link: '/program/jasa-digital',
+    },
+  ];
   
   const logoMarqueeTitle = (
     <>
@@ -54,8 +101,8 @@ const Beranda = () => {
         <PopularPortfolioSection portfolioItems={portfolioItems} />
       </AnimatedSection>
 
-      {/* Services Section */}
-      <ServicesSection services={homeContent.services} />
+      {/* Services Section - DigiBooster Digital Services */}
+      <ServicesSection services={digiBoosterServices} />
 
       {/* Benefits Section */}
       <BenefitsSection 
