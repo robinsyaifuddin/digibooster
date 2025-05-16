@@ -82,7 +82,11 @@ function App() {
                     <Route path="/portofolio" element={<Portofolio />} />
                     <Route path="/portofolio/:id" element={<PortfolioDetail />} />
                     <Route path="/tentang" element={<Tentang />} />
+                    
+                    {/* Fix for Jasa Digital routes */}
                     <Route path="/jasa-digital" element={<JasaDigital />} />
+                    <Route path="/program/jasa-digital" element={<JasaDigital />} />
+                    
                     <Route path="/services" element={<Services />} />
                     <Route path="/services/:id" element={<ServiceDetails />} />
                     <Route path="/layanan/:slug" element={<ServiceDetailPage />} />
