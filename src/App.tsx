@@ -1,110 +1,112 @@
 
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { lazy, Suspense } from "react";
-import { HelmetProvider } from "react-helmet-async";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { AuthProvider } from "./contexts/AuthContext";
-import { Toaster } from "sonner";
+import { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import './App.css';
+import Home from './pages/Home';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Login from './pages/Login';
+import Register from './pages/Register';
+import AdminDashboard from './pages/AdminDashboard';
+import Blog from './pages/Blog';
+import BlogDetail from './pages/BlogDetail';
+import Kontak from './pages/Kontak';
+import MotivasiEdukasi from './pages/MotivasiEdukasi';
+import SharingKonsultasi from './pages/SharingKonsultasi';
+import Portofolio from './pages/Portofolio';
+import PortfolioDetail from './pages/PortfolioDetail';
+import NotFound from './pages/NotFound';
+import Tentang from './pages/Tentang';
+import Beranda from './pages/Beranda';
+import JasaDigital from './pages/JasaDigital';
+import Services from './pages/Services';
+import ServiceDetails from './pages/ServiceDetails';
+import ServiceDetailPage from './pages/ServiceDetailPage';
+import Kelas from './pages/Kelas';
+import OrderForm from './pages/OrderForm';
 
-// Add providers
-import { ThemeProvider } from "./contexts/ThemeContext";
-import { LanguageProvider } from "./contexts/LanguageContext";
-import { HomeContentProvider } from "./contexts/HomeContentContext";
+// Theme context for light/dark mode
+import { ThemeProvider } from './contexts/ThemeContext';
 
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import { PageTransition } from "./components/animation/PageTransition";
+// Language context for multi-language support
+import { LanguageProvider } from './contexts/LanguageContext';
 
-// Import directly instead of using dynamic imports for core pages
-import Home from "./pages/Home";
-import Services from "./pages/Services";
-import ServiceDetails from "./pages/ServiceDetails";
-import Tentang from "./pages/Tentang";
-import Portofolio from "./pages/Portofolio";
-import Blog from "./pages/Blog";
-import BlogDetail from "./pages/BlogDetail";
-import JasaDigital from "./pages/JasaDigital";
-import MotivasiEdukasi from "./pages/MotivasiEdukasi";
-import SharingKonsultasi from "./pages/SharingKonsultasi";
-import Kelas from "./pages/Kelas";
-import PortfolioDetail from "./pages/PortfolioDetail";
-import OrderForm from "./pages/OrderForm";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import NotFound from "./pages/NotFound";
-import Kontak from "./pages/Kontak";
-import Beranda from "./pages/Beranda";
+// Auth context for user authentication
+import { AuthProvider } from './contexts/AuthContext';
 
-// Use lazy loading only for admin dashboard
-const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
+// Home content context for dynamic content
+import { HomeContentProvider } from './contexts/HomeContentContext';
 
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      retry: 1,
-    },
-  },
-});
-
-const FallbackComponent = () => (
-  <div className="min-h-[70vh] flex items-center justify-center">
-    <div className="animate-pulse text-primary text-xl font-medium">Loading...</div>
-  </div>
-);
+// Toast provider for notifications
+import { Toaster } from '@/components/ui/toaster';
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Simulate loading time
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 800);
+
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (isLoading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-black">
+        <div className="loader"></div>
+      </div>
+    );
+  }
+
   return (
-    <HelmetProvider>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          <ThemeProvider>
-            <LanguageProvider>
-              <AuthProvider>
-                <HomeContentProvider>
-                  <Navbar />
-                  <div className="pt-16">
-                    <PageTransition>
-                      <Routes>
-                        <Route path="/" element={<Beranda />} />
-                        <Route path="/home" element={<Home />} />
-                        <Route path="/services" element={<Services />} />
-                        <Route path="/services/:id" element={<ServiceDetails />} />
-                        <Route path="/tentang" element={<Tentang />} />
-                        <Route path="/portofolio" element={<Portofolio />} />
-                        <Route path="/portofolio/:id" element={<PortfolioDetail />} />
-                        <Route path="/blog" element={<Blog />} />
-                        <Route path="/blog/:id" element={<BlogDetail />} />
-                        <Route path="/program/jasa-digital" element={<JasaDigital />} />
-                        <Route path="/program/motivasi-edukasi" element={<MotivasiEdukasi />} />
-                        <Route path="/program/sharing-konsultasi" element={<SharingKonsultasi />} />
-                        <Route path="/program/kelas" element={<Kelas />} />
-                        <Route path="/order-form" element={<OrderForm />} />
-                        <Route path="/login" element={<Login />} />
-                        <Route path="/register" element={<Register />} />
-                        <Route path="/kontak" element={<Kontak />} />
-                        <Route path="/404" element={<NotFound />} />
-                        <Route path="*" element={<Navigate to="/404" replace />} />
-                        <Route 
-                          path="/admin/*" 
-                          element={
-                            <Suspense fallback={<FallbackComponent />}>
-                              <AdminDashboard />
-                            </Suspense>
-                          } 
-                        />
-                      </Routes>
-                    </PageTransition>
-                  </div>
-                  <Footer />
-                  <Toaster position="top-center" />
-                </HomeContentProvider>
-              </AuthProvider>
-            </LanguageProvider>
-          </ThemeProvider>
-        </BrowserRouter>
-      </QueryClientProvider>
-    </HelmetProvider>
+    <ThemeProvider>
+      <LanguageProvider>
+        <AuthProvider>
+          <HomeContentProvider>
+            <Router>
+              <div className="App bg-black text-white min-h-screen flex flex-col">
+                <Navbar />
+                <main className="flex-grow">
+                  <Routes>
+                    {/* Main routes */}
+                    <Route path="/" element={<Home />} />
+                    <Route path="/beranda" element={<Beranda />} />
+                    <Route path="/blog" element={<Blog />} />
+                    <Route path="/blog/:slug" element={<BlogDetail />} />
+                    <Route path="/kontak" element={<Kontak />} />
+                    <Route path="/motivasi-edukasi" element={<MotivasiEdukasi />} />
+                    <Route path="/sharing-konsultasi" element={<SharingKonsultasi />} />
+                    <Route path="/portofolio" element={<Portofolio />} />
+                    <Route path="/portofolio/:id" element={<PortfolioDetail />} />
+                    <Route path="/tentang" element={<Tentang />} />
+                    <Route path="/jasa-digital" element={<JasaDigital />} />
+                    <Route path="/services" element={<Services />} />
+                    <Route path="/services/:id" element={<ServiceDetails />} />
+                    <Route path="/layanan/:slug" element={<ServiceDetailPage />} />
+                    <Route path="/kelas" element={<Kelas />} />
+                    <Route path="/order-form" element={<OrderForm />} />
+
+                    {/* Auth routes */}
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/register" element={<Register />} />
+
+                    {/* Admin routes */}
+                    <Route path="/admin/*" element={<AdminDashboard />} />
+
+                    {/* 404 route */}
+                    <Route path="*" element={<NotFound />} />
+                  </Routes>
+                </main>
+                <Footer />
+                <Toaster />
+              </div>
+            </Router>
+          </HomeContentProvider>
+        </AuthProvider>
+      </LanguageProvider>
+    </ThemeProvider>
   );
 }
 

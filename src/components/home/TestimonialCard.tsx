@@ -46,7 +46,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         <img 
           src={image} 
           alt={name} 
-          className="w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 border border-sky-500/30"
+          className="w-5 h-5 md:w-6 md:h-6 rounded-full mr-2 border border-sky-500/30"
         />
         <div>
           <h4 className="font-medium text-white text-xs md:text-sm">{name}</h4>
