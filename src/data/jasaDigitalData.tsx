@@ -6,143 +6,139 @@ import {
   Megaphone, 
   FileText, 
   Camera, 
-  FileCog, 
-  DatabaseIcon, 
-  Server, 
-  LineChart, 
   Share2 
 } from 'lucide-react';
 import { ServiceProps } from '@/components/jasa-digital/ServiceCard';
 
 export const jasaDigitalServices: ServiceProps[] = [
   {
-    icon: <Code className="h-8 w-8 text-digiblue-600" />,
-    title: 'Pengembangan Website & Aplikasi',
-    description: 'Kami mengembangkan website dan aplikasi yang responsif, cepat, dan SEO-friendly untuk berbagai kebutuhan bisnis.',
+    icon: <Code className="h-6 w-6 text-red-500" />,
+    title: 'Website & Aplikasi',
+    description: 'Solusi digital profesional untuk kebutuhan website dan aplikasi bisnis Anda dengan teknologi terkini.',
     items: [
-      'Website Perusahaan & Landing Page',
-      'Toko Online & E-commerce',
-      'Aplikasi Web Custom',
-      'Aplikasi Mobile (Android & iOS)',
+      'Website Bisnis & Landing Page',
+      'E-commerce & Toko Online',
+      'Aplikasi Web & Mobile (Android/iOS)',
       'Sistem Informasi & Database',
-      'Integrasi API & Sistem Third-party'
+      'Integrasi API',
+      'Website Maintenance'
     ]
   },
   {
-    icon: <PenTool className="h-8 w-8 text-digiblue-600" />,
+    icon: <PenTool className="h-6 w-6 text-red-500" />,
     title: 'Desain Grafis',
-    description: 'Tim desainer kami akan membuat visual menarik yang mencerminkan identitas brand Anda.',
+    description: 'Layanan desain visual profesional untuk meningkatkan identitas brand dan visual marketing Anda.',
     items: [
-      'Desain Logo & Branding',
+      'Logo & Brand Identity',
       'UI/UX Design',
       'Desain Media Sosial',
-      'Infografis & Presentasi',
       'Desain Kemasan Produk',
+      'Infografis & Presentasi',
       'Desain Marketing Materials'
     ]
   },
   {
-    icon: <Megaphone className="h-8 w-8 text-digiblue-600" />,
-    title: 'Digital Marketing & Branding',
-    description: 'Strategi pemasaran digital yang efektif untuk meningkatkan brand awareness dan penjualan.',
+    icon: <Megaphone className="h-6 w-6 text-red-500" />,
+    title: 'Digital Marketing',
+    description: 'Strategi pemasaran digital komprehensif untuk meningkatkan brand awareness dan penjualan.',
     items: [
       'Social Media Marketing',
       'Search Engine Optimization (SEO)',
-      'Google Ads & Facebook Ads',
+      'Google Ads & Meta Ads',
       'Email Marketing',
       'Content Marketing',
-      'Brand Strategy & Development'
+      'Influencer Marketing'
     ]
   },
   {
-    icon: <FileText className="h-8 w-8 text-digiblue-600" />,
+    icon: <FileText className="h-6 w-6 text-red-500" />,
     title: 'Manajemen Konten',
-    description: 'Pembuatan dan pengelolaan konten berkualitas untuk website dan media sosial Anda.',
+    description: 'Layanan pembuatan dan pengelolaan konten profesional untuk platform digital Anda.',
     items: [
-      'Copywriting & Blog Writing',
-      'Konten Media Sosial',
-      'Pengelolaan Konten Website',
-      'Strategi Konten',
-      'Penerbitan Konten Berkala',
-      'Optimasi Konten untuk SEO'
-    ]
-  },
-  {
-    icon: <Camera className="h-8 w-8 text-digiblue-600" />,
-    title: 'Edit Video dan Fotografi',
-    description: 'Layanan profesional untuk kebutuhan visual media dan marketing Anda.',
-    items: [
-      'Foto Produk & Corporate',
-      'Videografi Produk & Promosi',
-      'Editing Video Profesional',
-      'Motion Graphics & Animation',
-      'Live Streaming Setup',
-      'Podcast Production'
-    ]
-  },
-  {
-    icon: <FileCog className="h-8 w-8 text-digiblue-600" />,
-    title: 'Administrasi Digital',
-    description: 'Pengelolaan sistem digital dan automasi untuk efisiensi operasional bisnis.',
-    items: [
-      'Document Management System',
-      'Workflow Automation',
-      'Data Entry & Processing',
-      'Cloud Storage Setup',
-      'Digital Asset Management',
-      'System Integration'
-    ]
-  },
-  {
-    icon: <DatabaseIcon className="h-8 w-8 text-digiblue-600" />,
-    title: 'Database Management',
-    description: 'Pengelolaan dan optimasi database untuk kebutuhan bisnis dan aplikasi Anda.',
-    items: [
-      'Perancangan & Implementasi Database',
-      'Migrasi Database',
-      'Database Optimization',
-      'Data Backup & Recovery',
-      'Data Warehouse Solutions',
-      'Big Data Processing'
-    ]
-  },
-  {
-    icon: <Server className="h-8 w-8 text-digiblue-600" />,
-    title: 'Hosting & Domain Management',
-    description: 'Layanan hosting dan pengelolaan domain yang handal untuk website dan aplikasi.',
-    items: [
-      'Web Hosting Setup',
-      'Domain Registration & Management',
-      'Server Configuration',
-      'SSL Certificate Setup',
-      'Website Maintenance',
-      'Performance Optimization'
-    ]
-  },
-  {
-    icon: <LineChart className="h-8 w-8 text-digiblue-600" />,
-    title: 'Analytics & Reporting',
-    description: 'Analisis data dan pembuatan laporan untuk mengukur performa digital Anda.',
-    items: [
-      'Google Analytics Setup',
-      'Performance Dashboards',
-      'Competitive Analysis',
-      'Custom Reports',
-      'User Behavior Analysis',
-      'Conversion Tracking'
-    ]
-  },
-  {
-    icon: <Share2 className="h-8 w-8 text-digiblue-600" />,
-    title: 'Social Media Management',
-    description: 'Pengelolaan media sosial untuk meningkatkan engagement dan brand awareness.',
-    items: [
+      'Copywriting & Artikel',
       'Content Planning & Calendar',
+      'Blog Management',
+      'Content Optimization (SEO)',
+      'Newsletter Creation',
+      'Product Description'
+    ]
+  },
+  {
+    icon: <Camera className="h-6 w-6 text-red-500" />,
+    title: 'Foto dan Videografi',
+    description: 'Layanan visual profesional untuk kebutuhan konten marketing dan branding Anda.',
+    items: [
+      'Product Photography',
+      'Corporate Videography',
+      'Video Editing & Animation',
+      'Motion Graphics',
+      'Social Media Video',
+      'Company Profile Video'
+    ]
+  },
+  {
+    icon: <Share2 className="h-6 w-6 text-red-500" />,
+    title: 'Manajemen Sosial Media',
+    description: 'Pengelolaan akun media sosial profesional untuk meningkatkan engagement dan brand awareness.',
+    items: [
+      'Social Media Management',
+      'Content Creation & Posting',
       'Community Management',
-      'Social Media Audit',
-      'Influencer Collaboration',
-      'Social Media Advertising',
-      'Performance Analysis'
+      'Performance Analytics',
+      'Social Media Ads',
+      'Growth Strategy'
+    ]
+  },
+  {
+    icon: <Code className="h-6 w-6 text-red-500" />,
+    title: 'API Integration',
+    description: 'Integrasi sistem dan API untuk menghubungkan berbagai platform digital yang Anda gunakan.',
+    items: [
+      'Third-party API Integration',
+      'Payment Gateway Integration',
+      'CRM Integration',
+      'Custom API Development',
+      'Webhook Setup',
+      'API Maintenance'
+    ]
+  },
+  {
+    icon: <PenTool className="h-6 w-6 text-red-500" />,
+    title: 'UI/UX Design',
+    description: 'Desain antarmuka dan pengalaman pengguna yang optimal untuk website dan aplikasi Anda.',
+    items: [
+      'User Research',
+      'Wireframing & Prototyping',
+      'UI Design System',
+      'Usability Testing',
+      'Interaction Design',
+      'Design Implementation'
+    ]
+  },
+  {
+    icon: <Megaphone className="h-6 w-6 text-red-500" />,
+    title: 'SEO Management',
+    description: 'Optimasi mesin pencari untuk meningkatkan peringkat website dan trafik organik Anda.',
+    items: [
+      'Keyword Research',
+      'On-page SEO',
+      'Technical SEO',
+      'Link Building',
+      'Local SEO',
+      'SEO Audit & Reporting'
+    ]
+  },
+  {
+    icon: <FileText className="h-6 w-6 text-red-500" />,
+    title: 'Content Strategy',
+    description: 'Strategi konten yang efektif untuk mendukung tujuan bisnis dan marketing Anda.',
+    items: [
+      'Content Audit',
+      'Content Calendar Planning',
+      'Content Distribution Strategy',
+      'Content Performance Analysis',
+      'Content Trend Research',
+      'Content Optimization'
     ]
   }
 ];
