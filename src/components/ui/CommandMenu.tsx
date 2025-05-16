@@ -39,7 +39,7 @@ export function CommandMenu() {
       category: post.category
     }));
 
-    const portfolioItems: SearchItem[] = portfolioItems.map(item => ({
+    const portfolioSearchItems: SearchItem[] = portfolioItems.map(item => ({
       id: item.id,
       title: item.title,
       type: 'portfolio',
@@ -56,7 +56,7 @@ export function CommandMenu() {
       { id: 'about', title: t('tentang'), type: 'page', path: '/tentang' },
     ];
 
-    setSearchItems([...blogItems, ...portfolioItems, ...pageItems]);
+    setSearchItems([...blogItems, ...portfolioSearchItems, ...pageItems]);
   }, [t]);
 
   useEffect(() => {

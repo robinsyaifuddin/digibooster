@@ -13,7 +13,7 @@ import {
   ChevronDown, 
   ChevronUp,
   Book,
-  FolderPortfolio,
+  Folder,
   Info,
   Search
 } from "lucide-react";
@@ -172,7 +172,7 @@ const Navbar = () => {
     { 
       path: "/portofolio", 
       label: "portofolio", 
-      icon: <FolderPortfolio className={iconClasses} /> 
+      icon: <Folder className={iconClasses} /> 
     },
     { 
       path: "/tentang", 
