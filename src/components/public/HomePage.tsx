@@ -114,7 +114,6 @@ const HomePage = () => {
   return (
     <main className="overflow-x-hidden">
       <HeroSection 
-        generalInfo={websiteData.generalInfo}
         hero={homeContent?.hero}
       />
       

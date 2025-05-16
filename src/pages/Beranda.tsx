@@ -84,7 +84,12 @@ const Beranda = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.6 }}
       >
-        <HeroSection />
+        <HeroSection
+          title="Skill Up, Stand Out with DigiBooster"
+          subtitle="Membantu masyarakat Indonesia mengoptimalkan digitalisasi untuk peningkatan kualitas hidup dan bisnis"
+          description="Layanan jasa digital terpercaya untuk mengembangkan bisnis Anda dengan solusi digital yang inovatif dan efektif"
+          image="https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop"
+        />
       </motion.div>
 
       {/* Logo Marquee - Show our trusted partners */}

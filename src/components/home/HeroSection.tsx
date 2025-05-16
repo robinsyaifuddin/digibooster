@@ -4,28 +4,41 @@ import { Button } from '@/components/ui/button';
 import { Play, ChevronRight, Info } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { GeneralInfo, HeroSection as HeroSectionType } from '@/types/websiteTypes';
 
-interface HeroSectionProps {
-  title: string;
-  subtitle: string;
-  description: string;
-  image: string;
+export interface HeroSectionProps {
+  title?: string;
+  subtitle?: string;
+  description?: string;
+  image?: string;
   rating?: number;
   year?: string;
   ctaText?: string;
   ctaLink?: string;
+  hero?: HeroSectionType;
+  generalInfo?: GeneralInfo;
 }
 
 const HeroSection = ({
-  title,
-  subtitle,
-  description,
-  image,
+  title = "Skill Up, Stand Out with DigiBooster",
+  subtitle = "Membantu masyarakat Indonesia mengoptimalkan digitalisasi untuk peningkatan kualitas hidup dan bisnis",
+  description = "Layanan jasa digital terpercaya untuk mengembangkan bisnis Anda dengan solusi digital yang inovatif dan efektif",
+  image = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
   rating = 4.5,
   year = "2023",
   ctaText = "Explore Services",
-  ctaLink = "/services"
+  ctaLink = "/services",
+  hero,
+  generalInfo
 }: HeroSectionProps) => {
+  // If hero prop is provided, use its values
+  if (hero) {
+    title = hero.title;
+    subtitle = hero.subtitle;
+    ctaText = hero.ctaText;
+    ctaLink = hero.ctaLink;
+  }
+
   const formattedRating = rating.toFixed(1);
 
   return (
