@@ -340,7 +340,7 @@ const Beranda = () => {
             <div className="bg-sky-500/20 p-2 md:p-3 rounded-full">
               <Users2 size={isMobile ? 18 : 24} className="text-sky-400" />
             </div>
-            <h2 className="text-2xl md:text-3xl font-bold">Mitra Kami</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">Mitra DigiBooster</h2>
           </div>
           
           <p className="text-gray-400 max-w-2xl mb-6 md:mb-10 text-sm md:text-base">
@@ -355,7 +355,8 @@ const Beranda = () => {
               image: partner.logo,
               link: ''
             }))}
-            title=""
+            title="Partner Teknologi DigiBooster"
+            description="Kami berkolaborasi dengan perusahaan teknologi terkemuka untuk membantu pertumbuhan bisnis digital Anda"
             speed="medium"
             bgColor="bg-transparent"
           />

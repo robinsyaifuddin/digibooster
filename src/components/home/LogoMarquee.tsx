@@ -50,7 +50,7 @@ const LogoMarquee = ({
           {duplicatedLogos.map((logo, index) => (
             <Card 
               key={`${logo.id}-${index}`} 
-              className="inline-flex items-center justify-center p-2 md:p-3 rounded-lg shadow-md bg-white min-w-[100px] md:min-w-[140px] h-12 md:h-16"
+              className="inline-flex items-center justify-center p-2 md:p-3 rounded-lg shadow-md bg-white min-w-[80px] md:min-w-[120px] h-10 md:h-14"
             >
               {logo.link ? (
                 <a 
@@ -62,14 +62,14 @@ const LogoMarquee = ({
                   <img 
                     src={logo.image} 
                     alt={logo.name} 
-                    className="max-h-8 md:max-h-9 max-w-[80px] md:max-w-[100px] object-contain"
+                    className="max-h-6 md:max-h-8 max-w-[60px] md:max-w-[80px] object-contain"
                   />
                 </a>
               ) : (
                 <img 
                   src={logo.image} 
                   alt={logo.name} 
-                  className="max-h-8 md:max-h-9 max-w-[80px] md:max-w-[100px] object-contain"
+                  className="max-h-6 md:max-h-8 max-w-[60px] md:max-w-[80px] object-contain"
                 />
               )}
             </Card>

@@ -104,10 +104,10 @@ const HomePage = () => {
 
   const logoMarqueeTitle: ReactNode = (
     <>
-      <span className="text-neon-cyan">Dipercaya</span>{" "}
-      <span className="text-white">oleh</span>{" "}
-      <span className="text-neon-cyan">Brand</span>{" "}
-      <span className="text-white">Terkemuka</span>
+      <span className="text-neon-cyan">Partner</span>{" "}
+      <span className="text-white">Resmi</span>{" "}
+      <span className="text-neon-cyan">DigiBooster</span>{" "}
+      <span className="text-white">Indonesia</span>
     </>
   );
 
@@ -120,8 +120,8 @@ const HomePage = () => {
       <LogoMarquee
         logos={homeContent?.partners || partnersFallback}
         title={logoMarqueeTitle}
-        description="Berkolaborasi dengan berbagai perusahaan dan organisasi untuk mengembangkan solusi digital."
-        speed="slow"
+        description="Berkolaborasi dengan perusahaan teknologi terkemuka untuk menghadirkan solusi digital terbaik untuk bisnis Anda"
+        speed="medium"
         bgColor="bg-dark-300"
       />
       

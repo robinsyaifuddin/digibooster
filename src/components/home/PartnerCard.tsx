@@ -24,7 +24,7 @@ const PartnerCard: React.FC<PartnerCardProps> = ({
         <img 
           src={logo} 
           alt={name} 
-          className="max-h-8 md:max-h-10 max-w-full object-contain filter brightness-100 hover:brightness-110 transition-all"
+          className="max-h-6 md:max-h-8 max-w-full object-contain filter brightness-100 hover:brightness-110 transition-all"
         />
       </div>
       
