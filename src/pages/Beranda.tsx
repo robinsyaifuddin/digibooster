@@ -502,7 +502,7 @@ const Beranda = () => {
           <div className="flex justify-center gap-1 mt-6">
             {[1, 2, 3, 4, 5].map(page => (
               <button 
-                key={page} 
+                key={page.toString()}
                 className={`w-8 h-8 flex items-center justify-center rounded-full text-sm 
                            ${page === 1 ? 'bg-sky-500 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
               >
