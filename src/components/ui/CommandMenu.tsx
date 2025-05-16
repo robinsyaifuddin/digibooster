@@ -13,6 +13,7 @@ import { Search } from "lucide-react";
 import { blogPosts } from "@/data/blogData";
 import { portfolioItems } from "@/data/portfolioData";
 import { useLanguage } from "@/contexts/LanguageContext";
+import { motion } from "framer-motion";
 
 interface SearchItem {
   id: string | number;
@@ -75,16 +76,34 @@ export function CommandMenu() {
     navigate(path);
   };
 
+  const searchButtonVariants = {
+    initial: { scale: 1 },
+    hover: { 
+      scale: 1.1,
+      filter: "drop-shadow(0 0 8px rgba(0, 216, 232, 0.6))",
+      transition: { type: "spring", stiffness: 400, damping: 10 }
+    },
+    tap: { scale: 0.95 }
+  };
+
   return (
     <>
-      <button
+      <motion.button
         onClick={() => setOpen(true)}
-        className="inline-flex items-center justify-center rounded-md transition-colors text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-primary/50"
+        className="inline-flex items-center justify-center rounded-full w-9 h-9 transition-colors bg-dark-300/50 text-primary hover:bg-dark-300 hover:text-white focus:outline-none focus:ring-2 focus:ring-primary/50 icon-3d"
         aria-label="Search"
+        initial="initial"
+        whileHover="hover"
+        whileTap="tap"
+        variants={searchButtonVariants}
       >
         <Search className="h-[1.2rem] w-[1.2rem]" />
-      </button>
-      <CommandDialog open={open} onOpenChange={setOpen}>
+      </motion.button>
+      <CommandDialog 
+        open={open} 
+        onOpenChange={setOpen} 
+        className="rounded-lg shadow-glow overflow-hidden"
+      >
         <CommandInput placeholder={t('search-placeholder') || "Search for anything..."} />
         <CommandList>
           <CommandEmpty>{t('no-results') || "No results found."}</CommandEmpty>
@@ -96,7 +115,7 @@ export function CommandMenu() {
                 <CommandItem
                   key={item.id.toString()}
                   onSelect={() => handleSelect(item.path)}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 transition-all duration-200 hover:bg-primary/10"
                 >
                   <span>{item.title}</span>
                 </CommandItem>
@@ -110,7 +129,7 @@ export function CommandMenu() {
                 <CommandItem
                   key={item.id.toString()}
                   onSelect={() => handleSelect(item.path)}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 transition-all duration-200 hover:bg-primary/10"
                 >
                   <span>{item.title}</span>
                   <span className="ml-auto text-xs text-gray-400">{item.category}</span>
@@ -125,7 +144,7 @@ export function CommandMenu() {
                 <CommandItem
                   key={item.id.toString()}
                   onSelect={() => handleSelect(item.path)}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 transition-all duration-200 hover:bg-primary/10"
                 >
                   <span>{item.title}</span>
                   <span className="ml-auto text-xs text-gray-400">{item.category}</span>

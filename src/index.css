@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -25,6 +26,18 @@
 
   .shadow-glow {
     box-shadow: 0 0 8px 1px rgba(0, 216, 232, 0.6);
+  }
+
+  /* Enhanced 3D icon effect */
+  .icon-3d {
+    filter: drop-shadow(2px 2px 0 rgba(0, 216, 232, 0.5));
+    transform-style: preserve-3d;
+    transition: all 0.3s ease;
+  }
+
+  .icon-3d:hover {
+    transform: translateZ(5px) scale(1.1);
+    filter: drop-shadow(3px 3px 2px rgba(0, 216, 232, 0.8));
   }
 }
 
@@ -114,6 +127,7 @@
 @layer base {
   * {
     @apply border-border;
+    scroll-behavior: smooth;
   }
   body {
     @apply bg-background text-foreground;
@@ -239,15 +253,27 @@
     box-shadow: 0 0 15px rgba(0, 216, 232, 0.6);
   }
 
-  /* 3D icon effect */
-  .icon-3d {
-    filter: drop-shadow(2px 2px 0 rgba(0, 216, 232, 0.7));
-    transform-style: preserve-3d;
-    transition: transform 0.3s;
+  /* Advanced 3D effects for icons and buttons */
+  .hover-scale-glow {
+    transition: all 0.3s ease;
   }
-
-  .icon-3d:hover {
-    transform: translateZ(5px);
-    filter: drop-shadow(3px 3px 0 rgba(0, 216, 232, 0.8));
+  
+  .hover-scale-glow:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 10px rgba(0, 216, 232, 0.7));
+  }
+  
+  /* Improved nav item animation */
+  .nav-underline {
+    @apply relative;
+  }
+  
+  .nav-underline::after {
+    content: '';
+    @apply absolute left-0 bottom-0 w-0 h-0.5 bg-primary transition-all duration-300;
+  }
+  
+  .nav-underline:hover::after {
+    @apply w-full;
   }
 }

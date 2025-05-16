@@ -35,7 +35,27 @@ const Footer = () => {
     initial: { scale: 1 },
     hover: { 
       scale: 1.15,
-      transition: { duration: 0.2 }
+      filter: "drop-shadow(0 0 8px rgba(0, 216, 232, 0.6))",
+      transition: { type: "spring", stiffness: 400, damping: 10 }
+    },
+    tap: { scale: 0.95 }
+  };
+
+  const buttonAnimation = {
+    initial: { scale: 1 },
+    hover: { 
+      scale: 1.05,
+      boxShadow: "0 0 15px rgba(0, 216, 232, 0.6)",
+      transition: { type: "spring", stiffness: 400, damping: 10 }
+    },
+    tap: { scale: 0.95 }
+  };
+
+  const linkAnimation = {
+    initial: {},
+    hover: { 
+      x: 5,
+      transition: { type: "spring", stiffness: 400, damping: 10 }
     }
   };
 
@@ -56,10 +76,14 @@ const Footer = () => {
           {/* Company Information */}
           <motion.div variants={itemAnimation}>
             <div className="mb-6">
-              <img 
+              <motion.img 
                 src="/lovable-uploads/63175a8a-8817-436e-8f8b-a3246a8bf733.png" 
                 alt="DigiBooster" 
                 className="h-10 w-auto mb-4" 
+                whileHover={{ 
+                  scale: 1.05,
+                  filter: "drop-shadow(0 0 8px rgba(0, 216, 232, 0.6))"
+                }}
               />
               <p className="text-gray-400 text-sm">
                 {t('footer-description') || "Membantu bisnis Anda berkembang dengan solusi digital yang inovatif dan efektif untuk kebutuhan modern."}
@@ -70,37 +94,41 @@ const Footer = () => {
             <div className="flex space-x-3">
               <motion.a 
                 href="#" 
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30"
-                whileHover="hover"
-                initial="initial"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d"
                 variants={iconAnimation}
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
               >
                 <Facebook size={18} />
               </motion.a>
               <motion.a 
                 href="#" 
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30"
-                whileHover="hover"
-                initial="initial"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d"
                 variants={iconAnimation}
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
               >
                 <Twitter size={18} />
               </motion.a>
               <motion.a 
                 href="#" 
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30"
-                whileHover="hover"
-                initial="initial"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d"
                 variants={iconAnimation}
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
               >
                 <Instagram size={18} />
               </motion.a>
               <motion.a 
                 href="#" 
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30"
-                whileHover="hover"
-                initial="initial"
+                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d"
                 variants={iconAnimation}
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
               >
                 <Linkedin size={18} />
               </motion.a>
@@ -114,40 +142,76 @@ const Footer = () => {
             </h3>
             <ul className="space-y-2.5">
               <li>
-                <Link to="/" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                  <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0" />
-                  <span>{t('beranda')}</span>
-                </Link>
+                <motion.div
+                  variants={linkAnimation}
+                  initial="initial"
+                  whileHover="hover"
+                >
+                  <Link to="/" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
+                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
+                    <span>{t('beranda')}</span>
+                  </Link>
+                </motion.div>
               </li>
               <li>
-                <Link to="/program/jasa-digital" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                  <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0" />
-                  <span>{t('jasa-digital')}</span>
-                </Link>
+                <motion.div
+                  variants={linkAnimation}
+                  initial="initial"
+                  whileHover="hover"
+                >
+                  <Link to="/program/jasa-digital" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
+                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
+                    <span>{t('jasa-digital')}</span>
+                  </Link>
+                </motion.div>
               </li>
               <li>
-                <Link to="/program/kelas" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                  <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0" />
-                  <span>{t('shortclass-bootcamp')}</span>
-                </Link>
+                <motion.div
+                  variants={linkAnimation}
+                  initial="initial"
+                  whileHover="hover"
+                >
+                  <Link to="/program/kelas" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
+                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
+                    <span>{t('shortclass-bootcamp')}</span>
+                  </Link>
+                </motion.div>
               </li>
               <li>
-                <Link to="/blog" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                  <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0" />
-                  <span>{t('blog')}</span>
-                </Link>
+                <motion.div
+                  variants={linkAnimation}
+                  initial="initial"
+                  whileHover="hover"
+                >
+                  <Link to="/blog" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
+                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
+                    <span>{t('blog')}</span>
+                  </Link>
+                </motion.div>
               </li>
               <li>
-                <Link to="/portofolio" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                  <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0" />
-                  <span>{t('portofolio')}</span>
-                </Link>
+                <motion.div
+                  variants={linkAnimation}
+                  initial="initial"
+                  whileHover="hover"
+                >
+                  <Link to="/portofolio" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
+                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
+                    <span>{t('portofolio')}</span>
+                  </Link>
+                </motion.div>
               </li>
               <li>
-                <Link to="/tentang" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                  <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0" />
-                  <span>{t('tentang')}</span>
-                </Link>
+                <motion.div
+                  variants={linkAnimation}
+                  initial="initial"
+                  whileHover="hover"
+                >
+                  <Link to="/tentang" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
+                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
+                    <span>{t('tentang')}</span>
+                  </Link>
+                </motion.div>
               </li>
             </ul>
           </motion.div>
@@ -159,7 +223,7 @@ const Footer = () => {
             </h3>
             <ul className="space-y-3">
               <li className="flex">
-                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-sky-500/20 flex items-center justify-center mr-3 mt-0.5">
+                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-sky-500/20 flex items-center justify-center mr-3 mt-0.5 icon-3d">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-sky-400" viewBox="0 0 20 20" fill="currentColor">
                     <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
                   </svg>
@@ -169,7 +233,7 @@ const Footer = () => {
                 </div>
               </li>
               <li className="flex">
-                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-sky-500/20 flex items-center justify-center mr-3 mt-0.5">
+                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-sky-500/20 flex items-center justify-center mr-3 mt-0.5 icon-3d">
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-sky-400" viewBox="0 0 20 20" fill="currentColor">
                     <path d="M2 3a1 1 0 011-1h2.153a1 1 0 01.986.836l.74 4.435a1 1 0 01-.54 1.06l-1.548.773a11.037 11.037 0 006.105 6.105l.774-1.548a1 1 0 011.059-.54l4.435.74a1 1 0 01.836.986V17a1 1 0 01-1 1h-2C7.82 18 2 12.18 2 5V3z" />
                   </svg>
@@ -179,7 +243,7 @@ const Footer = () => {
                 </div>
               </li>
               <li className="flex">
-                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-sky-500/20 flex items-center justify-center mr-3 mt-0.5">
+                <div className="flex-shrink-0 h-6 w-6 rounded-full bg-sky-500/20 flex items-center justify-center mr-3 mt-0.5 icon-3d">
                   <Mail className="h-3 w-3 text-sky-400" />
                 </div>
                 <div className="text-gray-400 text-sm">
@@ -203,12 +267,19 @@ const Footer = () => {
                 placeholder={t('email-placeholder') || "Email anda..."}
                 className="mr-2 bg-dark-300 border-dark-300 focus:border-sky-500 focus-visible:ring-0 text-sm rounded-l-md rounded-r-none"
               />
-              <Button 
-                type="submit" 
-                className="bg-sky-500 hover:bg-sky-600 text-white rounded-l-none"
+              <motion.div
+                variants={buttonAnimation}
+                initial="initial"
+                whileHover="hover"
+                whileTap="tap"
               >
-                {t('subscribe') || "Langganan"}
-              </Button>
+                <Button 
+                  type="submit" 
+                  className="bg-sky-500 hover:bg-sky-600 text-white rounded-l-none"
+                >
+                  {t('subscribe') || "Langganan"}
+                </Button>
+              </motion.div>
             </div>
           </motion.div>
         </motion.div>

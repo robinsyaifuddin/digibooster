@@ -133,18 +133,19 @@ const Navbar = () => {
     }
   };
 
-  // Icon styling for navbar
-  const iconStyle = "h-4 w-4 mr-1.5";
+  // Enhanced 3D icon styling
+  const iconStyle = "h-5 w-5 mr-2";
   const iconClasses = cn(
     iconStyle,
-    scrolled ? "text-primary" : "group-hover:text-primary transition-colors duration-300"
+    "icon-3d transition-all duration-300",
+    scrolled ? "text-primary filter drop-shadow(0 0 5px rgba(0, 216, 232, 0.7))" : "group-hover:text-primary"
   );
 
   const navLinks = [
     { 
       path: "/", 
       label: "beranda", 
-      icon: <Home className={iconClasses} style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+      icon: <Home className={iconClasses} /> 
     },
     { 
       label: "program",
@@ -154,29 +155,29 @@ const Navbar = () => {
         { 
           path: "/program/jasa-digital", 
           label: "jasa-digital", 
-          icon: <Briefcase className="h-4 w-4 mr-2" style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+          icon: <Briefcase className="h-4 w-4 mr-2 icon-3d" /> 
         },
         { 
           path: "/program/kelas", 
           label: "shortclass-bootcamp", 
-          icon: <GraduationCap className="h-4 w-4 mr-2" style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+          icon: <GraduationCap className="h-4 w-4 mr-2 icon-3d" /> 
         },
       ]
     },
     { 
       path: "/blog", 
       label: "blog", 
-      icon: <Book className={iconClasses} style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+      icon: <Book className={iconClasses} /> 
     },
     { 
       path: "/portofolio", 
       label: "portofolio", 
-      icon: <FolderPortfolio className={iconClasses} style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+      icon: <FolderPortfolio className={iconClasses} /> 
     },
     { 
       path: "/tentang", 
       label: "tentang", 
-      icon: <Info className={iconClasses} style={{ filter: "drop-shadow(0px 2px 2px rgba(0, 216, 232, 0.5))" }} /> 
+      icon: <Info className={iconClasses} /> 
     },
   ];
   
@@ -196,10 +197,15 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center">
-            <img
+            <motion.img
               src="/lovable-uploads/63175a8a-8817-436e-8f8b-a3246a8bf733.png"
               alt="DigiBooster"
               className="h-10 w-auto"
+              whileHover={{ 
+                scale: 1.05,
+                filter: "drop-shadow(0 0 8px rgba(0, 216, 232, 0.6))"
+              }}
+              transition={{ type: "spring", stiffness: 400, damping: 10 }}
             />
           </Link>
 
@@ -324,11 +330,16 @@ const Navbar = () => {
                   </Button>
                 </Link>
                 <Link to="/register">
-                  <Button 
-                    className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 hover:shadow-primary/30"
+                  <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                   >
-                    {t('daftar')}
-                  </Button>
+                    <Button 
+                      className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 hover:shadow-primary/30"
+                    >
+                      {t('daftar')}
+                    </Button>
+                  </motion.div>
                 </Link>
               </>
             )}
@@ -341,10 +352,12 @@ const Navbar = () => {
             {/* Mobile language toggle */}
             <LanguageToggle />
 
-            <button
+            <motion.button
               onClick={toggleMobileMenu}
               className="inline-flex items-center justify-center p-2 rounded-md transition-colors duration-200 text-gray-400 hover:text-white hover:bg-dark-300"
               aria-label="Toggle menu"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
             >
               <AnimatePresence initial={false} mode="wait">
                 {mobileMenuOpen ? (
@@ -355,7 +368,7 @@ const Navbar = () => {
                     exit={{ rotate: 90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <X className="block h-6 w-6" />
+                    <X className="block h-6 w-6 icon-3d" />
                   </motion.div>
                 ) : (
                   <motion.div
@@ -365,11 +378,11 @@ const Navbar = () => {
                     exit={{ rotate: -90, opacity: 0 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Menu className="block h-6 w-6" />
+                    <Menu className="block h-6 w-6 icon-3d" />
                   </motion.div>
                 )}
               </AnimatePresence>
-            </button>
+            </motion.button>
           </div>
         </div>
       </div>
@@ -422,9 +435,9 @@ const Navbar = () => {
                     >
                       <span>{t(item.label)}</span>
                       {expandedSubmenu === item.label ? (
-                        <ChevronUp className="h-4 w-4" />
+                        <ChevronUp className="h-4 w-4 icon-3d" />
                       ) : (
-                        <ChevronDown className="h-4 w-4" />
+                        <ChevronDown className="h-4 w-4 icon-3d" />
                       )}
                     </motion.button>
                     
@@ -510,7 +523,7 @@ const Navbar = () => {
                   onClick={toggleMobileMenu}
                 >
                   <span>{t('lihat-website')}</span>
-                  <ExternalLink className="w-3.5 h-3.5" />
+                  <ExternalLink className="w-3.5 h-3.5 icon-3d" />
                 </Link>
               </div>
             </div>

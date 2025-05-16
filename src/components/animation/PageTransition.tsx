@@ -1,5 +1,5 @@
 
-import React, { ReactNode } from 'react';
+import React, { ReactNode, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useLocation } from 'react-router-dom';
 
@@ -11,6 +11,14 @@ export const PageTransition = ({
   children
 }: PageTransitionProps) => {
   const location = useLocation();
+  
+  // Reset scroll position to top when navigating to a new page
+  useEffect(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth'
+    });
+  }, [location.pathname]);
   
   return (
     <motion.div 
@@ -28,7 +36,7 @@ export const PageTransition = ({
         y: -20
       }} 
       transition={{
-        duration: 0.4,
+        duration: 0.5,
         ease: "easeInOut"
       }} 
       className="bg-black min-h-screen"
