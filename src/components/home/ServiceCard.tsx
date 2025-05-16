@@ -73,8 +73,8 @@ const ServiceCard = ({
       className={cn(
         "relative rounded-xl overflow-hidden cursor-pointer transition-all duration-500 h-full group",
         isActive 
-          ? "bg-gradient-to-br from-primary/20 to-dark-400/80 border border-primary/40 shadow-[0_0_20px_rgba(0,216,232,0.4)]" 
-          : "bg-dark-300/50 border border-primary/10 hover:border-primary/30 hover:shadow-[0_0_10px_rgba(0,216,232,0.2)]"
+          ? "bg-gradient-to-br from-primary/30 to-dark-400/90 border border-primary/60 shadow-[0_0_30px_rgba(0,216,232,0.6)]" 
+          : "bg-dark-300/50 border border-primary/10 hover:border-primary/30 hover:shadow-[0_0_15px_rgba(0,216,232,0.3)]"
       )}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
@@ -88,23 +88,23 @@ const ServiceCard = ({
         backdropFilter: 'blur(10px)',
         transform: isActive ? 'translateZ(50px)' : 'translateZ(0)',
         boxShadow: isActive 
-          ? '0 15px 35px rgba(0, 216, 232, 0.2), 0 0 20px rgba(0, 216, 232, 0.4)' 
+          ? '0 15px 35px rgba(0, 216, 232, 0.3), 0 0 30px rgba(0, 216, 232, 0.5)' 
           : '0 5px 15px rgba(0, 0, 0, 0.2)'
       }}
     >
-      {/* Glow effects */}
-      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_50%_50%,rgba(0,216,232,0.3),transparent_80%)]"></div>
+      {/* Enhanced glow effects */}
+      <div className="absolute inset-0 opacity-40 bg-[radial-gradient(circle_at_50%_50%,rgba(0,216,232,0.4),transparent_80%)]"></div>
       
-      {/* Glass overlay effect */}
+      {/* Improved glass overlay effect */}
       <div className={cn(
-        "absolute inset-0 bg-gradient-to-br opacity-30",
-        isActive ? "from-primary/10 to-transparent" : "from-dark-300/50 to-transparent"
+        "absolute inset-0 bg-gradient-to-br opacity-40",
+        isActive ? "from-primary/20 to-transparent" : "from-dark-300/50 to-transparent"
       )}></div>
 
-      {/* Card content */}
-      <div className="p-5 z-10 relative h-full flex flex-col">
+      {/* Card content with improved spacing and animations */}
+      <div className="p-6 z-10 relative h-full flex flex-col">
         <div className={cn(
-          "mb-4 p-4 rounded-xl bg-gradient-to-br from-primary/20 to-dark-300/50 inline-block border border-primary/20 group-hover:border-primary/40 transition-all duration-300",
+          "mb-4 p-4 rounded-xl bg-gradient-to-br from-primary/30 to-dark-300/70 inline-block border border-primary/30 group-hover:border-primary/60 transition-all duration-300",
           isActive ? "scale-110" : ""
         )}>
           {getIconComponent(service.icon)}
@@ -112,7 +112,7 @@ const ServiceCard = ({
         
         <h3 className={cn(
           "font-bold mb-3 text-white group-hover:text-primary transition-colors",
-          isActive ? "text-xl" : "text-lg"
+          isActive ? "text-2xl" : "text-lg"
         )}>
           {service.title}
         </h3>
@@ -137,7 +137,7 @@ const ServiceCard = ({
             >
               <Link 
                 to={service.link} 
-                className="inline-flex items-center text-primary hover:text-white bg-primary/10 px-5 py-2.5 rounded-lg border border-primary/30 hover:border-primary/60 hover:bg-primary/20 transition-all group mt-auto"
+                className="inline-flex items-center text-primary hover:text-white bg-primary/20 px-5 py-2.5 rounded-lg border border-primary/40 hover:border-primary/70 hover:bg-primary/30 transition-all group mt-auto"
               >
                 <span>{t('learn-more')}</span>
                 <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
@@ -162,13 +162,13 @@ const ServiceCard = ({
       
       {/* Enhanced glowing accents */}
       <div className={cn(
-        "absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary via-primary/80 to-primary/20",
+        "absolute bottom-0 left-0 h-1 bg-gradient-to-r from-primary via-primary/80 to-primary/10",
         isActive ? "w-full" : "w-1/3 group-hover:w-2/3 transition-all duration-500"
       )}></div>
       
       {/* Top accent */}
       <div className={cn(
-        "absolute top-0 right-0 h-1 bg-gradient-to-l from-primary via-primary/80 to-primary/20",
+        "absolute top-0 right-0 h-1 bg-gradient-to-l from-primary via-primary/80 to-primary/10",
         isActive ? "w-full" : "w-1/3 group-hover:w-2/3 transition-all duration-500"
       )}></div>
       
@@ -176,18 +176,18 @@ const ServiceCard = ({
       <div className="absolute top-0 right-0 w-16 h-16 overflow-hidden">
         <div className={cn(
           "absolute transform rotate-45 translate-x-8 -translate-y-8 w-16 h-16 bg-gradient-to-br",
-          isActive ? "from-primary/50 to-transparent" : "from-primary/30 to-transparent"
+          isActive ? "from-primary/70 to-transparent" : "from-primary/40 to-transparent"
         )}></div>
       </div>
 
-      {/* Side glow effect when active */}
+      {/* Enhanced side glow effect when active */}
       {isActive && (
         <>
-          <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-32 bg-primary/20 blur-xl"></div>
-          <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-32 bg-primary/20 blur-xl"></div>
+          <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-32 bg-primary/30 blur-xl"></div>
+          <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-32 bg-primary/30 blur-xl"></div>
           
           {/* Special highlight for active card */}
-          <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-40 h-40 bg-primary/20 rounded-full blur-3xl"></div>
         </>
       )}
     </motion.div>

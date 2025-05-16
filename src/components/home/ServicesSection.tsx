@@ -50,7 +50,7 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
   }, [api]);
 
   return (
-    <section className="py-20 bg-gradient-to-br from-dark-400/90 to-dark-300/90 relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-br from-black to-dark-400/95 relative overflow-hidden">
       {/* Background decorations */}
       <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-primary/10 blur-3xl"></div>
       <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-primary/10 blur-3xl"></div>
@@ -95,7 +95,7 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
           </div>
         ) : (
           <div className="relative">
-            {/* Main carousel with perspective effect */}
+            {/* Modern 3D carousel with perspective effect */}
             <div className="max-w-5xl mx-auto py-10">
               <Carousel
                 opts={{
@@ -116,14 +116,13 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
                         transition: 'all 0.5s ease'
                       }}
                     >
-                      {/* Fix: Use a div with isSelected prop via data attribute instead of a render function */}
                       <div 
                         className="h-full transition-all duration-500 transform"
                         data-selected={index === currentSlide}
                         style={{
                           transformStyle: 'preserve-3d',
-                          scale: index === currentSlide ? 1.25 : index === ((currentSlide - 1 + services.length) % services.length) || index === ((currentSlide + 1) % services.length) ? 0.9 : 0.8,
-                          opacity: index === currentSlide ? 1 : index === ((currentSlide - 1 + services.length) % services.length) || index === ((currentSlide + 1) % services.length) ? 0.7 : 0.4,
+                          scale: index === currentSlide ? 1.5 : index === ((currentSlide - 1 + services.length) % services.length) || index === ((currentSlide + 1) % services.length) ? 0.85 : 0.7,
+                          opacity: index === currentSlide ? 1 : index === ((currentSlide - 1 + services.length) % services.length) || index === ((currentSlide + 1) % services.length) ? 0.6 : 0.3,
                           transform: `translateY(${
                             index === currentSlide 
                               ? '0' 
@@ -134,9 +133,9 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
                                   : '-2rem'
                           }) rotate(${
                             index === ((currentSlide - 1 + services.length) % services.length)
-                              ? '-3deg'
+                              ? '-5deg'
                               : index === ((currentSlide + 1) % services.length)
-                                ? '3deg'
+                                ? '5deg'
                                 : '0deg'
                           })`
                         }}
@@ -153,8 +152,8 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
                 </CarouselContent>
                 
                 <div className="absolute inset-0 pointer-events-none flex items-center">
-                  <div className="absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-dark-400/90 to-transparent z-10"></div>
-                  <div className="absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-dark-400/90 to-transparent z-10"></div>
+                  <div className="absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-black to-transparent z-10"></div>
+                  <div className="absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-black to-transparent z-10"></div>
                 </div>
                 
                 {/* Navigation buttons */}
@@ -163,13 +162,13 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
               </Carousel>
             </div>
 
-            {/* Current item indicator */}
+            {/* Current item indicator - improved design */}
             <div className="flex justify-center gap-1.5 mt-4">
               {services.map((_, index) => (
                 <button
                   key={index}
                   className={`h-1.5 rounded-full transition-all ${
-                    currentSlide === index ? "w-6 bg-primary" : "w-1.5 bg-primary/40"
+                    currentSlide === index ? "w-8 bg-primary" : "w-1.5 bg-primary/40"
                   }`}
                   onClick={() => api?.scrollTo(index)}
                   aria-label={`Go to slide ${index + 1}`}
@@ -177,7 +176,7 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
               ))}
             </div>
 
-            {/* CTA Button */}
+            {/* CTA Button with improved styling */}
             <div className="text-center mt-10">
               <p className="text-gray-300 mb-4">{t('discover-more-services')}</p>
               <Link to="/program/jasa-digital">

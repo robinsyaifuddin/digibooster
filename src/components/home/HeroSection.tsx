@@ -175,10 +175,10 @@ const HeroSection = ({ title, subtitle, ctaText, ctaLink, generalInfo, hero }: H
   );
 
   return (
-    <section className="relative bg-dark text-white overflow-hidden pt-12 pb-32">
+    <section className="relative bg-black text-white overflow-hidden pt-12 pb-32">
       {/* GIF Background */}
       <div className="absolute inset-0 w-full h-full z-0">
-        <div className="absolute inset-0 bg-gradient-to-br from-dark-300/80 to-dark/90 z-10"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-black/90 to-dark-400/95 z-10"></div>
         <img 
           src="https://i.gifer.com/DMV.gif" 
           alt="Cyberpunk Background" 

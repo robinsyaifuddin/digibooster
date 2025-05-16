@@ -107,7 +107,7 @@ const Navbar = () => {
       className={cn(
         "fixed top-0 left-0 w-full backdrop-blur-lg border-b z-50 transition-all duration-300",
         theme === 'dark'
-          ? scrolled ? "bg-dark/90 border-dark-300/50" : "bg-dark/70 border-transparent"
+          ? scrolled ? "bg-black/90 border-dark-300/50" : "bg-black/70 border-transparent"
           : scrolled ? "bg-white/90 border-gray-200" : "bg-white/70 border-transparent"
       )}
       initial="hidden"
