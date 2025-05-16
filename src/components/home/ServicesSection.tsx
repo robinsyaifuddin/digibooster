@@ -116,29 +116,38 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
                         transition: 'all 0.5s ease'
                       }}
                     >
-                      {({ isSelected }) => (
-                        <div 
-                          className={`h-full transition-all duration-500 transform ${
-                            isSelected 
-                              ? 'scale-125 z-10 translate-y-0' 
+                      {/* Fix: Use a div with isSelected prop via data attribute instead of a render function */}
+                      <div 
+                        className="h-full transition-all duration-500 transform"
+                        data-selected={index === currentSlide}
+                        style={{
+                          transformStyle: 'preserve-3d',
+                          scale: index === currentSlide ? 1.25 : index === ((currentSlide - 1 + services.length) % services.length) || index === ((currentSlide + 1) % services.length) ? 0.9 : 0.8,
+                          opacity: index === currentSlide ? 1 : index === ((currentSlide - 1 + services.length) % services.length) || index === ((currentSlide + 1) % services.length) ? 0.7 : 0.4,
+                          transform: `translateY(${
+                            index === currentSlide 
+                              ? '0' 
                               : index === ((currentSlide - 1 + services.length) % services.length)
-                                ? 'scale-90 opacity-70 -translate-y-4 -rotate-3'
+                                ? '-1rem' 
                                 : index === ((currentSlide + 1) % services.length)
-                                  ? 'scale-90 opacity-70 -translate-y-4 rotate-3'
-                                  : 'scale-80 opacity-40 -translate-y-8'
-                          }`}
-                          style={{
-                            transformStyle: 'preserve-3d',
-                          }}
-                        >
-                          <ServiceCard 
-                            service={service} 
-                            index={index} 
-                            isActive={isSelected}
-                            onClick={() => isSelected ? handleServiceClick(index) : api?.scrollTo(index)}
-                          />
-                        </div>
-                      )}
+                                  ? '-1rem'
+                                  : '-2rem'
+                          }) rotate(${
+                            index === ((currentSlide - 1 + services.length) % services.length)
+                              ? '-3deg'
+                              : index === ((currentSlide + 1) % services.length)
+                                ? '3deg'
+                                : '0deg'
+                          })`
+                        }}
+                      >
+                        <ServiceCard 
+                          service={service} 
+                          index={index} 
+                          isActive={index === currentSlide}
+                          onClick={() => index === currentSlide ? handleServiceClick(index) : api?.scrollTo(index)}
+                        />
+                      </div>
                     </CarouselItem>
                   ))}
                 </CarouselContent>
