@@ -15,6 +15,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from "@/components/ui/carousel";
+import { Card } from '@/components/ui/card';
+import { useEffect } from 'react';
 
 interface ServicesSectionProps {
   services: ServiceItem[];
@@ -23,11 +25,30 @@ interface ServicesSectionProps {
 const ServicesSection = ({ services }: ServicesSectionProps) => {
   const { t } = useLanguage();
   const [activeService, setActiveService] = useState<number | null>(null);
+  const [api, setApi] = React.useState<any>(null);
+  const [currentSlide, setCurrentSlide] = useState(0);
   
   const handleServiceClick = (index: number) => {
     setActiveService(activeService === index ? null : index);
   };
   
+  // Update current slide when the carousel changes
+  useEffect(() => {
+    if (!api) return;
+    
+    const onSelect = () => {
+      setCurrentSlide(api.selectedScrollSnap());
+    };
+    
+    api.on("select", onSelect);
+    api.on("reInit", onSelect);
+    
+    return () => {
+      api.off("select", onSelect);
+      api.off("reInit", onSelect);
+    };
+  }, [api]);
+
   return (
     <section className="py-20 bg-gradient-to-br from-dark-400/90 to-dark-300/90 relative overflow-hidden">
       {/* Background decorations */}
@@ -74,44 +95,78 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
           </div>
         ) : (
           <div className="relative">
-            <Carousel
-              opts={{
-                align: "center",
-                loop: true,
-              }}
-              className="w-full overflow-visible"
-            >
-              <CarouselContent className="-ml-2 md:-ml-4">
-                {services.map((service, index) => (
-                  <CarouselItem 
-                    key={index} 
-                    className="pl-2 md:pl-4 flex items-center justify-center"
-                    style={{ 
-                      width: '100%',
-                      maxWidth: '340px',
-                      transition: 'all 0.5s ease'
-                    }}
-                  >
-                    {({ isSelected }) => (
-                      <div className={`h-full transition-all duration-500 ${isSelected ? 'scale-110 z-10' : 'scale-90 opacity-70'}`}>
-                        <ServiceCard 
-                          service={service} 
-                          index={index} 
-                          isActive={isSelected}
-                          onClick={() => handleServiceClick(index)}
-                        />
-                      </div>
-                    )}
-                  </CarouselItem>
-                ))}
-              </CarouselContent>
-              
-              {/* Navigation buttons positioned at the bottom */}
-              <div className="flex justify-center items-center mt-8 gap-4">
-                <CarouselPrevious className="static translate-y-0 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
-                <CarouselNext className="static translate-y-0 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
-              </div>
-            </Carousel>
+            {/* Main carousel with perspective effect */}
+            <div className="max-w-5xl mx-auto py-10">
+              <Carousel
+                opts={{
+                  align: "center",
+                  loop: true,
+                }}
+                setApi={setApi}
+                className="w-full perspective-1000"
+              >
+                <CarouselContent className="-ml-2 md:-ml-4">
+                  {services.map((service, index) => (
+                    <CarouselItem 
+                      key={index} 
+                      className="pl-2 md:pl-4 flex items-center justify-center"
+                      style={{ 
+                        width: '100%',
+                        maxWidth: '340px',
+                        transition: 'all 0.5s ease'
+                      }}
+                    >
+                      {({ isSelected }) => (
+                        <div 
+                          className={`h-full transition-all duration-500 transform ${
+                            isSelected 
+                              ? 'scale-125 z-10 translate-y-0' 
+                              : index === ((currentSlide - 1 + services.length) % services.length)
+                                ? 'scale-90 opacity-70 -translate-y-4 -rotate-3'
+                                : index === ((currentSlide + 1) % services.length)
+                                  ? 'scale-90 opacity-70 -translate-y-4 rotate-3'
+                                  : 'scale-80 opacity-40 -translate-y-8'
+                          }`}
+                          style={{
+                            transformStyle: 'preserve-3d',
+                          }}
+                        >
+                          <ServiceCard 
+                            service={service} 
+                            index={index} 
+                            isActive={isSelected}
+                            onClick={() => isSelected ? handleServiceClick(index) : api?.scrollTo(index)}
+                          />
+                        </div>
+                      )}
+                    </CarouselItem>
+                  ))}
+                </CarouselContent>
+                
+                <div className="absolute inset-0 pointer-events-none flex items-center">
+                  <div className="absolute inset-y-0 left-0 w-1/6 bg-gradient-to-r from-dark-400/90 to-transparent z-10"></div>
+                  <div className="absolute inset-y-0 right-0 w-1/6 bg-gradient-to-l from-dark-400/90 to-transparent z-10"></div>
+                </div>
+                
+                {/* Navigation buttons */}
+                <CarouselPrevious className="absolute left-4 top-1/2 -translate-y-1/2 bg-dark-300/80 hover:bg-primary/20 backdrop-blur-sm border-primary/20 z-20" />
+                <CarouselNext className="absolute right-4 top-1/2 -translate-y-1/2 bg-dark-300/80 hover:bg-primary/20 backdrop-blur-sm border-primary/20 z-20" />
+              </Carousel>
+            </div>
+
+            {/* Current item indicator */}
+            <div className="flex justify-center gap-1.5 mt-4">
+              {services.map((_, index) => (
+                <button
+                  key={index}
+                  className={`h-1.5 rounded-full transition-all ${
+                    currentSlide === index ? "w-6 bg-primary" : "w-1.5 bg-primary/40"
+                  }`}
+                  onClick={() => api?.scrollTo(index)}
+                  aria-label={`Go to slide ${index + 1}`}
+                />
+              ))}
+            </div>
 
             {/* CTA Button */}
             <div className="text-center mt-10">

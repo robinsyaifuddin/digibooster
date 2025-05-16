@@ -85,9 +85,16 @@ const ServiceCard = ({
         minHeight: isActive ? '320px' : '280px',
         width: isActive ? '100%' : '100%',
         maxWidth: isActive ? '640px' : '320px',
-        backdropFilter: 'blur(10px)'
+        backdropFilter: 'blur(10px)',
+        transform: isActive ? 'translateZ(50px)' : 'translateZ(0)',
+        boxShadow: isActive 
+          ? '0 15px 35px rgba(0, 216, 232, 0.2), 0 0 20px rgba(0, 216, 232, 0.4)' 
+          : '0 5px 15px rgba(0, 0, 0, 0.2)'
       }}
     >
+      {/* Glow effects */}
+      <div className="absolute inset-0 opacity-30 bg-[radial-gradient(circle_at_50%_50%,rgba(0,216,232,0.3),transparent_80%)]"></div>
+      
       {/* Glass overlay effect */}
       <div className={cn(
         "absolute inset-0 bg-gradient-to-br opacity-30",
@@ -178,6 +185,9 @@ const ServiceCard = ({
         <>
           <div className="absolute -left-4 top-1/2 -translate-y-1/2 w-8 h-32 bg-primary/20 blur-xl"></div>
           <div className="absolute -right-4 top-1/2 -translate-y-1/2 w-8 h-32 bg-primary/20 blur-xl"></div>
+          
+          {/* Special highlight for active card */}
+          <div className="absolute -top-10 left-1/2 -translate-x-1/2 w-40 h-40 bg-primary/10 rounded-full blur-3xl"></div>
         </>
       )}
     </motion.div>
