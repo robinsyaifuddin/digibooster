@@ -1,20 +1,20 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import ServiceCard, { ServiceProps } from './ServiceCard';
+import ProgramCard, { ProgramProps } from './ProgramCard';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-interface ServicesGridProps {
-  services: ServiceProps[];
+interface ProgramsGridProps {
+  programs: ProgramProps[];
 }
 
-const ServicesGrid = ({ services }: ServicesGridProps) => {
+const ProgramsGrid = ({ programs }: ProgramsGridProps) => {
   const [currentPage, setCurrentPage] = useState(0);
   const itemsPerPage = 6;
-  const totalPages = Math.ceil(services.length / itemsPerPage);
+  const totalPages = Math.ceil(programs.length / itemsPerPage);
   
-  const currentServices = services.slice(
+  const currentPrograms = programs.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
@@ -43,11 +43,11 @@ const ServicesGrid = ({ services }: ServicesGridProps) => {
   };
 
   return (
-    <div id="services-section" className="relative py-10">
+    <div id="programs-section" className="relative py-10">
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
         <div>
-          <h2 className="text-2xl md:text-3xl font-bold text-white">DigiBooster Services</h2>
-          <p className="text-gray-400 mt-2">Solusi digital terbaik untuk kebutuhan bisnis Anda</p>
+          <h2 className="text-2xl md:text-3xl font-bold text-white">Program Motivasi & Edukasi</h2>
+          <p className="text-gray-400 mt-2">Program edukasi terbaik untuk pengembangan skill digital Anda</p>
         </div>
         
         <div className="flex items-center gap-2">
@@ -92,7 +92,7 @@ const ServicesGrid = ({ services }: ServicesGridProps) => {
         animate="show"
         className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12"
       >
-        {currentServices.map((service, index) => (
+        {currentPrograms.map((program, index) => (
           <motion.div
             key={index}
             variants={item}
@@ -103,13 +103,13 @@ const ServicesGrid = ({ services }: ServicesGridProps) => {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <ServiceCard 
-              icon={service.icon}
-              title={service.title}
-              description={service.description}
-              items={service.items}
+            <ProgramCard 
+              icon={program.icon}
+              title={program.title}
+              description={program.description}
+              features={program.features}
               rating={4 + Math.random()}
-              year={`20${20 + Math.floor(Math.random() * 4)}`}
+              duration={program.duration || "4 minggu"}
             />
           </motion.div>
         ))}
@@ -118,4 +118,4 @@ const ServicesGrid = ({ services }: ServicesGridProps) => {
   );
 };
 
-export default ServicesGrid;
+export default ProgramsGrid;

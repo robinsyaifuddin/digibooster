@@ -1,11 +1,11 @@
 
 import React, { useEffect } from 'react';
 import { motion, useAnimation } from 'framer-motion';
-import { Code, Zap } from 'lucide-react';
+import { Lightbulb, BookOpen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
-const JasaDigitalHero = () => {
+const MotivationHero = () => {
   const navigate = useNavigate();
   const controls = useAnimation();
   
@@ -21,7 +21,7 @@ const JasaDigitalHero = () => {
 
   return (
     <div className="w-full relative overflow-hidden rounded-xl mb-16">
-      {/* Background with gradient - changed from red to sky blue */}
+      {/* Background with gradient */}
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-sky-600/60 z-0"></div>
       
       {/* Hero Content */}
@@ -43,8 +43,8 @@ const JasaDigitalHero = () => {
             transition={{ delay: 0.4, duration: 0.6 }}
             className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white"
           >
-            Layanan Jasa <br/>
-            <span className="text-sky-400">Digital Terbaik</span>
+            Motivasi & <br/>
+            <span className="text-sky-400">Edukasi Digital</span>
           </motion.h1>
           
           <motion.p 
@@ -53,7 +53,7 @@ const JasaDigitalHero = () => {
             transition={{ delay: 0.6, duration: 0.6 }}
             className="text-lg text-gray-300 mb-8 max-w-xl"
           >
-            Percepatan Digitalisasi Indonesia melalui solusi digital komprehensif dan profesional untuk bisnis Anda
+            Program motivasi dan edukasi untuk membangun mindset dan keterampilan digital bagi masa depan Indonesia
           </motion.p>
           
           <div className="flex flex-wrap gap-4">
@@ -62,7 +62,7 @@ const JasaDigitalHero = () => {
               size="lg"
               className="bg-sky-500 hover:bg-sky-600 text-white border-0"
             >
-              Konsultasi Sekarang
+              Daftar Program
             </Button>
             
             <Button 
@@ -70,13 +70,13 @@ const JasaDigitalHero = () => {
               size="lg"
               className="border-gray-600 text-white hover:bg-white/10 hover:text-white"
               onClick={() => {
-                const servicesSection = document.getElementById('services-section');
-                if (servicesSection) {
-                  servicesSection.scrollIntoView({ behavior: 'smooth' });
+                const programsSection = document.getElementById('programs-section');
+                if (programsSection) {
+                  programsSection.scrollIntoView({ behavior: 'smooth' });
                 }
               }}
             >
-              Lihat Layanan
+              Lihat Program
             </Button>
           </div>
         </div>
@@ -95,7 +95,7 @@ const JasaDigitalHero = () => {
                 transition={{ delay: 0.2 * item, duration: 0.5 }}
                 className="w-32 h-24 rounded-lg bg-black/50 backdrop-blur-sm border border-gray-800 flex items-center justify-center"
               >
-                <Code className="text-sky-400 h-10 w-10" />
+                <BookOpen className="text-sky-400 h-10 w-10" />
               </motion.div>
             ))}
           </div>
@@ -113,4 +113,4 @@ const JasaDigitalHero = () => {
   );
 };
 
-export default JasaDigitalHero;
+export default MotivationHero;

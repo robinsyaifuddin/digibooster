@@ -1,38 +1,20 @@
 
-import React, { useEffect } from 'react';
+import React from 'react';
 import ClassHero from '@/components/class/ClassHero';
 import ClassGrid from '@/components/class/ClassGrid';
 import CtaComponent from '@/components/common/CtaComponent';
 import { classes } from '@/data/classData';
 import { motion } from 'framer-motion';
+import AnimatedSection from '@/components/animation/AnimatedSection';
 
 const Kelas = () => {
-  // Add scroll reveal effect
-  useEffect(() => {
-    const handleScroll = () => {
-      const reveals = document.querySelectorAll('.scroll-reveal');
-      for (let i = 0; i < reveals.length; i++) {
-        const windowHeight = window.innerHeight;
-        const elementTop = reveals[i].getBoundingClientRect().top;
-        const elementVisible = 150;
-        
-        if (elementTop < windowHeight - elementVisible) {
-          reveals[i].classList.add('active');
-        }
-      }
-    };
-    
-    window.addEventListener('scroll', handleScroll);
-    handleScroll(); // Initial check
-    
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
-
   return (
-    <div className="pt-24 md:pt-32 bg-dark min-h-screen">
+    <div className="pt-24 md:pt-32 bg-black min-h-screen">
       <div className="container mx-auto px-4">
         {/* Hero Section */}
-        <ClassHero />
+        <AnimatedSection animation="fadeIn">
+          <ClassHero />
+        </AnimatedSection>
 
         {/* Classes Grid with enhanced animations */}
         <motion.div
@@ -44,7 +26,7 @@ const Kelas = () => {
           <ClassGrid classes={classes} />
         </motion.div>
 
-        {/* CTA Section with cyberpunk theme */}
+        {/* CTA Section with cyberpunk theme - updated colors to sky blue */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}

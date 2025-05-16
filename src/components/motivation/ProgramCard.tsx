@@ -2,24 +2,23 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { PlayCircle, Star, Plus, Heart, Info } from 'lucide-react';
+import { BookOpen, Star, Users, Heart, Info } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import { cn } from '@/lib/utils';
 
-export interface ServiceProps {
+export interface ProgramProps {
   icon: React.ReactNode;
   title: string;
   description: string;
-  items: string[];
+  features: string[];
   rating?: number;
-  year?: string;
+  duration?: string;
 }
 
-const ServiceCard = ({ icon, title, description, items, rating = 4.5, year = "2023" }: ServiceProps) => {
+const ProgramCard = ({ icon, title, description, features, rating = 4.5, duration = "4 minggu" }: ProgramProps) => {
   const navigate = useNavigate();
   
-  const handleOrder = () => {
-    navigate(`/order-form?service=${encodeURIComponent(title)}`);
+  const handleRegister = () => {
+    navigate(`/order-form?program=${encodeURIComponent(title)}`);
   };
 
   // Format rating to have one decimal place
@@ -31,7 +30,7 @@ const ServiceCard = ({ icon, title, description, items, rating = 4.5, year = "20
       transition={{ duration: 0.3 }}
       className="relative overflow-hidden rounded-2xl h-full group"
     >
-      {/* Card background with gradient - changed from red to sky blue */}
+      {/* Card background with gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black z-0"></div>
       
       {/* Blue accent shape */}
@@ -65,8 +64,8 @@ const ServiceCard = ({ icon, title, description, items, rating = 4.5, year = "20
             <Star className="h-4 w-4 text-yellow-500 mr-1 fill-yellow-500" />
             <span className="text-white">{formattedRating}</span>
           </div>
-          <span className="text-gray-400">{year}</span>
-          <span className="px-2 py-0.5 text-xs rounded-full bg-sky-500/20 border border-sky-500/30 text-sky-300">Premium</span>
+          <span className="text-gray-400">{duration}</span>
+          <span className="px-2 py-0.5 text-xs rounded-full bg-sky-500/20 border border-sky-500/30 text-sky-300">Featured</span>
         </div>
         
         {/* Description */}
@@ -77,15 +76,15 @@ const ServiceCard = ({ icon, title, description, items, rating = 4.5, year = "20
         {/* Features/Items */}
         <div className="flex-grow mb-4">
           <ul className="space-y-2">
-            {items.slice(0, 3).map((item, idx) => (
+            {features.slice(0, 3).map((feature, idx) => (
               <li key={idx} className="text-xs text-gray-400 flex items-start">
                 <span className="inline-block w-1.5 h-1.5 rounded-full bg-sky-400 mt-1.5 mr-2"></span>
-                {item}
+                {feature}
               </li>
             ))}
-            {items.length > 3 && (
+            {features.length > 3 && (
               <li className="text-xs text-sky-300 cursor-pointer hover:text-sky-200 transition-colors">
-                +{items.length - 3} more features
+                +{features.length - 3} more features
               </li>
             )}
           </ul>
@@ -93,15 +92,15 @@ const ServiceCard = ({ icon, title, description, items, rating = 4.5, year = "20
         
         {/* Action button */}
         <Button 
-          onClick={handleOrder}
+          onClick={handleRegister}
           className="w-full justify-center bg-sky-500 hover:bg-sky-600 text-white border-0 font-medium transition-all duration-300 py-5"
         >
-          <PlayCircle className="mr-2 h-4 w-4" />
-          Order Now
+          <BookOpen className="mr-2 h-4 w-4" />
+          Daftar Sekarang
         </Button>
       </div>
     </motion.div>
   );
 };
 
-export default ServiceCard;
+export default ProgramCard;
