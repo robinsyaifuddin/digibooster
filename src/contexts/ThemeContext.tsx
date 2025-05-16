@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 
 interface ThemeContextType {
   theme: 'dark';
@@ -12,9 +12,9 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const theme = 'dark' as const;
 
   // Set dark theme on document element
-  if (typeof document !== 'undefined') {
+  useEffect(() => {
     document.documentElement.classList.add('dark');
-  }
+  }, []);
 
   const value = {
     theme

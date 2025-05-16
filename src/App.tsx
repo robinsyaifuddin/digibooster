@@ -4,7 +4,7 @@ import { lazy, Suspense } from "react";
 import { HelmetProvider } from "react-helmet-async";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { AuthProvider } from "./contexts/AuthContext";
-import { Toaster } from "@/components/ui/sonner";
+import { Toaster } from "sonner";
 
 // Add providers
 import { ThemeProvider } from "./contexts/ThemeContext";
@@ -57,9 +57,9 @@ function App() {
   return (
     <HelmetProvider>
       <QueryClientProvider client={queryClient}>
-        <ThemeProvider>
-          <LanguageProvider>
-            <BrowserRouter>
+        <BrowserRouter>
+          <ThemeProvider>
+            <LanguageProvider>
               <AuthProvider>
                 <HomeContentProvider>
                   <Navbar />
@@ -97,12 +97,12 @@ function App() {
                     </PageTransition>
                   </div>
                   <Footer />
+                  <Toaster position="top-center" />
                 </HomeContentProvider>
               </AuthProvider>
-            </BrowserRouter>
-          </LanguageProvider>
-        </ThemeProvider>
-        <Toaster position="top-center" />
+            </LanguageProvider>
+          </ThemeProvider>
+        </BrowserRouter>
       </QueryClientProvider>
     </HelmetProvider>
   );
