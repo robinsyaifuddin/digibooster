@@ -59,34 +59,52 @@
   }
 
   .dark {
-    --background: 240 10% 3.9%;
-    --foreground: 0 0% 98%;
-    --card: 240 10% 3.9%;
-    --card-foreground: 0 0% 98%;
-    --popover: 240 10% 3.9%;
-    --popover-foreground: 0 0% 98%;
-    --primary: 189 100% 45%;
-    --primary-foreground: 240 5.9% 10%;
-    --secondary: 240 3.7% 15.9%;
-    --secondary-foreground: 0 0% 98%;
-    --muted: 240 3.7% 15.9%;
-    --muted-foreground: 240 5% 64.9%;
-    --accent: 240 3.7% 15.9%;
-    --accent-foreground: 0 0% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 0 0% 98%;
-    --border: 240 3.7% 15.9%;
-    --input: 240 3.7% 15.9%;
-    --ring: 189 100% 45%;
+    /* Dark base colors - make more consistent */
+    --background: 232 16% 3%;
+    --foreground: 210 20% 98%;
     
-    --sidebar-background: 240 10% 3.9%;
-    --sidebar-foreground: 0 0% 98%;
-    --sidebar-primary: 189 100% 45%;
-    --sidebar-primary-foreground: 0 0% 98%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 0 0% 98%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 189 100% 45%;
+    /* Card colors - improved contrast */
+    --card: 232 16% 3%;
+    --card-foreground: 210 20% 98%;
+    
+    /* Popover colors - improved for visibility */
+    --popover: 232 16% 3%;
+    --popover-foreground: 210 20% 98%;
+    
+    /* Primary colors - improved cyan */
+    --primary: 189 100% 50%;
+    --primary-foreground: 232 16% 3%;
+    
+    /* Secondary colors - better contrast with primary */
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 210 20% 98%;
+    
+    /* Muted colors - subtle background for cards */
+    --muted: 217 33% 17%;
+    --muted-foreground: 215 20% 65%;
+    
+    /* Accent colors - subtly different from secondary */
+    --accent: 217 33% 17%;
+    --accent-foreground: 210 20% 98%;
+    
+    /* Destructive colors - warmer red */
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 20% 98%;
+    
+    /* Border colors - darker for visibility */
+    --border: 215 27% 15%;
+    --input: 215 27% 15%;
+    --ring: 189 100% 50%;
+    
+    /* Sidebar specific colors */
+    --sidebar-background: 232 16% 3%;
+    --sidebar-foreground: 210 20% 98%;
+    --sidebar-primary: 189 100% 50%;
+    --sidebar-primary-foreground: 210 20% 98%;
+    --sidebar-accent: 217 33% 17%;
+    --sidebar-accent-foreground: 210 20% 98%;
+    --sidebar-border: 217 33% 17%;
+    --sidebar-ring: 189 100% 50%;
   }
 }
 
@@ -107,5 +125,33 @@
   .carousel-container {
     max-width: 90vw;
     margin: 0 auto;
+  }
+}
+
+/* Adding utility classes for improved mobile responsiveness */
+@layer utilities {
+  .mobile-menu-transition {
+    @apply transition-all duration-300 ease-in-out;
+  }
+  
+  .mobile-submenu {
+    @apply max-h-0 overflow-hidden transition-all duration-300 ease-in-out;
+  }
+  
+  .mobile-submenu.open {
+    @apply max-h-96; /* Adjust height as needed */
+  }
+  
+  .nav-item-hover {
+    @apply relative overflow-hidden before:absolute before:bottom-0 before:left-0 before:h-0.5 before:w-0 before:bg-primary before:transition-all before:duration-300 hover:before:w-full;
+  }
+  
+  .cyberpunk-glow {
+    @apply transition-all duration-300;
+    box-shadow: 0 0 0 rgba(0, 216, 232, 0);
+  }
+  
+  .cyberpunk-glow:hover {
+    box-shadow: 0 0 15px rgba(0, 216, 232, 0.6);
   }
 }

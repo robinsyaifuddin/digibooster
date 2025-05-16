@@ -1,5 +1,5 @@
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   Carousel, 
   CarouselContent, 
@@ -30,7 +30,8 @@ const PopularPortfolioSection = ({
   const isMobile = useIsMobile();
   const { t } = useLanguage();
   
-  const visibleItems = portfolioItems;
+  // Only show the first 3 portfolio items
+  const visibleItems = portfolioItems.slice(0, 3);
   
   return (
     <section className="py-20 relative overflow-hidden">
@@ -84,7 +85,7 @@ const PopularPortfolioSection = ({
                   key={item.id}
                   className={cn(
                     "pl-2 md:pl-4",
-                    isMobile ? "basis-full sm:basis-3/4" : "basis-full md:basis-1/3 lg:basis-1/4",
+                    isMobile ? "basis-full sm:basis-3/4" : "basis-full md:basis-1/2 lg:basis-1/3",
                     "transition-all duration-300 py-10"
                   )}
                 >
@@ -188,7 +189,7 @@ const PopularPortfolioSection = ({
           <Link to="/portofolio">
             <Button 
               variant="outline" 
-              className="border-primary/40 hover:border-primary hover:bg-primary/10"
+              className="border-primary/40 hover:border-primary hover:bg-primary/10 cyberpunk-glow"
             >
               {t('view-all-portfolio')}
             </Button>
