@@ -31,7 +31,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
       <div className="flex items-center mb-3 md:mb-4">
         {[...Array(5)].map((_, i) => (
           <Star 
-            key={i} 
+            key={i.toString()} 
             size={isMobile ? 12 : 14} 
             className={i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-600"} 
           />
