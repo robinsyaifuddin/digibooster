@@ -162,6 +162,16 @@ const Navbar = () => {
           label: "shortclass-bootcamp", 
           icon: <GraduationCap className="h-4 w-4 mr-2 icon-3d" /> 
         },
+        { 
+          path: "/program/motivasi-edukasi", 
+          label: "motivasi-edukasi", 
+          icon: <Book className="h-4 w-4 mr-2 icon-3d" /> 
+        },
+        { 
+          path: "/program/sharing-konsultasi", 
+          label: "sharing-konsultasi", 
+          icon: <Info className="h-4 w-4 mr-2 icon-3d" /> 
+        },
       ]
     },
     { 

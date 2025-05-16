@@ -18,7 +18,17 @@ export const PageTransition = ({
       top: 0,
       behavior: 'smooth'
     });
-  }, [location.pathname]);
+    
+    // If there's a hash in the URL (e.g., #section), scroll to it after a short delay
+    if (location.hash) {
+      setTimeout(() => {
+        const element = document.getElementById(location.hash.substring(1));
+        if (element) {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }
+      }, 500); // Small delay to allow the page to render first
+    }
+  }, [location.pathname, location.hash]);
   
   return (
     <motion.div 

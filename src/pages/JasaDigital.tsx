@@ -5,6 +5,7 @@ import ServicesGrid from '@/components/jasa-digital/ServicesGrid';
 import CtaComponent from '@/components/common/CtaComponent';
 import { jasaDigitalServices } from '@/data/jasaDigitalData';
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 
 const JasaDigital = () => {
   return (
@@ -13,7 +14,7 @@ const JasaDigital = () => {
         {/* Hero Section */}
         <JasaDigitalHero />
         
-        {/* Services Section */}
+        {/* Services Section with anchor points */}
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
@@ -80,7 +81,7 @@ const JasaDigital = () => {
           </div>
         </motion.div>
 
-        {/* CTA Section with updated style */}
+        {/* CTA Section with updated link */}
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}

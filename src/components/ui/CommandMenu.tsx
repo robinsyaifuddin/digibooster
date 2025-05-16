@@ -51,9 +51,12 @@ export function CommandMenu() {
       { id: 'home', title: t('beranda'), type: 'page', path: '/' },
       { id: 'jasa-digital', title: t('jasa-digital'), type: 'page', path: '/program/jasa-digital' },
       { id: 'kelas', title: t('shortclass-bootcamp'), type: 'page', path: '/program/kelas' },
+      { id: 'motivasi-edukasi', title: t('motivasi-edukasi'), type: 'page', path: '/program/motivasi-edukasi' },
+      { id: 'sharing-konsultasi', title: t('sharing-konsultasi'), type: 'page', path: '/program/sharing-konsultasi' },
       { id: 'blog', title: t('blog'), type: 'page', path: '/blog' },
       { id: 'portofolio', title: t('portofolio'), type: 'page', path: '/portofolio' },
       { id: 'about', title: t('tentang'), type: 'page', path: '/tentang' },
+      { id: 'kontak', title: t('kontak'), type: 'page', path: '/kontak' },
     ];
 
     setSearchItems([...blogItems, ...portfolioSearchItems, ...pageItems]);

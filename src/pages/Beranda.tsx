@@ -1,4 +1,3 @@
-
 import React from 'react';
 import HeroSection from '@/components/home/HeroSection';
 import ServicesSection from '@/components/home/ServicesSection';
@@ -21,49 +20,49 @@ const Beranda = () => {
   const companyName = generalInfo.title;
   const { t } = useLanguage();
   
-  // DigiBooster specific digital services
+  // DigiBooster specific digital services with proper links
   const digiBoosterServices: ServiceItem[] = [
     {
       id: '1',
       title: t('website-app-development'),
       description: t('website-app-desc'),
       icon: 'Code',
-      link: '/program/jasa-digital',
+      link: '/program/jasa-digital#website-development',
     },
     {
       id: '2',
       title: t('graphic-design'),
       description: t('graphic-design-desc'),
       icon: 'PenTool',
-      link: '/program/jasa-digital',
+      link: '/program/jasa-digital#graphic-design',
     },
     {
       id: '3',
       title: t('digital-marketing'),
       description: t('digital-marketing-desc'),
       icon: 'Megaphone',
-      link: '/program/jasa-digital',
+      link: '/program/jasa-digital#digital-marketing',
     },
     {
       id: '4',
       title: t('content-management'),
       description: t('content-management-desc'),
       icon: 'FileText',
-      link: '/program/jasa-digital',
+      link: '/program/jasa-digital#content-management',
     },
     {
       id: '5',
       title: t('photo-video'),
       description: t('photo-video-desc'),
       icon: 'Camera',
-      link: '/program/jasa-digital',
+      link: '/program/jasa-digital#photo-video',
     },
     {
       id: '6',
       title: t('social-media'),
       description: t('social-media-desc'),
       icon: 'Share2',
-      link: '/program/jasa-digital',
+      link: '/program/jasa-digital#social-media',
     },
   ];
   

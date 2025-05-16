@@ -32,6 +32,8 @@ import OrderForm from "./pages/OrderForm";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import NotFound from "./pages/NotFound";
+import Kontak from "./pages/Kontak";
+import Beranda from "./pages/Beranda";
 
 // Use lazy loading only for admin dashboard
 const AdminDashboard = lazy(() => import("./pages/AdminDashboard"));
@@ -64,7 +66,8 @@ function App() {
                   <div className="pt-16">
                     <PageTransition>
                       <Routes>
-                        <Route path="/" element={<Home />} />
+                        <Route path="/" element={<Beranda />} />
+                        <Route path="/home" element={<Home />} />
                         <Route path="/services" element={<Services />} />
                         <Route path="/services/:id" element={<ServiceDetails />} />
                         <Route path="/tentang" element={<Tentang />} />
@@ -79,6 +82,7 @@ function App() {
                         <Route path="/order-form" element={<OrderForm />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
+                        <Route path="/kontak" element={<Kontak />} />
                         <Route path="/404" element={<NotFound />} />
                         <Route path="*" element={<Navigate to="/404" replace />} />
                         <Route 
