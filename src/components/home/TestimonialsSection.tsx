@@ -8,6 +8,7 @@ import {
   CarouselItem,
 } from '@/components/ui/carousel';
 import { cn } from '@/lib/utils';
+import TestimonialMarquee from './TestimonialMarquee';
 
 interface TestimonialsSectionProps {
   companyName: string;
@@ -17,6 +18,15 @@ interface TestimonialsSectionProps {
 const TestimonialsSection = ({ companyName, testimonials }: TestimonialsSectionProps) => {
   // Duplicate testimonials for continuous flow
   const extendedTestimonials = [...testimonials, ...testimonials];
+
+  // Create the title with DigiBooster specific text
+  const testimonialTitle = (
+    <>
+      <span className="text-white">Apa Kata </span>
+      <span className="text-neon-cyan">Klien </span>
+      <span className="text-white">DigiBooster?</span>
+    </>
+  );
 
   return (
     <section className="py-16 md:py-24 overflow-hidden bg-gradient-to-b from-dark-300 to-dark-400 text-white">
@@ -29,7 +39,19 @@ const TestimonialsSection = ({ companyName, testimonials }: TestimonialsSectionP
           </p>
         </div>
 
-        <div className="relative">
+        {/* Use the Testimonial Marquee on larger screens */}
+        <div className="hidden md:block">
+          <TestimonialMarquee 
+            testimonials={testimonials} 
+            title={testimonialTitle}
+            description="Pengalaman nyata dari klien yang telah bekerjasama dengan DigiBooster Indonesia"
+            speed="medium"
+            bgColor="transparent"
+          />
+        </div>
+
+        {/* Use the original carousel on mobile */}
+        <div className="block md:hidden relative">
           <Carousel
             opts={{
               align: "start",
@@ -57,12 +79,12 @@ const TestimonialsSection = ({ companyName, testimonials }: TestimonialsSectionP
                         <img 
                           src={testimonial.image} 
                           alt={testimonial.name} 
-                          className="w-10 h-10 rounded-full mr-3 shadow-sm border border-neon-cyan/30"
+                          className="w-6 h-6 md:w-8 md:h-8 rounded-full mr-3 shadow-sm border border-neon-cyan/30"
                         />
                       )}
                       <div>
-                        <h4 className="font-semibold text-white text-sm md:text-base">{testimonial.name}</h4>
-                        <p className="text-gray-400 text-xs md:text-sm">{testimonial.role}</p>
+                        <h4 className="font-semibold text-white text-xs md:text-sm">{testimonial.name}</h4>
+                        <p className="text-gray-400 text-xs">{testimonial.role}</p>
                       </div>
                     </div>
                   </div>

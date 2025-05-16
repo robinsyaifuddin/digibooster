@@ -15,6 +15,7 @@ import TestimonialCard from '@/components/home/TestimonialCard';
 import FeaturedPortfolioCard from '@/components/home/FeaturedPortfolioCard';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LogoMarquee from '@/components/home/LogoMarquee';
+import TestimonialMarquee from '@/components/home/TestimonialMarquee';
 
 // Featured service data
 const featuredService = {
@@ -171,9 +172,19 @@ const Beranda = () => {
     },
   ];
   
+  // Create the testimonial title with DigiBooster specific text
+  const testimonialTitle = (
+    <>
+      <span className="text-neon-cyan">Testimoni </span>
+      <span className="text-white">Klien </span>
+      <span className="text-neon-cyan">DigiBooster </span>
+      <span className="text-white">Indonesia</span>
+    </>
+  );
+  
   return (
     <main className="bg-black text-white">
-      {/* Hero Section inspired by the film header */}
+      {/* Hero Section */}
       <section className="relative overflow-hidden pt-10 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-sky-900/30 z-0"></div>
         
@@ -415,23 +426,37 @@ const Beranda = () => {
             Dengarkan pengalaman klien kami yang telah merasakan dampak positif dari layanan digital DigiBooster.
           </p>
           
-          <CardSlider
-            title=""
-            slidesPerView={isMobile ? 1 : 3}
-            cardClassName={isMobile ? "md:basis-1/2" : "md:basis-1/3"}
-          >
-            {testimonials.map((testimonial) => (
-              <TestimonialCard
-                key={testimonial.id}
-                id={testimonial.id}
-                name={testimonial.name}
-                role={testimonial.role}
-                content={testimonial.content}
-                image={testimonial.image}
-                rating={testimonial.rating}
-              />
-            ))}
-          </CardSlider>
+          {/* Use TestimonialMarquee for desktop */}
+          <div className="hidden md:block">
+            <TestimonialMarquee
+              testimonials={testimonials}
+              title={testimonialTitle}
+              description="Pengalaman nyata dari klien yang telah bekerjasama dengan DigiBooster Indonesia"
+              speed="medium"
+              bgColor="transparent"
+            />
+          </div>
+          
+          {/* Use CardSlider for mobile */}
+          <div className="block md:hidden">
+            <CardSlider
+              title=""
+              slidesPerView={isMobile ? 1 : 3}
+              cardClassName="md:basis-1/2"
+            >
+              {testimonials.map((testimonial) => (
+                <TestimonialCard
+                  key={testimonial.id}
+                  id={testimonial.id}
+                  name={testimonial.name}
+                  role={testimonial.role}
+                  content={testimonial.content}
+                  image={testimonial.image}
+                  rating={testimonial.rating}
+                />
+              ))}
+            </CardSlider>
+          </div>
         </div>
       </section>
       

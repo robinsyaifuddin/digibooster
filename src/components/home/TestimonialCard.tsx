@@ -32,7 +32,7 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         {[...Array(5)].map((_, i) => (
           <Star 
             key={i} 
-            size={isMobile ? 14 : 16} 
+            size={isMobile ? 12 : 14} 
             className={i < rating ? "text-yellow-400 fill-yellow-400" : "text-gray-600"} 
           />
         ))}
@@ -46,11 +46,11 @@ const TestimonialCard: React.FC<TestimonialCardProps> = ({
         <img 
           src={image} 
           alt={name} 
-          className="w-8 h-8 md:w-10 md:h-10 rounded-full mr-3 border border-sky-500/30"
+          className="w-6 h-6 md:w-8 md:h-8 rounded-full mr-2 border border-sky-500/30"
         />
         <div>
-          <h4 className="font-medium text-white text-sm md:text-base">{name}</h4>
-          <p className="text-gray-400 text-xs md:text-sm">{role}</p>
+          <h4 className="font-medium text-white text-xs md:text-sm">{name}</h4>
+          <p className="text-gray-400 text-xs">{role}</p>
         </div>
       </div>
     </motion.div>
