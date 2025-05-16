@@ -63,9 +63,10 @@ function App() {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        <AuthProvider>
-          <HomeContentProvider>
-            <Router>
+        {/* Move Router to wrap AuthProvider since AuthProvider uses router hooks */}
+        <Router>
+          <AuthProvider>
+            <HomeContentProvider>
               <div className="App bg-black text-white min-h-screen flex flex-col">
                 <Navbar />
                 <main className="flex-grow">
@@ -102,9 +103,9 @@ function App() {
                 <Footer />
                 <Toaster />
               </div>
-            </Router>
-          </HomeContentProvider>
-        </AuthProvider>
+            </HomeContentProvider>
+          </AuthProvider>
+        </Router>
       </LanguageProvider>
     </ThemeProvider>
   );

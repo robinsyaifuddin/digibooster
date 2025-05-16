@@ -277,7 +277,7 @@ const Beranda = () => {
               <div className="absolute -right-12 top-10 space-y-4 hidden lg:block">
                 {[1, 2, 3].map(index => (
                   <motion.div 
-                    key={index}
+                    key={index.toString()} 
                     whileHover={{ scale: 1.05 }}
                     className="w-16 md:w-24 h-12 md:h-16 rounded-lg overflow-hidden bg-gray-800 border border-gray-700"
                   >
@@ -322,7 +322,7 @@ const Beranda = () => {
           >
             {latestNews.map((news) => (
               <NewsCard
-                key={news.id}
+                key={news.id.toString()}
                 id={news.id}
                 title={news.title}
                 excerpt={news.excerpt}
@@ -446,7 +446,7 @@ const Beranda = () => {
             >
               {testimonials.map((testimonial) => (
                 <TestimonialCard
-                  key={testimonial.id}
+                  key={testimonial.id.toString()}
                   id={testimonial.id}
                   name={testimonial.name}
                   role={testimonial.role}
@@ -491,7 +491,7 @@ const Beranda = () => {
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
             {popularServices.map((service) => (
               <motion.div
-                key={service.id}
+                key={service.id.toString()}
                 whileHover={{ y: -5 }}
                 className="filmbox-card"
               >
