@@ -28,10 +28,12 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
   };
   
   return (
-    <section className="py-20 bg-dark-400/40 relative overflow-hidden">
+    <section className="py-20 bg-gradient-to-br from-dark-400/90 to-dark-300/90 relative overflow-hidden">
       {/* Background decorations */}
-      <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-primary/5 blur-3xl"></div>
-      <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div className="absolute -top-40 -right-40 w-96 h-96 rounded-full bg-primary/10 blur-3xl"></div>
+      <div className="absolute -bottom-40 -left-40 w-96 h-96 rounded-full bg-primary/10 blur-3xl"></div>
+      <div className="absolute top-1/3 left-1/4 w-32 h-32 rounded-full bg-neon-blue/20 blur-xl animate-pulse"></div>
+      <div className="absolute bottom-1/4 right-1/3 w-40 h-40 rounded-full bg-neon-cyan/20 blur-xl animate-pulse-light"></div>
       
       <div className="container mx-auto px-4 mb-16">
         <AnimatedSection className="text-center max-w-3xl mx-auto" animation="fadeIn" delay={200}>
@@ -72,14 +74,14 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
         ) : (
           <Carousel
             opts={{
-              align: "start",
+              align: "center",
               loop: true,
             }}
             className="w-full"
           >
-            <CarouselContent className="py-4">
+            <CarouselContent className="py-8 px-4">
               {services.map((service, index) => (
-                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-4">
+                <CarouselItem key={index} className="md:basis-1/2 lg:basis-1/3 pl-6">
                   <div className="h-full">
                     <ServiceCard 
                       service={service} 
@@ -90,8 +92,8 @@ const ServicesSection = ({ services }: ServicesSectionProps) => {
                 </CarouselItem>
               ))}
             </CarouselContent>
-            <CarouselPrevious className="left-2 bg-card/80 backdrop-blur-sm border-primary/20" />
-            <CarouselNext className="right-2 bg-card/80 backdrop-blur-sm border-primary/20" />
+            <CarouselPrevious className="left-4 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
+            <CarouselNext className="right-4 bg-card/80 backdrop-blur-sm border-primary/20 hover:bg-primary/20 hover:text-white" />
           </Carousel>
         )}
       </div>
