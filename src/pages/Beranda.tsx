@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -138,7 +137,7 @@ const Beranda = () => {
   );
   
   return (
-    <main className="bg-black text-white">
+    <div className="min-h-screen bg-black text-white">
       {/* Hero Section */}
       <section className="relative overflow-hidden pt-10 pb-20">
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-sky-900/30 z-0"></div>
@@ -259,6 +258,48 @@ const Beranda = () => {
           </div>
         </div>
       </section>
+      
+      {/* Services Section */}
+      <div className="py-12 md:py-24 bg-black">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-16">
+            <h2 className="text-3xl md:text-5xl font-bold mb-4">Layanan <span className="text-sky-400">Digital</span> Kami</h2>
+            <p className="text-gray-400 max-w-2xl mx-auto">
+              Kami menyediakan berbagai layanan digital profesional untuk membantu bisnis Anda tumbuh dan berkembang di era digital.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {jasaDigitalServices.slice(0, 4).map((service, index) => (
+              <div
+                key={index.toString()} // Fix the type error by converting number to string
+                className="bg-gray-900 rounded-xl p-6 transition-all duration-300 hover:shadow-xl hover:shadow-sky-500/10 hover:-translate-y-1 border border-gray-800"
+              >
+                <div className="w-14 h-14 rounded-full bg-sky-500/20 flex items-center justify-center mb-6">
+                  <img src={service.icon} alt={service.title} className="w-8 h-8" />
+                </div>
+                <h3 className="text-xl font-semibold mb-3">{service.title}</h3>
+                <p className="text-gray-400 mb-6">{service.description}</p>
+                <Link to={`/layanan/${service.slug}`} className="text-sky-400 flex items-center hover:underline">
+                  Selengkapnya
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-1" viewBox="0 0 20 20" fill="currentColor">
+                    <path fillRule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+                  </svg>
+                </Link>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-center mt-10">
+            <Link to="/jasa-digital" className="inline-flex items-center justify-center px-6 py-3 border border-sky-500 text-sky-500 hover:bg-sky-500 hover:text-white transition duration-300 rounded-full">
+              Lihat Semua Layanan
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+              </svg>
+            </Link>
+          </div>
+        </div>
+      </div>
       
       {/* Latest News Section */}
       <section className="py-10 md:py-16 bg-black border-t border-gray-800">
@@ -549,7 +590,7 @@ const Beranda = () => {
           </div>
         </div>
       </section>
-    </main>
+    </div>
   );
 };
 

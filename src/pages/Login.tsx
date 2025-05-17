@@ -45,42 +45,49 @@ const Login = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Hardcoded credentials for demo
-    if (email === 'pengguna@gmail.com' && password === 'pengguna123') {
-      // Mock login for user role
-      const mockUserData = {
-        id: '1',
-        email: 'pengguna@gmail.com',
-        role: 'user',
-        user_metadata: { name: 'Pengguna Demo', role: 'user' }
-      };
-      
-      // Call login from context but also handle mock data
-      await login(email, password);
-      // In case Supabase isn't connected yet, we'll use our mock data
-      if (!user) {
+    try {
+      // Hardcoded credentials for demo
+      if (email === 'pengguna@gmail.com' && password === 'pengguna123') {
+        // Mock login for user role
+        const mockUserData = {
+          id: '1',
+          email: 'pengguna@gmail.com',
+          role: 'user',
+          user_metadata: { name: 'Pengguna Demo', role: 'user' }
+        };
+        
+        // Call login from context but also handle mock data
+        await login(email, password);
+        // In case Supabase isn't connected yet, we'll use our mock data
+        console.log("Login attempt with user credentials");
         redirectBasedOnRole(mockUserData);
-      }
-      
-    } else if (email === 'admin.digibooster@gmail.com' && password === 'digibooster123') {
-      // Mock login for admin role
-      const mockAdminData = {
-        id: '2',
-        email: 'admin.digibooster@gmail.com',
-        role: 'admin',
-        user_metadata: { name: 'Admin DigiBooster', role: 'admin' }
-      };
-      
-      // Call login from context but also handle mock data
-      await login(email, password);
-      // In case Supabase isn't connected yet, we'll use our mock data
-      if (!user) {
+        
+      } else if (email === 'admin.digibooster@gmail.com' && password === 'digibooster123') {
+        // Mock login for admin role
+        const mockAdminData = {
+          id: '2',
+          email: 'admin.digibooster@gmail.com',
+          role: 'admin',
+          user_metadata: { name: 'Admin DigiBooster', role: 'admin' }
+        };
+        
+        // Call login from context but also handle mock data
+        await login(email, password);
+        // In case Supabase isn't connected yet, we'll use our mock data
+        console.log("Login attempt with admin credentials");
         redirectBasedOnRole(mockAdminData);
+        
+      } else {
+        // Try regular login (will work when Supabase is connected)
+        await login(email, password);
       }
-      
-    } else {
-      // Try regular login (will work when Supabase is connected)
-      await login(email, password);
+    } catch (err) {
+      console.error("Login error:", err);
+      toast({
+        variant: "destructive",
+        title: "Login gagal",
+        description: "Email atau password salah. Silakan coba lagi."
+      });
     }
   };
 

@@ -1,4 +1,3 @@
-
 import { createContext, useState, useEffect, ReactNode, useContext } from 'react';
 import { supabase } from '@/integrations/supabase/client';
 import { useToast } from '@/hooks/use-toast';
@@ -76,7 +75,57 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   };
 
   const login = async (email: string, password: string) => {
-    return signIn(email, password);
+    try {
+      setLoading(true);
+      setError(null);
+      
+      // Handle hardcoded demo credentials
+      if (email === 'pengguna@gmail.com' && password === 'pengguna123') {
+        const mockUserData = {
+          id: '1',
+          email: 'pengguna@gmail.com',
+          role: 'user',
+          user_metadata: { name: 'Pengguna Demo', role: 'user' }
+        };
+        setUser(mockUserData as any);
+        return;
+      }
+      
+      if (email === 'admin.digibooster@gmail.com' && password === 'digibooster123') {
+        const mockAdminData = {
+          id: '2',
+          email: 'admin.digibooster@gmail.com',
+          role: 'admin',
+          user_metadata: { name: 'Admin DigiBooster', role: 'admin' }
+        };
+        setUser(mockAdminData as any);
+        return;
+      }
+      
+      // Try regular Supabase login
+      const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      });
+      
+      if (error) {
+        throw error;
+      }
+      
+      if (data?.user) {
+        setUser(data.user);
+      }
+    } catch (error: any) {
+      console.error('Login error:', error);
+      setError(error.message || 'Failed to login');
+      toast({
+        variant: "destructive",
+        title: "Login gagal",
+        description: error.message || "Email atau password salah",
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   const loginWithGoogle = async (): Promise<void> => {
@@ -118,11 +167,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       if (data?.user) {
         setUser(data.user);
-        toast({
-          title: "Login berhasil!",
-          description: "Selamat datang kembali di DigiBooster",
-        });
-        navigate('/admin');
       }
     } catch (error: any) {
       console.error('Login error:', error);
@@ -163,10 +207,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       
       if (authData?.user) {
         setUser(authData.user);
-        toast({
-          title: "Registrasi berhasil!",
-          description: "Akun Anda telah dibuat, silahkan cek email untuk verifikasi",
-        });
       }
     } catch (error: any) {
       console.error('Registration error:', error);
@@ -258,9 +298,9 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         login,
         register,
         logout,
-        signIn,
+        signIn: login,
         signUp,
-        signOut,
+        signOut: logout,
         isAuthenticated: !!user,
         checkSession,
         checkPasswordStrength,
