@@ -50,13 +50,13 @@ const DashboardOverview = ({
   return (
     <div>
       <div className="flex items-center justify-between mb-6">
-        <h2 className="text-xl md:text-2xl font-bold text-gray-800 hidden md:block">Ringkasan Website</h2>
+        <h2 className="text-xl md:text-2xl font-bold text-white hidden md:block">Ringkasan Website</h2>
         <div className="flex gap-2">
-          <Button variant="outline" size="sm" className="hidden md:flex">
+          <Button variant="outline" size="sm" className="hidden md:flex border-gray-700 text-white hover:bg-gray-800">
             <Filter className="w-4 h-4 mr-2" />
             Filter
           </Button>
-          <Button size="sm">
+          <Button size="sm" className="bg-sky-500 hover:bg-sky-600 text-white">
             <ArrowUpRight className="w-4 h-4 mr-2" />
             Export
           </Button>
@@ -96,8 +96,12 @@ const DashboardOverview = ({
       </div>
       
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <RecentUsersList users={recentUsers} />
-        <PopularBlogsList blogs={recentBlogs} />
+        <div className="lg:col-span-2">
+          <RecentUsersList users={recentUsers} />
+        </div>
+        <div>
+          <PopularBlogsList blogs={recentBlogs} />
+        </div>
       </div>
     </div>
   );

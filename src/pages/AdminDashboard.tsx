@@ -16,6 +16,7 @@ import DatabaseMonitor from "@/components/admin/Dashboard/Developer/DatabaseMoni
 import AnalyticsMonitor from "@/components/admin/Dashboard/Developer/AnalyticsMonitor";
 import Terminal from "@/components/admin/Dashboard/Developer/Terminal";
 import VersionControl from "@/components/admin/Dashboard/Developer/VersionControl";
+import { useToast } from "@/hooks/use-toast";
 
 // Mock data for props - updated to match component prop types
 const mockUserStats = {
@@ -63,10 +64,11 @@ const mockBlogs = [
 ];
 
 const AdminDashboard = () => {
-  const { isAuthenticated, loading } = useAuth();
+  const { user, isAuthenticated, loading } = useAuth();
   const [activeTab, setActiveTab] = useState("overview");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
+  const { toast } = useToast();
 
   // Parse tab from URL params on component mount
   useEffect(() => {
@@ -75,20 +77,39 @@ const AdminDashboard = () => {
     if (tabParam) {
       setActiveTab(tabParam);
     }
-  }, [location]);
+    
+    // Welcome toast
+    if (user?.role === 'admin' || user?.user_metadata?.role === 'admin') {
+      toast({
+        title: "Selamat Datang, Admin",
+        description: "Anda telah masuk ke dashboard admin"
+      });
+    }
+  }, [location, user]);
 
   // If loading, show loading state
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-dark">
-        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-neon-purple"></div>
+      <div className="min-h-screen flex items-center justify-center bg-black">
+        <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-sky-500"></div>
       </div>
     );
   }
 
-  // If not authenticated, redirect to login page
+  // If not authenticated or not admin, redirect to login page
   if (!isAuthenticated && !loading) {
     return <Navigate to="/login" />;
+  }
+
+  // Check if user is admin
+  const userRole = user?.role || user?.user_metadata?.role;
+  if (userRole !== 'admin' && !loading) {
+    toast({
+      variant: "destructive",
+      title: "Akses Ditolak",
+      description: "Anda tidak memiliki izin untuk mengakses halaman ini"
+    });
+    return <Navigate to="/dashboard" />;
   }
 
   const handleTabChange = (tab: string) => {
@@ -99,6 +120,30 @@ const AdminDashboard = () => {
     searchParams.set('tab', tab);
     const newRelativePathQuery = window.location.pathname + '?' + searchParams.toString();
     window.history.pushState(null, '', newRelativePathQuery);
+    
+    // Show toast notification
+    toast({
+      title: "Menu Diubah",
+      description: `Beralih ke ${getTabTitle(tab)}`
+    });
+  };
+  
+  // Get title based on tab
+  const getTabTitle = (tab: string) => {
+    switch (tab) {
+      case "overview": return "Dashboard";
+      case "users": return "Manajemen Pengguna";
+      case "content": return "Manajemen Konten";
+      case "services": return "Pengembangan Layanan";
+      case "settings": return "Pengaturan Website";
+      case "profile": return "Profil Admin";
+      case "api-docs": return "Dokumentasi API";
+      case "database": return "Monitor Database";
+      case "analytics": return "Monitor Analitik";
+      case "terminal": return "Terminal";
+      case "git": return "Kontrol Versi";
+      default: return "Dashboard";
+    }
   };
 
   // Render the content based on the active tab
@@ -144,7 +189,7 @@ const AdminDashboard = () => {
   };
 
   return (
-    <div className="bg-gray-50 min-h-screen flex">
+    <div className="bg-black min-h-screen flex">
       {/* Sidebar for desktop */}
       <Sidebar activeTab={activeTab} onTabChange={handleTabChange} />
       
@@ -162,7 +207,7 @@ const AdminDashboard = () => {
           toggleMobileMenu={() => setMobileMenuOpen(true)} 
         />
         
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-50 p-4 md:p-6">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-gray-900 p-4 md:p-6">
           {renderContent()}
         </main>
       </div>

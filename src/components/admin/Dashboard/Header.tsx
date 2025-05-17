@@ -1,6 +1,6 @@
 
 import React from "react";
-import { Menu, Bell, Settings, User } from "lucide-react";
+import { Menu, Bell, Settings, User, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -52,21 +52,21 @@ const Header = ({ activeTab, toggleMobileMenu }: HeaderProps) => {
   };
   
   return (
-    <header className="bg-white border-b border-gray-200 py-4 px-6 flex items-center justify-between">
+    <header className="bg-gray-900 border-b border-gray-800 py-4 px-6 flex items-center justify-between">
       <div className="flex items-center">
         <Button
           variant="ghost"
           size="icon"
-          className="md:hidden mr-2"
+          className="md:hidden mr-2 text-white"
           onClick={toggleMobileMenu}
         >
           <Menu className="h-5 w-5" />
         </Button>
-        <h1 className="text-xl font-semibold text-gray-800">{getTitle()}</h1>
+        <h1 className="text-xl font-semibold text-white">{getTitle()}</h1>
       </div>
       
       <div className="flex items-center space-x-3">
-        <Button variant="ghost" size="icon" className="text-gray-500">
+        <Button variant="ghost" size="icon" className="text-gray-400 hover:text-white">
           <Bell className="h-5 w-5" />
         </Button>
         
@@ -74,27 +74,31 @@ const Header = ({ activeTab, toggleMobileMenu }: HeaderProps) => {
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" className="relative h-8 w-8 rounded-full">
               <Avatar className="h-8 w-8">
-                <AvatarImage src={user?.photoURL || undefined} alt={user?.name || "User"} />
-                <AvatarFallback className="bg-digicyan text-white">
-                  {user?.name ? user.name.charAt(0).toUpperCase() : "U"}
+                <AvatarImage src={user?.photoURL || undefined} alt={user?.name || "Admin"} />
+                <AvatarFallback className="bg-sky-500 text-white">
+                  {user?.name ? user.name.charAt(0).toUpperCase() : "A"}
                 </AvatarFallback>
               </Avatar>
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent className="w-56" align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem>
+          <DropdownMenuContent className="w-56 bg-gray-900 border-gray-800" align="end">
+            <DropdownMenuLabel className="text-white">Admin Account</DropdownMenuLabel>
+            <DropdownMenuSeparator className="bg-gray-800" />
+            <DropdownMenuItem className="text-gray-300 hover:bg-gray-800 hover:text-white cursor-pointer">
               <User className="mr-2 h-4 w-4" />
               <span>Profile</span>
             </DropdownMenuItem>
-            <DropdownMenuItem>
+            <DropdownMenuItem className="text-gray-300 hover:bg-gray-800 hover:text-white cursor-pointer">
               <Settings className="mr-2 h-4 w-4" />
               <span>Settings</span>
             </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem onClick={() => logout()}>
-              Log out
+            <DropdownMenuSeparator className="bg-gray-800" />
+            <DropdownMenuItem 
+              onClick={() => logout()} 
+              className="text-gray-300 hover:bg-gray-800 hover:text-white cursor-pointer"
+            >
+              <LogOut className="mr-2 h-4 w-4" />
+              <span>Log out</span>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

@@ -1,24 +1,20 @@
 
+import React from "react";
 import { Link } from "react-router-dom";
-import {
+import { 
+  Home, 
+  Users, 
+  FileText, 
+  Settings, 
+  User, 
   LayoutDashboard,
-  Users,
-  FileText,
-  Globe,
-  Settings,
-  User,
-  Database,
   Code,
-  ExternalLink,
-  BarChart,
+  Database,
+  BarChart3,
   Terminal,
   GitBranch
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
-import { useImplementationSettings } from "@/hooks/useImplementationSettings";
-import { motion } from "framer-motion";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface SidebarProps {
   activeTab: string;
@@ -26,170 +22,137 @@ interface SidebarProps {
 }
 
 const Sidebar = ({ activeTab, onTabChange }: SidebarProps) => {
-  const { isRealImplementation } = useImplementationSettings();
-
-  const tabs = [
-    {
-      id: "overview",
-      label: "Dashboard",
-      icon: <LayoutDashboard className="h-5 w-5" />,
-    },
-    {
-      id: "users",
-      label: "Pengguna",
-      icon: <Users className="h-5 w-5" />,
-    },
-    {
-      id: "content",
-      label: "Konten",
-      icon: <FileText className="h-5 w-5" />,
-    },
-    {
-      id: "services",
-      label: "Layanan",
-      icon: <Globe className="h-5 w-5" />,
-    },
-    {
-      id: "settings",
-      label: "Pengaturan",
-      icon: <Settings className="h-5 w-5" />,
-    },
-    {
-      id: "profile",
-      label: "Profil",
-      icon: <User className="h-5 w-5" />,
-    },
-  ];
+  const { user } = useAuth();
+  const adminName = user?.user_metadata?.name || 'Admin';
   
-  const devTabs = [
-    {
-      id: "api-docs",
-      label: "Dokumentasi API",
-      icon: <Code className="h-5 w-5" />,
-    },
-    {
-      id: "database",
-      label: "Database",
-      icon: <Database className="h-5 w-5" />,
-      status: isRealImplementation
-    },
-    {
-      id: "analytics",
-      label: "Analytics",
-      icon: <BarChart className="h-5 w-5" />,
-    },
-    {
-      id: "terminal",
-      label: "Terminal",
-      icon: <Terminal className="h-5 w-5" />,
-    },
-    {
-      id: "git",
-      label: "Version Control",
-      icon: <GitBranch className="h-5 w-5" />,
-    }
-  ];
-
   return (
-    <aside className="hidden md:flex flex-col bg-white border-r w-64 h-screen sticky top-0">
-      <div className="p-4 border-b flex items-center gap-2">
-        <div className="bg-dark text-white rounded-md h-8 w-8 flex items-center justify-center font-bold text-xl">
-          D
-        </div>
-        <span className="font-bold text-lg">DigiBooster</span>
-        {isRealImplementation && (
-          <span className="flex h-2 w-2 bg-digicyan rounded-full ml-1"></span>
-        )}
+    <div className="hidden md:flex flex-col w-64 bg-gray-900 border-r border-gray-800 min-h-screen">
+      <div className="flex items-center justify-between p-4 border-b border-gray-800">
+        <Link to="/" className="flex items-center">
+          <span className="text-xl font-bold text-white">
+            <span className="text-sky-400">Digi</span>Booster
+          </span>
+        </Link>
       </div>
       
-      <div className="flex flex-col gap-1 p-2">
-        {tabs.map((tab) => (
-          <Button
-            key={tab.id}
-            variant="ghost"
-            className={cn("justify-start gap-3 h-10", {
-              "bg-gray-100 text-digicyan font-medium": activeTab === tab.id,
-            })}
-            onClick={() => onTabChange(tab.id)}
-          >
-            {activeTab === tab.id ? (
-              <motion.div
-                initial={{ scale: 0.8 }}
-                animate={{ scale: 1 }}
-                className="text-digicyan"
-              >
-                {tab.icon}
-              </motion.div>
-            ) : (
-              tab.icon
-            )}
-            {tab.label}
-            {tab.id === 'services' && (
-              <span className="ml-auto flex h-2 w-2 rounded-full bg-digicyan"></span>
-            )}
-          </Button>
-        ))}
-      </div>
-
-      <div className="mt-4 px-2">
-        <div className="text-xs font-medium text-gray-500 px-3 py-2">
-          DEVELOPER
-        </div>
-        <div className="flex flex-col gap-1">
-          {devTabs.map((tab) => (
-            <Button
-              key={tab.id}
-              variant="ghost"
-              className={cn("justify-start gap-3 h-10", {
-                "bg-gray-100 text-digicyan font-medium": activeTab === tab.id,
-              })}
-              onClick={() => onTabChange(tab.id)}
-            >
-              {activeTab === tab.id ? (
-                <motion.div
-                  initial={{ scale: 0.8 }}
-                  animate={{ scale: 1 }}
-                  className="text-digicyan"
-                >
-                  {tab.icon}
-                </motion.div>
-              ) : (
-                tab.icon
-              )}
-              <span className="flex-1 text-left">{tab.label}</span>
-              {tab.id === 'database' && (
-                <span className={`h-2 w-2 rounded-full ${isRealImplementation ? 'bg-green-500' : 'bg-amber-500'}`}></span>
-              )}
-            </Button>
-          ))}
+      <div className="p-4 border-b border-gray-800">
+        <div className="flex items-center">
+          <div className="w-10 h-10 bg-sky-500 rounded-full flex items-center justify-center text-white font-medium">
+            {adminName[0]}
+          </div>
+          <div className="ml-3">
+            <p className="text-sm font-medium text-white">{adminName}</p>
+            <p className="text-xs text-gray-400">Admin</p>
+          </div>
         </div>
       </div>
       
-      <div className="mt-auto p-4 border-t">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Button 
-                variant="outline" 
-                className="w-full justify-between items-center"
-                onClick={() => window.open('/', '_blank')}
-              >
-                <span>Lihat Website</span>
-                <ExternalLink className="h-4 w-4" />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Buka website di tab baru</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+      <div className="flex-1 overflow-auto py-4">
+        <div className="px-4 mb-2 text-xs font-semibold text-gray-400 uppercase">Menu Utama</div>
         
-        <div className="mt-4 text-xs text-center text-gray-500">
-          <p>DigiBooster Admin v1.0</p>
-          <p className="mt-1">{isRealImplementation ? 'Live Mode' : 'Simulation Mode'}</p>
-        </div>
+        <button
+          onClick={() => onTabChange("overview")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "overview" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <LayoutDashboard className="w-5 h-5 mr-3" />
+          <span>Dashboard</span>
+        </button>
+        
+        <button
+          onClick={() => onTabChange("users")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "users" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <Users className="w-5 h-5 mr-3" />
+          <span>Pengguna</span>
+        </button>
+        
+        <button
+          onClick={() => onTabChange("content")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "content" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <FileText className="w-5 h-5 mr-3" />
+          <span>Konten</span>
+        </button>
+        
+        <button
+          onClick={() => onTabChange("services")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "services" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <Code className="w-5 h-5 mr-3" />
+          <span>Layanan</span>
+        </button>
+        
+        <div className="px-4 mt-6 mb-2 text-xs font-semibold text-gray-400 uppercase">Pengaturan</div>
+        
+        <button
+          onClick={() => onTabChange("settings")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "settings" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <Settings className="w-5 h-5 mr-3" />
+          <span>Pengaturan Website</span>
+        </button>
+        
+        <button
+          onClick={() => onTabChange("profile")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "profile" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <User className="w-5 h-5 mr-3" />
+          <span>Profil Admin</span>
+        </button>
+        
+        <div className="px-4 mt-6 mb-2 text-xs font-semibold text-gray-400 uppercase">Pengembang</div>
+        
+        <button
+          onClick={() => onTabChange("api-docs")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "api-docs" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <Code className="w-5 h-5 mr-3" />
+          <span>API Docs</span>
+        </button>
+        
+        <button
+          onClick={() => onTabChange("database")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "database" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <Database className="w-5 h-5 mr-3" />
+          <span>Database</span>
+        </button>
+        
+        <button
+          onClick={() => onTabChange("analytics")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "analytics" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <BarChart3 className="w-5 h-5 mr-3" />
+          <span>Analytics</span>
+        </button>
+        
+        <button
+          onClick={() => onTabChange("terminal")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "terminal" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <Terminal className="w-5 h-5 mr-3" />
+          <span>Terminal</span>
+        </button>
+        
+        <button
+          onClick={() => onTabChange("git")}
+          className={`flex items-center px-4 py-3 w-full text-left ${activeTab === "git" ? "bg-sky-500/10 text-sky-400" : "text-gray-300 hover:bg-gray-800 hover:text-white"}`}
+        >
+          <GitBranch className="w-5 h-5 mr-3" />
+          <span>Version Control</span>
+        </button>
       </div>
-    </aside>
+      
+      <div className="p-4 border-t border-gray-800">
+        <Link
+          to="/"
+          className="flex items-center justify-center py-2 px-4 bg-gray-800 hover:bg-gray-700 text-white rounded-md transition-colors"
+        >
+          <Home className="w-4 h-4 mr-2" />
+          <span>Kembali ke Website</span>
+        </Link>
+      </div>
+    </div>
   );
 };
 
