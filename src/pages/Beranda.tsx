@@ -29,8 +29,8 @@ const featuredService = {
   category: "Featured"
 };
 
-// Popular service cards for recommendations section - Using data from jasaDigitalServices
-const popularServices = jasaDigitalServices.map((service, index) => ({
+// Popular service cards for recommendations section - Using only 4 services from jasaDigitalServices
+const popularServices = jasaDigitalServices.slice(0, 4).map((service, index) => ({
   id: (index + 1).toString(),
   title: service.title,
   description: service.description,
@@ -346,7 +346,7 @@ const Beranda = () => {
           >
             {featuredPortfolio.map((item) => (
               <FeaturedPortfolioCard
-                key={item.id}
+                key={item.id.toString()}
                 id={item.id}
                 title={item.title}
                 description={item.description}
@@ -415,11 +415,11 @@ const Beranda = () => {
         </div>
       </section>
       
-      {/* Recommendations Section */}
+      {/* Recommendations Section - Display only 4 jasaDigitalServices */}
       <section className="py-10 md:py-16 bg-black">
         <div className="container mx-auto px-4">
           <div className="flex justify-between items-center mb-6 md:mb-8">
-            <h2 className="text-2xl md:text-3xl font-bold">Rekomendasi Layanan</h2>
+            <h2 className="text-2xl md:text-3xl font-bold">Layanan Digital</h2>
             
             <div className="flex gap-2">
               <Button variant="outline" size="sm" className="rounded-full border-gray-700 hover:bg-gray-800 hidden md:flex text-xs">
@@ -444,7 +444,7 @@ const Beranda = () => {
           </div>
           
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-            {popularServices.slice(0, 4).map((service) => (
+            {popularServices.map((service) => (
               <motion.div
                 key={service.id.toString()}
                 whileHover={{ y: -5 }}

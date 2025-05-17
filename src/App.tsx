@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
 import Home from './pages/Home';
 import Navbar from './components/Navbar';
@@ -8,6 +8,7 @@ import Footer from './components/Footer';
 import Login from './pages/Login';
 import Register from './pages/Register';
 import AdminDashboard from './pages/AdminDashboard';
+import UserDashboard from './pages/UserDashboard';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import Kontak from './pages/Kontak';
@@ -40,6 +41,24 @@ import { HomeContentProvider } from './contexts/HomeContentContext';
 // Toast provider for notifications
 import { Toaster } from '@/components/ui/toaster';
 
+// Layout component to handle navigation visibility
+const AppLayout = ({ children }: { children: React.ReactNode }) => {
+  const location = useLocation();
+  const path = location.pathname;
+  
+  // Hide Navbar and Footer on dashboard and admin pages
+  const isDashboardPage = path === '/dashboard' || path.startsWith('/admin');
+  
+  return (
+    <div className="App bg-black text-white min-h-screen flex flex-col">
+      {!isDashboardPage && <Navbar />}
+      <main className="flex-grow">{children}</main>
+      {!isDashboardPage && <Footer />}
+      <Toaster />
+    </div>
+  );
+};
+
 function App() {
   const [isLoading, setIsLoading] = useState(true);
 
@@ -63,50 +82,45 @@ function App() {
   return (
     <ThemeProvider>
       <LanguageProvider>
-        {/* Move Router to wrap AuthProvider since AuthProvider uses router hooks */}
         <Router>
           <AuthProvider>
             <HomeContentProvider>
-              <div className="App bg-black text-white min-h-screen flex flex-col">
-                <Navbar />
-                <main className="flex-grow">
-                  <Routes>
-                    {/* Main routes */}
-                    <Route path="/" element={<Home />} />
-                    <Route path="/beranda" element={<Beranda />} />
-                    <Route path="/blog" element={<Blog />} />
-                    <Route path="/blog/:slug" element={<BlogDetail />} />
-                    <Route path="/kontak" element={<Kontak />} />
-                    <Route path="/motivasi-edukasi" element={<MotivasiEdukasi />} />
-                    <Route path="/sharing-konsultasi" element={<SharingKonsultasi />} />
-                    <Route path="/portofolio" element={<Portofolio />} />
-                    <Route path="/portofolio/:id" element={<PortfolioDetail />} />
-                    <Route path="/tentang" element={<Tentang />} />
-                    
-                    {/* Fix for Jasa Digital routes */}
-                    <Route path="/jasa-digital" element={<JasaDigital />} />
-                    <Route path="/program/jasa-digital" element={<JasaDigital />} />
-                    
-                    <Route path="/services" element={<Services />} />
-                    <Route path="/services/:id" element={<ServiceDetails />} />
-                    <Route path="/layanan/:slug" element={<ServiceDetailPage />} />
-                    <Route path="/kelas" element={<Kelas />} />
-                    <Route path="/order-form" element={<OrderForm />} />
+              <AppLayout>
+                <Routes>
+                  {/* Main routes */}
+                  <Route path="/" element={<Home />} />
+                  <Route path="/beranda" element={<Beranda />} />
+                  <Route path="/blog" element={<Blog />} />
+                  <Route path="/blog/:slug" element={<BlogDetail />} />
+                  <Route path="/kontak" element={<Kontak />} />
+                  <Route path="/motivasi-edukasi" element={<MotivasiEdukasi />} />
+                  <Route path="/sharing-konsultasi" element={<SharingKonsultasi />} />
+                  <Route path="/portofolio" element={<Portofolio />} />
+                  <Route path="/portofolio/:id" element={<PortfolioDetail />} />
+                  <Route path="/tentang" element={<Tentang />} />
+                  
+                  {/* Fix for Jasa Digital routes */}
+                  <Route path="/jasa-digital" element={<JasaDigital />} />
+                  <Route path="/program/jasa-digital" element={<JasaDigital />} />
+                  
+                  <Route path="/services" element={<Services />} />
+                  <Route path="/services/:id" element={<ServiceDetails />} />
+                  <Route path="/layanan/:slug" element={<ServiceDetailPage />} />
+                  <Route path="/kelas" element={<Kelas />} />
+                  <Route path="/order-form" element={<OrderForm />} />
 
-                    {/* Auth routes */}
-                    <Route path="/login" element={<Login />} />
-                    <Route path="/register" element={<Register />} />
+                  {/* Auth routes */}
+                  <Route path="/login" element={<Login />} />
+                  <Route path="/register" element={<Register />} />
 
-                    {/* Admin routes */}
-                    <Route path="/admin/*" element={<AdminDashboard />} />
+                  {/* Dashboard routes */}
+                  <Route path="/dashboard" element={<UserDashboard />} />
+                  <Route path="/admin/*" element={<AdminDashboard />} />
 
-                    {/* 404 route */}
-                    <Route path="*" element={<NotFound />} />
-                  </Routes>
-                </main>
-                <Footer />
-                <Toaster />
-              </div>
+                  {/* 404 route */}
+                  <Route path="*" element={<NotFound />} />
+                </Routes>
+              </AppLayout>
             </HomeContentProvider>
           </AuthProvider>
         </Router>
