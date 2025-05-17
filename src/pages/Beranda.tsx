@@ -296,7 +296,7 @@ const Beranda = () => {
           <div className="flex justify-center gap-2 mt-10">
             {[1, 2, 3].map(dot => (
               <button 
-                key={dot.toString()} 
+                key={dot.toString()} // Converting number to string here
                 className={`w-2 h-2 rounded-full ${dot === 1 ? 'bg-sky-400' : 'bg-gray-600'}`}
                 aria-label={`Go to slide ${dot}`}
               />
