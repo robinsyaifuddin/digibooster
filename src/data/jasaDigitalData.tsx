@@ -4,9 +4,7 @@ import {
   Code, 
   PenTool, 
   Megaphone, 
-  FileText, 
-  Camera, 
-  Share2 
+  Camera
 } from 'lucide-react';
 
 export interface ServiceProps {
@@ -17,6 +15,15 @@ export interface ServiceProps {
   slug?: string;
   image?: string;
   category?: string;
+  packages?: ServicePackageProps[];
+}
+
+export interface ServicePackageProps {
+  name: string;
+  description: string;
+  priceRange: string;
+  features: string[];
+  recommended?: boolean;
 }
 
 export const jasaDigitalServices: ServiceProps[] = [
@@ -34,7 +41,49 @@ export const jasaDigitalServices: ServiceProps[] = [
     ],
     slug: 'website-dan-aplikasi',
     image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Development'
+    category: 'Development',
+    packages: [
+      {
+        name: "Basic Website",
+        description: "Ideal untuk bisnis kecil dan UMKM",
+        priceRange: "Rp 1.500.000 - Rp 3.000.000",
+        features: [
+          "5 Halaman Website",
+          "Responsive Design",
+          "Basic SEO",
+          "Form Kontak",
+          "Integrasi Media Sosial"
+        ]
+      },
+      {
+        name: "Professional Website",
+        description: "Solusi lengkap untuk bisnis menengah",
+        priceRange: "Rp 3.500.000 - Rp 8.000.000",
+        features: [
+          "10-15 Halaman Website",
+          "Responsive Design",
+          "Advanced SEO",
+          "CMS Admin Panel",
+          "Integrasi Pembayaran",
+          "Hosting 1 Tahun"
+        ],
+        recommended: true
+      },
+      {
+        name: "E-Commerce Solution",
+        description: "Platform online shop komprehensif",
+        priceRange: "Rp 8.500.000 - Rp 15.000.000",
+        features: [
+          "Website E-commerce Lengkap",
+          "Katalog Produk Unlimited",
+          "Sistem Keranjang & Checkout",
+          "Integrasi Multiple Payment",
+          "Dashboard Admin",
+          "Laporan Penjualan",
+          "Maintenance 6 Bulan"
+        ]
+      }
+    ]
   },
   {
     icon: <PenTool className="h-6 w-6 text-red-500" />,
@@ -50,7 +99,48 @@ export const jasaDigitalServices: ServiceProps[] = [
     ],
     slug: 'desain-grafis',
     image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Design'
+    category: 'Design',
+    packages: [
+      {
+        name: "Logo Design",
+        description: "Desain logo profesional untuk brand Anda",
+        priceRange: "Rp 750.000 - Rp 2.500.000",
+        features: [
+          "3 Konsep Logo",
+          "3x Revisi",
+          "File Source (AI/PSD)",
+          "File Format (PNG/JPG/PDF)",
+          "Brand Guidelines Simple"
+        ]
+      },
+      {
+        name: "Brand Identity Package",
+        description: "Paket lengkap identitas visual brand",
+        priceRange: "Rp 3.000.000 - Rp 7.500.000",
+        features: [
+          "Logo Design",
+          "Business Card Design",
+          "Letterhead & Envelope",
+          "Brand Guidelines",
+          "Social Media Templates",
+          "5x Revisi"
+        ],
+        recommended: true
+      },
+      {
+        name: "Marketing Material Design",
+        description: "Desain material marketing untuk berbagai kebutuhan",
+        priceRange: "Rp 500.000 - Rp 2.000.000 (per item)",
+        features: [
+          "Brosur/Flyer Design",
+          "Banner/Poster Design",
+          "Social Media Content",
+          "Packaging Design",
+          "Infografis",
+          "3x Revisi per Item"
+        ]
+      }
+    ]
   },
   {
     icon: <Megaphone className="h-6 w-6 text-red-500" />,
@@ -66,23 +156,48 @@ export const jasaDigitalServices: ServiceProps[] = [
     ],
     slug: 'digital-marketing',
     image: 'https://images.unsplash.com/photo-1533750516457-a7f992034fec?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Marketing'
-  },
-  {
-    icon: <FileText className="h-6 w-6 text-red-500" />,
-    title: 'Manajemen Konten',
-    description: 'Layanan pembuatan dan pengelolaan konten profesional untuk platform digital Anda.',
-    items: [
-      'Copywriting & Artikel',
-      'Content Planning & Calendar',
-      'Blog Management',
-      'Content Optimization (SEO)',
-      'Newsletter Creation',
-      'Product Description'
-    ],
-    slug: 'manajemen-konten',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Content'
+    category: 'Marketing',
+    packages: [
+      {
+        name: "Social Media Management",
+        description: "Pengelolaan media sosial untuk bisnis Anda",
+        priceRange: "Rp 2.000.000 - Rp 5.000.000 /bulan",
+        features: [
+          "Pengelolaan 2 Platform",
+          "12 Konten per Bulan",
+          "Content Planning",
+          "Caption Writing",
+          "Basic Analytics Report"
+        ]
+      },
+      {
+        name: "Digital Marketing Campaign",
+        description: "Kampanye iklan digital multi-platform",
+        priceRange: "Rp 5.000.000 - Rp 15.000.000 /bulan",
+        features: [
+          "Social Media Ads",
+          "Google Ads",
+          "Landing Page Design",
+          "Targeting Audience",
+          "Performance Analytics",
+          "Monthly Report"
+        ],
+        recommended: true
+      },
+      {
+        name: "SEO Package",
+        description: "Optimasi mesin pencari untuk website Anda",
+        priceRange: "Rp 3.500.000 - Rp 8.000.000 /bulan",
+        features: [
+          "Website Audit",
+          "Keyword Research",
+          "On-page SEO",
+          "Content Optimization",
+          "Backlink Building",
+          "Monthly Reporting"
+        ]
+      }
+    ]
   },
   {
     icon: <Camera className="h-6 w-6 text-red-500" />,
@@ -98,86 +213,47 @@ export const jasaDigitalServices: ServiceProps[] = [
     ],
     slug: 'foto-dan-videografi',
     image: 'https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Video'
-  },
-  {
-    icon: <Share2 className="h-6 w-6 text-red-500" />,
-    title: 'Manajemen Sosial Media',
-    description: 'Pengelolaan akun media sosial profesional untuk meningkatkan engagement dan brand awareness.',
-    items: [
-      'Social Media Management',
-      'Content Creation & Posting',
-      'Community Management',
-      'Performance Analytics',
-      'Social Media Ads',
-      'Growth Strategy'
-    ],
-    slug: 'manajemen-sosial-media',
-    image: 'https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Marketing'
-  },
-  {
-    icon: <Code className="h-6 w-6 text-red-500" />,
-    title: 'API Integration',
-    description: 'Integrasi sistem dan API untuk menghubungkan berbagai platform digital yang Anda gunakan.',
-    items: [
-      'Third-party API Integration',
-      'Payment Gateway Integration',
-      'CRM Integration',
-      'Custom API Development',
-      'Webhook Setup',
-      'API Maintenance'
-    ],
-    slug: 'api-integration',
-    image: 'https://images.unsplash.com/photo-1517292987719-0369a794ec0f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Development'
-  },
-  {
-    icon: <PenTool className="h-6 w-6 text-red-500" />,
-    title: 'UI/UX Design',
-    description: 'Desain antarmuka dan pengalaman pengguna yang optimal untuk website dan aplikasi Anda.',
-    items: [
-      'User Research',
-      'Wireframing & Prototyping',
-      'UI Design System',
-      'Usability Testing',
-      'Interaction Design',
-      'Design Implementation'
-    ],
-    slug: 'ui-ux-design',
-    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Design'
-  },
-  {
-    icon: <Megaphone className="h-6 w-6 text-red-500" />,
-    title: 'SEO Management',
-    description: 'Optimasi mesin pencari untuk meningkatkan peringkat website dan trafik organik Anda.',
-    items: [
-      'Keyword Research',
-      'On-page SEO',
-      'Technical SEO',
-      'Link Building',
-      'Local SEO',
-      'SEO Audit & Reporting'
-    ],
-    slug: 'seo-management',
-    image: 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'SEO'
-  },
-  {
-    icon: <FileText className="h-6 w-6 text-red-500" />,
-    title: 'Content Strategy',
-    description: 'Strategi konten yang efektif untuk mendukung tujuan bisnis dan marketing Anda.',
-    items: [
-      'Content Audit',
-      'Content Calendar Planning',
-      'Content Distribution Strategy',
-      'Content Performance Analysis',
-      'Content Trend Research',
-      'Content Optimization'
-    ],
-    slug: 'content-strategy',
-    image: 'https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Content'
+    category: 'Video',
+    packages: [
+      {
+        name: "Product Photography",
+        description: "Foto produk profesional untuk katalog dan e-commerce",
+        priceRange: "Rp 100.000 - Rp 500.000 /produk",
+        features: [
+          "White Background",
+          "3 Angle per Produk",
+          "Basic Retouching",
+          "High Resolution",
+          "Format Digital"
+        ]
+      },
+      {
+        name: "Company Profile Video",
+        description: "Video profil perusahaan profesional",
+        priceRange: "Rp 5.000.000 - Rp 15.000.000",
+        features: [
+          "Durasi 2-3 Menit",
+          "Script Writing",
+          "Full HD Quality",
+          "Professional Voiceover",
+          "Background Music",
+          "2x Revisi"
+        ],
+        recommended: true
+      },
+      {
+        name: "Social Media Video Package",
+        description: "Paket video untuk konten media sosial",
+        priceRange: "Rp 3.000.000 - Rp 8.000.000 /bulan",
+        features: [
+          "4 Video per Bulan",
+          "Durasi 30-60 detik",
+          "Script Writing",
+          "Motion Graphics",
+          "Format Custom (Story, Post, Reels)",
+          "1x Revisi per Video"
+        ]
+      }
+    ]
   }
 ];

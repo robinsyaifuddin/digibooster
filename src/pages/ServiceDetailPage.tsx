@@ -20,34 +20,6 @@ const ServiceDetailPage = () => {
     }, [navigate]);
     return null;
   }
-  
-  // Mock pricing categories
-  const pricingCategories = [
-    {
-      name: "Basic",
-      description: "Solusi dasar untuk kebutuhan sederhana",
-      priceRange: "Rp 1.000.000 - Rp 3.000.000",
-      features: service.items.slice(0, 3)
-    },
-    {
-      name: "Standard",
-      description: "Rekomendasi untuk bisnis menengah",
-      priceRange: "Rp 3.000.000 - Rp 7.000.000",
-      features: service.items.slice(0, 5),
-      recommended: true
-    },
-    {
-      name: "Premium",
-      description: "Solusi lengkap untuk kebutuhan kompleks",
-      priceRange: "Rp 7.000.000 - Rp 15.000.000+",
-      features: service.items
-    }
-  ];
-  
-  // Related services (filter other services from same category or randomly)
-  const relatedServices = jasaDigitalServices
-    .filter(s => s.slug !== slug && s.category === service.category)
-    .slice(0, 3);
 
   return (
     <div className="bg-black min-h-screen pt-16 pb-16">
@@ -81,7 +53,7 @@ const ServiceDetailPage = () => {
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
                   <Star 
-                    key={i} 
+                    key={i.toString()} 
                     size={16} 
                     className="text-yellow-400 fill-yellow-400" 
                   />
@@ -133,7 +105,7 @@ const ServiceDetailPage = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {service.items.map((item, index) => (
                 <motion.div 
-                  key={index}
+                  key={index.toString()}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}
@@ -169,9 +141,9 @@ const ServiceDetailPage = () => {
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {pricingCategories.map((category, index) => (
+            {service.packages?.map((category, index) => (
               <motion.div
-                key={index}
+                key={index.toString()}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
@@ -204,7 +176,7 @@ const ServiceDetailPage = () => {
                   
                   <ul className="space-y-2 mb-6">
                     {category.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start">
+                      <li key={idx.toString()} className="flex items-start">
                         <Check className="h-4 w-4 text-sky-400 mr-2 mt-0.5" />
                         <span className="text-gray-300 text-sm">{feature}</span>
                       </li>
@@ -232,7 +204,7 @@ const ServiceDetailPage = () => {
       </section>
       
       {/* Related Services */}
-      {relatedServices.length > 0 && (
+      {jasaDigitalServices.filter(s => s.slug !== slug).length > 0 && (
         <section className="py-16 bg-gradient-to-b from-gray-900 to-black">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white">
@@ -240,9 +212,9 @@ const ServiceDetailPage = () => {
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {relatedServices.map((relatedService, index) => (
+              {jasaDigitalServices.filter(s => s.slug !== slug).slice(0, 3).map((relatedService, index) => (
                 <motion.div
-                  key={index}
+                  key={index.toString()}
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ delay: index * 0.1, duration: 0.5 }}

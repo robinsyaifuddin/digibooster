@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 const JasaDigital = () => {
   // Featured service data
   const featuredService = {
-    title: "Website & App Development",
+    title: "Website & Aplikasi",
     description: "Layanan pembuatan website dan aplikasi mobile dengan teknologi terkini untuk berbagai kebutuhan bisnis Anda. Kami membantu mewujudkan visi digital Anda dengan solusi yang terukur, handal, dan user-friendly.",
     image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
     rating: 4.9,
@@ -40,7 +40,7 @@ const JasaDigital = () => {
                 <div className="flex items-center mr-4">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star 
-                      key={star} 
+                      key={star.toString()} 
                       size={16} 
                       className={star <= 4.5 ? "text-yellow-400 fill-yellow-400" : "text-gray-400"} 
                     />
@@ -121,14 +121,8 @@ const JasaDigital = () => {
             <h2 className="text-3xl font-bold text-white">Layanan Digital</h2>
             
             <div className="flex gap-2">
-              <Button variant="outline" size="sm" className="rounded-full border-gray-700 hover:bg-gray-800 hidden md:flex">
-                Semua
-              </Button>
               <Button size="sm" className="rounded-full bg-sky-500 hover:bg-sky-600 hidden md:flex">
-                Terpopuler
-              </Button>
-              <Button variant="outline" size="sm" className="rounded-full border-gray-700 hover:bg-gray-800 hidden md:flex">
-                Terbaru
+                Semua Layanan
               </Button>
               
               <div className="flex gap-2 ml-2">
@@ -143,10 +137,10 @@ const JasaDigital = () => {
           </div>
           
           {/* Services Grid with FilmBox style */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
             {jasaDigitalServices.map((service, index) => (
               <motion.div
-                key={index}
+                key={index.toString()}
                 id={service.slug}
                 whileHover={{ y: -5 }}
                 className="filmbox-card"
@@ -235,7 +229,7 @@ const JasaDigital = () => {
               }
             ].map((benefit, index) => (
               <motion.div
-                key={index}
+                key={index.toString()}
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ delay: index * 0.1, duration: 0.5 }}
