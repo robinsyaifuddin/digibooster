@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,7 @@ import FeaturedPortfolioCard from '@/components/home/FeaturedPortfolioCard';
 import { useIsMobile } from '@/hooks/use-mobile';
 import LogoMarquee from '@/components/home/LogoMarquee';
 import TestimonialMarquee from '@/components/home/TestimonialMarquee';
+import { jasaDigitalServices } from '@/data/jasaDigitalData';
 
 // Featured service data
 const featuredService = {
@@ -27,49 +29,16 @@ const featuredService = {
   category: "Featured"
 };
 
-// Popular service cards for recommendations section
-const popularServices = [
-  {
-    id: '1',
-    title: 'Website Development',
-    description: 'Pembuatan website profesional untuk berbagai kebutuhan bisnis',
-    image: 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.9,
-    year: '2023',
-  },
-  {
-    id: '2',
-    title: 'App Development',
-    description: 'Pengembangan aplikasi mobile iOS dan Android untuk bisnis Anda',
-    image: 'https://images.unsplash.com/photo-1551650975-87deedd944c3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.7,
-    year: '2023',
-  },
-  {
-    id: '3',
-    title: 'Digital Marketing',
-    description: 'Strategi marketing digital untuk meningkatkan brand awareness',
-    image: 'https://images.unsplash.com/photo-1533750516457-a7f992034fec?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.8,
-    year: '2023',
-  },
-  {
-    id: '4',
-    title: 'Graphic Design',
-    description: 'Desain grafis profesional untuk kebutuhan branding bisnis',
-    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.5,
-    year: '2023',
-  },
-  {
-    id: '5',
-    title: 'Content Management',
-    description: 'Pengelolaan konten website dan media sosial yang terstruktur',
-    image: 'https://images.unsplash.com/photo-1553484771-11998c592b9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.9,
-    year: '2023',
-  },
-];
+// Popular service cards for recommendations section - Using data from jasaDigitalServices
+const popularServices = jasaDigitalServices.map((service, index) => ({
+  id: (index + 1).toString(),
+  title: service.title,
+  description: service.description,
+  image: service.image || 'https://images.unsplash.com/photo-1487058792275-0ad4aaf24ca7?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+  rating: 4.9 - (index * 0.1),
+  year: '2023',
+  slug: service.slug,
+}));
 
 // Subscription plans
 const subscriptionPlans = [
@@ -133,14 +102,14 @@ const Beranda = () => {
       title: t('website-app-development'),
       description: t('website-app-desc'),
       icon: 'Code',
-      link: '/program/jasa-digital#website-development',
+      link: '/program/jasa-digital#website-dan-aplikasi',
     },
     {
       id: '2',
       title: t('graphic-design'),
       description: t('graphic-design-desc'),
       icon: 'PenTool',
-      link: '/program/jasa-digital#graphic-design',
+      link: '/program/jasa-digital#desain-grafis',
     },
     {
       id: '3',
@@ -151,24 +120,10 @@ const Beranda = () => {
     },
     {
       id: '4',
-      title: t('content-management'),
-      description: t('content-management-desc'),
-      icon: 'FileText',
-      link: '/program/jasa-digital#content-management',
-    },
-    {
-      id: '5',
       title: t('photo-video'),
       description: t('photo-video-desc'),
       icon: 'Camera',
-      link: '/program/jasa-digital#photo-video',
-    },
-    {
-      id: '6',
-      title: t('social-media'),
-      description: t('social-media-desc'),
-      icon: 'Share2',
-      link: '/program/jasa-digital#social-media',
+      link: '/program/jasa-digital#foto-dan-videografi',
     },
   ];
   
@@ -204,7 +159,7 @@ const Beranda = () => {
                 <div className="flex items-center mr-2">
                   {[1, 2, 3, 4, 5].map((star) => (
                     <Star 
-                      key={star} 
+                      key={star.toString()}
                       size={isMobile ? 14 : 16} 
                       className={star <= 4.5 ? "text-yellow-400 fill-yellow-400" : "text-gray-400"} 
                     />
@@ -277,7 +232,7 @@ const Beranda = () => {
               <div className="absolute -right-12 top-10 space-y-4 hidden lg:block">
                 {[1, 2, 3].map(index => (
                   <motion.div 
-                    key={index.toString()} 
+                    key={index.toString()}
                     whileHover={{ scale: 1.05 }}
                     className="w-16 md:w-24 h-12 md:h-16 rounded-lg overflow-hidden bg-gray-800 border border-gray-700"
                   >
@@ -296,7 +251,7 @@ const Beranda = () => {
           <div className="flex justify-center gap-2 mt-10">
             {[1, 2, 3].map(dot => (
               <button 
-                key={dot.toString()} // Converting number to string here
+                key={dot.toString()}
                 className={`w-2 h-2 rounded-full ${dot === 1 ? 'bg-sky-400' : 'bg-gray-600'}`}
                 aria-label={`Go to slide ${dot}`}
               />
@@ -488,8 +443,8 @@ const Beranda = () => {
             </div>
           </div>
           
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-4">
-            {popularServices.map((service) => (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
+            {popularServices.slice(0, 4).map((service) => (
               <motion.div
                 key={service.id.toString()}
                 whileHover={{ y: -5 }}
@@ -517,7 +472,7 @@ const Beranda = () => {
                       <span>{service.year}</span>
                     </div>
                     <Link 
-                      to={`/program/jasa-digital#${service.id}`} 
+                      to={`/layanan/${service.slug}`} 
                       className="mt-2 text-xs bg-sky-500 hover:bg-sky-600 text-white px-2 py-1 rounded-full inline-flex items-center"
                     >
                       Lihat Detail
@@ -528,19 +483,12 @@ const Beranda = () => {
             ))}
           </div>
           
-          <div className="flex justify-center gap-1 mt-6">
-            {[1, 2, 3, 4, 5].map(page => (
-              <button 
-                key={page.toString()}
-                className={`w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-full text-sm 
-                           ${page === 1 ? 'bg-sky-500 text-white' : 'bg-gray-800 text-gray-400 hover:bg-gray-700'}`}
-              >
-                {page}
-              </button>
-            ))}
-            <button className="w-6 h-6 md:w-8 md:h-8 flex items-center justify-center rounded-full bg-gray-800 text-gray-400 hover:bg-gray-700">
-              <ChevronRight size={isMobile ? 12 : 16} />
-            </button>
+          <div className="text-center mt-8">
+            <Button asChild variant="outline" className="rounded-full border-gray-700 hover:bg-sky-500/20 hover:border-sky-500 text-xs md:text-sm">
+              <Link to="/program/jasa-digital">
+                Lihat Semua Layanan <ChevronRight size={isMobile ? 14 : 16} className="ml-1" />
+              </Link>
+            </Button>
           </div>
         </div>
       </section>
