@@ -30,8 +30,13 @@ const Beranda = () => {
     }
   };
 
-  // Get only the specific 4 services we want from jasaDigitalData
-  const serviceItems = jasaDigitalServices;
+  // Filter to only include the 4 specific services
+  const serviceItems = jasaDigitalServices.filter(service => 
+    service.title === "Website & Aplikasi" || 
+    service.title === "Desain Grafis" || 
+    service.title === "Digital Marketing" || 
+    service.title === "Foto dan Videografi"
+  );
   
   // Sample data for required props
   const companyName = "DigiBooster";
