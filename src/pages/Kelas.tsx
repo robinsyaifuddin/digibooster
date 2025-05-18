@@ -1,19 +1,245 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, ChevronRight, Star, Info, CalendarDays } from 'lucide-react';
+import { Play, ChevronRight, Star, Info, CalendarDays, Code, PenTool, TrendingUp, Video, Image } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { classes } from '@/data/classData';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AnimatedSection from '@/components/animation/AnimatedSection';
+import { Badge } from '@/components/ui/badge';
+import { ClassCard } from '@/components/class/ClassCard';
+
+// Define course categories
+const courseCategories = [
+  {
+    id: "web-app",
+    name: "Website & Aplikasi",
+    icon: <Code className="h-5 w-5" />,
+    description: "Belajar pengembangan website dan aplikasi dengan teknologi terkini",
+    courses: [
+      {
+        id: 1,
+        title: "Full-Stack Web Development",
+        duration: "10 minggu",
+        level: "Intermediate",
+        image: "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-1.2.1",
+        rating: 4.8,
+        price: "Rp4.500.000",
+        featured: true
+      },
+      {
+        id: 2,
+        title: "React JS Fundamentals",
+        duration: "4 minggu",
+        level: "Beginner",
+        image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-1.2.1",
+        rating: 4.7,
+        price: "Rp2.200.000"
+      },
+      {
+        id: 3,
+        title: "Mobile App Development",
+        duration: "8 minggu",
+        level: "Intermediate",
+        image: "https://images.unsplash.com/photo-1581276879432-15e50529f34b?ixlib=rb-1.2.1",
+        rating: 4.5,
+        price: "Rp3.800.000"
+      },
+      {
+        id: 4,
+        title: "Backend Engineering",
+        duration: "6 minggu",
+        level: "Advanced",
+        image: "https://images.unsplash.com/photo-1504639725590-34d0984388bd?ixlib=rb-1.2.1",
+        rating: 4.9,
+        price: "Rp3.500.000"
+      },
+      {
+        id: 5,
+        title: "HTML & CSS Basics",
+        duration: "2 minggu",
+        level: "Beginner",
+        image: "https://images.unsplash.com/photo-1621839673705-6617adf9e890?ixlib=rb-1.2.1",
+        rating: 4.6,
+        price: "Rp1.200.000"
+      }
+    ]
+  },
+  {
+    id: "design",
+    name: "Desain Grafis",
+    icon: <PenTool className="h-5 w-5" />,
+    description: "Pelajari teknik desain grafis profesional untuk berbagai kebutuhan media",
+    courses: [
+      {
+        id: 6,
+        title: "UI/UX Design Mastery",
+        duration: "8 minggu",
+        level: "Intermediate",
+        image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1",
+        rating: 4.8,
+        price: "Rp3.200.000",
+        featured: true
+      },
+      {
+        id: 7,
+        title: "Adobe Photoshop Advanced",
+        duration: "5 minggu",
+        level: "Intermediate",
+        image: "https://images.unsplash.com/photo-1572044162444-ad60f128bdea?ixlib=rb-1.2.1",
+        rating: 4.5,
+        price: "Rp2.500.000"
+      },
+      {
+        id: 8,
+        title: "Logo Design Workshop",
+        duration: "3 minggu",
+        level: "Beginner",
+        image: "https://images.unsplash.com/photo-1626785774573-4b799315345d?ixlib=rb-1.2.1",
+        rating: 4.7,
+        price: "Rp1.800.000"
+      },
+      {
+        id: 9,
+        title: "Brand Identity Design",
+        duration: "6 minggu",
+        level: "Advanced",
+        image: "https://images.unsplash.com/photo-1634942537034-2531766a4dba?ixlib=rb-1.2.1",
+        rating: 4.9,
+        price: "Rp2.800.000"
+      },
+      {
+        id: 10,
+        title: "Digital Illustration",
+        duration: "4 minggu",
+        level: "Intermediate",
+        image: "https://images.unsplash.com/photo-1607799279861-4dd421887fb3?ixlib=rb-1.2.1",
+        rating: 4.6,
+        price: "Rp2.200.000"
+      }
+    ]
+  },
+  {
+    id: "marketing",
+    name: "Digital Marketing",
+    icon: <TrendingUp className="h-5 w-5" />,
+    description: "Kuasai strategi marketing di era digital untuk meningkatkan bisnis",
+    courses: [
+      {
+        id: 11,
+        title: "Social Media Marketing",
+        duration: "6 minggu",
+        level: "Intermediate",
+        image: "https://images.unsplash.com/photo-1611926653458-09294b3142bf?ixlib=rb-1.2.1",
+        rating: 4.7,
+        price: "Rp2.800.000",
+        featured: true
+      },
+      {
+        id: 12,
+        title: "SEO Fundamentals",
+        duration: "4 minggu",
+        level: "Beginner",
+        image: "https://images.unsplash.com/photo-1571715681292-6b880a7ebdeb?ixlib=rb-1.2.1",
+        rating: 4.5,
+        price: "Rp2.200.000"
+      },
+      {
+        id: 13,
+        title: "Content Marketing Strategy",
+        duration: "5 minggu",
+        level: "Intermediate",
+        image: "https://images.unsplash.com/photo-1552664730-d307ca884978?ixlib=rb-1.2.1",
+        rating: 4.6,
+        price: "Rp2.500.000"
+      },
+      {
+        id: 14,
+        title: "Google Ads Mastery",
+        duration: "6 minggu",
+        level: "Advanced",
+        image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?ixlib=rb-1.2.1",
+        rating: 4.8,
+        price: "Rp3.000.000"
+      },
+      {
+        id: 15,
+        title: "Email Marketing",
+        duration: "3 minggu",
+        level: "Beginner",
+        image: "https://images.unsplash.com/photo-1596526131083-e8c633c948d2?ixlib=rb-1.2.1",
+        rating: 4.4,
+        price: "Rp1.800.000"
+      }
+    ]
+  },
+  {
+    id: "photo-video",
+    name: "Foto dan Videografi",
+    icon: <Video className="h-5 w-5" />,
+    description: "Pelajari teknik profesional dalam dunia fotografi dan videografi",
+    courses: [
+      {
+        id: 16,
+        title: "Video Editing Masterclass",
+        duration: "8 minggu",
+        level: "Intermediate",
+        image: "https://images.unsplash.com/photo-1574717024653-61fd2cf4d44d?ixlib=rb-1.2.1",
+        rating: 4.9,
+        price: "Rp3.500.000",
+        featured: true
+      },
+      {
+        id: 17,
+        title: "Photography Basics",
+        duration: "4 minggu",
+        level: "Beginner",
+        image: "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?ixlib=rb-1.2.1",
+        rating: 4.6,
+        price: "Rp2.000.000"
+      },
+      {
+        id: 18,
+        title: "Cinematography Techniques",
+        duration: "6 minggu",
+        level: "Advanced",
+        image: "https://images.unsplash.com/photo-1478720568477-152d9b164e26?ixlib=rb-1.2.1",
+        rating: 4.8,
+        price: "Rp3.200.000"
+      },
+      {
+        id: 19,
+        title: "Adobe Premiere Pro",
+        duration: "5 minggu",
+        level: "Intermediate",
+        image: "https://images.unsplash.com/photo-1536240478700-b869070f9279?ixlib=rb-1.2.1",
+        rating: 4.7,
+        price: "Rp2.500.000"
+      },
+      {
+        id: 20,
+        title: "Product Photography",
+        duration: "3 minggu",
+        level: "Beginner",
+        image: "https://images.unsplash.com/photo-1542038784456-1ea8e935640e?ixlib=rb-1.2.1",
+        rating: 4.5,
+        price: "Rp1.800.000"
+      }
+    ]
+  }
+];
+
+// Find a featured course for the hero section
+const featuredCourse = courseCategories.flatMap(category => 
+  category.courses.filter(course => course.featured)
+)[0] || courseCategories[0].courses[0];
 
 const Kelas = () => {
-  // Featured class (similar to featured movie in the reference)
-  const featuredClass = classes[0];
+  const [selectedTab, setSelectedTab] = useState(courseCategories[0].id);
   
   return (
     <div className="pt-16 bg-black min-h-screen overflow-x-hidden">
-      {/* Hero Section - Similar to movie hero in reference */}
+      {/* Hero Section */}
       <div className="relative min-h-[80vh] w-full overflow-hidden">
         {/* Background Image with Gradient Overlay */}
         <div className="absolute inset-0 z-0">
@@ -53,7 +279,7 @@ const Kelas = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex items-center gap-4 mb-4"
+              className="flex flex-wrap items-center gap-4 mb-4"
             >
               <div className="flex items-center">
                 {[...Array(5)].map((_, i) => (
@@ -63,7 +289,7 @@ const Kelas = () => {
                     fill={i < 4 ? "currentColor" : "none"}
                   />
                 ))}
-                <span className="ml-2 text-white">4.5</span>
+                <span className="ml-2 text-white">4.7</span>
               </div>
               
               <span className="text-gray-400">2023</span>
@@ -80,7 +306,7 @@ const Kelas = () => {
               className="text-gray-300 mb-8 max-w-2xl"
             >
               Tingkatkan keterampilan digital Anda melalui kelas intensif dan bootcamp yang dirancang
-              untuk memberikan pengetahuan praktis dalam waktu singkat.
+              untuk memberikan pengetahuan praktis dari instruktur berpengalaman.
             </motion.p>
             
             <motion.div
@@ -102,7 +328,7 @@ const Kelas = () => {
           </div>
         </div>
         
-        {/* Movie Screenshots - like in the reference */}
+        {/* Preview Screenshots */}
         <div className="absolute right-10 top-1/2 transform -translate-y-1/2 hidden lg:flex flex-col gap-4 z-10">
           {[1, 2, 3, 4].map((item) => (
             <motion.div 
@@ -122,104 +348,112 @@ const Kelas = () => {
         </div>
       </div>
 
-      {/* Recommendations Section - Similar to movies grid in reference */}
+      {/* Category Tabs Section */}
       <div className="container mx-auto px-4 py-16">
-        <div className="flex justify-between items-center mb-8">
-          <h2 className="text-3xl font-bold text-white">Kelas Rekomendasi</h2>
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.5 }}
+          viewport={{ once: true }}
+          className="mb-8"
+        >
+          <h2 className="text-3xl font-bold text-white mb-6">Kategori Kursus</h2>
           
-          <div className="flex gap-2">
-            {["Semua", "Terbaru", "Populer"].map((filter, index) => (
-              <Button 
-                key={index}
-                variant={index === 0 ? "default" : "outline"} 
-                size="sm"
-                className={index === 0 ? "bg-sky-500 hover:bg-sky-600" : "border-gray-700 text-gray-300 hover:bg-sky-500/20"}
-              >
-                {filter}
-              </Button>
-            ))}
-            
-            <Button variant="outline" size="icon" className="border-gray-700">
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </div>
-        
-        {/* Class Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
-          {classes.map((classItem, index) => (
-            <motion.div
-              key={index}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="bg-gray-900 rounded-xl overflow-hidden group relative"
-            >
-              {/* Top Image */}
-              <div className="h-40 overflow-hidden relative">
-                <img 
-                  src="https://images.unsplash.com/photo-1461749280684-dccba630e2f6"
-                  alt={classItem.title} 
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                
-                <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
-                
-                <div className="absolute top-2 right-2 p-1.5 bg-black/50 rounded-full backdrop-blur-sm group-hover:bg-sky-500/50 transition-colors">
-                  <Play className="w-3 h-3 text-white" fill="currentColor" />
-                </div>
-                
-                {/* Rating */}
-                <div className="absolute bottom-2 left-2 flex items-center space-x-1">
-                  <Star className="w-3 h-3 text-yellow-500" fill="currentColor" />
-                  <span className="text-xs font-medium text-white">4.{index + 5}</span>
-                </div>
-                
-                {/* Year */}
-                <div className="absolute bottom-2 right-2 text-xs font-medium text-gray-300">
-                  2023
-                </div>
-              </div>
-              
-              {/* Content */}
-              <div className="p-4">
-                <h3 className="font-bold text-white truncate">{classItem.title}</h3>
-                
-                <div className="flex items-center text-xs text-gray-400 mt-2 mb-4">
-                  <CalendarDays className="w-3 h-3 mr-1" />
-                  <span>{classItem.details.duration}</span>
-                </div>
-                
-                <Button 
-                  size="sm" 
-                  className="w-full bg-sky-500 hover:bg-sky-600 font-medium text-xs"
+          <Tabs 
+            defaultValue={courseCategories[0].id} 
+            onValueChange={setSelectedTab}
+            className="w-full"
+          >
+            <TabsList className="grid grid-cols-2 md:grid-cols-4 gap-2 bg-gray-900/50 p-2 mb-8">
+              {courseCategories.map((category) => (
+                <TabsTrigger 
+                  key={category.id} 
+                  value={category.id}
+                  className="data-[state=active]:bg-sky-500 data-[state=active]:text-white flex items-center gap-2"
                 >
-                  Detail Kelas
-                </Button>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-        
-        {/* Pagination - Like in the reference */}
-        <div className="flex justify-center mt-10 gap-2">
-          {[1, 2, 3, 4, '...', 20].map((page, index) => (
-            <Button
-              key={index}
-              variant={index === 0 ? "default" : "outline"}
-              size="icon"
-              className={index === 0 ? "bg-sky-500 hover:bg-sky-600 w-8 h-8" : "border-gray-700 text-gray-300 w-8 h-8"}
-            >
-              {page}
-            </Button>
-          ))}
-          <Button variant="outline" size="icon" className="border-gray-700 w-8 h-8">
-            <ChevronRight className="h-4 w-4" />
-          </Button>
-        </div>
+                  {category.icon}
+                  <span className="hidden md:inline">{category.name}</span>
+                </TabsTrigger>
+              ))}
+            </TabsList>
+            
+            {courseCategories.map((category) => (
+              <TabsContent 
+                key={category.id} 
+                value={category.id}
+                className="bg-transparent border-none p-0 mt-0"
+              >
+                <div className="mb-8">
+                  <h3 className="text-2xl font-bold text-white mb-2">{category.name}</h3>
+                  <p className="text-gray-400">{category.description}</p>
+                </div>
+                
+                {/* Course Cards Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                  {category.courses.map((course, index) => (
+                    <motion.div
+                      key={course.id}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="bg-gray-900 rounded-xl overflow-hidden group relative"
+                    >
+                      {/* Course Image */}
+                      <div className="h-40 overflow-hidden relative">
+                        <img 
+                          src={course.image}
+                          alt={course.title} 
+                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        />
+                        
+                        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-60"></div>
+                        
+                        <div className="absolute top-2 right-2 p-1.5 bg-black/50 rounded-full backdrop-blur-sm group-hover:bg-sky-500/50 transition-colors">
+                          <Play className="w-3 h-3 text-white" fill="currentColor" />
+                        </div>
+                        
+                        {/* Rating */}
+                        <div className="absolute bottom-2 left-2 flex items-center space-x-1">
+                          <Star className="w-3 h-3 text-yellow-500" fill="currentColor" />
+                          <span className="text-xs font-medium text-white">{course.rating}</span>
+                        </div>
+                        
+                        {/* Level */}
+                        <div className="absolute bottom-2 right-2 text-xs font-medium text-gray-300">
+                          {course.level}
+                        </div>
+                      </div>
+                      
+                      {/* Content */}
+                      <div className="p-4">
+                        <h3 className="font-bold text-white truncate">{course.title}</h3>
+                        
+                        <div className="flex items-center text-xs text-gray-400 mt-2 mb-1">
+                          <CalendarDays className="w-3 h-3 mr-1" />
+                          <span>{course.duration}</span>
+                        </div>
+                        
+                        <div className="text-sky-400 font-medium text-sm mb-3">
+                          {course.price}
+                        </div>
+                        
+                        <Button 
+                          size="sm" 
+                          className="w-full bg-sky-500 hover:bg-sky-600 font-medium text-xs"
+                        >
+                          Detail Kelas
+                        </Button>
+                      </div>
+                    </motion.div>
+                  ))}
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
+        </motion.div>
       </div>
 
-      {/* Pricing Section - Similar to plans in reference */}
+      {/* Pricing Section */}
       <div className="bg-black py-24">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
@@ -336,6 +570,53 @@ const Kelas = () => {
               <Button className="w-full bg-sky-500 hover:bg-sky-600">Pilih Paket</Button>
             </motion.div>
           </div>
+        </div>
+      </div>
+
+      {/* FAQ Section */}
+      <div className="container mx-auto px-4 py-16">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-white mb-4">Frequently Asked Questions</h2>
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Pertanyaan yang sering ditanyakan tentang kelas dan bootcamp kami
+          </p>
+        </div>
+        
+        <div className="max-w-3xl mx-auto space-y-4">
+          {[
+            {
+              question: "Bagaimana cara mendaftar kelas?",
+              answer: "Anda dapat mendaftar kelas dengan memilih kelas yang diinginkan, kemudian klik tombol 'Daftar Sekarang' dan ikuti instruksi pembayaran."
+            },
+            {
+              question: "Apakah saya bisa mengakses materi setelah kelas selesai?",
+              answer: "Ya, Anda akan mendapatkan akses ke materi kelas sesuai dengan durasi paket yang Anda pilih. Untuk paket Enterprise, Anda mendapatkan akses seumur hidup."
+            },
+            {
+              question: "Apakah ada sertifikat setelah menyelesaikan kelas?",
+              answer: "Ya, semua kelas kami menyediakan sertifikat penyelesaian yang dapat Anda gunakan untuk portofolio atau CV Anda."
+            },
+            {
+              question: "Berapa lama saya bisa menyelesaikan kelas?",
+              answer: "Setiap kelas memiliki durasi yang berbeda, mulai dari 2 minggu hingga 10 minggu. Anda dapat belajar dengan kecepatan sendiri dalam jangka waktu tersebut."
+            },
+            {
+              question: "Apakah ada persyaratan khusus untuk mengikuti kelas?",
+              answer: "Setiap kelas memiliki persyaratan yang berbeda. Kelas untuk pemula tidak memerlukan pengetahuan sebelumnya, sementara kelas tingkat lanjut mungkin memerlukan beberapa pengetahuan dasar."
+            }
+          ].map((faq, index) => (
+            <motion.div 
+              key={index}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="bg-gray-900 rounded-lg p-6 hover:border-sky-500/20 hover:shadow-sky-500/5 transition-all border border-gray-800"
+            >
+              <h3 className="text-lg font-medium text-white mb-2">{faq.question}</h3>
+              <p className="text-gray-400">{faq.answer}</p>
+            </motion.div>
+          ))}
         </div>
       </div>
     </div>

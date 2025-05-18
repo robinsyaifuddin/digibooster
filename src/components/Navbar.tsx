@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
@@ -161,17 +160,7 @@ const Navbar = () => {
           path: "/program/kelas", 
           label: "shortclass-bootcamp", 
           icon: <GraduationCap className="h-4 w-4 mr-2 icon-3d" /> 
-        },
-        { 
-          path: "/program/motivasi-edukasi", 
-          label: "motivasi-edukasi", 
-          icon: <Book className="h-4 w-4 mr-2 icon-3d" /> 
-        },
-        { 
-          path: "/program/sharing-konsultasi", 
-          label: "sharing-konsultasi", 
-          icon: <Info className="h-4 w-4 mr-2 icon-3d" /> 
-        },
+        }
       ]
     },
     { 

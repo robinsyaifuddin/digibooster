@@ -1,66 +1,87 @@
 
 import React from 'react';
-import { Class } from '@/types/classTypes';
 import { motion } from 'framer-motion';
+import { Star, Clock, ChevronRight } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
 
 interface ClassCardProps {
-  classData: Class;
+  title: string;
+  image: string;
+  duration: string;
+  level: string;
+  rating: number;
+  price: string;
+  featured?: boolean;
 }
 
-const ClassCard = ({ classData }: ClassCardProps) => {
+export const ClassCard: React.FC<ClassCardProps> = ({
+  title,
+  image,
+  duration,
+  level,
+  rating,
+  price,
+  featured = false
+}) => {
   return (
-    <div className="bg-dark-200 rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow border border-dark-400 group relative">
-      <div className="absolute inset-0 bg-neon-purple/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-      
-      <div className="bg-dark-300 p-6">
-        <div className="w-16 h-16 rounded-lg bg-dark-200 flex items-center justify-center mb-4 border border-neon-purple/30 group-hover:border-neon-purple/60 transition-colors">
-          <div className="text-neon-purple group-hover:scale-110 transition-transform">
-            {classData.icon}
-          </div>
-        </div>
-        <h3 className="text-xl font-bold mb-2 text-white">{classData.title}</h3>
-        <p className="text-gray-400">{classData.description}</p>
-      </div>
-      
-      <div className="p-6 border-b border-dark-400">
-        <h4 className="text-sm font-semibold text-gray-400 uppercase mb-3">Detail Kelas</h4>
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <p className="text-xs text-gray-500">Durasi</p>
-            <p className="text-sm font-medium text-gray-300">{classData.details.duration}</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-500">Peserta</p>
-            <p className="text-sm font-medium text-gray-300">{classData.details.participants}</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-500">Level</p>
-            <p className="text-sm font-medium text-gray-300">{classData.details.level}</p>
-          </div>
-          <div>
-            <p className="text-xs text-gray-500">Jadwal</p>
-            <p className="text-sm font-medium text-gray-300">{classData.details.schedule}</p>
-          </div>
-        </div>
-      </div>
-      
-      <div className="p-6">
-        <h4 className="text-sm font-semibold text-gray-400 uppercase mb-3">Materi Kelas</h4>
-        <ul className="space-y-2">
-          {classData.topics.map((topic, idx) => (
-            <li key={idx} className="flex items-start">
-              <span className="text-neon-purple mr-2">•</span>
-              <span className="text-gray-300 text-sm">{topic}</span>
-            </li>
-          ))}
-        </ul>
+    <motion.div
+      whileHover={{ scale: 1.03 }}
+      className="bg-gray-900/80 rounded-xl overflow-hidden flex flex-col h-full border border-gray-800 hover:border-sky-500/30 hover:shadow-lg hover:shadow-sky-500/5 transition-all"
+    >
+      {/* Image container */}
+      <div className="h-40 relative overflow-hidden">
+        <img
+          src={image}
+          alt={title}
+          className="w-full h-full object-cover"
+        />
         
-        <button className="mt-6 w-full py-3 rounded-lg bg-neon-purple hover:bg-neon-violet text-white font-medium transition-colors group-hover:animate-pulse-light">
-          Daftar Kelas
-        </button>
+        {/* Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70" />
+        
+        {/* Featured badge */}
+        {featured && (
+          <Badge className="absolute top-2 right-2 bg-sky-500 hover:bg-sky-600">
+            Featured
+          </Badge>
+        )}
+        
+        {/* Rating */}
+        <div className="absolute bottom-2 left-2 flex items-center gap-1 bg-black/50 px-2 py-0.5 rounded-md">
+          <Star className="h-3 w-3 text-yellow-500" fill="currentColor" />
+          <span className="text-xs font-medium text-white">{rating.toFixed(1)}</span>
+        </div>
+        
+        {/* Level badge */}
+        <div className="absolute bottom-2 right-2">
+          <Badge variant="outline" className="text-xs border-gray-700 bg-black/50">
+            {level}
+          </Badge>
+        </div>
       </div>
-    </div>
+      
+      {/* Content */}
+      <div className="p-4 flex flex-col flex-1">
+        <h3 className="font-bold text-white mb-2 line-clamp-2">{title}</h3>
+        
+        <div className="flex items-center text-sm text-gray-400 mb-1">
+          <Clock className="h-3.5 w-3.5 mr-1.5" />
+          <span>{duration}</span>
+        </div>
+        
+        <div className="mt-auto">
+          <div className="text-sky-400 font-semibold mb-3">{price}</div>
+          
+          <Button 
+            size="sm" 
+            className="w-full bg-sky-500 hover:bg-sky-600 flex items-center justify-center gap-1"
+          >
+            <span>Detail Kelas</span>
+            <ChevronRight className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </motion.div>
   );
 };
-
-export default ClassCard;
