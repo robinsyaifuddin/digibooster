@@ -41,6 +41,9 @@ import { HomeContentProvider } from './contexts/HomeContentContext';
 // Toast provider for notifications
 import { Toaster } from '@/components/ui/toaster';
 
+// Import PageTransition component
+import { PageTransition } from './components/animation/PageTransition';
+
 // Layout component to handle navigation visibility
 const AppLayout = ({ children }: { children: React.ReactNode }) => {
   const location = useLocation();
@@ -52,7 +55,9 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="App bg-black text-white min-h-screen flex flex-col">
       {!isDashboardPage && <Navbar />}
-      <main className="flex-grow">{children}</main>
+      <main className="flex-grow">
+        <PageTransition>{children}</PageTransition>
+      </main>
       {!isDashboardPage && <Footer />}
       <Toaster />
     </div>
