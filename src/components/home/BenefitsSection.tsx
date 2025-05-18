@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -5,10 +6,12 @@ import { Link } from 'react-router-dom';
 import { useLanguage } from '@/contexts/LanguageContext';
 import { cn } from '@/lib/utils';
 import AnimatedSection from '@/components/animation/AnimatedSection';
+
 interface BenefitsSectionProps {
   companyName: string;
-  benefits: string[];
+  benefits: string[];  // Note: Benefits expects an array of strings
 }
+
 const BenefitsSection = ({
   companyName,
   benefits
@@ -64,4 +67,5 @@ const BenefitsSection = ({
       </div>
     </section>;
 };
+
 export default BenefitsSection;

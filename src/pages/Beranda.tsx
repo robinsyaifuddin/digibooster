@@ -37,10 +37,10 @@ const Beranda = () => {
   
   // Fixed benefits data that matches the expected structure
   const benefits = [
-    { title: "Profesional", description: "Tim ahli yang berpengalaman", icon: "Award" },
-    { title: "Terjangkau", description: "Harga bersaing dengan kualitas terbaik", icon: "DollarSign" },
-    { title: "Tepat Waktu", description: "Pengerjaan sesuai jadwal yang disepakati", icon: "Clock" },
-    { title: "Support", description: "Dukungan teknis setelah penyelesaian", icon: "HeadphonesIcon" }
+    "Profesional - Tim ahli yang berpengalaman",
+    "Terjangkau - Harga bersaing dengan kualitas terbaik",
+    "Tepat Waktu - Pengerjaan sesuai jadwal yang disepakati", 
+    "Support - Dukungan teknis setelah penyelesaian"
   ];
   
   // Fixed testimonials data that matches TestimonialItem
