@@ -12,6 +12,8 @@ import LogoMarquee from '@/components/home/LogoMarquee';
 import BenefitsSection from '@/components/home/BenefitsSection';
 import ServiceCard from '@/components/home/ServiceCard';
 import { jasaDigitalServices } from '@/data/jasaDigitalData';
+import { PartnerItem, ServiceItem, TestimonialItem } from '@/types/websiteTypes';
+import { PortfolioItemType } from '@/types/portfolioTypes';
 
 const Beranda = () => {
   // Animation variants
@@ -32,6 +34,8 @@ const Beranda = () => {
   
   // Sample data for required props
   const companyName = "DigiBooster";
+  
+  // Fixed benefits data that matches the expected structure
   const benefits = [
     { title: "Profesional", description: "Tim ahli yang berpengalaman", icon: "Award" },
     { title: "Terjangkau", description: "Harga bersaing dengan kualitas terbaik", icon: "DollarSign" },
@@ -39,58 +43,70 @@ const Beranda = () => {
     { title: "Support", description: "Dukungan teknis setelah penyelesaian", icon: "HeadphonesIcon" }
   ];
   
-  const testimonials = [
+  // Fixed testimonials data that matches TestimonialItem
+  const testimonials: TestimonialItem[] = [
     { 
+      id: "1",
       name: "Ahmad Riza", 
-      company: "PT Maju Sejahtera", 
-      text: "Layanan yang sangat profesional dan hasil yang memuaskan.",
-      image: "https://randomuser.me/api/portraits/men/1.jpg",
-      rating: 5
+      role: "CEO PT Maju Sejahtera", 
+      content: "Layanan yang sangat profesional dan hasil yang memuaskan.",
+      image: "https://randomuser.me/api/portraits/men/1.jpg"
     },
     { 
+      id: "2",
       name: "Siti Aminah", 
-      company: "CV Berkah Abadi", 
-      text: "Tim yang sangat responsif dan memahami kebutuhan bisnis kami.",
-      image: "https://randomuser.me/api/portraits/women/2.jpg",
-      rating: 5
+      role: "Manager CV Berkah Abadi", 
+      content: "Tim yang sangat responsif dan memahami kebutuhan bisnis kami.",
+      image: "https://randomuser.me/api/portraits/women/2.jpg"
     },
     { 
+      id: "3",
       name: "Budi Santoso", 
-      company: "UD Makmur Jaya", 
-      text: "Hasil website sangat menarik dan fungsional, sesuai harapan kami.",
-      image: "https://randomuser.me/api/portraits/men/3.jpg",
-      rating: 4.5
+      role: "Owner UD Makmur Jaya", 
+      content: "Hasil website sangat menarik dan fungsional, sesuai harapan kami.",
+      image: "https://randomuser.me/api/portraits/men/3.jpg"
     }
   ];
   
-  const portfolioItems = [
+  // Fixed portfolio items that match PortfolioItemType
+  const portfolioItems: PortfolioItemType[] = [
     {
       id: 1,
       title: "Website E-Commerce Fashion",
       category: "Website & Aplikasi",
       image: "https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80",
+      client: "Fashion Store",
+      description: "Modern e-commerce website for a fashion brand",
+      services: ["Web Development", "UI/UX Design"]
     },
     {
       id: 2,
       title: "Branding Kafe Modern",
       category: "Desain Grafis",
       image: "https://images.unsplash.com/photo-1515600051222-a3c338ff16f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      client: "Urban Café",
+      description: "Complete branding package for a modern café",
+      services: ["Logo Design", "Branding", "Packaging"]
     },
     {
       id: 3,
       title: "Kampanye Digital Marketing",
       category: "Digital Marketing",
       image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+      client: "Tech Startup",
+      description: "Comprehensive digital marketing campaign",
+      services: ["Social Media", "Content Marketing", "SEO"]
     }
   ];
   
-  const logos = [
-    { name: "Company A", src: "https://randomuser.me/api/portraits/men/1.jpg" },
-    { name: "Company B", src: "https://randomuser.me/api/portraits/men/2.jpg" },
-    { name: "Company C", src: "https://randomuser.me/api/portraits/men/3.jpg" },
-    { name: "Company D", src: "https://randomuser.me/api/portraits/men/4.jpg" },
-    { name: "Company E", src: "https://randomuser.me/api/portraits/men/5.jpg" },
-    { name: "Company F", src: "https://randomuser.me/api/portraits/men/6.jpg" }
+  // Fixed partner logos that match the PartnerItem interface
+  const logos: PartnerItem[] = [
+    { id: "1", name: "Company A", image: "https://randomuser.me/api/portraits/men/1.jpg" },
+    { id: "2", name: "Company B", image: "https://randomuser.me/api/portraits/men/2.jpg" },
+    { id: "3", name: "Company C", image: "https://randomuser.me/api/portraits/men/3.jpg" },
+    { id: "4", name: "Company D", image: "https://randomuser.me/api/portraits/men/4.jpg" },
+    { id: "5", name: "Company E", image: "https://randomuser.me/api/portraits/men/5.jpg" },
+    { id: "6", name: "Company F", image: "https://randomuser.me/api/portraits/men/6.jpg" }
   ];
 
   return (

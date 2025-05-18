@@ -3,14 +3,19 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ChevronRight } from 'lucide-react';
 import { Button } from "@/components/ui/button";
+import { ServiceItem } from '@/types/websiteTypes';
 
 export interface ServiceCardProps {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
+  title?: string;
+  description?: string;
+  icon?: React.ReactNode;
   color?: string;
   link?: string;
   animated?: boolean;
+  service?: ServiceItem;
+  index?: number;
+  isActive?: boolean;
+  onClick?: () => void;
 }
 
 const ServiceCard = ({ 
@@ -19,8 +24,18 @@ const ServiceCard = ({
   icon, 
   color = "sky-500", 
   link = "#",
-  animated = true 
+  animated = true,
+  service,
+  isActive,
+  onClick
 }: ServiceCardProps) => {
+  
+  // Use service object properties if service is provided, otherwise use direct props
+  const displayTitle = service ? service.title : title;
+  const displayDescription = service ? service.description : description;
+  const displayIcon = service ? service.icon : icon;
+  const displayLink = service ? service.link : link;
+  
   const cardVariants = {
     initial: { 
       y: 20,
@@ -43,17 +58,20 @@ const ServiceCard = ({
   };
 
   const content = (
-    <div className={`h-full bg-gray-900 border border-gray-800 rounded-xl overflow-hidden p-6 group transition-all duration-300 hover:border-${color}`}>
+    <div 
+      className={`h-full bg-gray-900 border border-gray-800 rounded-xl overflow-hidden p-6 group transition-all duration-300 hover:border-${color} ${isActive ? 'ring-2 ring-sky-500/50' : ''}`}
+      onClick={onClick}
+    >
       <div className={`p-3 inline-block rounded-xl bg-${color}/10 mb-4`}>
-        {icon}
+        {displayIcon}
       </div>
       
       <h3 className="text-xl font-semibold mb-3 text-white group-hover:text-sky-400 transition-colors">
-        {title}
+        {displayTitle}
       </h3>
       
       <p className="text-gray-400 mb-5 line-clamp-3">
-        {description}
+        {displayDescription}
       </p>
       
       <Button 
@@ -61,7 +79,7 @@ const ServiceCard = ({
         className={`p-0 text-${color} group-hover:translate-x-1 transition-transform flex items-center`}
         asChild
       >
-        <a href={link}>
+        <a href={displayLink}>
           Pelajari lebih lanjut
           <ChevronRight className="ml-1 h-4 w-4" />
         </a>
