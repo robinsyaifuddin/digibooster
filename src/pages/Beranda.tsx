@@ -14,6 +14,7 @@ import ServiceCard from '@/components/home/ServiceCard';
 import { jasaDigitalServices } from '@/data/jasaDigitalData';
 import { PartnerItem, ServiceItem, TestimonialItem } from '@/types/websiteTypes';
 import { PortfolioItemType } from '@/types/portfolioTypes';
+import { Code, PenTool, Megaphone, Camera } from 'lucide-react';
 
 const Beranda = () => {
   // Animation variants
@@ -29,8 +30,8 @@ const Beranda = () => {
     }
   };
 
-  // Only show the first 4 services from jasaDigitalData
-  const limitedServices = jasaDigitalServices.slice(0, 4);
+  // Get only the specific 4 services we want from jasaDigitalData
+  const serviceItems = jasaDigitalServices;
   
   // Sample data for required props
   const companyName = "DigiBooster";
@@ -178,7 +179,7 @@ const Beranda = () => {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {limitedServices.map((service, index) => (
+            {serviceItems.map((service, index) => (
               <motion.div
                 key={service.slug}
                 initial="hidden"
