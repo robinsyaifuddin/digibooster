@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { Navigate } from 'react-router-dom';
@@ -11,7 +10,7 @@ import { useToast } from '@/hooks/use-toast';
 import { 
   Users2, Search, BookOpen, Award, Clock, Activity, Layout, 
   BarChart3, FileText, Code, Palette, Video, Database, Bell,
-  Home, User, Settings, LogOut
+  Home, User, Settings, LogOut, Check
 } from 'lucide-react';
 
 // Mock course data
@@ -1084,39 +1083,37 @@ const UserDashboard = () => {
         <div className="flex-1 overflow-auto">
           {/* Header */}
           <header className="bg-gray-900 border-b border-gray-800 p-4">
-            <div className="flex items-center justify-between">
-              {/* Mobile menu button - only shown on mobile */}
-              <Button 
-                variant="ghost" 
-                size="icon" 
-                className="md:hidden text-white"
-              >
-                <Layout className="h-5 w-5" />
+            {/* Mobile menu button - only shown on mobile */}
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="md:hidden text-white"
+            >
+              <Layout className="h-5 w-5" />
+            </Button>
+
+            <div className="relative w-full max-w-md mx-4">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Input
+                type="search"
+                placeholder="Search courses..."
+                className="pl-10 bg-gray-800 border-gray-700 text-white w-full"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+              />
+            </div>
+
+            <div className="flex items-center space-x-4">
+              <Button variant="ghost" size="icon" className="relative text-white">
+                <Bell className="h-5 w-5" />
+                <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-sky-500"></span>
               </Button>
-
-              <div className="relative w-full max-w-md mx-4">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-                <Input
-                  type="search"
-                  placeholder="Search courses..."
-                  className="pl-10 bg-gray-800 border-gray-700 text-white w-full"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-
-              <div className="flex items-center space-x-4">
-                <Button variant="ghost" size="icon" className="relative text-white">
-                  <Bell className="h-5 w-5" />
-                  <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-sky-500"></span>
-                </Button>
-                
-                <div className="flex items-center">
-                  <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center font-medium">
-                    {userName[0]}
-                  </div>
-                  <span className="ml-2 hidden md:inline text-white">{userName}</span>
+              
+              <div className="flex items-center">
+                <div className="w-8 h-8 rounded-full bg-sky-500 flex items-center justify-center font-medium">
+                  {userName[0]}
                 </div>
+                <span className="ml-2 hidden md:inline text-white">{userName}</span>
               </div>
             </div>
           </header>

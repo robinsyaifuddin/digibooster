@@ -29,6 +29,69 @@ const Beranda = () => {
 
   // Only show the first 4 services from jasaDigitalData
   const limitedServices = jasaDigitalServices.slice(0, 4);
+  
+  // Sample data for required props
+  const companyName = "DigiBooster";
+  const benefits = [
+    { title: "Profesional", description: "Tim ahli yang berpengalaman", icon: "Award" },
+    { title: "Terjangkau", description: "Harga bersaing dengan kualitas terbaik", icon: "DollarSign" },
+    { title: "Tepat Waktu", description: "Pengerjaan sesuai jadwal yang disepakati", icon: "Clock" },
+    { title: "Support", description: "Dukungan teknis setelah penyelesaian", icon: "HeadphonesIcon" }
+  ];
+  
+  const testimonials = [
+    { 
+      name: "Ahmad Riza", 
+      company: "PT Maju Sejahtera", 
+      text: "Layanan yang sangat profesional dan hasil yang memuaskan.",
+      image: "https://randomuser.me/api/portraits/men/1.jpg",
+      rating: 5
+    },
+    { 
+      name: "Siti Aminah", 
+      company: "CV Berkah Abadi", 
+      text: "Tim yang sangat responsif dan memahami kebutuhan bisnis kami.",
+      image: "https://randomuser.me/api/portraits/women/2.jpg",
+      rating: 5
+    },
+    { 
+      name: "Budi Santoso", 
+      company: "UD Makmur Jaya", 
+      text: "Hasil website sangat menarik dan fungsional, sesuai harapan kami.",
+      image: "https://randomuser.me/api/portraits/men/3.jpg",
+      rating: 4.5
+    }
+  ];
+  
+  const portfolioItems = [
+    {
+      id: 1,
+      title: "Website E-Commerce Fashion",
+      category: "Website & Aplikasi",
+      image: "https://images.unsplash.com/photo-1557821552-17105176677c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1489&q=80",
+    },
+    {
+      id: 2,
+      title: "Branding Kafe Modern",
+      category: "Desain Grafis",
+      image: "https://images.unsplash.com/photo-1515600051222-a3c338ff16f6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    },
+    {
+      id: 3,
+      title: "Kampanye Digital Marketing",
+      category: "Digital Marketing",
+      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+    }
+  ];
+  
+  const logos = [
+    { name: "Company A", src: "https://randomuser.me/api/portraits/men/1.jpg" },
+    { name: "Company B", src: "https://randomuser.me/api/portraits/men/2.jpg" },
+    { name: "Company C", src: "https://randomuser.me/api/portraits/men/3.jpg" },
+    { name: "Company D", src: "https://randomuser.me/api/portraits/men/4.jpg" },
+    { name: "Company E", src: "https://randomuser.me/api/portraits/men/5.jpg" },
+    { name: "Company F", src: "https://randomuser.me/api/portraits/men/6.jpg" }
+  ];
 
   return (
     <div className="min-h-screen bg-black">
@@ -62,7 +125,7 @@ const Beranda = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {limitedServices.map((service, index) => (
               <motion.div
-                key={service.id}
+                key={service.slug}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-50px" }}
@@ -71,9 +134,9 @@ const Beranda = () => {
               >
                 <ServiceCard 
                   title={service.title}
-                  description={service.shortDescription} 
+                  description={service.description} 
                   icon={service.icon} 
-                  color={service.accentColor}
+                  color="sky-500"
                   link={`/layanan/${service.slug}`}
                   animated={false}
                 />
@@ -97,13 +160,13 @@ const Beranda = () => {
       </section>
 
       {/* Benefits Section - What makes us different */}
-      <BenefitsSection />
+      <BenefitsSection companyName={companyName} benefits={benefits} />
 
       {/* Popular Portfolio */}
-      <PopularPortfolioSection />
+      <PopularPortfolioSection portfolioItems={portfolioItems} />
 
       {/* Testimonials */}
-      <TestimonialsSection />
+      <TestimonialsSection companyName={companyName} testimonials={testimonials} />
 
       {/* Partner Logos */}
       <section className="py-16 bg-black">
@@ -129,15 +192,15 @@ const Beranda = () => {
             </motion.p>
           </div>
           
-          <LogoMarquee />
+          <LogoMarquee logos={logos} title="Partner Kami" />
         </div>
       </section>
 
       {/* Contact Section */}
-      <ContactSection />
+      <ContactSection companyName={companyName} />
 
       {/* CTA Section */}
-      <CtaSection />
+      <CtaSection companyName={companyName} />
     </div>
   );
 };
