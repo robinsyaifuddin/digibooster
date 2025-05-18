@@ -229,7 +229,7 @@ const Footer = () => {
                   </svg>
                 </div>
                 <div className="text-gray-400 text-sm">
-                  Jl. Raya Kedung Badak No.99,<br/>Kota Bogor, Jawa Barat 16164
+                  Way Kandis, Kec. Tanjung Senang,<br/>Bandar Lampung, Lampung 35143
                 </div>
               </li>
               <li className="flex">
@@ -239,7 +239,7 @@ const Footer = () => {
                   </svg>
                 </div>
                 <div className="text-gray-400 text-sm">
-                  +62 812-3456-7890
+                  +62 822-7972-2417
                 </div>
               </li>
               <li className="flex">
@@ -247,7 +247,7 @@ const Footer = () => {
                   <Mail className="h-3 w-3 text-sky-400" />
                 </div>
                 <div className="text-gray-400 text-sm">
-                  info@digibooster.com
+                  hello.digibooster@gmail.com
                 </div>
               </li>
             </ul>

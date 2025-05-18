@@ -161,8 +161,8 @@ const Kontak = () => {
                   <Phone className="w-5 h-5 text-sky-400 mt-1" />
                   <div>
                     <p className="text-sm text-gray-400">Telepon</p>
-                    <a href="tel:+628123456789" className="text-white hover:text-sky-400 transition-colors">
-                      +62 812-3456-789
+                    <a href="tel:+6282279722417" className="text-white hover:text-sky-400 transition-colors">
+                      +62 822-7972-2417
                     </a>
                   </div>
                 </div>
@@ -171,8 +171,8 @@ const Kontak = () => {
                   <Mail className="w-5 h-5 text-sky-400 mt-1" />
                   <div>
                     <p className="text-sm text-gray-400">Email</p>
-                    <a href="mailto:info@digibooster.id" className="text-white hover:text-sky-400 transition-colors">
-                      info@digibooster.id
+                    <a href="mailto:hello.digibooster@gmail.com" className="text-white hover:text-sky-400 transition-colors">
+                      hello.digibooster@gmail.com
                     </a>
                   </div>
                 </div>
@@ -182,7 +182,7 @@ const Kontak = () => {
                   <div>
                     <p className="text-sm text-gray-400">Kantor</p>
                     <p className="text-white">
-                      Jl. Digital No. 123, Jakarta Selatan,<br />Indonesia 12345
+                      Way Kandis, Kec. Tanjung Senang,<br />Bandar Lampung, Lampung 35143
                     </p>
                   </div>
                 </div>
