@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
@@ -137,7 +138,7 @@ const Navbar = () => {
   const iconClasses = cn(
     iconStyle,
     "icon-3d transition-all duration-300",
-    scrolled ? "text-primary filter drop-shadow(0 0 5px rgba(0, 216, 232, 0.7))" : "group-hover:text-primary"
+    scrolled ? "text-primary filter drop-shadow(0 0 5px rgba(3, 213, 235, 0.7))" : "group-hover:text-primary"
   );
 
   const navLinks = [
@@ -197,12 +198,12 @@ const Navbar = () => {
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="flex items-center">
             <motion.img
-              src="/lovable-uploads/63175a8a-8817-436e-8f8b-a3246a8bf733.png"
+              src="/lovable-uploads/e03e3661-a304-4ddc-95ce-bd9a1827bd64.png"
               alt="DigiBooster"
               className="h-10 w-auto"
               whileHover={{ 
                 scale: 1.05,
-                filter: "drop-shadow(0 0 8px rgba(0, 216, 232, 0.6))"
+                filter: "drop-shadow(0 0 8px rgba(3, 213, 235, 0.6))"
               }}
               transition={{ type: "spring", stiffness: 400, damping: 10 }}
             />

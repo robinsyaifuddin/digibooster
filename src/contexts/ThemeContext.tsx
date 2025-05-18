@@ -11,8 +11,8 @@ const ThemeContext = React.createContext<ThemeContextType | undefined>(undefined
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   // Always use dark theme for DigiBooster
   const theme = 'dark' as const;
-  // Set primary color to match DigiBooster logo
-  const primaryColor = '#00E9F2';
+  // Set primary color to match DigiBooster logo - updated to #03d5eb
+  const primaryColor = '#03d5eb';
 
   // Set dark theme on document element
   React.useEffect(() => {

@@ -10,7 +10,7 @@ import { CheckIcon } from 'lucide-react';
 
 const AppearanceSettings = () => {
   const { theme } = useTheme();
-  const [selectedColor, setSelectedColor] = useState("#00D8E8");
+  const [selectedColor, setSelectedColor] = useState("#03d5eb");
   
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -32,7 +32,7 @@ const AppearanceSettings = () => {
   };
 
   const colorOptions = [
-    { value: "#00D8E8", label: "Cyan Default" },
+    { value: "#03d5eb", label: "Cyan Default" },
     { value: "#0bbcd1", label: "Ocean Blue" },
     { value: "#4CC9F0", label: "Sky Blue" },
     { value: "#0245A3", label: "Deep Blue" },
