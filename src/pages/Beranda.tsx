@@ -111,8 +111,47 @@ const Beranda = () => {
 
   return (
     <div className="min-h-screen bg-black">
-      {/* Hero Section */}
-      <HeroSection />
+      {/* Hero Section with new DigiBooster logo */}
+      <section className="py-16 flex flex-col items-center justify-center">
+        <div className="container mx-auto px-4 text-center">
+          <img 
+            src="/lovable-uploads/df7f3339-8861-49d1-ab17-bd951aed0cfc.png"
+            alt="DigiBooster Logo" 
+            className="h-24 md:h-32 mb-8" 
+          />
+          <motion.h1 
+            className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-white"
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+          >
+            Solusi Digital <span className="text-[#00E9F2]">Terbaik</span> untuk Bisnis Anda
+          </motion.h1>
+          <motion.p 
+            className="text-xl text-gray-300 max-w-2xl mx-auto mb-8"
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+            transition={{ delay: 0.2 }}
+          >
+            Tingkatkan performa bisnis Anda dengan layanan digital marketing, web development, dan edukasi digital yang komprehensif
+          </motion.p>
+          <motion.div
+            className="flex flex-col sm:flex-row justify-center gap-4"
+            initial="hidden"
+            animate="visible"
+            variants={fadeIn}
+            transition={{ delay: 0.4 }}
+          >
+            <Button asChild className="bg-[#00E9F2] hover:bg-[#00E9F2]/80 text-black py-2 px-6 rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+              <a href="/jasa-digital">Lihat Layanan</a>
+            </Button>
+            <Button asChild variant="outline" className="border-[#00E9F2] text-[#00E9F2] hover:bg-[#00E9F2]/10 py-2 px-6 rounded-lg text-lg">
+              <a href="/kontak">Hubungi Kami</a>
+            </Button>
+          </motion.div>
+        </div>
+      </section>
 
       {/* Featured Services */}
       <section className="py-16 md:py-24">
@@ -152,7 +191,7 @@ const Beranda = () => {
                   title={service.title}
                   description={service.description} 
                   icon={service.icon} 
-                  color="sky-500"
+                  color="neon-cyan"
                   link={`/layanan/${service.slug}`}
                   animated={false}
                 />
@@ -167,7 +206,7 @@ const Beranda = () => {
               viewport={{ once: true, margin: "-100px" }}
               variants={fadeIn}
             >
-              <Button asChild className="bg-sky-500 hover:bg-sky-600 text-white py-2 px-6 rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300">
+              <Button asChild className="bg-[#00E9F2] hover:bg-[#00E9F2]/80 text-black py-2 px-6 rounded-lg text-lg shadow-lg hover:shadow-xl transition-all duration-300">
                 <a href="/jasa-digital">Lihat Semua Layanan</a>
               </Button>
             </motion.div>

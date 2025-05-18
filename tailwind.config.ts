@@ -61,7 +61,8 @@ const config = {
         neon: {
           purple: "#5D18D9",
           pink: "#BF13A0",
-          cyan: "#00FFFF",
+          // Memperbarui warna cyan agar sesuai dengan logo DigiBooster
+          cyan: "#00E9F2",
           green: "#00FF00",
         },
       },

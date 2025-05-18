@@ -22,7 +22,7 @@ const ServiceCard = ({
   title, 
   description, 
   icon, 
-  color = "sky-500", 
+  color = "neon-cyan", 
   link = "#",
   animated = true,
   service,
@@ -59,14 +59,14 @@ const ServiceCard = ({
 
   const content = (
     <div 
-      className={`h-full bg-gray-900 border border-gray-800 rounded-xl overflow-hidden p-6 group transition-all duration-300 hover:border-${color} ${isActive ? 'ring-2 ring-sky-500/50' : ''}`}
+      className={`h-full bg-gray-900 border border-gray-800 rounded-xl overflow-hidden p-6 group transition-all duration-300 hover:border-[#00E9F2] ${isActive ? 'ring-2 ring-[#00E9F2]/50' : ''}`}
       onClick={onClick}
     >
-      <div className={`p-3 inline-block rounded-xl bg-${color}/10 mb-4`}>
+      <div className={`p-3 inline-block rounded-xl bg-[#00E9F2]/10 mb-4`}>
         {displayIcon}
       </div>
       
-      <h3 className="text-xl font-semibold mb-3 text-white group-hover:text-sky-400 transition-colors">
+      <h3 className="text-xl font-semibold mb-3 text-white group-hover:text-[#00E9F2] transition-colors">
         {displayTitle}
       </h3>
       
@@ -76,7 +76,7 @@ const ServiceCard = ({
       
       <Button 
         variant="link"
-        className={`p-0 text-${color} group-hover:translate-x-1 transition-transform flex items-center`}
+        className={`p-0 text-[#00E9F2] group-hover:translate-x-1 transition-transform flex items-center`}
         asChild
       >
         <a href={displayLink}>
