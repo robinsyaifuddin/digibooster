@@ -1,7 +1,6 @@
 
 import React from 'react';
 import HeroSection from '@/components/home/HeroSection';
-import ServicesGrid from '@/components/services/ServicesGrid';
 import FeaturedServiceCard from '@/components/services/FeaturedServiceCard';
 import PricingCard from '@/components/pricing/PricingCard';
 import { Button } from '@/components/ui/button';
@@ -18,99 +17,6 @@ const featuredService = {
   year: '2023',
   category: 'Premium'
 };
-
-const services = [
-  {
-    id: 'service-1',
-    title: 'Digital Marketing',
-    description: 'Strategi digital marketing terbaik untuk meningkatkan awareness dan penjualan',
-    image: 'https://images.unsplash.com/photo-1533750516457-a7f992034fec?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.7,
-    year: '2023',
-    category: 'Marketing'
-  },
-  {
-    id: 'service-2',
-    title: 'Desain Grafis',
-    description: 'Desain visual yang menarik untuk memperkuat brand identity bisnis Anda',
-    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.6,
-    year: '2023',
-    category: 'Design'
-  },
-  {
-    id: 'service-3',
-    title: 'Social Media Management',
-    description: 'Pengelolaan media sosial profesional untuk engagement optimal',
-    image: 'https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.5,
-    year: '2023',
-    category: 'Social'
-  },
-  {
-    id: 'service-4',
-    title: 'Video Production',
-    description: 'Produksi konten video berkualitas tinggi untuk berbagai kebutuhan',
-    image: 'https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.8,
-    year: '2023',
-    category: 'Video'
-  },
-  {
-    id: 'service-5',
-    title: 'SEO Optimization',
-    description: 'Optimasi mesin pencari untuk meningkatkan peringkat website Anda',
-    image: 'https://images.unsplash.com/photo-1571171637578-41bc2dd41cd2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.7,
-    year: '2023',
-    category: 'SEO'
-  },
-  {
-    id: 'service-6',
-    title: 'Content Management',
-    description: 'Pengelolaan konten website dan media sosial yang terstruktur',
-    image: 'https://images.unsplash.com/photo-1553484771-11998c592b9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.6,
-    year: '2023',
-    category: 'Content'
-  },
-  {
-    id: 'service-7',
-    title: 'E-Commerce Solutions',
-    description: 'Solusi toko online lengkap dengan sistem pembayaran dan pengiriman',
-    image: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.9,
-    year: '2023',
-    category: 'E-Commerce'
-  },
-  {
-    id: 'service-8',
-    title: 'UI/UX Design',
-    description: 'Desain antarmuka pengguna yang intuitif dan menarik',
-    image: 'https://images.unsplash.com/photo-1537498425277-c283d32ef9db?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.8,
-    year: '2023',
-    category: 'UI/UX'
-  },
-  {
-    id: 'service-9',
-    title: 'Brand Strategy',
-    description: 'Strategi pengembangan brand yang komprehensif',
-    image: 'https://images.unsplash.com/photo-1494887205043-c5f291293cf6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.7,
-    year: '2023',
-    category: 'Branding'
-  },
-  {
-    id: 'service-10',
-    title: 'Digital Consulting',
-    description: 'Konsultasi digital untuk transformasi bisnis Anda',
-    image: 'https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    rating: 4.9,
-    year: '2023',
-    category: 'Consulting'
-  }
-];
 
 const Home = () => {
   return (
@@ -142,12 +48,7 @@ const Home = () => {
           />
         </div>
         
-        {/* Services Grid */}
-        <ServicesGrid 
-          services={services} 
-          title="Layanan Digital" 
-          subtitle="Berbagai layanan digital untuk kebutuhan bisnis Anda"
-        />
+        {/* Services Grid section has been removed */}
         
         {/* Categories */}
         <div className="py-10">
