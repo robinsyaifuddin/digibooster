@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
@@ -133,12 +132,12 @@ const Navbar = () => {
     }
   };
 
-  // Enhanced 3D icon styling
+  // Modified icon styling to remove shadow
   const iconStyle = "h-5 w-5 mr-2";
   const iconClasses = cn(
     iconStyle,
-    "icon-3d transition-all duration-300",
-    scrolled ? "text-primary filter drop-shadow(0 0 5px rgba(3, 213, 235, 0.7))" : "group-hover:text-primary"
+    "transition-all duration-300",
+    scrolled ? "text-primary" : "group-hover:text-primary"
   );
 
   const navLinks = [
@@ -155,12 +154,12 @@ const Navbar = () => {
         { 
           path: "/program/jasa-digital", 
           label: "jasa-digital", 
-          icon: <Briefcase className="h-4 w-4 mr-2 icon-3d" /> 
+          icon: <Briefcase className="h-4 w-4 mr-2" /> 
         },
         { 
           path: "/program/kelas", 
           label: "shortclass-bootcamp", 
-          icon: <GraduationCap className="h-4 w-4 mr-2 icon-3d" /> 
+          icon: <GraduationCap className="h-4 w-4 mr-2" /> 
         }
       ]
     },

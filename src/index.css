@@ -27,16 +27,14 @@
     box-shadow: 0 0 8px 1px rgba(3, 213, 235, 0.6);
   }
 
-  /* Enhanced 3D icon effect */
+  /* Modified icon effect to remove shadow */
   .icon-3d {
-    filter: drop-shadow(2px 2px 0 rgba(3, 213, 235, 0.5));
     transform-style: preserve-3d;
     transition: all 0.3s ease;
   }
 
   .icon-3d:hover {
     transform: translateZ(5px) scale(1.1);
-    filter: drop-shadow(3px 3px 2px rgba(3, 213, 235, 0.8));
   }
   
   /* FilmBox-inspired card styling */
