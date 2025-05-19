@@ -19,8 +19,13 @@ const DigitalServicesSection = () => {
     }
   };
 
-  // Only include the 4 specific services - taking the first 4 services from the array
-  const serviceItems = jasaDigitalServices.slice(0, 4);
+  // Filter to only include "Website & Aplikasi" and "Foto dan Videografi"
+  const filteredServices = jasaDigitalServices.filter(service => 
+    service.title === 'Website & Aplikasi' || 
+    service.title === 'Foto dan Videografi' ||
+    service.title === 'Desain Grafis' ||
+    service.title === 'Digital Marketing'
+  );
 
   return (
     <section className="py-16 md:py-24">
@@ -47,7 +52,7 @@ const DigitalServicesSection = () => {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {serviceItems.map((service, index) => (
+          {filteredServices.map((service, index) => (
             <motion.div
               key={service.slug}
               initial="hidden"
