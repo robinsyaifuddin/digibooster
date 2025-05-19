@@ -3,6 +3,7 @@ import React, { ReactNode, useMemo } from 'react';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 import { PartnerItem } from '@/types/websiteTypes';
+import { motion } from 'framer-motion';
 
 interface LogoMarqueeProps {
   logos: PartnerItem[];
@@ -30,7 +31,7 @@ const LogoMarquee = ({
   
   const animationClass = speedMap[speed];
   
-  // Duplicate logos for infinite scroll effect - using useMemo to avoid unnecessary recalculations
+  // Duplicate logos for infinite scroll effect
   const duplicatedLogos = useMemo(() => [...logos, ...logos], [logos]);
   
   // Only render if we have logos
@@ -38,19 +39,32 @@ const LogoMarquee = ({
   
   return (
     <section className={cn("py-12 md:py-16 overflow-hidden", bgColor)}>
-      <div className="container mx-auto px-4 mb-8 text-center">
-        <h3 className="text-2xl md:text-3xl font-bold mb-3 text-white">{title}</h3>
-        {description && (
-          <p className="text-gray-300 mb-6 max-w-2xl mx-auto">{description}</p>
-        )}
+      <div className="container mx-auto px-4 mb-8">
+        <motion.div 
+          className="text-center"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: true }}
+        >
+          <h3 className="text-2xl md:text-3xl font-bold mb-3 text-white">{title}</h3>
+          {description && (
+            <p className="text-gray-300 mb-6 max-w-2xl mx-auto">{description}</p>
+          )}
+        </motion.div>
       </div>
       
       <div className="relative w-full overflow-hidden">
-        <div className={cn("flex space-x-6 md:space-x-12 whitespace-nowrap", animationClass)}>
+        <motion.div 
+          className={cn("flex space-x-6 md:space-x-12 whitespace-nowrap", animationClass)}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4, duration: 0.6 }}
+        >
           {duplicatedLogos.map((logo, index) => (
             <Card 
               key={`${logo.id}-${index}`} 
-              className="inline-flex items-center justify-center p-2 md:p-3 rounded-lg shadow-md bg-white min-w-[80px] md:min-w-[120px] h-10 md:h-14"
+              className="inline-flex items-center justify-center p-2 md:p-3 rounded-lg shadow-md bg-white min-w-[80px] md:min-w-[120px] h-10 md:h-14 hover:scale-110 transition-transform duration-300"
             >
               {logo.link ? (
                 <a 
@@ -74,7 +88,7 @@ const LogoMarquee = ({
               )}
             </Card>
           ))}
-        </div>
+        </motion.div>
       </div>
     </section>
   );
