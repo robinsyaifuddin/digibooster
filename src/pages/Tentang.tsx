@@ -88,7 +88,7 @@ const ValueCard = ({ icon: Icon, title, description }: { icon: any; title: strin
 );
 
 const Tentang = () => {
-  // Data for team members
+  // Data for team members - Updated to include 5 people
   const team = [
     {
       name: "Alex Johnson",
@@ -109,6 +109,11 @@ const Tentang = () => {
       name: "Jessica Taylor",
       role: "Marketing Director",
       image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop"
+    },
+    {
+      name: "David Rodriguez",
+      role: "Product Strategist",
+      image: "https://images.unsplash.com/photo-1531427186611-ecfd6d936c79?q=80&w=1887&auto=format&fit=crop"
     }
   ];
 
@@ -332,7 +337,7 @@ const Tentang = () => {
           </p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {team.map((member, index) => (
             <TeamMember 
               key={index}
