@@ -19,13 +19,8 @@ const DigitalServicesSection = () => {
     }
   };
 
-  // Filter to only include the 4 specific services
-  const serviceItems = jasaDigitalServices.filter(service => 
-    service.title === "Website & Aplikasi" || 
-    service.title === "Desain Grafis" || 
-    service.title === "Digital Marketing" || 
-    service.title === "Foto dan Videografi"
-  );
+  // Only include the 4 specific services - taking the first 4 services from the array
+  const serviceItems = jasaDigitalServices.slice(0, 4);
 
   return (
     <section className="py-16 md:py-24">
