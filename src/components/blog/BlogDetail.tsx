@@ -1,8 +1,8 @@
 
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, Calendar, Clock, User, Tag, Share2 } from 'lucide-react';
+import { ArrowLeft, Calendar, Clock, User, Tag, Share2, MessageSquare, ThumbsUp, Heart } from 'lucide-react';
 import { blogPosts } from '@/data/blogData';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -11,12 +11,18 @@ import { BlogPost } from '@/types/blogTypes';
 import RelatedArticles from './RelatedArticles';
 import CommentSection from './CommentSection';
 import SourcesSection from './SourcesSection';
+import SharingSection from './SharingSection';
+import { useToast } from '@/hooks/use-toast';
 
 interface BlogDetailProps {
   post: BlogPost;
 }
 
 const BlogDetail = ({ post }: BlogDetailProps) => {
+  const [liked, setLiked] = useState(false);
+  const [bookmarked, setBookmarked] = useState(false);
+  const { toast } = useToast();
+  
   useEffect(() => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
@@ -32,8 +38,26 @@ const BlogDetail = ({ post }: BlogDetailProps) => {
       return bScore - aScore;
     })
     .slice(0, 3);
+
+  // Handle liking the post
+  const handleLike = () => {
+    setLiked(!liked);
+    toast({
+      title: liked ? "Suka dibatalkan" : "Artikel disukai!",
+      description: liked ? "Anda telah membatalkan suka pada artikel ini" : "Terima kasih atas apresiasi Anda",
+    });
+  };
+
+  // Handle bookmarking the post
+  const handleBookmark = () => {
+    setBookmarked(!bookmarked);
+    toast({
+      title: bookmarked ? "Bookmark dihapus" : "Artikel disimpan!",
+      description: bookmarked ? "Artikel dihapus dari bookmark Anda" : "Artikel telah disimpan ke bookmark Anda",
+    });
+  };
   
-  // Mock comments data
+  // Mock comments data with structured content
   const demoComments = [
     {
       id: 1,
@@ -73,14 +97,34 @@ const BlogDetail = ({ post }: BlogDetailProps) => {
       date: '2023-06-16T09:15:00',
       likes: 3,
       replies: []
+    },
+    {
+      id: 3,
+      userId: 'user5',
+      userName: 'Ahmad Rizki',
+      userAvatar: 'https://i.pravatar.cc/150?img=8',
+      content: 'Poin-poin yang disampaikan sangat relevan dengan kondisi industri saat ini. Saya tertarik untuk mengimplementasikan beberapa ide yang disebutkan dalam artikel.',
+      date: '2023-06-17T14:20:00',
+      likes: 7,
+      replies: [
+        {
+          id: 3,
+          userId: 'user6',
+          userName: 'Siti Rahma',
+          userAvatar: 'https://i.pravatar.cc/150?img=6',
+          content: 'Betul sekali, saya sudah mencoba beberapa teknik yang disebutkan dan hasilnya sangat memuaskan.',
+          date: '2023-06-17T16:05:00',
+          likes: 4
+        }
+      ]
     }
   ];
 
-  // Mock sources data
+  // Mock sources data with complete references
   const demoSources = [
     {
       id: 1,
-      text: 'Laporan Teknologi Digital Indonesia 2023',
+      text: 'Laporan Teknologi Digital Indonesia 2023, Asosiasi Digital Indonesia',
       url: 'https://example.com/report2023'
     },
     {
@@ -92,6 +136,16 @@ const BlogDetail = ({ post }: BlogDetailProps) => {
       id: 3,
       text: 'Kementerian Komunikasi dan Informatika RI (2023). Strategi Nasional Transformasi Digital.',
       url: 'https://example.com/kominfo'
+    },
+    {
+      id: 4,
+      text: 'Putri, D. & Santoso, B. (2023). Implementasi Artificial Intelligence dalam Bisnis UMKM. Jurnal Ekonomi Digital, 8(3), 112-128.',
+      url: 'https://example.com/ai-umkm'
+    },
+    {
+      id: 5,
+      text: 'World Economic Forum (2023). Future of Jobs Report 2023.',
+      url: 'https://example.com/wef-jobs'
     }
   ];
   
@@ -137,6 +191,52 @@ const BlogDetail = ({ post }: BlogDetailProps) => {
           </div>
         </motion.div>
         
+        {/* Quick Action Buttons for Desktop */}
+        <div className="hidden md:flex items-center gap-4 mb-6">
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className={`flex items-center gap-2 ${liked ? 'bg-digicyan/20 text-digicyan border-digicyan/50' : 'border-gray-600 text-gray-300'}`}
+            onClick={handleLike}
+          >
+            <Heart className={`h-4 w-4 ${liked ? 'fill-digicyan text-digicyan' : ''}`} />
+            {liked ? 'Disukai' : 'Suka'}
+          </Button>
+          
+          <Button 
+            variant="outline" 
+            size="sm" 
+            className={`flex items-center gap-2 ${bookmarked ? 'bg-digicyan/20 text-digicyan border-digicyan/50' : 'border-gray-600 text-gray-300'}`}
+            onClick={handleBookmark}
+          >
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="16" 
+              height="16" 
+              viewBox="0 0 24 24" 
+              fill={bookmarked ? "currentColor" : "none"}
+              stroke="currentColor" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              className="h-4 w-4"
+            >
+              <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+            </svg>
+            {bookmarked ? 'Tersimpan' : 'Simpan'}
+          </Button>
+          
+          <Button
+            variant="outline"
+            size="sm"
+            className="border-gray-600 text-gray-300 flex items-center gap-2"
+            onClick={() => document.getElementById("comment-section")?.scrollIntoView({ behavior: "smooth" })}
+          >
+            <MessageSquare className="h-4 w-4" />
+            Komentar
+          </Button>
+        </div>
+        
         {/* Feature Image */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -161,113 +261,237 @@ const BlogDetail = ({ post }: BlogDetailProps) => {
           className="prose prose-lg max-w-none text-white mb-12"
         >
           <div className="space-y-6">
-            {/* Introduction */}
-            <p className="text-gray-300 leading-relaxed">
-              {post.content[0]}
-            </p>
+            {/* Introduction with enhanced styling */}
+            <div className="text-lg text-gray-300 leading-relaxed">
+              <p className="first-letter:text-3xl first-letter:font-bold first-letter:text-digicyan first-letter:mr-1 first-letter:float-left first-letter:leading-tight">
+                {post.excerpt || post.content[0]}
+              </p>
+            </div>
             
             {/* First section with quote */}
-            <h2 className="text-2xl font-bold text-white mt-8 mb-4">Transformasi Digital dalam Bisnis Modern</h2>
+            <h2 className="text-2xl font-bold text-white mt-8 mb-4 flex items-center">
+              <span className="w-1 h-8 bg-digicyan rounded-full mr-3"></span>
+              Transformasi Digital dalam Bisnis Modern
+            </h2>
             <p className="text-gray-300 leading-relaxed">
               {post.content[1] || "Transformasi digital telah menjadi kebutuhan vital bagi setiap bisnis yang ingin tetap relevan di era digital. Ini bukan sekadar tentang mengadopsi teknologi baru, tetapi tentang mengubah model bisnis dan proses untuk mengoptimalkan operasi dan memberikan nilai lebih kepada pelanggan. Perusahaan yang berhasil dalam transformasi digital tidak hanya melihat teknologi sebagai alat, tetapi sebagai pendorong inovasi yang terintegrasi dalam setiap aspek bisnis."}
             </p>
             
-            {/* Interactive element - Quote */}
-            <blockquote className="border-l-4 border-digicyan pl-4 py-2 my-6 italic bg-dark-300 rounded-r-lg">
-              <p className="mb-2 text-gray-200">
+            {/* Interactive element - Quote with enhanced styling */}
+            <blockquote className="border-l-4 border-digicyan pl-4 py-4 my-8 italic bg-gradient-to-r from-dark-300 to-transparent rounded-r-lg">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-digicyan/30 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+              </svg>
+              <p className="mb-3 text-xl text-gray-200">
                 "Transformasi digital bukan hanya tentang teknologi, tetapi juga tentang bagaimana kita beradaptasi dan mengubah cara kerja untuk menghasilkan nilai yang lebih besar."
               </p>
-              <cite className="text-sm text-digicyan">- Pakar Teknologi Digital</cite>
+              <cite className="text-sm text-digicyan flex items-center">
+                <span className="w-5 h-px bg-digicyan mr-2"></span>
+                Pakar Teknologi Digital
+              </cite>
             </blockquote>
             
-            {/* Second section with stats */}
-            <h2 className="text-2xl font-bold text-white mt-10 mb-4">Dampak Konkret dalam Bisnis</h2>
+            {/* Second section with interactive stats */}
+            <h2 className="text-2xl font-bold text-white mt-10 mb-4 flex items-center">
+              <span className="w-1 h-8 bg-digicyan rounded-full mr-3"></span>
+              Dampak Konkret dalam Bisnis
+            </h2>
             <p className="text-gray-300 leading-relaxed">
               {post.content[2] || "Implementasi transformasi digital telah menunjukkan hasil yang signifikan di berbagai sektor industri. Dari peningkatan efisiensi operasional hingga pengalaman pelanggan yang lebih baik, manfaatnya sangat nyata. Studi kasus menunjukkan bagaimana perusahaan yang mengadopsi pendekatan digital-first mampu meningkatkan produktivitas karyawan, mengurangi biaya operasional, dan membuka aliran pendapatan baru."}
             </p>
             
-            {/* Interactive element - Statistic Cards */}
+            {/* Enhanced interactive statistic cards with animations */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 my-8">
-              <div className="bg-dark-300 p-4 rounded-lg border border-digicyan/30">
-                <h4 className="text-digicyan text-lg mb-1">85%</h4>
-                <p className="text-sm text-gray-300">Peningkatan efisiensi kerja</p>
-              </div>
-              <div className="bg-dark-300 p-4 rounded-lg border border-digicyan/30">
-                <h4 className="text-digicyan text-lg mb-1">3.5x</h4>
-                <p className="text-sm text-gray-300">Peningkatan ROI</p>
-              </div>
-              <div className="bg-dark-300 p-4 rounded-lg border border-digicyan/30">
-                <h4 className="text-digicyan text-lg mb-1">62%</h4>
-                <p className="text-sm text-gray-300">Pengurangan biaya operasional</p>
-              </div>
+              <motion.div 
+                className="bg-gradient-to-br from-dark-300 to-dark-300/60 p-5 rounded-lg border border-digicyan/30 shadow-lg"
+                whileHover={{ y: -5, boxShadow: '0 10px 25px -5px rgba(3, 213, 235, 0.2)' }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              >
+                <h4 className="text-digicyan text-3xl font-bold mb-1">85%</h4>
+                <p className="text-sm text-gray-300">Peningkatan efisiensi kerja melalui automasi proses bisnis</p>
+              </motion.div>
+              <motion.div 
+                className="bg-gradient-to-br from-dark-300 to-dark-300/60 p-5 rounded-lg border border-digicyan/30 shadow-lg"
+                whileHover={{ y: -5, boxShadow: '0 10px 25px -5px rgba(3, 213, 235, 0.2)' }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              >
+                <h4 className="text-digicyan text-3xl font-bold mb-1">3.5x</h4>
+                <p className="text-sm text-gray-300">Peningkatan ROI dibandingkan dengan metode tradisional</p>
+              </motion.div>
+              <motion.div 
+                className="bg-gradient-to-br from-dark-300 to-dark-300/60 p-5 rounded-lg border border-digicyan/30 shadow-lg"
+                whileHover={{ y: -5, boxShadow: '0 10px 25px -5px rgba(3, 213, 235, 0.2)' }}
+                transition={{ type: "spring", stiffness: 300, damping: 15 }}
+              >
+                <h4 className="text-digicyan text-3xl font-bold mb-1">62%</h4>
+                <p className="text-sm text-gray-300">Pengurangan biaya operasional dengan teknologi cloud</p>
+              </motion.div>
             </div>
             
-            {/* Third section with image */}
-            <h2 className="text-2xl font-bold text-white mt-10 mb-4">Strategi Implementasi yang Efektif</h2>
+            {/* Third section with enhanced image */}
+            <h2 className="text-2xl font-bold text-white mt-10 mb-4 flex items-center">
+              <span className="w-1 h-8 bg-digicyan rounded-full mr-3"></span>
+              Strategi Implementasi yang Efektif
+            </h2>
             <p className="text-gray-300 leading-relaxed">
               {post.content[3] || "Mengimplementasikan transformasi digital memerlukan pendekatan strategis dan terencana. Penting untuk mengidentifikasi area prioritas yang akan memberikan dampak terbesar pada bisnis. Melibatkan semua pemangku kepentingan dan memastikan dukungan dari manajemen senior sangat penting untuk kesuksesan. Perubahan budaya organisasi menjadi salah satu tantangan terbesar, oleh karena itu komunikasi dan pelatihan menjadi komponen penting dalam proses transformasi."}
             </p>
             
-            {/* Interactive element - Image with caption */}
+            {/* Interactive element - Image with enhanced caption */}
             {post.relatedImages && post.relatedImages[0] && (
               <figure className="my-8">
-                <div className="rounded-lg overflow-hidden">
+                <div className="rounded-lg overflow-hidden border border-digicyan/20 shadow-lg shadow-digicyan/10">
                   <img 
                     src={post.relatedImages[0]} 
-                    alt="Ilustrasi analisis data" 
-                    className="w-full h-auto"
+                    alt="Ilustrasi analisis data dalam transformasi digital" 
+                    className="w-full h-auto object-cover"
                   />
                 </div>
-                <figcaption className="text-sm text-center mt-2 text-gray-400">
-                  Gambar 1: Visualisasi data dari implementasi teknologi terkini
+                <figcaption className="text-sm text-center mt-3 text-gray-400 flex flex-col items-center">
+                  <span className="w-8 h-0.5 bg-digicyan/50 mb-2"></span>
+                  Gambar 1: Visualisasi data dari implementasi teknologi dalam proses transformasi digital
                 </figcaption>
               </figure>
             )}
             
-            {/* Interactive element - Key points */}
-            <div className="bg-dark-300 p-5 rounded-lg my-8 border-l-4 border-digicyan">
-              <h3 className="font-semibold text-white mb-3">Poin-poin Penting:</h3>
-              <ul className="list-disc pl-5 space-y-2 text-gray-300">
-                <li>Transformasi digital memerlukan perubahan budaya organisasi</li>
-                <li>Teknologi cloud menjadi tulang punggung inovasi di era digital</li>
-                <li>Keamanan data tetap menjadi prioritas utama dalam adopsi teknologi baru</li>
-                <li>Kolaborasi lintas departemen sangat penting untuk kesuksesan implementasi</li>
+            {/* Enhanced key points box */}
+            <div className="bg-gradient-to-r from-dark-300 to-dark-300/60 p-6 rounded-lg my-8 border-l-4 border-digicyan shadow-lg">
+              <h3 className="font-semibold text-white text-lg mb-4 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 text-digicyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+                Poin-poin Penting:
+              </h3>
+              <ul className="space-y-3 text-gray-300">
+                <li className="flex items-start">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-digicyan/20 text-digicyan text-xs mr-3 mt-0.5">1</span>
+                  <span>Transformasi digital memerlukan perubahan budaya organisasi yang didukung dari level manajemen tertinggi</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-digicyan/20 text-digicyan text-xs mr-3 mt-0.5">2</span>
+                  <span>Teknologi cloud menjadi tulang punggung inovasi di era digital, memungkinkan skalabilitas dan fleksibilitas</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-digicyan/20 text-digicyan text-xs mr-3 mt-0.5">3</span>
+                  <span>Keamanan data tetap menjadi prioritas utama dalam adopsi teknologi baru untuk menjaga kepercayaan pelanggan</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-digicyan/20 text-digicyan text-xs mr-3 mt-0.5">4</span>
+                  <span>Kolaborasi lintas departemen sangat penting untuk kesuksesan implementasi transformasi digital menyeluruh</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-digicyan/20 text-digicyan text-xs mr-3 mt-0.5">5</span>
+                  <span>Mengukur hasil dan ROI secara berkala membantu memastikan transformasi digital berjalan sesuai tujuan bisnis</span>
+                </li>
               </ul>
             </div>
             
-            {/* Conclusion */}
-            <h2 className="text-2xl font-bold text-white mt-10 mb-4">Kesimpulan</h2>
+            {/* Conclusion section with enhanced styling */}
+            <h2 className="text-2xl font-bold text-white mt-10 mb-4 flex items-center">
+              <span className="w-1 h-8 bg-digicyan rounded-full mr-3"></span>
+              Kesimpulan
+            </h2>
             <p className="text-gray-300 leading-relaxed">
               {post.content[4] || "Transformasi digital bukan lagi pilihan, tetapi keharusan dalam lanskap bisnis yang terus berubah. Organisasi yang dapat mengadaptasi teknologi dengan cepat dan mengintegrasikannya secara efektif ke dalam operasi mereka akan memiliki keunggulan kompetitif yang signifikan. Namun, penting untuk diingat bahwa transformasi digital adalah perjalanan, bukan tujuan akhir. Perlu ada komitmen untuk terus belajar, berkembang, dan beradaptasi dengan perkembangan teknologi terbaru."}
             </p>
             
-            {/* Call to action */}
-            <div className="bg-gradient-to-r from-digicyan/20 to-dark-300 p-6 rounded-lg my-8 border border-digicyan/40">
-              <h3 className="text-xl font-bold text-white mb-2">Mulai Perjalanan Digital Anda Sekarang</h3>
-              <p className="text-gray-300 mb-4">Ingin mengetahui lebih lanjut tentang bagaimana kami dapat membantu transformasi digital Anda?</p>
-              <div className="flex flex-wrap gap-4">
-                <Button className="bg-digicyan hover:bg-digicyan-600">Konsultasi Gratis</Button>
-                <Button variant="outline" className="border-digicyan text-digicyan hover:bg-digicyan/20">Pelajari Layanan Kami</Button>
+            {/* Enhanced call to action box */}
+            <div className="bg-gradient-to-r from-digicyan/10 via-digicyan/5 to-transparent p-8 rounded-xl my-10 border border-digicyan/40 shadow-lg shadow-digicyan/5">
+              <h3 className="text-xl font-bold text-white mb-3 flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6 mr-2 text-digicyan" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 5l7 7-7 7M5 5l7 7-7 7" />
+                </svg>
+                Mulai Perjalanan Digital Anda Sekarang
+              </h3>
+              <p className="text-gray-300 mb-5 ml-8">
+                Ingin mengetahui lebih lanjut tentang bagaimana kami dapat membantu transformasi digital Anda? 
+                DigiBooster menyediakan layanan konsultasi dan implementasi yang dapat disesuaikan dengan kebutuhan bisnis Anda.
+              </p>
+              <div className="flex flex-wrap gap-4 ml-8">
+                <Button className="bg-digicyan hover:bg-digicyan-600 text-black font-medium">
+                  Konsultasi Gratis
+                </Button>
+                <Button variant="outline" className="border-digicyan text-digicyan hover:bg-digicyan/20">
+                  Pelajari Layanan Kami
+                </Button>
               </div>
             </div>
           </div>
           
-          {/* Sources Section */}
+          {/* Sources Section with improved styling */}
           <SourcesSection sources={demoSources} />
         </motion.div>
         
         <Separator className="my-8 bg-gray-700" />
         
-        {/* Tags and Share */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12">
-          <div className="mb-4 md:mb-0">
+        {/* Article Reaction Section */}
+        <div className="flex justify-center my-10">
+          <div className="bg-dark-300/80 backdrop-blur-sm rounded-full px-6 py-3 flex items-center gap-6 border border-gray-800">
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className={`flex flex-col items-center ${liked ? 'text-digicyan' : 'text-gray-400'}`}
+              onClick={handleLike}
+            >
+              <Heart className={`h-6 w-6 mb-1 ${liked ? 'fill-digicyan text-digicyan' : ''}`} />
+              <span className="text-xs">Suka</span>
+            </motion.button>
+            
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="flex flex-col items-center text-gray-400"
+              onClick={() => document.getElementById("comment-section")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              <MessageSquare className="h-6 w-6 mb-1" />
+              <span className="text-xs">Komentar</span>
+            </motion.button>
+            
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className={`flex flex-col items-center ${bookmarked ? 'text-digicyan' : 'text-gray-400'}`}
+              onClick={handleBookmark}
+            >
+              <svg 
+                xmlns="http://www.w3.org/2000/svg" 
+                width="24" 
+                height="24" 
+                viewBox="0 0 24 24" 
+                fill={bookmarked ? "currentColor" : "none"}
+                stroke="currentColor" 
+                strokeWidth="2" 
+                strokeLinecap="round" 
+                strokeLinejoin="round" 
+                className="mb-1"
+              >
+                <path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z" />
+              </svg>
+              <span className="text-xs">Simpan</span>
+            </motion.button>
+            
+            <motion.button
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+              className="flex flex-col items-center text-gray-400"
+              onClick={() => document.getElementById("share-section")?.scrollIntoView({ behavior: "smooth" })}
+            >
+              <Share2 className="h-6 w-6 mb-1" />
+              <span className="text-xs">Bagikan</span>
+            </motion.button>
+          </div>
+        </div>
+        
+        {/* Tags and Share Section */}
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-12 bg-dark-300/50 p-6 rounded-xl border border-gray-800/50">
+          <div className="mb-6 md:mb-0">
             <h3 className="text-lg font-semibold text-white mb-3">Tags</h3>
             <div className="flex flex-wrap gap-2">
               {post.tags.map((tag, index) => (
                 <Badge 
                   key={index}
                   variant="outline"
-                  className="bg-dark-300 border border-digicyan/30 text-digicyan px-3 py-1 rounded-md text-sm"
+                  className="bg-dark-300 border border-digicyan/30 text-digicyan px-3 py-1 rounded-md text-sm hover:bg-digicyan/20 transition-colors cursor-pointer"
                 >
                   <Tag className="h-3 w-3 mr-1" />
                   {tag}
@@ -276,37 +500,18 @@ const BlogDetail = ({ post }: BlogDetailProps) => {
             </div>
           </div>
           
-          <div>
-            <h3 className="text-lg font-semibold text-white mb-3">Bagikan</h3>
-            <div className="flex gap-2">
-              <Button size="icon" variant="outline" className="rounded-full h-9 w-9 border-digicyan/30 text-digicyan hover:bg-digicyan/20">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-facebook" viewBox="0 0 16 16">
-                  <path d="M16 8.049c0-4.446-3.582-8.05-8-8.05C3.58 0-.002 3.603-.002 8.05c0 4.017 2.926 7.347 6.75 7.951v-5.625h-2.03V8.05H6.75V6.275c0-2.017 1.195-3.131 3.022-3.131.876 0 1.791.157 1.791.157v1.98h-1.009c-.993 0-1.303.621-1.303 1.258v1.51h2.218l-.354 2.326H9.25V16c3.824-.604 6.75-3.934 6.75-7.951z"/>
-                </svg>
-              </Button>
-              <Button size="icon" variant="outline" className="rounded-full h-9 w-9 border-digicyan/30 text-digicyan hover:bg-digicyan/20">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-twitter" viewBox="0 0 16 16">
-                  <path d="M5.026 15c6.038 0 9.341-5.003 9.341-9.334 0-.14 0-.282-.006-.422A6.685 6.685 0 0 0 16 3.542a6.658 6.658 0 0 1-1.889.518 3.301 3.301 0 0 0 1.447-1.817 6.533 6.533 0 0 1-2.087.793A3.286 3.286 0 0 0 7.875 6.03a9.325 9.325 0 0 1-6.767-3.429 3.289 3.289 0 0 0 1.018 4.382A3.323 3.323 0 0 1 .64 6.575v.045a3.288 3.288 0 0 0 2.632 3.218 3.203 3.203 0 0 1-.865.115 3.23 3.23 0 0 1-.614-.057 3.283 3.283 0 0 0 3.067 2.277A6.588 6.588 0 0 1 .78 13.58a6.32 6.32 0 0 1-.78-.045A9.344 9.344 0 0 0 5.026 15z"/>
-                </svg>
-              </Button>
-              <Button size="icon" variant="outline" className="rounded-full h-9 w-9 border-digicyan/30 text-digicyan hover:bg-digicyan/20">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-linkedin" viewBox="0 0 16 16">
-                  <path d="M0 1.146C0 .513.526 0 1.175 0h13.65C15.474 0 16 .513 16 1.146v13.708c0 .633-.526 1.146-1.175 1.146H1.175C.526 16 0 15.487 0 14.854V1.146zm4.943 12.248V6.169H2.542v7.225h2.401zm-1.2-8.212c.837 0 1.358-.554 1.358-1.248-.015-.709-.52-1.248-1.342-1.248-.822 0-1.359.54-1.359 1.248 0 .694.521 1.248 1.327 1.248h.016zm4.908 8.212V9.359c0-.216.016-.432.08-.586.173-.431.568-.878 1.232-.878.869 0 1.216.662 1.216 1.634v3.865h2.401V9.25c0-2.22-1.184-3.252-2.764-3.252-1.274 0-1.845.7-2.165 1.193v.025h-.016a5.54 5.54 0 0 1 .016-.025V6.169h-2.4c.03.678 0 7.225 0 7.225h2.4z"/>
-                </svg>
-              </Button>
-              <Button size="icon" variant="outline" className="rounded-full h-9 w-9 border-digicyan/30 text-digicyan hover:bg-digicyan/20">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-whatsapp" viewBox="0 0 16 16">
-                  <path d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z"/>
-                </svg>
-              </Button>
-            </div>
+          {/* Sharing section (placeholder - will be replaced by SharingSection component) */}
+          <div id="share-section">
+            <SharingSection title={post.title} url={window.location.href} />
           </div>
         </div>
         
-        {/* Comments Section */}
-        <CommentSection comments={demoComments} postId={post.id} />
+        {/* Comments Section with improved styling */}
+        <div id="comment-section">
+          <CommentSection comments={demoComments} postId={post.id} />
+        </div>
         
-        {/* Related Articles */}
+        {/* Related Articles with improved styling */}
         {relatedPosts.length > 0 && (
           <RelatedArticles posts={relatedPosts} />
         )}
