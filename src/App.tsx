@@ -24,6 +24,7 @@ import Services from './pages/Services';
 import ServiceDetails from './pages/ServiceDetails';
 import ServiceDetailPage from './pages/ServiceDetailPage';
 import Kelas from './pages/Kelas';
+import ClassDetail from './pages/ClassDetail';
 import OrderForm from './pages/OrderForm';
 
 // Theme context for light/dark mode
@@ -112,6 +113,9 @@ function App() {
                   {/* Add an alias for the kelas route */}
                   <Route path="/kelas" element={<Kelas />} />
                   <Route path="/program/pelatihan-digital" element={<Kelas />} />
+                  
+                  {/* Add route for class details */}
+                  <Route path="/kelas/:classId" element={<ClassDetail />} />
                   
                   <Route path="/services" element={<Services />} />
                   <Route path="/services/:id" element={<ServiceDetails />} />

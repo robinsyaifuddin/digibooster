@@ -1,13 +1,11 @@
-
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Play, ChevronRight, Star, Info, CalendarDays, Code, PenTool, TrendingUp, Video, Image } from 'lucide-react';
-import { Link } from 'react-router-dom';
+import { Play, ChevronRight, Star, Info, CalendarDays, Code, PenTool, TrendingUp, Video } from 'lucide-react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import AnimatedSection from '@/components/animation/AnimatedSection';
 import { Badge } from '@/components/ui/badge';
-import { ClassCard } from '@/components/class/ClassCard';
 
 // Define course categories
 const courseCategories = [
@@ -236,6 +234,7 @@ const featuredCourse = courseCategories.flatMap(category =>
 
 const Kelas = () => {
   const [selectedTab, setSelectedTab] = useState(courseCategories[0].id);
+  const navigate = useNavigate();
   
   return (
     <div className="pt-16 bg-black min-h-screen overflow-x-hidden">

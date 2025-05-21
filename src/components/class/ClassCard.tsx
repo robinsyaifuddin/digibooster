@@ -4,8 +4,10 @@ import { motion } from 'framer-motion';
 import { Star, Clock, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
+import { useNavigate } from 'react-router-dom';
 
 interface ClassCardProps {
+  id: string;
   title: string;
   image: string;
   duration: string;
@@ -16,6 +18,7 @@ interface ClassCardProps {
 }
 
 export const ClassCard: React.FC<ClassCardProps> = ({
+  id,
   title,
   image,
   duration,
@@ -24,6 +27,12 @@ export const ClassCard: React.FC<ClassCardProps> = ({
   price,
   featured = false
 }) => {
+  const navigate = useNavigate();
+  
+  const handleViewDetails = () => {
+    navigate(`/kelas/${id}`);
+  };
+  
   return (
     <motion.div
       whileHover={{ scale: 1.03 }}
@@ -76,6 +85,7 @@ export const ClassCard: React.FC<ClassCardProps> = ({
           <Button 
             size="sm" 
             className="w-full bg-sky-500 hover:bg-sky-600 flex items-center justify-center gap-1"
+            onClick={handleViewDetails}
           >
             <span>Detail Kelas</span>
             <ChevronRight className="h-4 w-4" />
