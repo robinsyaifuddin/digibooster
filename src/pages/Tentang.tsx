@@ -5,33 +5,47 @@ import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
 // Components sederhana untuk animasi
-const AnimatedCounter = ({ value, label }: { value: string; label: string }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
-    className="text-center"
-  >
+const AnimatedCounter = ({
+  value,
+  label
+}: {
+  value: string;
+  label: string;
+}) => <motion.div initial={{
+  opacity: 0,
+  y: 20
+}} whileInView={{
+  opacity: 1,
+  y: 0
+}} viewport={{
+  once: true
+}} transition={{
+  duration: 0.5
+}} className="text-center">
     <div className="text-4xl font-bold text-sky-500 mb-2">{value}</div>
     <div className="text-gray-300">{label}</div>
-  </motion.div>
-);
-
-const TeamMember = ({ name, role, image }: { name: string; role: string; image: string }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
-    className="text-center"
-  >
+  </motion.div>;
+const TeamMember = ({
+  name,
+  role,
+  image
+}: {
+  name: string;
+  role: string;
+  image: string;
+}) => <motion.div initial={{
+  opacity: 0,
+  y: 20
+}} whileInView={{
+  opacity: 1,
+  y: 0
+}} viewport={{
+  once: true
+}} transition={{
+  duration: 0.5
+}} className="text-center">
     <div className="h-48 w-48 mx-auto overflow-hidden rounded-xl mb-4 bg-gray-800 relative group">
-      <img 
-        src={image} 
-        alt={name} 
-        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" 
-      />
+      <img src={image} alt={name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
       <div className="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-0 group-hover:opacity-60 transition-opacity"></div>
       <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity">
         <div className="flex justify-center space-x-3">
@@ -43,17 +57,26 @@ const TeamMember = ({ name, role, image }: { name: string; role: string; image: 
     </div>
     <h3 className="font-bold text-white text-lg">{name}</h3>
     <p className="text-sky-400">{role}</p>
-  </motion.div>
-);
-
-const TimelineItem = ({ year, title, description }: { year: string; title: string; description: string }) => (
-  <motion.div 
-    initial={{ opacity: 0, x: -20 }}
-    whileInView={{ opacity: 1, x: 0 }}
-    viewport={{ once: true }}
-    transition={{ duration: 0.5 }}
-    className="flex gap-6 relative"
-  >
+  </motion.div>;
+const TimelineItem = ({
+  year,
+  title,
+  description
+}: {
+  year: string;
+  title: string;
+  description: string;
+}) => <motion.div initial={{
+  opacity: 0,
+  x: -20
+}} whileInView={{
+  opacity: 1,
+  x: 0
+}} viewport={{
+  once: true
+}} transition={{
+  duration: 0.5
+}} className="flex gap-6 relative">
     {/* Line */}
     <div className="absolute left-[19px] top-10 bottom-0 w-0.5 bg-gray-700 z-0"></div>
     
@@ -67,94 +90,102 @@ const TimelineItem = ({ year, title, description }: { year: string; title: strin
       <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
       <p className="text-gray-400">{description}</p>
     </div>
-  </motion.div>
-);
+  </motion.div>;
 
 // Values Card Component
-const ValueCard = ({ icon: Icon, title, description }: { icon: any; title: string; description: string }) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    whileInView={{ opacity: 1, y: 0 }}
-    viewport={{ once: true }}
-    className="bg-gray-900 p-6 rounded-xl hover:bg-sky-900/20 hover:border-sky-500/50 transition-colors border border-gray-800"
-  >
+const ValueCard = ({
+  icon: Icon,
+  title,
+  description
+}: {
+  icon: any;
+  title: string;
+  description: string;
+}) => <motion.div initial={{
+  opacity: 0,
+  y: 20
+}} whileInView={{
+  opacity: 1,
+  y: 0
+}} viewport={{
+  once: true
+}} className="bg-gray-900 p-6 rounded-xl hover:bg-sky-900/20 hover:border-sky-500/50 transition-colors border border-gray-800">
     <div className="w-12 h-12 bg-sky-500/20 rounded-lg flex items-center justify-center mb-4">
       <Icon className="h-6 w-6 text-sky-500" />
     </div>
     <h3 className="text-xl font-bold text-white mb-2">{title}</h3>
     <p className="text-gray-400">{description}</p>
-  </motion.div>
-);
-
+  </motion.div>;
 const Tentang = () => {
   // Data for team members - Updated with new team information
-  const team = [
-    {
-      name: "Robin Syaifuddin",
-      role: "Chief Executive Officer",
-      image: "/lovable-uploads/68a85b51-4989-4416-ba4d-7701a9d48530.png"
-    },
-    {
-      name: "Maya Lestari",
-      role: "Chief Financial Officer",
-      image: "/lovable-uploads/6cec3f7d-2579-4538-b949-ba5007dc1c83.png"
-    },
-    {
-      name: "Lucky Immanuel Sitanggang",
-      role: "Chief Technology Officer",
-      image: "/lovable-uploads/8bccbcf6-4d86-4cca-a788-2feec5d846d0.png"
-    },
-    {
-      name: "Ginda Fajar Riadi Marpaung",
-      role: "Chief Data Officer",
-      image: "/lovable-uploads/21cb9f56-1e4d-4f60-97eb-810f5747f284.png"
-    }
-  ];
-
-  return (
-    <div className="pt-16 bg-black min-h-screen">
+  const team = [{
+    name: "Robin Syaifuddin",
+    role: "Chief Executive Officer",
+    image: "/lovable-uploads/68a85b51-4989-4416-ba4d-7701a9d48530.png"
+  }, {
+    name: "Maya Lestari",
+    role: "Chief Financial Officer",
+    image: "/lovable-uploads/6cec3f7d-2579-4538-b949-ba5007dc1c83.png"
+  }, {
+    name: "Lucky Immanuel Sitanggang",
+    role: "Chief Technology Officer",
+    image: "/lovable-uploads/8bccbcf6-4d86-4cca-a788-2feec5d846d0.png"
+  }, {
+    name: "Ginda Fajar Riadi Marpaung",
+    role: "Chief Data Officer",
+    image: "/lovable-uploads/21cb9f56-1e4d-4f60-97eb-810f5747f284.png"
+  }];
+  return <div className="pt-16 bg-black min-h-screen">
       {/* Hero Section */}
       <div className="relative min-h-[70vh] w-full overflow-hidden">
         {/* Background Image with Gradient Overlay */}
         <div className="absolute inset-0 z-0">
-          <img 
-            src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81" 
-            alt="DigiBooster Team" 
-            className="w-full h-full object-cover object-center"
-          />
+          <img src="https://images.unsplash.com/photo-1605810230434-7631ac76ec81" alt="DigiBooster Team" className="w-full h-full object-cover object-center" />
           <div className="absolute inset-0 bg-gradient-to-r from-black via-black/90 to-black/70"></div>
         </div>
         
         {/* Content Container */}
         <div className="container mx-auto px-4 relative z-10 h-full flex flex-col justify-center py-20">
           <div className="max-w-3xl">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              className="mb-4"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            delay: 0.2
+          }} className="mb-4">
               <span className="inline-flex items-center px-3 py-1 text-xs font-medium text-white bg-sky-500/80 rounded-full">
                 <span className="animate-pulse mr-2 h-2 w-2 rounded-full bg-white"></span>
                 TENTANG KAMI
               </span>
             </motion.div>
             
-            <motion.h1
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4"
-            >
+            <motion.h1 initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            delay: 0.4
+          }} className="text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-4">
               DigiBooster Indonesia
             </motion.h1>
             
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex items-center gap-4 mb-4"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            delay: 0.6
+          }} className="flex items-center gap-4 mb-4">
               <span className="text-gray-400">Berdiri Sejak 2018</span>
               
               <span className="px-2 py-1 text-xs rounded-full bg-sky-500/20 border border-sky-500/30 text-sky-300">
@@ -162,22 +193,30 @@ const Tentang = () => {
               </span>
             </motion.div>
             
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-              className="text-gray-300 mb-8 max-w-2xl"
-            >
+            <motion.p initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            delay: 0.8
+          }} className="text-gray-300 mb-8 max-w-2xl">
               DigiBooster adalah perusahaan teknologi dan edukasi yang fokus pada percepatan digitalisasi 
               Indonesia melalui layanan digital yang inovatif dan program pengembangan keterampilan digital.
             </motion.p>
             
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1 }}
-              className="flex flex-wrap gap-4"
-            >
+            <motion.div initial={{
+            opacity: 0,
+            y: 20
+          }} animate={{
+            opacity: 1,
+            y: 0
+          }} transition={{
+            duration: 0.6,
+            delay: 1
+          }} className="flex flex-wrap gap-4">
               <Button size="lg" className="bg-sky-500 hover:bg-sky-600 rounded-full text-white">
                 <Play className="mr-2 h-5 w-5" />
                 Pelajari Selengkapnya
@@ -196,12 +235,17 @@ const Tentang = () => {
       {/* Our Story Section */}
       <div className="container mx-auto px-4 py-20">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
+          <motion.div initial={{
+          opacity: 0,
+          x: -30
+        }} whileInView={{
+          opacity: 1,
+          x: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }}>
             <h2 className="text-3xl font-bold text-white mb-6">Cerita Kami</h2>
             <p className="text-gray-300 mb-6">
               DigiBooster didirikan dengan tujuan untuk membantu masyarakat dan bisnis di Indonesia dalam 
@@ -219,18 +263,18 @@ const Tentang = () => {
             </p>
           </motion.div>
           
-          <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="relative"
-          >
-            <img 
-              src="https://images.unsplash.com/photo-1483058712412-4245e9b90334?q=80&w=2070&auto=format&fit=crop" 
-              alt="DigiBooster Office" 
-              className="rounded-2xl object-cover w-full h-[500px]" 
-            />
+          <motion.div initial={{
+          opacity: 0,
+          x: 30
+        }} whileInView={{
+          opacity: 1,
+          x: 0
+        }} viewport={{
+          once: true
+        }} transition={{
+          duration: 0.6
+        }} className="relative">
+            <img alt="DigiBooster Office" className="rounded-2xl object-cover w-full h-[500px]" src="/lovable-uploads/002dbec1-5773-46af-8612-83877ff9e3d6.jpg" />
             <div className="absolute inset-0 border-2 border-sky-500/30 rounded-2xl transform translate-x-4 translate-y-4 -z-10"></div>
             <div className="absolute -bottom-4 -right-4 bg-sky-500 p-6 rounded-2xl shadow-xl">
               <div className="text-3xl font-bold text-white">5+</div>
@@ -263,21 +307,9 @@ const Tentang = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-          <ValueCard 
-            icon={Award} 
-            title="Kualitas" 
-            description="Kami berkomitmen untuk memberikan kualitas terbaik dalam setiap aspek layanan dan pendidikan yang kami tawarkan."
-          />
-          <ValueCard 
-            icon={Users} 
-            title="Kolaborasi" 
-            description="Kami percaya bahwa kolaborasi yang baik akan menghasilkan solusi terbaik untuk setiap tantangan digital."
-          />
-          <ValueCard 
-            icon={Briefcase} 
-            title="Profesionalisme" 
-            description="Kami menjalankan bisnis dengan standar profesionalisme tertinggi dan etika yang kuat."
-          />
+          <ValueCard icon={Award} title="Kualitas" description="Kami berkomitmen untuk memberikan kualitas terbaik dalam setiap aspek layanan dan pendidikan yang kami tawarkan." />
+          <ValueCard icon={Users} title="Kolaborasi" description="Kami percaya bahwa kolaborasi yang baik akan menghasilkan solusi terbaik untuk setiap tantangan digital." />
+          <ValueCard icon={Briefcase} title="Profesionalisme" description="Kami menjalankan bisnis dengan standar profesionalisme tertinggi dan etika yang kuat." />
         </div>
       </div>
 
@@ -292,31 +324,11 @@ const Tentang = () => {
           </div>
           
           <div className="max-w-3xl mx-auto">
-            <TimelineItem 
-              year="2018" 
-              title="Awal Mula" 
-              description="DigiBooster didirikan sebagai startup edukasi dengan fokus pada kursus web development."
-            />
-            <TimelineItem 
-              year="2019" 
-              title="Perluasan Layanan" 
-              description="Mulai menawarkan jasa pembuatan website dan digital marketing untuk UKM di Indonesia."
-            />
-            <TimelineItem 
-              year="2020" 
-              title="Adaptasi Pandemi" 
-              description="Berhasil beradaptasi dengan pandemi melalui transformasi ke platform pembelajaran online."
-            />
-            <TimelineItem 
-              year="2022" 
-              title="Pertumbuhan Pesat" 
-              description="Mencapai 5.000+ pengguna dan memperluas jangkauan ke seluruh Indonesia."
-            />
-            <TimelineItem 
-              year="2023" 
-              title="Saat Ini" 
-              description="Terus berinovasi dan mengembangkan platform dengan teknologi terbaru untuk memenuhi kebutuhan pasar digital Indonesia."
-            />
+            <TimelineItem year="2018" title="Awal Mula" description="DigiBooster didirikan sebagai startup edukasi dengan fokus pada kursus web development." />
+            <TimelineItem year="2019" title="Perluasan Layanan" description="Mulai menawarkan jasa pembuatan website dan digital marketing untuk UKM di Indonesia." />
+            <TimelineItem year="2020" title="Adaptasi Pandemi" description="Berhasil beradaptasi dengan pandemi melalui transformasi ke platform pembelajaran online." />
+            <TimelineItem year="2022" title="Pertumbuhan Pesat" description="Mencapai 5.000+ pengguna dan memperluas jangkauan ke seluruh Indonesia." />
+            <TimelineItem year="2023" title="Saat Ini" description="Terus berinovasi dan mengembangkan platform dengan teknologi terbaru untuk memenuhi kebutuhan pasar digital Indonesia." />
           </div>
         </div>
       </div>
@@ -332,14 +344,7 @@ const Tentang = () => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          {team.map((member, index) => (
-            <TeamMember 
-              key={index}
-              name={member.name}
-              role={member.role}
-              image={member.image}
-            />
-          ))}
+          {team.map((member, index) => <TeamMember key={index} name={member.name} role={member.role} image={member.image} />)}
         </div>
       </div>
 
@@ -369,8 +374,6 @@ const Tentang = () => {
           </div>
         </div>
       </div>
-    </div>
-  );
+    </div>;
 };
-
 export default Tentang;
