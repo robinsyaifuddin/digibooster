@@ -306,24 +306,7 @@ const Tentang = () => {
       </div>
 
       {/* Timeline Section */}
-      <div className="bg-gray-900 py-20">
-        <div className="container mx-auto px-4">
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <h2 className="text-3xl font-bold text-white mb-4">Perjalanan Kami</h2>
-            <p className="text-gray-300">
-              Melihat kembali perjalanan kami dari awal hingga sekarang dalam membangun platform digital terbaik di Indonesia.
-            </p>
-          </div>
-          
-          <div className="max-w-3xl mx-auto">
-            <TimelineItem year="2025" title="Awal Mula" description="DigiBooster didirikan di Lampung sebagai startup edukasi digital dengan visi sederhana." />
-            <TimelineItem year="2025" title="Pengembangan Produk" description="Meluncurkan kursus pertama dan layanan digital untuk bisnis lokal di Lampung." />
-            <TimelineItem year="2025" title="Ekspansi Tim" description="Merekrut anggota tim berbakat untuk memperkuat layanan dan kualitas edukasi." />
-            <TimelineItem year="2025" title="Pengguna Pertama" description="Meraih 100+ pengguna dari Lampung dan sekitarnya." />
-            <TimelineItem year="2026" title="Saat Ini" description="Terus bertumbuh dan siap terbang tinggi menuju puncak era digital di Indonesia." />
-          </div>
-        </div>
-      </div>
+      
 
       {/* Team Section */}
       <div className="container mx-auto px-4 py-20">
