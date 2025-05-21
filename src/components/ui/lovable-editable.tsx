@@ -4,6 +4,7 @@ import React, { useEffect, useRef } from 'react';
 interface LovableEditableProps {
   children: React.ReactNode;
   editorOnly?: boolean;
+  selector?: string;
 }
 
 /**
@@ -12,7 +13,8 @@ interface LovableEditableProps {
  */
 const LovableEditable: React.FC<LovableEditableProps> = ({ 
   children,
-  editorOnly = true 
+  editorOnly = true,
+  selector = '*'
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   
@@ -30,8 +32,8 @@ const LovableEditable: React.FC<LovableEditableProps> = ({
     
     // Add visual indication on hover for selectability
     const addSelectableClasses = () => {
-      // Find all p and img elements within the container
-      const elements = container.querySelectorAll('p, img');
+      // Find all elements within the container that match the selector
+      const elements = container.querySelectorAll(selector);
       
       elements.forEach(element => {
         element.classList.add('lovable-selectable');
@@ -54,7 +56,7 @@ const LovableEditable: React.FC<LovableEditableProps> = ({
     return () => {
       observer.disconnect();
     };
-  }, [editorOnly]);
+  }, [editorOnly, selector]);
   
   return (
     <div ref={containerRef}>

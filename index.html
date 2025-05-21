@@ -45,8 +45,12 @@
       document.addEventListener('DOMContentLoaded', function() {
         // Utility to enable select-to-edit for an element
         function makeSelectable(element) {
-          // Add class for styling
+          // Skip if it's not a proper element or already processed
+          if (!element || !element.tagName || element.classList.contains('lovable-selectable-processed')) return;
+          
+          // Add classes for styling
           element.classList.add('lovable-selectable');
+          element.classList.add('lovable-selectable-processed');
           
           // Add click handler
           element.addEventListener('click', function(e) {
@@ -62,16 +66,44 @@
             // Create a message for the Lovable AI with the element's content or attributes
             let message = '';
             
-            if (element.tagName.toLowerCase() === 'p') {
+            const tagName = element.tagName.toLowerCase();
+            
+            if (tagName === 'p' || tagName === 'h1' || tagName === 'h2' || 
+                tagName === 'h3' || tagName === 'h4' || tagName === 'h5' || 
+                tagName === 'h6' || tagName === 'span' || tagName === 'div' || 
+                tagName === 'li' || tagName === 'a' || tagName === 'button') {
               message = `Edit this text: "${element.innerHTML}"`;
-            } else if (element.tagName.toLowerCase() === 'img') {
+            } else if (tagName === 'img') {
               message = `Edit this image (current src: ${element.src}, alt: ${element.alt || 'No alt text'})`;
+            } else {
+              message = `Edit this ${tagName} element`;
             }
             
             // Send the message to the Lovable chat interface
             if (window.lovableSendMessage && message) {
               window.lovableSendMessage(message);
             }
+            
+            // Remove editing class after a delay
+            setTimeout(() => {
+              element.classList.remove('lovable-editing');
+            }, 2000);
+          });
+        }
+        
+        // Process all elements on the page
+        function processAllElements() {
+          // Get all elements that could be edited
+          const allElements = document.querySelectorAll('*');
+          
+          // Process each element
+          allElements.forEach(el => {
+            // Skip certain elements we don't want to make editable
+            if (el.tagName === 'HTML' || el.tagName === 'BODY' || el.tagName === 'HEAD' || 
+                el.tagName === 'SCRIPT' || el.tagName === 'STYLE' || el.tagName === 'META' || 
+                el.tagName === 'LINK' || el.tagName === 'TITLE') return;
+                
+            makeSelectable(el);
           });
         }
         
@@ -82,14 +114,13 @@
               if (mutation.addedNodes) {
                 mutation.addedNodes.forEach(node => {
                   if (node.nodeType === 1) { // Element node
-                    // Check if it's a p or img element
-                    if (node.tagName && (node.tagName.toLowerCase() === 'p' || node.tagName.toLowerCase() === 'img')) {
-                      makeSelectable(node);
-                    }
+                    makeSelectable(node);
                     
                     // Check child elements
-                    const elements = node.querySelectorAll('p, img');
-                    elements.forEach(el => makeSelectable(el));
+                    if (node.querySelectorAll) {
+                      const elements = node.querySelectorAll('*');
+                      elements.forEach(el => makeSelectable(el));
+                    }
                   }
                 });
               }
@@ -100,12 +131,6 @@
             childList: true,
             subtree: true
           });
-        }
-        
-        // Initialize existing elements
-        function initializeExistingElements() {
-          const elements = document.querySelectorAll('p, img');
-          elements.forEach(el => makeSelectable(el));
         }
         
         // Poll for Lovable initialization
@@ -154,10 +179,9 @@
                 window.location.hostname.includes('localhost') || 
                 window.location.hostname.includes('gpteng.co')) {
               toggleButton.style.display = 'block'; // Show the button in the editor
+              processAllElements();
+              observeDOMChanges();
             }
-            
-            initializeExistingElements();
-            observeDOMChanges();
           }
         }, 1000);
       });

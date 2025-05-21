@@ -3,11 +3,11 @@ import { useEffect, useRef } from 'react';
 
 /**
  * Hook to make elements selectable for editing in the Lovable editor
- * @param selector CSS selector for elements to make editable (defaults to 'p, img')
+ * @param selector CSS selector for elements to make editable (defaults to '*')
  * @param editorOnly Only apply in the Lovable editor environment
  */
 export const useLovableEditable = (
-  selector: string = 'p, img',
+  selector: string = '*',
   editorOnly: boolean = true
 ) => {
   const containerRef = useRef<HTMLElement | null>(null);
@@ -26,7 +26,7 @@ export const useLovableEditable = (
       const elements = root.querySelectorAll(selector);
       
       elements.forEach(element => {
-        // Skip if already processed
+        // Skip if already processed or is a container with selectable children
         if (element.classList.contains('lovable-selectable')) return;
         
         // Add visual indicator class
