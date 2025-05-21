@@ -87,33 +87,33 @@ const ValueCard = ({ icon: Icon, title, description }: { icon: any; title: strin
 );
 
 const Tentang = () => {
-  // Data for team members - Updated to include 4 people
+  // Data for team members - Updated with new team information
   const team = [
     {
-      name: "Alex Johnson",
-      role: "CEO & Founder",
-      image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?q=80&w=1887&auto=format&fit=crop"
+      name: "Robin Syaifuddin",
+      role: "Chief Executive Officer",
+      image: "/lovable-uploads/68a85b51-4989-4416-ba4d-7701a9d48530.png"
     },
     {
-      name: "Sarah Williams",
-      role: "Head of Design",
-      image: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?q=80&w=1887&auto=format&fit=crop"
+      name: "Maya Lestari",
+      role: "Chief Financial Officer",
+      image: "/lovable-uploads/6cec3f7d-2579-4538-b949-ba5007dc1c83.png"
     },
     {
-      name: "Michael Chen",
-      role: "Lead Developer",
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1887&auto=format&fit=crop"
+      name: "Lucky Immanuel Sitanggang",
+      role: "Chief Technology Officer",
+      image: "/lovable-uploads/8bccbcf6-4d86-4cca-a788-2feec5d846d0.png"
     },
     {
-      name: "Jessica Taylor",
-      role: "Marketing Director",
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?q=80&w=1961&auto=format&fit=crop"
+      name: "Ginda Fajar Riadi Marpaung",
+      role: "Chief Data Officer",
+      image: "/lovable-uploads/21cb9f56-1e4d-4f60-97eb-810f5747f284.png"
     }
   ];
 
   return (
     <div className="pt-16 bg-black min-h-screen">
-      {/* Hero Section - Similar to movie hero in reference */}
+      {/* Hero Section */}
       <div className="relative min-h-[70vh] w-full overflow-hidden">
         {/* Background Image with Gradient Overlay */}
         <div className="absolute inset-0 z-0">
