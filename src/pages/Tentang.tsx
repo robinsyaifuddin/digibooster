@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Play, Users, Award, Briefcase, Calendar, ChevronRight, Globe } from 'lucide-react';
@@ -287,16 +286,7 @@ const Tentang = () => {
       </div>
 
       {/* Stats Section */}
-      <div className="bg-gray-900 py-20">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <AnimatedCounter value="500+" label="Siswa" />
-            <AnimatedCounter value="15+" label="Kelas" />
-            <AnimatedCounter value="30+" label="Proyek" />
-            <AnimatedCounter value="10+" label="Tim Profesional" />
-          </div>
-        </div>
-      </div>
+      
 
       {/* Values Section */}
       <div className="container mx-auto px-4 py-20">
