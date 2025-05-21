@@ -5,7 +5,7 @@ import { Star, Clock, Users, ChevronRight, CalendarDays } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { useNavigate } from 'react-router-dom';
-import { TrainingProgram } from '@/data/pelatihanData';
+import { TrainingProgram, iconComponents } from '@/data/pelatihanData';
 
 interface TrainingCardProps {
   program: TrainingProgram;
@@ -56,6 +56,9 @@ const TrainingCard: React.FC<TrainingCardProps> = ({ program, index = 0 }) => {
         return program.type;
     }
   };
+  
+  // Render the icon based on the iconComponent property
+  const IconComponent = iconComponents[program.iconComponent];
   
   return (
     <motion.div
