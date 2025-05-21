@@ -13,7 +13,7 @@ import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
 import Kontak from './pages/Kontak';
 import MotivasiEdukasi from './pages/MotivasiEdukasi';
-import SharingKonsultasi from './pages/SharingKonsultasi';
+import PelatihanDigital from './pages/PelatihanDigital';
 import Portofolio from './pages/Portofolio';
 import PortfolioDetail from './pages/PortfolioDetail';
 import NotFound from './pages/NotFound';
@@ -96,10 +96,12 @@ function App() {
                   <Route path="/" element={<Home />} />
                   <Route path="/beranda" element={<Beranda />} />
                   <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:slug" element={<BlogDetail />} />
+                  <Route path="/blog/:id" element={<BlogDetail />} />
                   <Route path="/kontak" element={<Kontak />} />
                   <Route path="/motivasi-edukasi" element={<MotivasiEdukasi />} />
-                  <Route path="/sharing-konsultasi" element={<SharingKonsultasi />} />
+                  <Route path="/pelatihan-digital" element={<PelatihanDigital />} />
+                  <Route path="/sharing-konsultasi" element={<PelatihanDigital />} />
+                  <Route path="/shortclass-bootcamp" element={<PelatihanDigital />} />
                   <Route path="/portofolio" element={<Portofolio />} />
                   <Route path="/portofolio/:id" element={<PortfolioDetail />} />
                   <Route path="/tentang" element={<Tentang />} />
