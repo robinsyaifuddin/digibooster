@@ -1,19 +1,21 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Facebook, Twitter, Instagram, Linkedin, Github, ExternalLink, ChevronRight, Mail } from "lucide-react";
 import { useLanguage } from "@/contexts/LanguageContext";
 import { motion } from "framer-motion";
-
 const Footer = () => {
-  const { t } = useLanguage();
+  const {
+    t
+  } = useLanguage();
   const currentYear = new Date().getFullYear();
-
   const footerAnimation = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    hidden: {
+      opacity: 0,
+      y: 20
+    },
+    visible: {
+      opacity: 1,
       y: 0,
       transition: {
         duration: 0.5,
@@ -21,115 +23,90 @@ const Footer = () => {
       }
     }
   };
-
   const itemAnimation = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    hidden: {
+      opacity: 0,
+      y: 20
+    },
+    visible: {
+      opacity: 1,
       y: 0,
-      transition: { duration: 0.5 }
+      transition: {
+        duration: 0.5
+      }
     }
   };
-
   const iconAnimation = {
-    initial: { scale: 1 },
-    hover: { 
+    initial: {
+      scale: 1
+    },
+    hover: {
       scale: 1.15,
       filter: "drop-shadow(0 0 8px rgba(0, 216, 232, 0.6))",
-      transition: { type: "spring", stiffness: 400, damping: 10 }
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10
+      }
     },
-    tap: { scale: 0.95 }
-  };
-
-  const buttonAnimation = {
-    initial: { scale: 1 },
-    hover: { 
-      scale: 1.05,
-      boxShadow: "0 0 15px rgba(0, 216, 232, 0.6)",
-      transition: { type: "spring", stiffness: 400, damping: 10 }
-    },
-    tap: { scale: 0.95 }
-  };
-
-  const linkAnimation = {
-    initial: {},
-    hover: { 
-      x: 5,
-      transition: { type: "spring", stiffness: 400, damping: 10 }
+    tap: {
+      scale: 0.95
     }
   };
-
-  return (
-    <footer className="bg-dark-200 border-t border-dark-300 overflow-hidden relative">
+  const buttonAnimation = {
+    initial: {
+      scale: 1
+    },
+    hover: {
+      scale: 1.05,
+      boxShadow: "0 0 15px rgba(0, 216, 232, 0.6)",
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10
+      }
+    },
+    tap: {
+      scale: 0.95
+    }
+  };
+  const linkAnimation = {
+    initial: {},
+    hover: {
+      x: 5,
+      transition: {
+        type: "spring",
+        stiffness: 400,
+        damping: 10
+      }
+    }
+  };
+  return <footer className="bg-dark-200 border-t border-dark-300 overflow-hidden relative">
       {/* Decorative elements */}
       <div className="absolute top-0 right-0 w-1/3 h-1/2 bg-sky-500/5 rounded-full blur-3xl pointer-events-none"></div>
       <div className="absolute bottom-0 left-0 w-1/4 h-1/3 bg-sky-500/5 rounded-full blur-3xl pointer-events-none"></div>
       
       <div className="container mx-auto px-4 pt-16 pb-8">
-        <motion.div 
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12"
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-100px" }}
-          variants={footerAnimation}
-        >
+        <motion.div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12" initial="hidden" whileInView="visible" viewport={{
+        once: true,
+        margin: "-100px"
+      }} variants={footerAnimation}>
           {/* Company Information */}
           <motion.div variants={itemAnimation}>
-            <div className="mb-6">
-              <motion.img 
-                src="/lovable-uploads/63175a8a-8817-436e-8f8b-a3246a8bf733.png" 
-                alt="DigiBooster" 
-                className="h-10 w-auto mb-4" 
-                whileHover={{ 
-                  scale: 1.05,
-                  filter: "drop-shadow(0 0 8px rgba(0, 216, 232, 0.6))"
-                }}
-              />
-              <p className="text-gray-400 text-sm">
-                {t('footer-description') || "Membantu bisnis Anda berkembang dengan solusi digital yang inovatif dan efektif untuk kebutuhan modern."}
-              </p>
-            </div>
+            
             
             {/* Social Media */}
             <div className="flex space-x-3">
-              <motion.a 
-                href="#" 
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d"
-                variants={iconAnimation}
-                initial="initial"
-                whileHover="hover"
-                whileTap="tap"
-              >
+              <motion.a href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d" variants={iconAnimation} initial="initial" whileHover="hover" whileTap="tap">
                 <Facebook size={18} />
               </motion.a>
-              <motion.a 
-                href="#" 
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d"
-                variants={iconAnimation}
-                initial="initial"
-                whileHover="hover"
-                whileTap="tap"
-              >
+              <motion.a href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d" variants={iconAnimation} initial="initial" whileHover="hover" whileTap="tap">
                 <Twitter size={18} />
               </motion.a>
-              <motion.a 
-                href="#" 
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d"
-                variants={iconAnimation}
-                initial="initial"
-                whileHover="hover"
-                whileTap="tap"
-              >
+              <motion.a href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d" variants={iconAnimation} initial="initial" whileHover="hover" whileTap="tap">
                 <Instagram size={18} />
               </motion.a>
-              <motion.a 
-                href="#" 
-                className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d"
-                variants={iconAnimation}
-                initial="initial"
-                whileHover="hover"
-                whileTap="tap"
-              >
+              <motion.a href="#" className="flex items-center justify-center w-10 h-10 rounded-full bg-dark-300 hover:bg-sky-500/20 text-gray-300 hover:text-sky-400 transition-colors border border-dark-300 hover:border-sky-500/30 icon-3d" variants={iconAnimation} initial="initial" whileHover="hover" whileTap="tap">
                 <Linkedin size={18} />
               </motion.a>
             </div>
@@ -137,16 +114,10 @@ const Footer = () => {
           
           {/* Quick Links */}
           <motion.div variants={itemAnimation}>
-            <h3 className="text-lg font-semibold text-white mb-4">
-              {t('quick-links') || "Quick Links"}
-            </h3>
+            
             <ul className="space-y-2.5">
               <li>
-                <motion.div
-                  variants={linkAnimation}
-                  initial="initial"
-                  whileHover="hover"
-                >
+                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
                   <Link to="/" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
                     <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
                     <span>{t('beranda')}</span>
@@ -154,11 +125,7 @@ const Footer = () => {
                 </motion.div>
               </li>
               <li>
-                <motion.div
-                  variants={linkAnimation}
-                  initial="initial"
-                  whileHover="hover"
-                >
+                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
                   <Link to="/program/jasa-digital" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
                     <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
                     <span>{t('jasa-digital')}</span>
@@ -166,11 +133,7 @@ const Footer = () => {
                 </motion.div>
               </li>
               <li>
-                <motion.div
-                  variants={linkAnimation}
-                  initial="initial"
-                  whileHover="hover"
-                >
+                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
                   <Link to="/program/kelas" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
                     <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
                     <span>{t('shortclass-bootcamp')}</span>
@@ -178,11 +141,7 @@ const Footer = () => {
                 </motion.div>
               </li>
               <li>
-                <motion.div
-                  variants={linkAnimation}
-                  initial="initial"
-                  whileHover="hover"
-                >
+                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
                   <Link to="/blog" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
                     <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
                     <span>{t('blog')}</span>
@@ -190,11 +149,7 @@ const Footer = () => {
                 </motion.div>
               </li>
               <li>
-                <motion.div
-                  variants={linkAnimation}
-                  initial="initial"
-                  whileHover="hover"
-                >
+                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
                   <Link to="/portofolio" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
                     <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
                     <span>{t('portofolio')}</span>
@@ -202,11 +157,7 @@ const Footer = () => {
                 </motion.div>
               </li>
               <li>
-                <motion.div
-                  variants={linkAnimation}
-                  initial="initial"
-                  whileHover="hover"
-                >
+                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
                   <Link to="/tentang" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
                     <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
                     <span>{t('tentang')}</span>
@@ -229,7 +180,7 @@ const Footer = () => {
                   </svg>
                 </div>
                 <div className="text-gray-400 text-sm">
-                  Way Kandis, Kec. Tanjung Senang,<br/>Bandar Lampung, Lampung 35143
+                  Way Kandis, Kec. Tanjung Senang,<br />Bandar Lampung, Lampung 35143
                 </div>
               </li>
               <li className="flex">
@@ -258,25 +209,11 @@ const Footer = () => {
             <h3 className="text-lg font-semibold text-white mb-4">
               {t('newsletter') || "Newsletter"}
             </h3>
-            <p className="text-gray-400 text-sm mb-4">
-              {t('newsletter-description') || "Berlangganan untuk mendapatkan berita terbaru, tips, dan penawaran dari kami."}
-            </p>
+            
             <div className="flex">
-              <Input
-                type="email"
-                placeholder={t('email-placeholder') || "Email anda..."}
-                className="mr-2 bg-dark-300 border-dark-300 focus:border-sky-500 focus-visible:ring-0 text-sm rounded-l-md rounded-r-none"
-              />
-              <motion.div
-                variants={buttonAnimation}
-                initial="initial"
-                whileHover="hover"
-                whileTap="tap"
-              >
-                <Button 
-                  type="submit" 
-                  className="bg-sky-500 hover:bg-sky-600 text-white rounded-l-none"
-                >
+              <Input type="email" placeholder={t('email-placeholder') || "Email anda..."} className="mr-2 bg-dark-300 border-dark-300 focus:border-sky-500 focus-visible:ring-0 text-sm rounded-l-md rounded-r-none" />
+              <motion.div variants={buttonAnimation} initial="initial" whileHover="hover" whileTap="tap">
+                <Button type="submit" className="bg-sky-500 hover:bg-sky-600 text-white rounded-l-none">
                   {t('subscribe') || "Langganan"}
                 </Button>
               </motion.div>
@@ -304,8 +241,6 @@ const Footer = () => {
           </div>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
