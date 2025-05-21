@@ -1,4 +1,3 @@
-
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -115,61 +114,7 @@ const Footer = () => {
           </motion.div>
           
           {/* Quick Links */}
-          <motion.div variants={itemAnimation}>
-            <h3 className="text-lg font-semibold text-white mb-4">
-              {t('quick-links') || "Quick Links"}
-            </h3>
-            <ul className="space-y-2.5">
-              <li>
-                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
-                  <Link to="/" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
-                    <span>{t('beranda')}</span>
-                  </Link>
-                </motion.div>
-              </li>
-              <li>
-                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
-                  <Link to="/program/jasa-digital" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
-                    <span>{t('jasa-digital')}</span>
-                  </Link>
-                </motion.div>
-              </li>
-              <li>
-                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
-                  <Link to="/program/kelas" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
-                    <span>{t('shortclass-bootcamp')}</span>
-                  </Link>
-                </motion.div>
-              </li>
-              <li>
-                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
-                  <Link to="/blog" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
-                    <span>{t('blog')}</span>
-                  </Link>
-                </motion.div>
-              </li>
-              <li>
-                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
-                  <Link to="/portofolio" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
-                    <span>{t('portofolio')}</span>
-                  </Link>
-                </motion.div>
-              </li>
-              <li>
-                <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
-                  <Link to="/tentang" className="text-gray-400 hover:text-sky-400 flex items-center transition-colors group">
-                    <ChevronRight className="h-4 w-4 mr-1.5 opacity-0 group-hover:opacity-100 transition-all duration-300 -ml-4 group-hover:ml-0 icon-3d" />
-                    <span>{t('tentang')}</span>
-                  </Link>
-                </motion.div>
-              </li>
-            </ul>
-          </motion.div>
+          
           
           {/* Contact Information */}
           <motion.div variants={itemAnimation}>
