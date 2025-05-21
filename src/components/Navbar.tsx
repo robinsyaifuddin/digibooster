@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from "@/components/ui/navigation-menu";
@@ -157,8 +158,8 @@ const Navbar = () => {
           icon: <Briefcase className="h-4 w-4 mr-2" /> 
         },
         { 
-          path: "/program/kelas", 
-          label: "shortclass-bootcamp", 
+          path: "/kelas", 
+          label: "pelatihan-digital", 
           icon: <GraduationCap className="h-4 w-4 mr-2" /> 
         }
       ]

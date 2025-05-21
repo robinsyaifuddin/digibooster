@@ -99,9 +99,8 @@ function App() {
                   <Route path="/blog/:id" element={<BlogDetail />} />
                   <Route path="/kontak" element={<Kontak />} />
                   <Route path="/motivasi-edukasi" element={<MotivasiEdukasi />} />
-                  <Route path="/pelatihan-digital" element={<PelatihanDigital />} />
+                  <Route path="/pelatihan-digital" element={<Kelas />} />
                   <Route path="/sharing-konsultasi" element={<PelatihanDigital />} />
-                  <Route path="/shortclass-bootcamp" element={<PelatihanDigital />} />
                   <Route path="/portofolio" element={<Portofolio />} />
                   <Route path="/portofolio/:id" element={<PortfolioDetail />} />
                   <Route path="/tentang" element={<Tentang />} />
@@ -110,10 +109,13 @@ function App() {
                   <Route path="/jasa-digital" element={<JasaDigital />} />
                   <Route path="/program/jasa-digital" element={<JasaDigital />} />
                   
+                  {/* Add an alias for the kelas route */}
+                  <Route path="/kelas" element={<Kelas />} />
+                  <Route path="/program/pelatihan-digital" element={<Kelas />} />
+                  
                   <Route path="/services" element={<Services />} />
                   <Route path="/services/:id" element={<ServiceDetails />} />
                   <Route path="/layanan/:slug" element={<ServiceDetailPage />} />
-                  <Route path="/kelas" element={<Kelas />} />
                   <Route path="/order-form" element={<OrderForm />} />
 
                   {/* Auth routes */}
