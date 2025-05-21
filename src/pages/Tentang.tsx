@@ -202,10 +202,7 @@ const Tentang = () => {
           }} transition={{
             duration: 0.6,
             delay: 0.8
-          }} className="text-gray-300 mb-8 max-w-2xl">
-              DigiBooster adalah perusahaan teknologi dan edukasi yang fokus pada percepatan digitalisasi 
-              Indonesia melalui layanan digital yang inovatif dan program pengembangan keterampilan digital.
-            </motion.p>
+          }} className="text-gray-300 mb-8 max-w-2xl">DigiBooster adalah perusahaan teknologi dan edukasi yang fokus pada percepatan digitalisasi Indonesia melalui layanan digital yang inovatif dan program pengembangan keterampilan digital bagi pemuda untuk meningkatkan keterampilan digital dan berkontribusi bagi bangsa.</motion.p>
             
             <motion.div initial={{
             opacity: 0,
@@ -217,10 +214,7 @@ const Tentang = () => {
             duration: 0.6,
             delay: 1
           }} className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-sky-500 hover:bg-sky-600 rounded-full text-white">
-                <Play className="mr-2 h-5 w-5" />
-                Pelajari Selengkapnya
-              </Button>
+              
               
               <Link to="/kontak">
                 <Button size="lg" variant="outline" className="rounded-full border-gray-600 text-white hover:bg-sky-500/20 hover:border-sky-500">
