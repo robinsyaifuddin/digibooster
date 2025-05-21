@@ -1,17 +1,24 @@
 
 import { ReactNode } from 'react';
 
-export interface ClassDetails {
+export interface ClassDetail {
   duration: string;
-  participants: string;
+  schedule?: string;
+  participants?: string;
   level: string;
-  schedule: string;
+  instructor?: string;
+  price?: string;
+  location?: string;
 }
 
 export interface Class {
-  icon: ReactNode;
+  id?: string; // Make id optional to match existing data structure
+  icon?: ReactNode;
+  iconComponent?: string;
   title: string;
-  description: string;
-  details: ClassDetails;
-  topics: string[];
+  description?: string;
+  image?: string;
+  details: ClassDetail;
+  topics?: string[];
+  featured?: boolean;
 }

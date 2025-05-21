@@ -34,6 +34,7 @@ const ClassGrid = ({ classes }: ClassGridProps) => {
       {classes.map((classItem, index) => (
         <motion.div key={index} variants={item}>
           <ClassCard 
+            id={classItem.id || `class-${index}`} // Adding id prop with fallback
             title={classItem.title}
             image={`/lovable-uploads/placeholder.jpg`} // Default image path, update according to your actual data structure
             duration={classItem.details.duration}
