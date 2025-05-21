@@ -1,3 +1,4 @@
+
 import React from 'react';
 import HeroSection from '@/components/home/HeroSection';
 import FeaturedServiceCard from '@/components/services/FeaturedServiceCard';
@@ -26,7 +27,7 @@ const featuredService = {
 const Home = () => {
   return <div className="bg-black min-h-screen">
       {/* Hero Section */}
-      <HeroSection title="DigiBooster Indonesia" subtitle="Percepatan Digitalisasi Indonesia" description="Platform Layanan Jasa Digital Terbaik untuk membantu bisnis Anda bertransformasi ke era digital dengan solusi komprehensif dan profesional. DigiBooster hadir sebagai partner digital terpercaya untuk pertumbuhan bisnis Anda." image="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" rating={4.9} year="2023" ctaText="Explore Services" ctaLink="/services" />
+      <HeroSection title="DigiBooster Indonesia" subtitle="Skill Up, Stand Up!" description="Platform Layanan Jasa Digital Terbaik untuk membantu bisnis Anda bertransformasi ke era digital dengan solusi komprehensif dan profesional. DigiBooster hadir sebagai partner digital terpercaya untuk pertumbuhan bisnis Anda." image="https://images.unsplash.com/photo-1550745165-9bc0b252726f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80" rating={4.9} year="2023" ctaText="Explore Services" ctaLink="/services" />
       
       {/* Logo Marquee - Partner Section */}
       <LogoMarquee logos={partners.map(p => ({

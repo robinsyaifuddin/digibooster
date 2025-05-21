@@ -94,7 +94,8 @@ const Footer = () => {
       }} variants={footerAnimation}>
           {/* Company Information */}
           <motion.div variants={itemAnimation}>
-            
+            <h3 className="text-lg font-semibold text-white mb-4">DigiBooster Indonesia</h3>
+            <p className="text-gray-400 mb-6">Skill Up, Stand Up!</p>
             
             {/* Social Media */}
             <div className="flex space-x-3">
@@ -115,7 +116,9 @@ const Footer = () => {
           
           {/* Quick Links */}
           <motion.div variants={itemAnimation}>
-            
+            <h3 className="text-lg font-semibold text-white mb-4">
+              {t('quick-links') || "Quick Links"}
+            </h3>
             <ul className="space-y-2.5">
               <li>
                 <motion.div variants={linkAnimation} initial="initial" whileHover="hover">
