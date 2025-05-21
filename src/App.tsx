@@ -1,139 +1,82 @@
-
-import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
-import './App.css';
-import Home from './pages/Home';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Login from './pages/Login';
-import Register from './pages/Register';
-import AdminDashboard from './pages/AdminDashboard';
-import UserDashboard from './pages/UserDashboard';
-import Blog from './pages/Blog';
-import BlogDetail from './pages/BlogDetail';
-import Kontak from './pages/Kontak';
-import MotivasiEdukasi from './pages/MotivasiEdukasi';
-import PelatihanDigital from './pages/PelatihanDigital';
-import Portofolio from './pages/Portofolio';
-import PortfolioDetail from './pages/PortfolioDetail';
-import NotFound from './pages/NotFound';
-import Tentang from './pages/Tentang';
-import Beranda from './pages/Beranda';
-import JasaDigital from './pages/JasaDigital';
-import Services from './pages/Services';
-import ServiceDetails from './pages/ServiceDetails';
-import ServiceDetailPage from './pages/ServiceDetailPage';
-import Kelas from './pages/Kelas';
-import OrderForm from './pages/OrderForm';
-
-// Theme context for light/dark mode
-import { ThemeProvider } from './contexts/ThemeContext';
-
-// Language context for multi-language support
-import { LanguageProvider } from './contexts/LanguageContext';
-
-// Auth context for user authentication
-import { AuthProvider } from './contexts/AuthContext';
-
-// Home content context for dynamic content
-import { HomeContentProvider } from './contexts/HomeContentContext';
-
-// Toast provider for notifications
-import { Toaster } from '@/components/ui/toaster';
-
-// Import PageTransition component
-import { PageTransition } from './components/animation/PageTransition';
-
-// Layout component to handle navigation visibility
-const AppLayout = ({ children }: { children: React.ReactNode }) => {
-  const location = useLocation();
-  const path = location.pathname;
-  
-  // Hide Navbar and Footer on dashboard and admin pages
-  const isDashboardPage = path === '/dashboard' || path.startsWith('/admin');
-  
-  return (
-    <div className="App bg-black text-white min-h-screen flex flex-col">
-      {!isDashboardPage && <Navbar />}
-      <main className="flex-grow">
-        <PageTransition>{children}</PageTransition>
-      </main>
-      {!isDashboardPage && <Footer />}
-      <Toaster />
-    </div>
-  );
-};
+import React, { Suspense } from 'react';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
+import Layout from '@/components/Layout';
+import Home from '@/pages/Home';
+import Blog from '@/pages/Blog';
+import BlogDetail from '@/pages/BlogDetail';
+import Portfolio from '@/pages/Portfolio';
+import Tentang from '@/pages/Tentang';
+import Login from '@/pages/Login';
+import Register from '@/pages/Register';
+import JasaDigital from '@/pages/JasaDigital';
+import PelatihanDigital from '@/pages/PelatihanDigital';
+import Loader from '@/components/ui/Loader';
+import { AuthProvider, useAuth } from '@/contexts/AuthContext';
+import AdminDashboard from '@/pages/admin/AdminDashboard';
+import Kelas from '@/pages/Kelas';
+import SettingsPage from '@/pages/admin/SettingsPage';
+import ProfilePage from '@/pages/admin/ProfilePage';
+import NotFound from '@/pages/NotFound';
+import ComingSoon from '@/pages/ComingSoon';
+import Maintenance from '@/pages/Maintenance';
+import { useTheme } from '@/contexts/ThemeContext';
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    // Simulate loading time
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 800);
-
-    return () => clearTimeout(timer);
-  }, []);
-
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 flex items-center justify-center bg-black">
-        <div className="loader"></div>
-      </div>
-    );
-  }
+  const { theme } = useTheme();
 
   return (
-    <ThemeProvider>
-      <LanguageProvider>
-        <Router>
+    <div className={theme}>
+      <BrowserRouter>
+        <Suspense fallback={<Loader />}>
           <AuthProvider>
-            <HomeContentProvider>
-              <AppLayout>
-                <Routes>
-                  {/* Main routes */}
-                  <Route path="/" element={<Home />} />
-                  <Route path="/beranda" element={<Beranda />} />
-                  <Route path="/blog" element={<Blog />} />
-                  <Route path="/blog/:id" element={<BlogDetail />} />
-                  <Route path="/kontak" element={<Kontak />} />
-                  <Route path="/motivasi-edukasi" element={<MotivasiEdukasi />} />
-                  <Route path="/pelatihan-digital" element={<PelatihanDigital />} />
-                  <Route path="/sharing-konsultasi" element={<PelatihanDigital />} />
-                  <Route path="/shortclass-bootcamp" element={<PelatihanDigital />} />
-                  <Route path="/portofolio" element={<Portofolio />} />
-                  <Route path="/portofolio/:id" element={<PortfolioDetail />} />
-                  <Route path="/tentang" element={<Tentang />} />
-                  
-                  {/* Fix for Jasa Digital routes */}
-                  <Route path="/jasa-digital" element={<JasaDigital />} />
-                  <Route path="/program/jasa-digital" element={<JasaDigital />} />
-                  
-                  <Route path="/services" element={<Services />} />
-                  <Route path="/services/:id" element={<ServiceDetails />} />
-                  <Route path="/layanan/:slug" element={<ServiceDetailPage />} />
-                  <Route path="/kelas" element={<Kelas />} />
-                  <Route path="/order-form" element={<OrderForm />} />
-
-                  {/* Auth routes */}
-                  <Route path="/login" element={<Login />} />
-                  <Route path="/register" element={<Register />} />
-
-                  {/* Dashboard routes */}
-                  <Route path="/dashboard" element={<UserDashboard />} />
-                  <Route path="/admin/*" element={<AdminDashboard />} />
-
-                  {/* 404 route */}
-                  <Route path="*" element={<NotFound />} />
-                </Routes>
-              </AppLayout>
-            </HomeContentProvider>
+            <Routes>
+              <Route path="/" element={<Layout />}>
+                {/* Main routes */}
+                <Route index element={<Home />} />
+                <Route path="blog" element={<Blog />} />
+                <Route path="blog/:slug" element={<BlogDetail />} />
+                <Route path="portofolio" element={<Portfolio />} />
+                <Route path="tentang" element={<Tentang />} />
+                
+                {/* Program submenu routes */}
+                <Route path="program/jasa-digital" element={<JasaDigital />} />
+                <Route path="program/kelas" element={<PelatihanDigital />} />
+                
+                {/* Authentication routes */}
+                <Route path="login" element={<Login />} />
+                <Route path="register" element={<Register />} />
+              </Route>
+              
+              {/* Admin routes - Protected by AuthGuard */}
+              <Route path="/admin" element={<AuthGuard><AdminDashboard /></AuthGuard>} />
+              <Route path="/admin/settings" element={<AuthGuard><SettingsPage /></AuthGuard>} />
+              <Route path="/admin/profile" element={<AuthGuard><ProfilePage /></AuthGuard>} />
+              
+              {/* Additional routes */}
+              <Route path="/kelas" element={<Kelas />} />
+              <Route path="/coming-soon" element={<ComingSoon />} />
+              <Route path="/maintenance" element={<Maintenance />} />
+              
+              {/* Catch-all route for 404 Not Found */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
           </AuthProvider>
-        </Router>
-      </LanguageProvider>
-    </ThemeProvider>
+        </Suspense>
+      </BrowserRouter>
+    </div>
   );
+}
+
+// AuthGuard component to protect routes
+function AuthGuard({ children }: { children: React.ReactNode }) {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    // Redirect to login page if not authenticated
+    return <Navigate to="/login" />;
+  }
+
+  return <>{children}</>;
 }
 
 export default App;
