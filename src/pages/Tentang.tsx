@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Play, Users, Award, Briefcase, Calendar, ChevronRight, Globe } from 'lucide-react';
@@ -186,7 +187,7 @@ const Tentang = () => {
             duration: 0.6,
             delay: 0.6
           }} className="flex items-center gap-4 mb-4">
-              <span className="text-gray-400">Berdiri Sejak 2018</span>
+              <span className="text-gray-400">Berdiri Sejak 2025</span>
               
               <span className="px-2 py-1 text-xs rounded-full bg-sky-500/20 border border-sky-500/30 text-sky-300">
                 Trusted Company
@@ -248,18 +249,19 @@ const Tentang = () => {
         }}>
             <h2 className="text-3xl font-bold text-white mb-6">Cerita Kami</h2>
             <p className="text-gray-300 mb-6">
-              DigiBooster didirikan dengan tujuan untuk membantu masyarakat dan bisnis di Indonesia dalam 
-              mengoptimalkan peluang di era digital. Kami percaya bahwa akses terhadap pengetahuan dan 
-              keterampilan digital yang tepat dapat membuka peluang tak terbatas bagi pertumbuhan.
+              DigiBooster didirikan pada tahun 2025 dengan tujuan untuk membantu masyarakat dan bisnis di Indonesia 
+              dalam mengoptimalkan peluang di era digital. Berawal dari sebuah ide sederhana di Lampung, kami percaya bahwa 
+              akses terhadap pengetahuan dan keterampilan digital yang tepat dapat membuka peluang tak terbatas bagi pertumbuhan.
             </p>
             <p className="text-gray-300 mb-6">
-              Berawal dari sebuah kelas kecil di Jakarta, kini DigiBooster telah berkembang menjadi 
-              platform edukasi dan layanan digital yang komprehensif dengan ribuan alumni dan klien 
-              dari berbagai industri di seluruh Indonesia.
+              Meskipun masih berusia muda dengan pengalaman lebih dari 1 tahun, DigiBooster terus bertumbuh dan selalu 
+              menempuh proses untuk menjadi lebih baik. Kini kami berkembang menjadi platform edukasi dan layanan digital 
+              yang komprehensif dengan ratusan alumni dan klien dari berbagai industri di Indonesia.
             </p>
             <p className="text-gray-300">
-              Misi kami adalah menjembatani kesenjangan digital di Indonesia melalui pendidikan dan 
-              layanan berkualitas tinggi yang dirancang untuk memenuhi kebutuhan pasar yang terus berkembang.
+              Misi kami adalah menjembatani kesenjangan digital di Indonesia melalui pendidikan dan layanan berkualitas tinggi, 
+              siap untuk terbang tinggi hingga mencapai titik puncak di era digital. Kami berdedikasi untuk memenuhi kebutuhan 
+              pasar yang terus berkembang dengan solusi inovatif.
             </p>
           </motion.div>
           
@@ -277,7 +279,7 @@ const Tentang = () => {
             <img alt="DigiBooster Office" className="rounded-2xl object-cover w-full h-[500px]" src="/lovable-uploads/002dbec1-5773-46af-8612-83877ff9e3d6.jpg" />
             <div className="absolute inset-0 border-2 border-sky-500/30 rounded-2xl transform translate-x-4 translate-y-4 -z-10"></div>
             <div className="absolute -bottom-4 -right-4 bg-sky-500 p-6 rounded-2xl shadow-xl">
-              <div className="text-3xl font-bold text-white">5+</div>
+              <div className="text-3xl font-bold text-white">1+</div>
               <div className="text-white text-sm">Tahun Pengalaman</div>
             </div>
           </motion.div>
@@ -288,10 +290,10 @@ const Tentang = () => {
       <div className="bg-gray-900 py-20">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <AnimatedCounter value="10K+" label="Siswa" />
-            <AnimatedCounter value="50+" label="Kelas" />
-            <AnimatedCounter value="100+" label="Proyek" />
-            <AnimatedCounter value="25+" label="Tim Profesional" />
+            <AnimatedCounter value="500+" label="Siswa" />
+            <AnimatedCounter value="15+" label="Kelas" />
+            <AnimatedCounter value="30+" label="Proyek" />
+            <AnimatedCounter value="10+" label="Tim Profesional" />
           </div>
         </div>
       </div>
@@ -324,11 +326,11 @@ const Tentang = () => {
           </div>
           
           <div className="max-w-3xl mx-auto">
-            <TimelineItem year="2018" title="Awal Mula" description="DigiBooster didirikan sebagai startup edukasi dengan fokus pada kursus web development." />
-            <TimelineItem year="2019" title="Perluasan Layanan" description="Mulai menawarkan jasa pembuatan website dan digital marketing untuk UKM di Indonesia." />
-            <TimelineItem year="2020" title="Adaptasi Pandemi" description="Berhasil beradaptasi dengan pandemi melalui transformasi ke platform pembelajaran online." />
-            <TimelineItem year="2022" title="Pertumbuhan Pesat" description="Mencapai 5.000+ pengguna dan memperluas jangkauan ke seluruh Indonesia." />
-            <TimelineItem year="2023" title="Saat Ini" description="Terus berinovasi dan mengembangkan platform dengan teknologi terbaru untuk memenuhi kebutuhan pasar digital Indonesia." />
+            <TimelineItem year="2025" title="Awal Mula" description="DigiBooster didirikan di Lampung sebagai startup edukasi digital dengan visi sederhana." />
+            <TimelineItem year="2025" title="Pengembangan Produk" description="Meluncurkan kursus pertama dan layanan digital untuk bisnis lokal di Lampung." />
+            <TimelineItem year="2025" title="Ekspansi Tim" description="Merekrut anggota tim berbakat untuk memperkuat layanan dan kualitas edukasi." />
+            <TimelineItem year="2025" title="Pengguna Pertama" description="Meraih 100+ pengguna dari Lampung dan sekitarnya." />
+            <TimelineItem year="2026" title="Saat Ini" description="Terus bertumbuh dan siap terbang tinggi menuju puncak era digital di Indonesia." />
           </div>
         </div>
       </div>
