@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -204,7 +205,7 @@ const Footer = () => {
             </ul>
           </motion.div>
           
-          {/* Newsletter */}
+          {/* Newsletter - Moved to appear after social media section */}
           <motion.div variants={itemAnimation}>
             <h3 className="text-lg font-semibold text-white mb-4">
               {t('newsletter') || "Newsletter"}
