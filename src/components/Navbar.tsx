@@ -158,7 +158,7 @@ const Navbar = () => {
         },
         { 
           path: "/program/kelas", 
-          label: "Pelatihan Digital", 
+          label: "shortclass-bootcamp", 
           icon: <GraduationCap className="h-4 w-4 mr-2" /> 
         }
       ]
