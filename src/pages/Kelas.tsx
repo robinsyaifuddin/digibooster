@@ -16,7 +16,7 @@ const courseCategories = [
     description: "Belajar pengembangan website dan aplikasi dengan teknologi terkini",
     courses: [
       {
-        id: 1,
+        id: "web-dev",
         title: "Full-Stack Web Development",
         duration: "10 minggu",
         level: "Intermediate",
@@ -26,7 +26,7 @@ const courseCategories = [
         featured: true
       },
       {
-        id: 2,
+        id: "react-fundamentals",
         title: "React JS Fundamentals",
         duration: "4 minggu",
         level: "Beginner",
@@ -35,7 +35,7 @@ const courseCategories = [
         price: "Rp2.200.000"
       },
       {
-        id: 3,
+        id: "mobile-dev",
         title: "Mobile App Development",
         duration: "8 minggu",
         level: "Intermediate",
@@ -44,7 +44,7 @@ const courseCategories = [
         price: "Rp3.800.000"
       },
       {
-        id: 4,
+        id: "backend-engineering",
         title: "Backend Engineering",
         duration: "6 minggu",
         level: "Advanced",
@@ -53,7 +53,7 @@ const courseCategories = [
         price: "Rp3.500.000"
       },
       {
-        id: 5,
+        id: "html-css-basics",
         title: "HTML & CSS Basics",
         duration: "2 minggu",
         level: "Beginner",
@@ -70,7 +70,7 @@ const courseCategories = [
     description: "Pelajari teknik desain grafis profesional untuk berbagai kebutuhan media",
     courses: [
       {
-        id: 6,
+        id: "ui-ux",
         title: "UI/UX Design Mastery",
         duration: "8 minggu",
         level: "Intermediate",
@@ -80,7 +80,7 @@ const courseCategories = [
         featured: true
       },
       {
-        id: 7,
+        id: "photoshop-advanced",
         title: "Adobe Photoshop Advanced",
         duration: "5 minggu",
         level: "Intermediate",
@@ -89,7 +89,7 @@ const courseCategories = [
         price: "Rp2.500.000"
       },
       {
-        id: 8,
+        id: "logo-design",
         title: "Logo Design Workshop",
         duration: "3 minggu",
         level: "Beginner",
@@ -98,7 +98,7 @@ const courseCategories = [
         price: "Rp1.800.000"
       },
       {
-        id: 9,
+        id: "brand-identity",
         title: "Brand Identity Design",
         duration: "6 minggu",
         level: "Advanced",
@@ -107,7 +107,7 @@ const courseCategories = [
         price: "Rp2.800.000"
       },
       {
-        id: 10,
+        id: "digital-illustration",
         title: "Digital Illustration",
         duration: "4 minggu",
         level: "Intermediate",
@@ -124,7 +124,7 @@ const courseCategories = [
     description: "Kuasai strategi marketing di era digital untuk meningkatkan bisnis",
     courses: [
       {
-        id: 11,
+        id: "social-media",
         title: "Social Media Marketing",
         duration: "6 minggu",
         level: "Intermediate",
@@ -134,7 +134,7 @@ const courseCategories = [
         featured: true
       },
       {
-        id: 12,
+        id: "seo-fundamentals",
         title: "SEO Fundamentals",
         duration: "4 minggu",
         level: "Beginner",
@@ -143,7 +143,7 @@ const courseCategories = [
         price: "Rp2.200.000"
       },
       {
-        id: 13,
+        id: "content-marketing",
         title: "Content Marketing Strategy",
         duration: "5 minggu",
         level: "Intermediate",
@@ -152,7 +152,7 @@ const courseCategories = [
         price: "Rp2.500.000"
       },
       {
-        id: 14,
+        id: "google-ads",
         title: "Google Ads Mastery",
         duration: "6 minggu",
         level: "Advanced",
@@ -161,7 +161,7 @@ const courseCategories = [
         price: "Rp3.000.000"
       },
       {
-        id: 15,
+        id: "email-marketing",
         title: "Email Marketing",
         duration: "3 minggu",
         level: "Beginner",
@@ -178,7 +178,7 @@ const courseCategories = [
     description: "Pelajari teknik profesional dalam dunia fotografi dan videografi",
     courses: [
       {
-        id: 16,
+        id: "video-editing",
         title: "Video Editing Masterclass",
         duration: "8 minggu",
         level: "Intermediate",
@@ -188,7 +188,7 @@ const courseCategories = [
         featured: true
       },
       {
-        id: 17,
+        id: "photography-basics",
         title: "Photography Basics",
         duration: "4 minggu",
         level: "Beginner",
@@ -197,7 +197,7 @@ const courseCategories = [
         price: "Rp2.000.000"
       },
       {
-        id: 18,
+        id: "cinematography",
         title: "Cinematography Techniques",
         duration: "6 minggu",
         level: "Advanced",
@@ -206,7 +206,7 @@ const courseCategories = [
         price: "Rp3.200.000"
       },
       {
-        id: 19,
+        id: "premiere-pro",
         title: "Adobe Premiere Pro",
         duration: "5 minggu",
         level: "Intermediate",
@@ -215,7 +215,7 @@ const courseCategories = [
         price: "Rp2.500.000"
       },
       {
-        id: 20,
+        id: "product-photography",
         title: "Product Photography",
         duration: "3 minggu",
         level: "Beginner",
@@ -235,6 +235,10 @@ const featuredCourse = courseCategories.flatMap(category =>
 const Kelas = () => {
   const [selectedTab, setSelectedTab] = useState(courseCategories[0].id);
   const navigate = useNavigate();
+  
+  const handleViewDetails = (courseId: string) => {
+    navigate(`/kelas/${courseId}`);
+  };
   
   return (
     <div className="pt-16 bg-black min-h-screen overflow-x-hidden">
@@ -439,6 +443,7 @@ const Kelas = () => {
                         <Button 
                           size="sm" 
                           className="w-full bg-sky-500 hover:bg-sky-600 font-medium text-xs"
+                          onClick={() => handleViewDetails(course.id)}
                         >
                           Detail Kelas
                         </Button>

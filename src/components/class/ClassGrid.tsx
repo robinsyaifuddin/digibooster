@@ -3,12 +3,15 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { ClassCard } from './ClassCard';
 import { Class } from '@/types/classTypes';
+import { useNavigate } from 'react-router-dom';
 
 interface ClassGridProps {
   classes: Class[];
 }
 
 const ClassGrid = ({ classes }: ClassGridProps) => {
+  const navigate = useNavigate();
+  
   const container = {
     hidden: { opacity: 0 },
     show: {
