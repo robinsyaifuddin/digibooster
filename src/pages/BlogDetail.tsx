@@ -14,7 +14,17 @@ const BlogDetail = () => {
   useEffect(() => {
     // Scroll to top when component mounts
     window.scrollTo(0, 0);
-  }, [id]);
+    
+    // Update page title with blog post title
+    if (post) {
+      document.title = `${post.title} | DigiBooster Blog`;
+    }
+    
+    return () => {
+      // Reset title on unmount
+      document.title = 'DigiBooster';
+    };
+  }, [id, post]);
   
   if (!post) {
     return (

@@ -20,11 +20,13 @@ const BlogCard = ({ post, index }: BlogCardProps) => {
       transition={{ duration: 0.4, delay: index * 0.1 }}
     >
       <div className="h-48 overflow-hidden">
-        <img 
-          src={post.image} 
-          alt={post.title} 
-          className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-        />
+        <Link to={`/blog/${post.id}`}>
+          <img 
+            src={post.image} 
+            alt={post.title} 
+            className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+          />
+        </Link>
       </div>
       <div className="p-5 flex flex-col flex-grow">
         <div className="mb-4">
@@ -32,7 +34,9 @@ const BlogCard = ({ post, index }: BlogCardProps) => {
             {post.category}
           </Badge>
         </div>
-        <h3 className="text-xl font-bold text-white mb-2 line-clamp-2">{post.title}</h3>
+        <Link to={`/blog/${post.id}`}>
+          <h3 className="text-xl font-bold text-white mb-2 line-clamp-2 hover:text-digicyan transition-colors">{post.title}</h3>
+        </Link>
         <p className="text-gray-300 mb-4 line-clamp-3">{post.excerpt}</p>
         
         <div className="flex flex-wrap items-center text-gray-400 text-sm mb-4 mt-auto">

@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Search, ChevronRight, Calendar, User } from 'lucide-react';
@@ -77,7 +76,7 @@ const Blog = () => {
         </div>
       </div>
       
-      {/* Blog Posts Grid - Similar to movie cards in reference */}
+      {/* Blog Posts Grid */}
       <div className="container mx-auto px-4 py-8">
         {filteredPosts.length === 0 ? (
           <div className="text-center py-20">
@@ -117,16 +116,19 @@ const Blog = () => {
                     {post.excerpt}
                   </p>
                   
-                  <div className="flex justify-between items-center text-xs text-gray-400">
-                    <div className="flex items-center">
+                  <div className="flex justify-between items-center">
+                    <div className="flex items-center text-xs text-gray-400">
                       <User className="w-3 h-3 mr-1" />
                       <span>{post.author}</span>
-                    </div>
-                    
-                    <div className="flex items-center">
-                      <Calendar className="w-3 h-3 mr-1" />
+                      
+                      <Calendar className="w-3 h-3 ml-3 mr-1" />
                       <span>{post.date}</span>
                     </div>
+                    
+                    <Link to={`/blog/${post.id}`} className="text-sky-400 hover:text-sky-300 text-sm flex items-center">
+                      Baca Selengkapnya
+                      <ChevronRight className="ml-1 w-4 h-4" />
+                    </Link>
                   </div>
                 </div>
               </motion.div>
