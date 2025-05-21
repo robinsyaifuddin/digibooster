@@ -13,6 +13,7 @@ interface PortfolioProps {
   image?: string;
 }
 
+// This component doesn't need to accept any props since it uses portfolioItems directly
 const PortfolioTabContent = () => {
   // Transform the portfolio items to match what PortfolioGrid expects
   const portfolios: PortfolioProps[] = portfolioItems.map(item => ({

@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { useWebsiteDataStore } from "@/stores/websiteDataStore";
 import { useToast } from "@/hooks/use-toast";
@@ -162,15 +161,6 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
     { id: 6, title: 'UI/UX Design Basic', students: 178, lessons: 11, level: 'Pemula' },
   ];
 
-  const portfolios = [
-    { id: 1, title: 'Website E-commerce Toko ABC', category: 'Web Development', client: 'Toko ABC' },
-    { id: 2, title: 'Kampanye Digital XYZ Corp', category: 'Digital Marketing', client: 'XYZ Corp' },
-    { id: 3, title: 'Aplikasi Mobile PQR', category: 'Mobile App', client: 'PQR Inc' },
-    { id: 4, title: 'Redesign UI Website Korporat', category: 'UI/UX Design', client: 'LMN Group' },
-    { id: 5, title: 'Strategi SEO Toko Online', category: 'SEO', client: 'Online Shop RST' },
-    { id: 6, title: 'Content Marketing Startup', category: 'Content Marketing', client: 'Startup UVW' },
-  ];
-
   const handlePublishContent = () => {
     // Trigger publish event
     const publishEvent = new CustomEvent('triggerPublish', {
@@ -196,7 +186,7 @@ const ContentManagement = ({ blogs }: ContentManagementProps) => {
         
         <CoursesTabContent courses={courses} />
         
-        <PortfolioTabContent portfolios={portfolios} />
+        <PortfolioTabContent />
         
         <HomeTabContent 
           heroContent={heroContent}
