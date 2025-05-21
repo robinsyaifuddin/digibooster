@@ -18,11 +18,149 @@
         visibility: hidden !important;
         pointer-events: none !important;
       }
+      
+      /* Select to edit styling */
+      .lovable-selectable {
+        position: relative;
+        transition: outline 0.2s ease;
+      }
+      
+      .lovable-selectable:hover {
+        outline: 2px dashed rgba(0, 216, 232, 0.5);
+        cursor: pointer;
+      }
+      
+      .lovable-editing {
+        outline: 2px solid rgba(0, 216, 232, 1);
+        box-shadow: 0 0 10px rgba(0, 216, 232, 0.3);
+      }
     </style>
   </head>
   <body>
     <div id="root"></div>
     <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
     <script type="module" src="/src/main.tsx"></script>
+    <script>
+      // Initialize select-to-edit functionality once the DOM is loaded
+      document.addEventListener('DOMContentLoaded', function() {
+        // Utility to enable select-to-edit for an element
+        function makeSelectable(element) {
+          // Add class for styling
+          element.classList.add('lovable-selectable');
+          
+          // Add click handler
+          element.addEventListener('click', function(e) {
+            // Only proceed if we're in "select mode"
+            if (!window.lovableSelectModeEnabled) return;
+            
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Mark as being edited
+            element.classList.add('lovable-editing');
+            
+            // Create a message for the Lovable AI with the element's content or attributes
+            let message = '';
+            
+            if (element.tagName.toLowerCase() === 'p') {
+              message = `Edit this text: "${element.innerHTML}"`;
+            } else if (element.tagName.toLowerCase() === 'img') {
+              message = `Edit this image (current src: ${element.src}, alt: ${element.alt || 'No alt text'})`;
+            }
+            
+            // Send the message to the Lovable chat interface
+            if (window.lovableSendMessage && message) {
+              window.lovableSendMessage(message);
+            }
+          });
+        }
+        
+        // Watch for changes in the DOM to make new elements selectable
+        function observeDOMChanges() {
+          const observer = new MutationObserver(mutations => {
+            mutations.forEach(mutation => {
+              if (mutation.addedNodes) {
+                mutation.addedNodes.forEach(node => {
+                  if (node.nodeType === 1) { // Element node
+                    // Check if it's a p or img element
+                    if (node.tagName && (node.tagName.toLowerCase() === 'p' || node.tagName.toLowerCase() === 'img')) {
+                      makeSelectable(node);
+                    }
+                    
+                    // Check child elements
+                    const elements = node.querySelectorAll('p, img');
+                    elements.forEach(el => makeSelectable(el));
+                  }
+                });
+              }
+            });
+          });
+          
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true
+          });
+        }
+        
+        // Initialize existing elements
+        function initializeExistingElements() {
+          const elements = document.querySelectorAll('p, img');
+          elements.forEach(el => makeSelectable(el));
+        }
+        
+        // Poll for Lovable initialization
+        const checkLovableInterval = setInterval(() => {
+          if (window.lovableInitialized) {
+            clearInterval(checkLovableInterval);
+            
+            // Set up global flag for select mode
+            window.lovableSelectModeEnabled = false;
+            
+            // Create toggle button for select mode
+            const toggleButton = document.createElement('button');
+            toggleButton.textContent = 'Toggle Select Mode';
+            toggleButton.className = 'lovable-select-toggle';
+            toggleButton.style.position = 'fixed';
+            toggleButton.style.bottom = '20px';
+            toggleButton.style.right = '20px';
+            toggleButton.style.zIndex = '9999';
+            toggleButton.style.padding = '8px 16px';
+            toggleButton.style.background = 'rgba(0, 216, 232, 0.9)';
+            toggleButton.style.color = 'white';
+            toggleButton.style.border = 'none';
+            toggleButton.style.borderRadius = '4px';
+            toggleButton.style.cursor = 'pointer';
+            toggleButton.style.boxShadow = '0 2px 10px rgba(0,0,0,0.2)';
+            toggleButton.style.display = 'none'; // Hide by default, only show in Lovable editor
+            
+            toggleButton.addEventListener('click', function() {
+              window.lovableSelectModeEnabled = !window.lovableSelectModeEnabled;
+              toggleButton.textContent = window.lovableSelectModeEnabled ? 'Exit Select Mode' : 'Toggle Select Mode';
+              toggleButton.style.background = window.lovableSelectModeEnabled ? 'rgba(232, 76, 61, 0.9)' : 'rgba(0, 216, 232, 0.9)';
+              
+              // Show visual indication of select mode
+              document.body.style.cursor = window.lovableSelectModeEnabled ? 'crosshair' : '';
+              
+              // Clear any existing editing states
+              document.querySelectorAll('.lovable-editing').forEach(el => {
+                el.classList.remove('lovable-editing');
+              });
+            });
+            
+            document.body.appendChild(toggleButton);
+            
+            // Check if we're in the Lovable editor
+            if (window.location.hostname.includes('lovable.dev') || 
+                window.location.hostname.includes('localhost') || 
+                window.location.hostname.includes('gpteng.co')) {
+              toggleButton.style.display = 'block'; // Show the button in the editor
+            }
+            
+            initializeExistingElements();
+            observeDOMChanges();
+          }
+        }, 1000);
+      });
+    </script>
   </body>
 </html>
