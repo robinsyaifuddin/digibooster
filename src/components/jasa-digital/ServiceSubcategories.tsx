@@ -15,11 +15,26 @@ const ServiceSubcategories = ({ subcategories, serviceName }: ServiceSubcategori
   const navigate = useNavigate();
 
   const handleConsultation = (subcategory: ServiceSubcategoryProps) => {
-    navigate(`/kontak?service=${encodeURIComponent(serviceName)}&subcategory=${encodeURIComponent(subcategory.title)}`);
+    const message = `
+*Konsultasi Gratis DigiBooster*
+----------------------------
+Halo, saya tertarik untuk konsultasi mengenai:
+
+*Layanan:* ${serviceName}
+*Kategori:* ${subcategory.title}
+*Kisaran Harga:* ${subcategory.priceRange}
+
+Mohon informasi lebih lanjut mengenai layanan ini. Terima kasih!
+    `;
+    
+    const encodedMessage = encodeURIComponent(message);
+    const whatsappUrl = `https://wa.me/6285768192419?text=${encodedMessage}`;
+    
+    window.open(whatsappUrl, '_blank');
   };
 
   const handleOrder = (subcategory: ServiceSubcategoryProps) => {
-    navigate(`/order-form?service=${encodeURIComponent(serviceName)}&subcategory=${encodeURIComponent(subcategory.title)}`);
+    navigate(`/order-form?service=${encodeURIComponent(serviceName)}&subcategory=${encodeURIComponent(subcategory.title)}&priceRange=${encodeURIComponent(subcategory.priceRange)}`);
   };
 
   return (
