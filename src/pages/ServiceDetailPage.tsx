@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import { jasaDigitalServices } from '@/data/jasaDigitalData';
 import { Star, Play, Phone, Mail, Calendar, Check, Info, DollarSign } from 'lucide-react';
+import ServiceSubcategories from '@/components/jasa-digital/ServiceSubcategories';
 
 const ServiceDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -93,9 +94,17 @@ const ServiceDetailPage = () => {
           </div>
         </div>
       </section>
+
+      {/* Subcategories Section */}
+      {service.subcategories && service.subcategories.length > 0 && (
+        <ServiceSubcategories 
+          subcategories={service.subcategories} 
+          serviceName={service.title}
+        />
+      )}
       
       {/* Features Section */}
-      <section className="py-16 bg-gradient-to-b from-black to-gray-900">
+      <section className="py-16 bg-gradient-to-b from-gray-900 to-black">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white text-center">
@@ -129,79 +138,81 @@ const ServiceDetailPage = () => {
       </section>
       
       {/* Pricing Section */}
-      <section className="py-16 bg-black">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
-              Pilihan Paket Layanan
-            </h2>
-            <p className="text-gray-400 max-w-2xl mx-auto">
-              Pilih paket layanan yang sesuai dengan kebutuhan dan anggaran Anda
-            </p>
-          </div>
-          
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-            {service.packages?.map((category, index) => (
-              <motion.div
-                key={index.toString()}
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                viewport={{ once: true }}
-                className={`bg-gradient-to-b ${
-                  category.recommended 
-                    ? "from-sky-900/40 to-black border-sky-500/50" 
-                    : "from-gray-900/40 to-black border-gray-800"
-                } p-6 rounded-xl border relative h-full flex flex-col`}
-              >
-                {category.recommended && (
-                  <span className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-sky-500 text-white text-xs py-1 px-3 rounded-full">
-                    Rekomendasi
-                  </span>
-                )}
-                
-                <h3 className="text-xl font-bold text-white mb-2">{category.name}</h3>
-                <p className="text-gray-400 text-sm mb-4">{category.description}</p>
-                
-                <div className="bg-sky-500/10 p-4 rounded-lg mb-5">
-                  <div className="text-sky-400 text-sm font-medium mb-1">Kisaran Harga</div>
-                  <div className="text-white text-xl font-bold">{category.priceRange}</div>
-                </div>
-                
-                <div className="flex-grow">
-                  <h4 className="text-sm font-semibold text-white mb-3 flex items-center">
-                    <Info className="h-4 w-4 mr-2 text-sky-400" />
-                    Fitur yang Tersedia
-                  </h4>
+      {service.packages && service.packages.length > 0 && (
+        <section className="py-16 bg-black">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
+                Pilihan Paket Layanan
+              </h2>
+              <p className="text-gray-400 max-w-2xl mx-auto">
+                Pilih paket layanan yang sesuai dengan kebutuhan dan anggaran Anda
+              </p>
+            </div>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+              {service.packages.map((category, index) => (
+                <motion.div
+                  key={index.toString()}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                  viewport={{ once: true }}
+                  className={`bg-gradient-to-b ${
+                    category.recommended 
+                      ? "from-sky-900/40 to-black border-sky-500/50" 
+                      : "from-gray-900/40 to-black border-gray-800"
+                  } p-6 rounded-xl border relative h-full flex flex-col`}
+                >
+                  {category.recommended && (
+                    <span className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-sky-500 text-white text-xs py-1 px-3 rounded-full">
+                      Rekomendasi
+                    </span>
+                  )}
                   
-                  <ul className="space-y-2 mb-6">
-                    {category.features.map((feature, idx) => (
-                      <li key={idx.toString()} className="flex items-start">
-                        <Check className="h-4 w-4 text-sky-400 mr-2 mt-0.5" />
-                        <span className="text-gray-300 text-sm">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                
-                <div className="mt-auto pt-4">
-                  <Button 
-                    className={`w-full ${
-                      category.recommended 
-                        ? "bg-sky-500 hover:bg-sky-600" 
-                        : "bg-gray-800 hover:bg-gray-700"
-                    } text-white`}
-                    onClick={() => navigate('/order-form?service=' + encodeURIComponent(service.title) + '&package=' + category.name)}
-                  >
-                    <DollarSign className="mr-2 h-4 w-4" />
-                    Pilih Paket
-                  </Button>
-                </div>
-              </motion.div>
-            ))}
+                  <h3 className="text-xl font-bold text-white mb-2">{category.name}</h3>
+                  <p className="text-gray-400 text-sm mb-4">{category.description}</p>
+                  
+                  <div className="bg-sky-500/10 p-4 rounded-lg mb-5">
+                    <div className="text-sky-400 text-sm font-medium mb-1">Kisaran Harga</div>
+                    <div className="text-white text-xl font-bold">{category.priceRange}</div>
+                  </div>
+                  
+                  <div className="flex-grow">
+                    <h4 className="text-sm font-semibold text-white mb-3 flex items-center">
+                      <Info className="h-4 w-4 mr-2 text-sky-400" />
+                      Fitur yang Tersedia
+                    </h4>
+                    
+                    <ul className="space-y-2 mb-6">
+                      {category.features.map((feature, idx) => (
+                        <li key={idx.toString()} className="flex items-start">
+                          <Check className="h-4 w-4 text-sky-400 mr-2 mt-0.5" />
+                          <span className="text-gray-300 text-sm">{feature}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  
+                  <div className="mt-auto pt-4">
+                    <Button 
+                      className={`w-full ${
+                        category.recommended 
+                          ? "bg-sky-500 hover:bg-sky-600" 
+                          : "bg-gray-800 hover:bg-gray-700"
+                      } text-white`}
+                      onClick={() => navigate('/order-form?service=' + encodeURIComponent(service.title) + '&package=' + category.name)}
+                    >
+                      <DollarSign className="mr-2 h-4 w-4" />
+                      Pilih Paket
+                    </Button>
+                  </div>
+                </motion.div>
+              ))}
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
       
       {/* Related Services */}
       {jasaDigitalServices.filter(s => s.slug !== slug).length > 0 && (
