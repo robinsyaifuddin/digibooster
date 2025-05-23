@@ -37,18 +37,18 @@ const PortfolioGrid = ({ portfolios }: PortfolioGridProps) => {
               )}
             </AspectRatio>
             <div className="absolute top-2 right-2">
-              <span className="bg-primary/80 text-white text-xs px-2 py-1 rounded-full">
+              <span className="bg-primary/80 text-white text-xs px-2 py-1 rounded-full shadow-md">
                 {portfolio.category}
               </span>
             </div>
           </div>
-          <CardHeader>
-            <CardTitle className="text-base line-clamp-1">{portfolio.title}</CardTitle>
-            <CardDescription>
+          <CardHeader className="bg-black/5">
+            <CardTitle className="text-base line-clamp-1 drop-shadow-sm">{portfolio.title}</CardTitle>
+            <CardDescription className="drop-shadow-sm">
               Client: {portfolio.client}
             </CardDescription>
           </CardHeader>
-          <CardFooter className="flex justify-between">
+          <CardFooter className="flex justify-between bg-black/5">
             <Button variant="outline" size="sm" className="flex items-center gap-1">
               <ExternalLink className="w-4 h-4" />
               <span>Lihat</span>
