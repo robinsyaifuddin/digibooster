@@ -113,36 +113,36 @@ const PopularPortfolioSection = ({
                               alt={item.title} 
                               className="object-cover w-full h-full rounded-xl group-hover:scale-105 transition-all duration-700"
                             />
-                            <div className="absolute inset-0 bg-gradient-to-t from-dark-400 via-dark-400/60 to-transparent"></div>
+                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
                           </AspectRatio>
                           
                           {/* Top badges */}
                           <div className="absolute top-4 left-4 right-4 flex justify-between items-center z-20">
-                            <span className="px-3 py-1 rounded-full text-xs font-medium bg-dark-300/70 backdrop-blur-sm text-primary border border-primary/20">
+                            <span className="px-3 py-1 rounded-full text-xs font-medium bg-dark-300/80 backdrop-blur-sm text-primary border border-primary/20 shadow-md">
                               {item.category}
                             </span>
                             <div className="flex space-x-2">
-                              <span className="w-8 h-8 flex items-center justify-center rounded-full bg-dark-300/70 backdrop-blur-sm">
+                              <span className="w-8 h-8 flex items-center justify-center rounded-full bg-dark-300/80 backdrop-blur-sm shadow-md">
                                 <Eye className="w-4 h-4 text-white/70" />
                               </span>
-                              <span className="w-8 h-8 flex items-center justify-center rounded-full bg-dark-300/70 backdrop-blur-sm">
+                              <span className="w-8 h-8 flex items-center justify-center rounded-full bg-dark-300/80 backdrop-blur-sm shadow-md">
                                 <Heart className="w-4 h-4 text-white/70 group-hover:text-primary transition-colors" />
                               </span>
                             </div>
                           </div>
                           
                           {/* Content */}
-                          <div className="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 z-20">
-                            <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-primary transition-colors mb-2">
+                          <div className="absolute bottom-0 left-0 w-full p-6 transform translate-y-2 group-hover:translate-y-0 transition-transform duration-300 z-20 bg-black/70 backdrop-blur-sm shadow-lg">
+                            <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-primary transition-colors mb-2 drop-shadow-lg">
                               {item.title}
                             </h3>
                             
-                            <p className="text-sm text-white/70 mb-3">
+                            <p className="text-sm text-white/70 mb-3 drop-shadow-lg">
                               {t('by')} <span className="text-primary/80">{item.client}</span>
                             </p>
                             
                             <div className="max-h-0 overflow-hidden group-hover:max-h-32 transition-all duration-500 ease-in-out">
-                              <p className="text-sm text-white/80 mb-4 line-clamp-3">
+                              <p className="text-sm text-white/80 mb-4 line-clamp-3 drop-shadow-lg">
                                 {item.description}
                               </p>
                               
@@ -150,7 +150,7 @@ const PopularPortfolioSection = ({
                                 {item.services.map((service, i) => (
                                   <span 
                                     key={i} 
-                                    className="px-2 py-1 rounded text-xs bg-dark-300/70 text-white/70 border border-primary/10"
+                                    className="px-2 py-1 rounded text-xs bg-dark-300/80 text-white/80 border border-primary/10 shadow-md"
                                   >
                                     {service}
                                   </span>

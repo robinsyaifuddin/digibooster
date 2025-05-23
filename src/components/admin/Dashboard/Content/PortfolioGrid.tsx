@@ -35,11 +35,16 @@ const PortfolioGrid = ({ portfolios }: PortfolioGridProps) => {
                   <PenSquare className="w-8 h-8 text-gray-400" />
                 </div>
               )}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
             </AspectRatio>
-            <div className="absolute top-2 right-2">
-              <span className="bg-primary/80 text-white text-xs px-2 py-1 rounded-full shadow-md">
+            <div className="absolute top-2 right-2 z-10">
+              <span className="bg-primary/80 text-white text-xs px-2 py-1 rounded-full shadow-md backdrop-blur-sm">
                 {portfolio.category}
               </span>
+            </div>
+            <div className="absolute bottom-0 left-0 right-0 p-2 bg-black/60 backdrop-blur-sm z-10">
+              <h3 className="text-base font-medium text-white line-clamp-1 drop-shadow-lg">{portfolio.title}</h3>
+              <p className="text-sm text-gray-300 drop-shadow-lg">{portfolio.client}</p>
             </div>
           </div>
           <CardHeader className="bg-black/5">

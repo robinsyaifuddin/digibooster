@@ -16,13 +16,13 @@ const PortfolioImage = ({ image, title, category, client }: PortfolioImageProps)
         alt={title} 
         className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
       />
-      <div className="absolute inset-0 bg-gradient-to-t from-black/80 to-transparent flex items-end">
-        <div className="p-6 w-full bg-black/40 backdrop-blur-sm rounded-t-lg">
-          <span className="text-xs font-medium text-digiblue-300 bg-digiblue-900/60 px-2 py-1 rounded-full">
+      <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-transparent flex items-end">
+        <div className="p-6 w-full bg-black/60 backdrop-blur-sm rounded-t-lg">
+          <span className="text-xs font-medium text-digiblue-300 bg-digiblue-900/70 px-2 py-1 rounded-full shadow-md">
             {category}
           </span>
           <h3 className="text-xl font-bold text-white mt-2 line-clamp-1 drop-shadow-lg">{title}</h3>
-          <p className="text-gray-300 text-sm drop-shadow-md">{client}</p>
+          <p className="text-gray-300 text-sm drop-shadow-lg">{client}</p>
         </div>
       </div>
     </div>
