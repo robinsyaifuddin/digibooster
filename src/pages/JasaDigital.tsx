@@ -97,16 +97,18 @@ const JasaDigital = () => {
                   </div>
                 </div>
                 
-                {/* Play button */}
-                <motion.button 
-                  whileHover={{ scale: 1.1 }}
-                  whileTap={{ scale: 0.95 }}
-                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                            w-16 h-16 flex items-center justify-center rounded-full 
-                            bg-sky-500/80 text-white hover:bg-sky-600 transition-colors"
-                >
-                  <Play size={24} className="ml-1" />
-                </motion.button>
+                {/* Play button with link to detail page */}
+                <Link to={`/layanan/${featuredService.slug}`}>
+                  <motion.button 
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                              w-16 h-16 flex items-center justify-center rounded-full 
+                              bg-sky-500/80 text-white hover:bg-sky-600 transition-colors"
+                  >
+                    <Play size={24} className="ml-1" />
+                  </motion.button>
+                </Link>
               </div>
             </div>
           </div>
@@ -175,11 +177,10 @@ const JasaDigital = () => {
                     
                     <p className="text-gray-400 text-sm line-clamp-2 mb-3">{service.description}</p>
                     
-                    <Button 
-                      size="sm"
-                      className="text-sm bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded-full"
-                    >
-                      Lihat Detail
+                    <Button asChild size="sm" className="text-sm bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded-full">
+                      <Link to={`/layanan/${service.slug}`}>
+                        Lihat Detail
+                      </Link>
                     </Button>
                   </div>
                 </div>

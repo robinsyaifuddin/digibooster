@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
@@ -22,6 +21,7 @@ import JasaDigital from './pages/JasaDigital';
 import Kelas from './pages/Kelas';
 import ClassDetail from './pages/ClassDetail';
 import OrderForm from './pages/OrderForm';
+import ServiceDetailPage from './pages/ServiceDetailPage';
 
 // Theme context for light/dark mode
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -104,6 +104,9 @@ function App() {
                   {/* Fix for Jasa Digital routes */}
                   <Route path="/jasa-digital" element={<JasaDigital />} />
                   <Route path="/program/jasa-digital" element={<JasaDigital />} />
+                  
+                  {/* Service detail pages */}
+                  <Route path="/layanan/:slug" element={<ServiceDetailPage />} />
                   
                   {/* Add an alias for the kelas route */}
                   <Route path="/kelas" element={<Kelas />} />
