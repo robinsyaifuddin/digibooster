@@ -20,9 +20,6 @@ import NotFound from './pages/NotFound';
 import Tentang from './pages/Tentang';
 import Beranda from './pages/Beranda';
 import JasaDigital from './pages/JasaDigital';
-import Services from './pages/Services';
-import ServiceDetails from './pages/ServiceDetails';
-import ServiceDetailPage from './pages/ServiceDetailPage';
 import Kelas from './pages/Kelas';
 import ClassDetail from './pages/ClassDetail';
 import OrderForm from './pages/OrderForm';
@@ -117,9 +114,6 @@ function App() {
                   {/* Add route for class details */}
                   <Route path="/kelas/:classId" element={<ClassDetail />} />
                   
-                  <Route path="/services" element={<Services />} />
-                  <Route path="/services/:id" element={<ServiceDetails />} />
-                  <Route path="/layanan/:slug" element={<ServiceDetailPage />} />
                   <Route path="/order-form" element={<OrderForm />} />
 
                   {/* Auth routes */}
