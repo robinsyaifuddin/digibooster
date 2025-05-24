@@ -11,7 +11,6 @@ import AdminDashboard from './pages/AdminDashboard';
 import UserDashboard from './pages/UserDashboard';
 import Blog from './pages/Blog';
 import BlogDetail from './pages/BlogDetail';
-import Kontak from './pages/Kontak';
 import MotivasiEdukasi from './pages/MotivasiEdukasi';
 import PelatihanDigital from './pages/PelatihanDigital';
 import Portofolio from './pages/Portofolio';
@@ -95,7 +94,6 @@ function App() {
                   <Route path="/beranda" element={<Beranda />} />
                   <Route path="/blog" element={<Blog />} />
                   <Route path="/blog/:id" element={<BlogDetail />} />
-                  <Route path="/kontak" element={<Kontak />} />
                   <Route path="/motivasi-edukasi" element={<MotivasiEdukasi />} />
                   <Route path="/pelatihan-digital" element={<Kelas />} />
                   <Route path="/sharing-konsultasi" element={<PelatihanDigital />} />

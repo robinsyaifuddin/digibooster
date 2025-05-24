@@ -11,6 +11,7 @@ import { useLanguage } from "@/contexts/LanguageContext";
 import { useTheme } from "@/contexts/ThemeContext";
 import { CommandMenu } from "./ui/CommandMenu";
 import { useIsMobile } from "@/hooks/use-mobile";
+
 const Navbar = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
@@ -375,4 +376,5 @@ const Navbar = () => {
       </AnimatePresence>
     </motion.header>;
 };
+
 export default Navbar;

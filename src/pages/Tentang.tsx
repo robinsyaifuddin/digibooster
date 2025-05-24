@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Play, Users, Award, Briefcase, Calendar, ChevronRight, Globe } from 'lucide-react';
+import { Play, Users, Award, Briefcase, Calendar, ChevronRight, Globe, Phone, Mail, MapPin, Clock, Star, CheckCircle2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
@@ -280,7 +280,6 @@ const Tentang = () => {
       </div>
 
       {/* Stats Section */}
-      
 
       {/* Values Section */}
       <div className="container mx-auto px-4 py-20">
@@ -300,7 +299,6 @@ const Tentang = () => {
       </div>
 
       {/* Timeline Section */}
-      
 
       {/* Team Section */}
       <div className="container mx-auto px-4 py-20">
@@ -315,6 +313,97 @@ const Tentang = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {team.map((member, index) => <TeamMember key={index} name={member.name} role={member.role} image={member.image} />)}
         </div>
+      </div>
+
+      {/* Contact Section */}
+      <div className="container mx-auto px-4 py-20">
+        <div className="text-center max-w-2xl mx-auto mb-12">
+          <h2 className="text-3xl font-bold text-white mb-4">Kontak Kami</h2>
+          <p className="text-gray-300">
+            Siap untuk memulai perjalanan digital Anda? Tim ahli kami siap membantu mewujudkan 
+            visi dan kebutuhan digital Anda dengan solusi terbaik.
+          </p>
+        </div>
+        
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="bg-gray-900 p-6 rounded-xl hover:bg-sky-900/20 hover:border-sky-500/50 transition-colors border border-gray-800"
+          >
+            <div className="w-12 h-12 bg-sky-500/20 rounded-lg flex items-center justify-center mb-4">
+              <Phone className="h-6 w-6 text-sky-500" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">Telepon</h3>
+            <a href="tel:+6282279722417" className="text-gray-300 hover:text-sky-400 transition-colors">
+              +62 822-7972-2417
+            </a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="bg-gray-900 p-6 rounded-xl hover:bg-sky-900/20 hover:border-sky-500/50 transition-colors border border-gray-800"
+          >
+            <div className="w-12 h-12 bg-sky-500/20 rounded-lg flex items-center justify-center mb-4">
+              <Mail className="h-6 w-6 text-sky-500" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">Email</h3>
+            <a href="mailto:hello.digibooster@gmail.com" className="text-gray-300 hover:text-sky-400 transition-colors break-all">
+              hello.digibooster@gmail.com
+            </a>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="bg-gray-900 p-6 rounded-xl hover:bg-sky-900/20 hover:border-sky-500/50 transition-colors border border-gray-800"
+          >
+            <div className="w-12 h-12 bg-sky-500/20 rounded-lg flex items-center justify-center mb-4">
+              <MapPin className="h-6 w-6 text-sky-500" />
+            </div>
+            <h3 className="text-xl font-bold text-white mb-2">Lokasi</h3>
+            <p className="text-gray-300">
+              Way Kandis, Kec. Tanjung Senang,<br />
+              Bandar Lampung, Lampung 35143
+            </p>
+          </motion.div>
+        </div>
+
+        {/* Working Hours */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.3 }}
+          className="max-w-2xl mx-auto mt-12"
+        >
+          <div className="bg-gray-900 p-8 rounded-xl border border-gray-800">
+            <h3 className="text-2xl font-bold text-white mb-6 flex items-center justify-center">
+              <Clock className="w-6 h-6 text-sky-400 mr-3" />
+              Jam Operasional
+            </h3>
+            <div className="space-y-3">
+              <div className="flex justify-between items-center py-2 border-b border-gray-800/50">
+                <span className="text-gray-400">Senin - Jumat</span>
+                <span className="text-white font-medium">09:00 - 17:00</span>
+              </div>
+              <div className="flex justify-between items-center py-2 border-b border-gray-800/50">
+                <span className="text-gray-400">Sabtu</span>
+                <span className="text-white font-medium">09:00 - 15:00</span>
+              </div>
+              <div className="flex justify-between items-center py-2">
+                <span className="text-gray-400">Minggu</span>
+                <span className="text-red-400 font-medium">Tutup</span>
+              </div>
+            </div>
+          </div>
+        </motion.div>
       </div>
 
       {/* CTA Section */}
@@ -345,4 +434,5 @@ const Tentang = () => {
       </div>
     </div>;
 };
+
 export default Tentang;
