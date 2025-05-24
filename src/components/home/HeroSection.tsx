@@ -26,8 +26,8 @@ const HeroSection = ({
   image = "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop",
   rating = 4.5,
   year = "2023",
-  ctaText = "Explore Services",
-  ctaLink = "/services",
+  ctaText = "Jelajahi Layanan",
+  ctaLink = "/jasa-digital",
   hero,
   generalInfo
 }: HeroSectionProps) => {
@@ -164,9 +164,9 @@ const HeroSection = ({
               </Button>
             </Link>
             
-            <Link to="/about">
+            <Link to="/tentang">
               <Button size="lg" variant="outline" className="rounded-full border-gray-600 text-white hover:bg-sky-500/20 hover:border-sky-500 group">
-                Learn More
+                Selengkapnya
                 <ChevronRight className="ml-1 h-5 w-5 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
