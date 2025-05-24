@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { Star, Play, ChevronRight, ChevronLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { jasaDigitalServices } from '@/data/jasaDigitalData';
+import ServiceSubcategories from '@/components/jasa-digital/ServiceSubcategories';
 import { Link } from 'react-router-dom';
 
 const JasaDigital = () => {
@@ -15,7 +16,7 @@ const JasaDigital = () => {
     rating: 4.9,
     year: "2023",
     category: "Premium",
-    slug: "website-dan-aplikasi"  // Added this for linking
+    slug: "website-dan-aplikasi"
   };
   
   return (
@@ -59,7 +60,7 @@ const JasaDigital = () => {
               
               <div className="flex flex-wrap gap-4">
                 <Button asChild className="filmbox-button">
-                  <Link to="/kontak">
+                  <Link to="/tentang">
                     <Play size={18} className="mr-1" /> Konsultasi Sekarang
                   </Link>
                 </Button>
@@ -96,18 +97,16 @@ const JasaDigital = () => {
                   </div>
                 </div>
                 
-                {/* Play button with link to detail page */}
-                <Link to={`/layanan/${featuredService.slug}`}>
-                  <motion.button 
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                              w-16 h-16 flex items-center justify-center rounded-full 
-                              bg-sky-500/80 text-white hover:bg-sky-600 transition-colors"
-                  >
-                    <Play size={24} className="ml-1" />
-                  </motion.button>
-                </Link>
+                {/* Play button */}
+                <motion.button 
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.95 }}
+                  className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                            w-16 h-16 flex items-center justify-center rounded-full 
+                            bg-sky-500/80 text-white hover:bg-sky-600 transition-colors"
+                >
+                  <Play size={24} className="ml-1" />
+                </motion.button>
               </div>
             </div>
           </div>
@@ -136,7 +135,7 @@ const JasaDigital = () => {
             </div>
           </div>
           
-          {/* Services Grid with FilmBox style */}
+          {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
             {jasaDigitalServices.map((service, index) => (
               <motion.div
@@ -176,13 +175,12 @@ const JasaDigital = () => {
                     
                     <p className="text-gray-400 text-sm line-clamp-2 mb-3">{service.description}</p>
                     
-                    {/* Updated Link to service detail page */}
-                    <Link 
-                      to={`/layanan/${service.slug}`} 
-                      className="text-sm bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded-full inline-flex items-center"
+                    <Button 
+                      size="sm"
+                      className="text-sm bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded-full"
                     >
                       Lihat Detail
-                    </Link>
+                    </Button>
                   </div>
                 </div>
               </motion.div>
@@ -190,6 +188,17 @@ const JasaDigital = () => {
           </div>
         </div>
       </section>
+
+      {/* Service Details Sections - Display subcategories for each service */}
+      {jasaDigitalServices.map((service, index) => (
+        service.subcategories && (
+          <ServiceSubcategories
+            key={`subcategories-${index}`}
+            subcategories={service.subcategories}
+            serviceName={service.title}
+          />
+        )
+      ))}
       
       {/* Benefits Section */}
       <section className="py-16 bg-black/80">
@@ -244,7 +253,7 @@ const JasaDigital = () => {
           
           <div className="mt-12 flex justify-center">
             <Button asChild className="filmbox-button">
-              <Link to="/kontak">
+              <Link to="/tentang">
                 Hubungi Kami Sekarang
               </Link>
             </Button>
@@ -269,7 +278,7 @@ const JasaDigital = () => {
               
               <div className="flex flex-wrap gap-4">
                 <Button asChild className="filmbox-button">
-                  <Link to="/kontak">
+                  <Link to="/tentang">
                     <Play size={18} className="mr-2" /> Mulai Konsultasi
                   </Link>
                 </Button>
