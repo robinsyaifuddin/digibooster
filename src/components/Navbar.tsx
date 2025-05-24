@@ -241,7 +241,7 @@ const Navbar = () => {
               }} whileTap={{
                 scale: 0.95
               }}>
-                    <Button className="bg-primary hover:bg-primary/90 text-white shadow-lg shadow-primary/20 hover:shadow-primary/30">
+                    <Button className="bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20 hover:shadow-primary/30 text-gray-950">
                       {t('daftar')}
                     </Button>
                   </motion.div>
