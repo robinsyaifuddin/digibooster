@@ -7,8 +7,9 @@ import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
 import { Label } from '@/components/ui/label';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
-import { Send, ArrowLeft, CreditCard, Smartphone, MessageCircle, Download, QrCode, Copy } from 'lucide-react';
+import { Send, ArrowLeft, CreditCard, Smartphone, MessageCircle, Download, QrCode, Copy, FileText } from 'lucide-react';
 import { toast } from 'sonner';
+import jsPDF from 'jspdf';
 
 const OrderForm = () => {
   const location = useLocation();
@@ -78,6 +79,105 @@ const OrderForm = () => {
     return { amount: 0, formatted: 'Rp 0' };
   };
 
+  const generateInvoiceData = () => {
+    const dpData = calculateDP(priceRange);
+    const currentDate = new Date();
+    
+    return {
+      invoiceNumber,
+      date: currentDate.toLocaleDateString('id-ID'),
+      time: currentDate.toLocaleTimeString('id-ID'),
+      customer: {
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        company: formData.company || '-'
+      },
+      service: {
+        category: serviceTitle,
+        subcategory: subcategoryTitle,
+        priceRange: priceRange,
+        dpAmount: dpData.formatted,
+        dpPercentage: '40%'
+      },
+      payment: {
+        method: selectedPaymentMethod,
+        status: 'Pending'
+      }
+    };
+  };
+
+  const generateInvoicePDF = () => {
+    const invoice = generateInvoiceData();
+    const pdf = new jsPDF();
+    
+    // Header
+    pdf.setFontSize(20);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('INVOICE DIGIBOOSTER', 20, 20);
+    
+    pdf.setFontSize(12);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`No. Invoice: ${invoice.invoiceNumber}`, 20, 35);
+    pdf.text(`Tanggal: ${invoice.date}`, 20, 45);
+    pdf.text(`Jam: ${invoice.time}`, 20, 55);
+    
+    // Customer Info
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('DATA PEMESAN:', 20, 75);
+    
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Nama: ${invoice.customer.name}`, 20, 85);
+    pdf.text(`Email: ${invoice.customer.email}`, 20, 95);
+    pdf.text(`Telepon: ${invoice.customer.phone}`, 20, 105);
+    pdf.text(`Perusahaan: ${invoice.customer.company}`, 20, 115);
+    
+    // Service Info
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('DETAIL LAYANAN:', 20, 135);
+    
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Kategori: ${invoice.service.category}`, 20, 145);
+    pdf.text(`Sub Kategori: ${invoice.service.subcategory}`, 20, 155);
+    pdf.text(`Kisaran Harga: ${invoice.service.priceRange}`, 20, 165);
+    pdf.text(`DP (${invoice.service.dpPercentage}): ${invoice.service.dpAmount}`, 20, 175);
+    
+    // Payment Info
+    pdf.setFontSize(14);
+    pdf.setFont('helvetica', 'bold');
+    pdf.text('METODE PEMBAYARAN:', 20, 195);
+    
+    pdf.setFontSize(11);
+    pdf.setFont('helvetica', 'normal');
+    pdf.text(`Metode: ${invoice.payment.method}`, 20, 205);
+    pdf.text(`Status: ${invoice.payment.status}`, 20, 215);
+    
+    // Message
+    if (formData.message) {
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('PESAN:', 20, 235);
+      
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'normal');
+      const splitMessage = pdf.splitTextToSize(formData.message, 170);
+      pdf.text(splitMessage, 20, 245);
+    }
+    
+    // Footer
+    pdf.setFontSize(10);
+    pdf.setFont('helvetica', 'italic');
+    pdf.text('Terima kasih telah mempercayai DigiBooster!', 20, 280);
+    
+    // Download the PDF
+    pdf.save(`Invoice-${invoice.invoiceNumber}.pdf`);
+    toast.success("Invoice berhasil didownload!");
+  };
+
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -115,34 +215,6 @@ const OrderForm = () => {
         toast.success("QRIS berhasil didownload!");
       }
     }
-  };
-
-  const generateInvoiceData = () => {
-    const dpData = calculateDP(priceRange);
-    const currentDate = new Date();
-    
-    return {
-      invoiceNumber,
-      date: currentDate.toLocaleDateString('id-ID'),
-      time: currentDate.toLocaleTimeString('id-ID'),
-      customer: {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        company: formData.company || '-'
-      },
-      service: {
-        category: serviceTitle,
-        subcategory: subcategoryTitle,
-        priceRange: priceRange,
-        dpAmount: dpData.formatted,
-        dpPercentage: '40%'
-      },
-      payment: {
-        method: selectedPaymentMethod,
-        status: 'Pending'
-      }
-    };
   };
 
   const handlePaymentConfirmation = () => {
@@ -187,11 +259,17 @@ ${formData.message || 'Tidak ada pesan tambahan'}
 *💰 INFORMASI PEMBAYARAN DP:*
 ${selectedPaymentMethod === 'QRIS' ? 
   '• Scan QRIS yang telah diberikan\n• Upload bukti pembayaran' : 
-  '• Transfer ke rekening yang diberikan\n• Upload bukti transfer'
+  selectedPaymentMethod === 'Dana' ?
+  '• Transfer via Dana ke nomor yang diberikan\n• Upload bukti transfer' :
+  '• Transfer ke rekening SeaBank yang diberikan\n• Upload bukti transfer'
 }
 
 ${selectedPaymentMethod === 'Dana' ? 
-  '📱 *DANA ACCOUNT INFO:*\n• Nama: DigiBooster Official\n• No. Dana: 0857-6819-2419\n• Atas Nama: Digital Booster Indonesia' : ''
+  '📱 *DANA ACCOUNT INFO:*\n• Nama: Robin Syaifudin\n• No. Dana: 085768192419\n• Atas Nama: Robin Syaifudin' : ''
+}
+
+${selectedPaymentMethod === 'Transfer Bank' ? 
+  '🏦 *SEABANK ACCOUNT INFO:*\n• Bank: SeaBank\n• No. Rekening: 9011 2236 4979\n• Atas Nama: Robin Syaifuddin' : ''
 }
 
 *📞 Mohon konfirmasi pembayaran dan kirimkan bukti transfer untuk DP sebesar ${invoice.service.dpAmount}*
@@ -350,7 +428,18 @@ Terima kasih telah mempercayai DigiBooster! 🚀
                   <CardContent className="space-y-6">
                     {/* Order Summary */}
                     <div className="bg-sky-500/10 border border-sky-500/30 rounded-lg p-4">
-                      <h3 className="text-lg font-semibold text-white mb-3">Ringkasan Pesanan</h3>
+                      <div className="flex justify-between items-center mb-3">
+                        <h3 className="text-lg font-semibold text-white">Ringkasan Pesanan</h3>
+                        <Button 
+                          onClick={generateInvoicePDF}
+                          size="sm"
+                          variant="outline"
+                          className="border-sky-500 text-sky-400 hover:bg-sky-500/20"
+                        >
+                          <FileText className="mr-2 h-4 w-4" />
+                          Download Invoice
+                        </Button>
+                      </div>
                       <div className="space-y-2 text-sm">
                         <div className="flex justify-between">
                           <span className="text-gray-400">Invoice:</span>
@@ -427,7 +516,7 @@ Terima kasih telah mempercayai DigiBooster! 🚀
                             <CreditCard className="h-6 w-6 text-sky-400" />
                             <div>
                               <div className="text-white font-medium">Transfer Bank</div>
-                              <div className="text-gray-400 text-sm">Transfer ke rekening bank</div>
+                              <div className="text-gray-400 text-sm">Transfer ke rekening SeaBank</div>
                             </div>
                           </div>
                         </div>
@@ -450,9 +539,9 @@ Terima kasih telah mempercayai DigiBooster! 🚀
                         <div className="text-center">
                           <div ref={qrCodeRef} className="bg-white p-4 rounded-lg inline-block mb-4">
                             <img 
-                              src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=00020101021226580012ID.DANA.WWW0118936085768192419030303UME51440014ID.CO.QRIS.WWW0215ID10200001084560303UME5204542653033605406${calculateDP(priceRange).amount}5802ID5909DigiBooster6009Surakarta61055745062060107081234563041234"
+                              src="/lovable-uploads/c39635eb-e8e7-4de8-bfb0-72d15c55cb92.png"
                               alt="QRIS Code"
-                              className="w-48 h-48"
+                              className="w-64 h-auto"
                             />
                           </div>
                           <p className="text-gray-400 text-sm mb-4">
@@ -479,11 +568,11 @@ Terima kasih telah mempercayai DigiBooster! 🚀
                               <div className="flex justify-between items-center">
                                 <span className="text-gray-400">Nama:</span>
                                 <div className="flex items-center">
-                                  <span className="text-white mr-2">DigiBooster Official</span>
+                                  <span className="text-white mr-2">Robin Syaifudin</span>
                                   <Button 
                                     size="sm" 
                                     variant="ghost" 
-                                    onClick={() => copyToClipboard('DigiBooster Official', 'Nama')}
+                                    onClick={() => copyToClipboard('Robin Syaifudin', 'Nama')}
                                     className="h-6 w-6 p-0"
                                   >
                                     <Copy className="h-3 w-3" />
@@ -493,7 +582,7 @@ Terima kasih telah mempercayai DigiBooster! 🚀
                               <div className="flex justify-between items-center">
                                 <span className="text-gray-400">No. Dana:</span>
                                 <div className="flex items-center">
-                                  <span className="text-white mr-2 font-mono">0857-6819-2419</span>
+                                  <span className="text-white mr-2 font-mono">085768192419</span>
                                   <Button 
                                     size="sm" 
                                     variant="ghost" 
@@ -506,7 +595,7 @@ Terima kasih telah mempercayai DigiBooster! 🚀
                               </div>
                               <div className="flex justify-between items-center">
                                 <span className="text-gray-400">Atas Nama:</span>
-                                <span className="text-white">Digital Booster Indonesia</span>
+                                <span className="text-white">Robin Syaifudin</span>
                               </div>
                             </div>
                           </div>
@@ -519,20 +608,20 @@ Terima kasih telah mempercayai DigiBooster! 🚀
                       {selectedPaymentMethod === 'Transfer Bank' && (
                         <div className="space-y-4">
                           <div className="bg-sky-500/10 border border-sky-500/30 rounded-lg p-4">
-                            <h4 className="text-white font-semibold mb-3">Informasi Rekening Bank</h4>
+                            <h4 className="text-white font-semibold mb-3">Informasi Rekening SeaBank</h4>
                             <div className="space-y-2">
                               <div className="flex justify-between items-center">
                                 <span className="text-gray-400">Bank:</span>
-                                <span className="text-white">BCA</span>
+                                <span className="text-white">SeaBank</span>
                               </div>
                               <div className="flex justify-between items-center">
                                 <span className="text-gray-400">No. Rekening:</span>
                                 <div className="flex items-center">
-                                  <span className="text-white mr-2 font-mono">1234567890</span>
+                                  <span className="text-white mr-2 font-mono">9011 2236 4979</span>
                                   <Button 
                                     size="sm" 
                                     variant="ghost" 
-                                    onClick={() => copyToClipboard('1234567890', 'Nomor Rekening')}
+                                    onClick={() => copyToClipboard('9011 2236 4979', 'Nomor Rekening')}
                                     className="h-6 w-6 p-0"
                                   >
                                     <Copy className="h-3 w-3" />
@@ -541,12 +630,12 @@ Terima kasih telah mempercayai DigiBooster! 🚀
                               </div>
                               <div className="flex justify-between items-center">
                                 <span className="text-gray-400">Atas Nama:</span>
-                                <span className="text-white">Digital Booster Indonesia</span>
+                                <span className="text-white">Robin Syaifuddin</span>
                               </div>
                             </div>
                           </div>
                           <p className="text-gray-400 text-sm text-center">
-                            Transfer sejumlah {calculateDP(priceRange).formatted} ke rekening di atas
+                            Transfer sejumlah {calculateDP(priceRange).formatted} ke rekening SeaBank di atas
                           </p>
                         </div>
                       )}
