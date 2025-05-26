@@ -134,149 +134,169 @@ const OrderForm = () => {
     };
   };
 
-  const generateInvoicePDF = () => {
-    const invoice = generateInvoiceData();
-    const pdf = new jsPDF();
-    
-    // Set colors
-    const primaryColor = [14, 165, 233]; // Sky blue
-    const orangeColor = [249, 115, 22]; // Orange
-    const darkColor = [31, 41, 55]; // Dark gray
-    
-    // Header with curved design inspiration
-    pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    pdf.rect(0, 0, 210, 40, 'F');
-    
-    // Company logo area (text-based since we don't upload images)
-    pdf.setFontSize(24);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(255, 255, 255);
-    pdf.text('DIGIBOOSTER', 20, 25);
-    
-    pdf.setFontSize(10);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text('Digital Solutions & Marketing Services', 20, 32);
-    
-    // Invoice title and info box
-    pdf.setFillColor(orangeColor[0], orangeColor[1], orangeColor[2]);
-    pdf.rect(140, 50, 60, 30, 'F');
-    
-    pdf.setFontSize(18);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(255, 255, 255);
-    pdf.text('INVOICE', 155, 62);
-    
-    pdf.setFontSize(9);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(`No: ${invoice.invoiceNumber}`, 142, 70);
-    pdf.text(`Tanggal: ${invoice.date}`, 142, 75);
-    pdf.text(`Jam: ${invoice.time}`, 142, 80);
-    
-    // Customer Info Section
-    pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
-    pdf.setFontSize(12);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text('Tagihan Kepada:', 20, 95);
-    
-    pdf.setFontSize(10);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(invoice.customer.name, 20, 105);
-    if (invoice.customer.company !== '-') {
-      pdf.text(invoice.customer.company, 20, 112);
-    }
-    pdf.text(`Email: ${invoice.customer.email}`, 20, 119);
-    pdf.text(`Telp: ${invoice.customer.phone}`, 20, 126);
-    
-    // Service Details Table Header
-    pdf.setFillColor(orangeColor[0], orangeColor[1], orangeColor[2]);
-    pdf.rect(20, 140, 170, 12, 'F');
-    
-    pdf.setFontSize(10);
-    pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(255, 255, 255);
-    pdf.text('Deskripsi', 25, 148);
-    pdf.text('Kategori', 80, 148);
-    pdf.text('Harga', 130, 148);
-    pdf.text('Jumlah', 160, 148);
-    
-    // Service Details Row
-    pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(invoice.service.subcategory, 25, 160);
-    pdf.text(invoice.service.category, 80, 160);
-    pdf.text(invoice.service.price, 130, 160);
-    pdf.text('1', 165, 160);
-    
-    // Add line separator
-    pdf.setDrawColor(200, 200, 200);
-    pdf.line(20, 165, 190, 165);
-    
-    // Calculation Section
-    const subtotalY = 175;
-    pdf.setFont('helvetica', 'normal');
-    pdf.text('Subtotal', 130, subtotalY);
-    pdf.text(invoice.service.price, 160, subtotalY);
-    
-    pdf.text(`DP (${invoice.service.dpPercentage})`, 130, subtotalY + 10);
-    pdf.text(invoice.service.dpAmount, 160, subtotalY + 10);
-    
-    // Total section with orange background
-    pdf.setFillColor(orangeColor[0], orangeColor[1], orangeColor[2]);
-    pdf.rect(125, subtotalY + 15, 65, 12, 'F');
-    
-    pdf.setFont('helvetica', 'bold');
-    pdf.setTextColor(255, 255, 255);
-    pdf.text('Total Pembayaran', 130, subtotalY + 23);
-    pdf.text(invoice.service.dpAmount, 160, subtotalY + 23);
-    
-    // Payment Information
-    pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
-    pdf.setFontSize(12);
-    pdf.setFont('helvetica', 'bold');
-    pdf.text('Metode Pembayaran:', 20, subtotalY + 35);
-    
-    pdf.setFontSize(10);
-    pdf.setFont('helvetica', 'normal');
-    pdf.text(`Metode: ${invoice.payment.method}`, 20, subtotalY + 45);
-    pdf.text(`Status: ${invoice.payment.status}`, 20, subtotalY + 52);
-    
-    // Payment Details based on method
-    if (selectedPaymentMethod === 'Dana') {
-      pdf.text('Detail Pembayaran:', 20, subtotalY + 62);
-      pdf.text('Nama: Robin Syaifudin', 20, subtotalY + 69);
-      pdf.text('No. Dana: 085768192419', 20, subtotalY + 76);
-    } else if (selectedPaymentMethod === 'Transfer Bank') {
-      pdf.text('Detail Pembayaran:', 20, subtotalY + 62);
-      pdf.text('Bank: SeaBank', 20, subtotalY + 69);
-      pdf.text('No. Rekening: 9011 2236 4979', 20, subtotalY + 76);
-      pdf.text('Atas Nama: Robin Syaifuddin', 20, subtotalY + 83);
-    }
-    
-    // Message section if exists
-    if (formData.message) {
-      pdf.setFontSize(12);
+  const generateInvoicePDF = (): Promise<Blob> => {
+    return new Promise((resolve) => {
+      const invoice = generateInvoiceData();
+      const pdf = new jsPDF();
+      
+      // Set colors
+      const primaryColor = [14, 165, 233]; // Sky blue
+      const orangeColor = [249, 115, 22]; // Orange
+      const darkColor = [31, 41, 55]; // Dark gray
+      const lightGray = [245, 245, 245]; // Light gray
+      
+      // Header with curved design inspiration
+      pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      pdf.rect(0, 0, 210, 45, 'F');
+      
+      // Company logo area (text-based since we don't upload images)
+      pdf.setFontSize(26);
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Pesan:', 20, 240);
+      pdf.setTextColor(255, 255, 255);
+      pdf.text('DIGIBOOSTER', 20, 25);
+      
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text('Platform Layanan Jasa Digital Terbaik', 20, 35);
+      
+      // Invoice title and info box with better spacing
+      pdf.setFillColor(orangeColor[0], orangeColor[1], orangeColor[2]);
+      pdf.rect(135, 55, 70, 35, 'F');
+      
+      pdf.setFontSize(20);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setTextColor(255, 255, 255);
+      pdf.text('INVOICE', 155, 68);
+      
+      pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`No: ${invoice.invoiceNumber}`, 138, 77);
+      pdf.text(`Tanggal: ${invoice.date}`, 138, 83);
+      pdf.text(`Jam: ${invoice.time}`, 138, 89);
+      
+      // Customer Info Section with better spacing
+      pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Tagihan Kepada:', 20, 105);
+      
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(invoice.customer.name, 20, 118);
+      if (invoice.customer.company !== '-') {
+        pdf.text(invoice.customer.company, 20, 126);
+      }
+      pdf.text(`Email: ${invoice.customer.email}`, 20, 134);
+      pdf.text(`Telp: ${invoice.customer.phone}`, 20, 142);
+      
+      // Service Details Table Header with improved design
+      pdf.setFillColor(orangeColor[0], orangeColor[1], orangeColor[2]);
+      pdf.rect(20, 155, 170, 15, 'F');
+      
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setTextColor(255, 255, 255);
+      pdf.text('Deskripsi', 25, 165);
+      pdf.text('Kategori', 85, 165);
+      pdf.text('Harga', 135, 165);
+      pdf.text('Qty', 170, 165);
+      
+      // Service Details Row with alternating background
+      pdf.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
+      pdf.rect(20, 170, 170, 12, 'F');
+      
+      pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(10);
+      pdf.text(invoice.service.subcategory, 25, 178);
+      pdf.text(invoice.service.category, 85, 178);
+      pdf.text(invoice.service.price, 135, 178);
+      pdf.text('1', 175, 178);
+      
+      // Add line separator
+      pdf.setDrawColor(200, 200, 200);
+      pdf.line(20, 185, 190, 185);
+      
+      // Calculation Section with improved spacing
+      const calculationY = 200;
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(11);
+      
+      // Subtotal
+      pdf.text('Subtotal', 135, calculationY);
+      pdf.text(invoice.service.price, 165, calculationY);
+      
+      // DP calculation
+      pdf.text(`DP (${invoice.service.dpPercentage})`, 135, calculationY + 12);
+      pdf.text(invoice.service.dpAmount, 165, calculationY + 12);
+      
+      // Total section with better spacing and design
+      pdf.setFillColor(orangeColor[0], orangeColor[1], orangeColor[2]);
+      pdf.rect(125, calculationY + 20, 70, 18, 'F');
+      
+      pdf.setFont('helvetica', 'bold');
+      pdf.setTextColor(255, 255, 255);
+      pdf.setFontSize(12);
+      pdf.text('Total Pembayaran', 130, calculationY + 30);
+      pdf.text(invoice.service.dpAmount, 165, calculationY + 35);
+      
+      // Payment Information with better layout
+      pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+      pdf.setFontSize(14);
+      pdf.setFont('helvetica', 'bold');
+      pdf.text('Metode Pembayaran:', 20, calculationY + 55);
+      
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'normal');
+      pdf.text(`Metode: ${invoice.payment.method}`, 20, calculationY + 68);
+      pdf.text(`Status: ${invoice.payment.status}`, 20, calculationY + 76);
+      
+      // Payment Details based on method with better formatting
+      if (selectedPaymentMethod === 'Dana') {
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Detail Pembayaran:', 20, calculationY + 88);
+        pdf.setFont('helvetica', 'normal');
+        pdf.text('Nama: Robin Syaifudin', 20, calculationY + 98);
+        pdf.text('No. Dana: 085768192419', 20, calculationY + 106);
+      } else if (selectedPaymentMethod === 'Transfer Bank') {
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Detail Pembayaran:', 20, calculationY + 88);
+        pdf.setFont('helvetica', 'normal');
+        pdf.text('Bank: SeaBank', 20, calculationY + 98);
+        pdf.text('No. Rekening: 9011 2236 4979', 20, calculationY + 106);
+        pdf.text('Atas Nama: Robin Syaifuddin', 20, calculationY + 114);
+      }
+      
+      // Message section if exists
+      if (formData.message) {
+        pdf.setFontSize(12);
+        pdf.setFont('helvetica', 'bold');
+        pdf.text('Pesan:', 20, 250);
+        
+        pdf.setFontSize(10);
+        pdf.setFont('helvetica', 'normal');
+        const splitMessage = pdf.splitTextToSize(formData.message, 170);
+        pdf.text(splitMessage, 20, 258);
+      }
+      
+      // Footer with updated information and better spacing
+      pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      pdf.rect(0, 275, 210, 25, 'F');
+      
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setTextColor(255, 255, 255);
+      pdf.text('Terima kasih telah mempercayai DigiBooster!', 20, 285);
       
       pdf.setFontSize(9);
       pdf.setFont('helvetica', 'normal');
-      const splitMessage = pdf.splitTextToSize(formData.message, 170);
-      pdf.text(splitMessage, 20, 248);
-    }
-    
-    // Footer
-    pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-    pdf.rect(0, 270, 210, 30, 'F');
-    
-    pdf.setFontSize(10);
-    pdf.setFont('helvetica', 'normal');
-    pdf.setTextColor(255, 255, 255);
-    pdf.text('Terima kasih telah mempercayai DigiBooster!', 20, 285);
-    pdf.text('Website: digibooster.com | Email: info@digibooster.com', 20, 292);
-    
-    // Download the PDF
-    pdf.save(`Invoice-DigiBooster-${invoice.invoiceNumber}.pdf`);
-    toast.success("Invoice berhasil didownload!");
+      pdf.text('Website: digibooster.web.id | Instagram: official.digibooster', 20, 292);
+      pdf.text('Telp: +62 857-6819-2419 | Email: hello.digibooster@gmail.com', 20, 297);
+      
+      // Convert to blob and resolve
+      const blob = pdf.output('blob');
+      resolve(blob);
+    });
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -318,16 +338,30 @@ const OrderForm = () => {
     }
   };
 
-  const handlePaymentConfirmation = () => {
+  const handlePaymentConfirmation = async () => {
     if (!selectedPaymentMethod) {
       toast.error("Mohon pilih metode pembayaran");
       return;
     }
 
-    const invoice = generateInvoiceData();
-    
-    // Format WhatsApp message with invoice
-    const message = `
+    try {
+      // Generate and download PDF
+      const pdfBlob = await generateInvoicePDF();
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = `Invoice-DigiBooster-${invoiceNumber}.pdf`;
+      link.click();
+      
+      // Clean up the URL
+      URL.revokeObjectURL(pdfUrl);
+      
+      toast.success("Invoice berhasil didownload!");
+
+      const invoice = generateInvoiceData();
+      
+      // Format WhatsApp message with invoice
+      const message = `
 *🧾 KONFIRMASI PEMBAYARAN DIGIBOOSTER*
 =============================================
 
@@ -375,14 +409,41 @@ ${selectedPaymentMethod === 'Transfer Bank' ?
 
 *📞 Mohon konfirmasi pembayaran dan kirimkan bukti transfer untuk DP sebesar ${invoice.service.dpAmount}*
 
+*📎 Invoice telah didownload secara otomatis. Silakan lampirkan file invoice di chat ini.*
+
 Terima kasih telah mempercayai DigiBooster! 🚀
-    `;
-    
-    const encodedMessage = encodeURIComponent(message);
-    const whatsappUrl = `https://wa.me/6285768192419?text=${encodedMessage}`;
-    
-    window.open(whatsappUrl, '_blank');
-    toast.success("Invoice telah dibuat! Anda akan diarahkan ke WhatsApp untuk konfirmasi pembayaran.");
+      `;
+      
+      const encodedMessage = encodeURIComponent(message);
+      const whatsappUrl = `https://wa.me/6285768192419?text=${encodedMessage}`;
+      
+      // Small delay to ensure download completes before opening WhatsApp
+      setTimeout(() => {
+        window.open(whatsappUrl, '_blank');
+        toast.success("Invoice telah didownload! Silakan lampirkan file di WhatsApp yang akan terbuka.");
+      }, 1000);
+      
+    } catch (error) {
+      console.error('Error generating PDF:', error);
+      toast.error("Terjadi kesalahan saat membuat invoice. Silakan coba lagi.");
+    }
+  };
+
+  const downloadInvoicePDF = async () => {
+    try {
+      const pdfBlob = await generateInvoicePDF();
+      const pdfUrl = URL.createObjectURL(pdfBlob);
+      const link = document.createElement('a');
+      link.href = pdfUrl;
+      link.download = `Invoice-DigiBooster-${invoiceNumber}.pdf`;
+      link.click();
+      
+      URL.revokeObjectURL(pdfUrl);
+      toast.success("Invoice berhasil didownload!");
+    } catch (error) {
+      console.error('Error downloading PDF:', error);
+      toast.error("Terjadi kesalahan saat mendownload invoice.");
+    }
   };
 
   return (
@@ -531,7 +592,7 @@ Terima kasih telah mempercayai DigiBooster! 🚀
                     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-3 gap-2">
                       <h3 className="text-base sm:text-lg font-semibold text-white">Ringkasan Pesanan</h3>
                       <Button 
-                        onClick={generateInvoicePDF}
+                        onClick={downloadInvoicePDF}
                         size="sm"
                         variant="outline"
                         className="border-sky-500 text-sky-400 hover:bg-sky-500/20 text-xs"
