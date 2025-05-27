@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { MessageCircle, X, Send, Bot } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -19,6 +18,7 @@ const ChatBot = () => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputMessage, setInputMessage] = useState('');
   const [isTyping, setIsTyping] = useState(false);
+  const [conversationContext, setConversationContext] = useState<string[]>([]);
 
   const sampleQuestions = [
     "Apa saja layanan yang ditawarkan DigiBooster?",
@@ -31,37 +31,63 @@ const ChatBot = () => {
     "Apa keunggulan DigiBooster dibanding yang lain?"
   ];
 
-  const botResponses: { [key: string]: string } = {
-    'layanan': 'DigiBooster menyediakan 4 kategori layanan utama:\n\n🌐 **Website & Aplikasi**\n• Landing Page\n• Company Profile\n• E-commerce\n• Web Apps\n• Mobile Apps\n\n📱 **Digital Marketing**\n• Social Media Management\n• Content Marketing\n• SEO\n• Google Ads\n• Facebook Ads\n\n🎨 **Branding & Design**\n• Logo Design\n• Brand Identity\n• UI/UX Design\n• Print Design\n• Packaging Design\n\n🎬 **Video & Animation**\n• Video Promosi\n• Motion Graphics\n• Animasi 2D\n• Video Editing\n• Live Streaming',
-    
-    'harga': 'Berikut range harga layanan kami:\n\n💻 **Website & Aplikasi:** Rp 3.5M - 35M\n📱 **Digital Marketing:** Rp 2.1M - 4.2M\n🎨 **Branding & Design:** Rp 1.4M - 4.2M\n🎬 **Video & Animation:** Rp 1.4M - 5.6M\n\n✨ Semua harga sudah termasuk konsultasi gratis dan revisi. Untuk detail lebih lanjut, silakan hubungi tim kami!',
-    
-    'pemesanan': 'Cara memesan layanan DigiBooster sangat mudah:\n\n1️⃣ Pilih layanan yang diinginkan di halaman Jasa Digital\n2️⃣ Isi form pemesanan dengan lengkap\n3️⃣ Bayar DP 40% dari total harga\n4️⃣ Tim kami akan menghubungi Anda untuk konsultasi\n5️⃣ Proses pengerjaan dimulai\n\n📞 Anda juga bisa langsung konsultasi via WhatsApp di +62 857-6819-2419',
-    
-    'pembayaran': 'Sistem pembayaran di DigiBooster:\n\n💳 **Metode:** Transfer Bank (SeaBank), Dana, QRIS\n💰 **DP:** 40% dari total harga\n💰 **Pelunasan:** 60% saat project selesai\n📋 **Bukti:** Invoice otomatis dan bukti transfer\n\n🔒 Semua transaksi aman dan terpercaya!',
-    
-    'kontak': 'Hubungi DigiBooster:\n\n📞 **Telepon:** +62 857-6819-2419\n📧 **Email:** hello.digibooster@gmail.com\n🌐 **Website:** digibooster.web.id\n📱 **Instagram:** @official.digibooster\n\n⏰ Tim customer service kami siap membantu setiap saat!',
-    
-    'konsultasi': 'Tentu saja! 😊 Konsultasi gratis adalah salah satu keunggulan DigiBooster.\n\n✅ **Yang bisa dikonsultasikan:**\n• Strategi digital marketing\n• Desain website yang cocok\n• Pilihan paket layanan\n• Timeline pengerjaan\n• Budget yang sesuai\n\n📞 **Cara konsultasi:**\n• WhatsApp: +62 857-6819-2419\n• Email: hello.digibooster@gmail.com\n• Atau chat langsung dengan saya di sini!\n\nJangan ragu untuk bertanya apapun ya! 🚀',
-
-    'keunggulan': 'Keunggulan DigiBooster yang membedakan kami:\n\n⭐ **Pengalaman & Kredibilitas**\n• Tim berpengalaman 5+ tahun\n• Sudah menangani 500+ project\n• Klien dari berbagai industri\n\n🎯 **Layanan Komprehensif**\n• One-stop digital solution\n• Terintegrasi semua kebutuhan digital\n• Konsultasi gratis tanpa batas\n\n💎 **Kualitas Premium**\n• Desain modern & profesional\n• Teknologi terkini\n• After-sales service terjamin\n\n⚡ **Pelayanan Terbaik**\n• Respon cepat 24/7\n• Revisi unlimited\n• Garansi kepuasan\n\nMakanya banyak klien yang balik lagi ke kami! 😎',
-
-    'curhat': 'Wah, saya senang kalau kamu mau curhat! 😊\n\nSebagai Digi BOT, saya siap mendengarkan keluh kesah kamu. Meskipun saya AI, tapi saya didesain untuk bisa memahami perasaan manusia kok.\n\n💭 **Mau curhat tentang apa?**\n• Masalah pekerjaan?\n• Kebingungan memilih layanan digital?\n• Stress karena project?\n• Atau hal lain yang mengganggु pikiran?\n\nSaya akan berusaha memberikan perspektif yang membantu. Cerita aja, saya dengarkan dengan baik! 🤗',
-
-    'motivasi': 'Semangat! 💪 Setiap masalah pasti ada solusinya kok!\n\n🌟 **Ingat ya:**\n• Setiap tantangan adalah kesempatan untuk berkembang\n• Kamu sudah sampai sejauh ini, artinya kamu kuat!\n• Jangan takut gagal, karena kegagalan adalah guru terbaik\n• Satu langkah kecil hari ini, akan jadi pencapaian besar besok\n\n✨ **Di DigiBooster, kami percaya:**\n"Tidak ada mimpi yang terlalu besar, yang ada hanya usaha yang terlalu kecil"\n\nApapun project digital yang kamu impikan, kami siap bantu wujudkan! Yuk konsultasi gratis dulu! 🚀',
-
-    'teknologi': 'Wah, senang banget ngobrol soal teknologi! 🤓\n\n💻 **Teknologi yang kami kuasai:**\n• **Frontend:** React, Vue.js, Angular, Next.js\n• **Backend:** Node.js, Python, PHP, Laravel\n• **Mobile:** React Native, Flutter, Kotlin\n• **Database:** MySQL, PostgreSQL, MongoDB\n• **Cloud:** AWS, Google Cloud, Azure\n• **AI/ML:** TensorFlow, OpenAI API\n\n🔥 **Trend teknologi 2024:**\n• AI integration di semua platform\n• Progressive Web Apps (PWA)\n• Serverless architecture\n• Voice user interface\n\nAda teknologi spesifik yang mau kamu bahas? Atau mau tau implementasinya untuk bisnis kamu? 🚀',
-
-    'default': 'Halo! 😊 Terima kasih sudah chat dengan saya!\n\nSaya Digi BOT, asisten virtual DigiBooster Indonesia yang siap membantu setiap saat! 🤖✨\n\nSaya bisa diajak ngobrol tentang apapun kok:\n• Layanan DigiBooster\n• Konsultasi digital\n• Curhat & motivasi\n• Teknologi terkini\n• Atau hal random lainnya!\n\nAda yang bisa saya bantu hari ini? 🚀'
+  // Enhanced keyword patterns for better matching
+  const keywordPatterns = {
+    layanan: ['layanan', 'service', 'jasa', 'melayani', 'menyediakan', 'offering', 'kategori layanan', 'jenis layanan', 'apa saja', 'macam layanan'],
+    harga: ['harga', 'price', 'biaya', 'tarif', 'cost', 'berapa', 'mahal', 'murah', 'budget', 'pricing', 'estimasi'],
+    website: ['website', 'web', 'landing page', 'company profile', 'e-commerce', 'web apps', 'situs'],
+    mobile: ['mobile', 'aplikasi', 'apps', 'android', 'ios', 'smartphone'],
+    marketing: ['marketing', 'digital marketing', 'seo', 'google ads', 'facebook ads', 'social media', 'promosi'],
+    design: ['design', 'desain', 'logo', 'branding', 'ui/ux', 'visual'],
+    video: ['video', 'animasi', 'motion graphics', 'editing'],
+    pemesanan: ['pesan', 'order', 'beli', 'cara', 'booking', 'pemesanan', 'memesan'],
+    pembayaran: ['bayar', 'payment', 'pembayaran', 'dp', 'transfer', 'metode bayar'],
+    kontak: ['kontak', 'hubungi', 'telepon', 'whatsapp', 'email', 'contact'],
+    konsultasi: ['konsultasi', 'gratis', 'tanya', 'discuss', 'consultation'],
+    keunggulan: ['keunggulan', 'kelebihan', 'bagus', 'terbaik', 'unggul', 'advantage'],
+    waktu: ['lama', 'durasi', 'timeline', 'berapa lama', 'estimasi waktu', 'jadwal'],
+    paket: ['paket', 'bundle', 'bundling', 'package', 'combo'],
+    curhat: ['curhat', 'cerita', 'masalah', 'bingung', 'stress', 'galau'],
+    motivasi: ['semangat', 'motivasi', 'down', 'sedih', 'lelah', 'capek'],
+    teknologi: ['teknologi', 'programming', 'coding', 'developer', 'tech', 'IT'],
+    sapaan: ['halo', 'hai', 'hello', 'hi', 'selamat', 'good'],
+    terima_kasih: ['terima kasih', 'thanks', 'makasih', 'thank you'],
+    pamit: ['selesai', 'cukup', 'bye', 'sampai jumpa', 'dadah']
   };
 
-  const followUpQuestions = [
-    "Apakah ada hal lain yang ingin ditanyakan?",
-    "Ada pertanyaan lain tentang layanan kami?", 
-    "Mau konsultasi lebih detail tentang project kamu?",
-    "Butuh info lebih lanjut tentang yang lain?",
-    "Masih ada yang mau didiskusikan?"
-  ];
+  const detailedResponses = {
+    layanan_website: '🌐 **Layanan Website & Aplikasi DigiBooster:**\n\n• **Landing Page** - Halaman promosi produk/jasa (Rp 3.5M - 7M)\n• **Company Profile** - Website profil perusahaan (Rp 5M - 12M)\n• **E-commerce** - Toko online lengkap (Rp 15M - 35M)\n• **Web Applications** - Aplikasi berbasis web (Rp 20M - 50M)\n• **Mobile Apps** - Aplikasi Android/iOS (Rp 25M - 60M)\n\n✨ Semua sudah responsive, SEO-friendly, dan include hosting 1 tahun!',
+    
+    layanan_marketing: '📱 **Layanan Digital Marketing DigiBooster:**\n\n• **Social Media Management** - Kelola akun sosmed (Rp 2.1M/bulan)\n• **Content Marketing** - Konten kreatif & copywriting (Rp 2.5M/bulan)\n• **SEO Optimization** - Optimasi mesin pencari (Rp 3M/bulan)\n• **Google Ads** - Iklan Google berbayar (Rp 3.5M + ad spend)\n• **Facebook/Instagram Ads** - Iklan sosial media (Rp 3M + ad spend)\n\n📊 Include laporan analytics dan konsultasi strategi bulanan!',
+    
+    layanan_design: '🎨 **Layanan Branding & Design DigiBooster:**\n\n• **Logo Design** - Desain logo profesional (Rp 1.4M - 3M)\n• **Brand Identity** - Panduan brand lengkap (Rp 3M - 7M)\n• **UI/UX Design** - Desain antarmuka aplikasi (Rp 5M - 15M)\n• **Print Design** - Brosur, banner, kartu nama (Rp 500K - 2M)\n• **Packaging Design** - Desain kemasan produk (Rp 2M - 5M)\n\n🎯 Semua desain include 3x revisi dan file source!',
+    
+    layanan_video: '🎬 **Layanan Video & Animation DigiBooster:**\n\n• **Video Promosi** - Video marketing produk (Rp 2M - 8M)\n• **Motion Graphics** - Animasi grafis bergerak (Rp 3M - 10M)\n• **Animasi 2D** - Karakter & explainer video (Rp 5M - 15M)\n• **Video Editing** - Edit video existing (Rp 500K - 3M)\n• **Live Streaming Setup** - Setup streaming profesional (Rp 2M - 5M)\n\n🎥 Include scriptwriting dan background music!',
+
+    harga_detail: '💰 **Detail Harga Layanan DigiBooster:**\n\n🌐 **Website & Aplikasi:**\n• Landing Page: Rp 3.5M - 7M\n• Company Profile: Rp 5M - 12M\n• E-commerce: Rp 15M - 35M\n• Mobile Apps: Rp 25M - 60M\n\n📱 **Digital Marketing:**\n• Social Media: Rp 2.1M/bulan\n• SEO: Rp 3M/bulan\n• Google Ads: Rp 3.5M + budget iklan\n\n🎨 **Design & Branding:**\n• Logo: Rp 1.4M - 3M\n• Brand Identity: Rp 3M - 7M\n• UI/UX: Rp 5M - 15M\n\n💎 **Semua harga include konsultasi gratis & garansi!**',
+
+    pemesanan_detail: '📋 **Cara Memesan Layanan DigiBooster:**\n\n**1️⃣ Pilih Layanan**\n• Kunjungi halaman Jasa Digital\n• Pilih kategori yang diinginkan\n• Tentukan paket yang sesuai\n\n**2️⃣ Konsultasi Gratis**\n• WhatsApp: +62 857-6819-2419\n• Diskusi kebutuhan & budget\n• Dapatkan proposal detail\n\n**3️⃣ Pembayaran DP**\n• Transfer DP 40% ke rekening\n• Kirim bukti transfer\n• Terima invoice resmi\n\n**4️⃣ Pengerjaan**\n• Tim mulai mengerjakan project\n• Update progress berkala\n• Revisi sesuai feedback\n\n**5️⃣ Selesai & Pelunasan**\n• Project selesai 100%\n• Bayar sisa 60%\n• Terima file final + dokumentasi',
+
+    waktu_pengerjaan: '⏰ **Estimasi Waktu Pengerjaan DigiBooster:**\n\n🌐 **Website & Aplikasi:**\n• Landing Page: 7-14 hari\n• Company Profile: 14-21 hari\n• E-commerce: 30-45 hari\n• Web Apps: 45-90 hari\n• Mobile Apps: 60-120 hari\n\n📱 **Digital Marketing:**\n• Setup awal: 3-7 hari\n• Konten bulanan: ongoing\n• Campaign ads: 1-3 hari setup\n\n🎨 **Design:**\n• Logo: 3-7 hari\n• Brand Identity: 7-14 hari\n• UI/UX: 14-30 hari\n\n🎬 **Video:**\n• Video promosi: 7-21 hari\n• Motion graphics: 14-30 hari\n\n⚡ **Timeline bisa dipercepat dengan tambahan biaya rush!**'
+  };
+
+  const casualResponses = {
+    curhat: [
+      'Wah, saya senang kamu mau curhat sama saya! 🤗 Sebagai Digi BOT, saya siap mendengarkan cerita kamu.\n\nApa yang lagi menggangu pikiran? Masalah pekerjaan, project, atau hal lain? Cerita aja, saya akan berusaha kasih perspektif yang membantu! 💭',
+      
+      'Ayo cerita! 😊 Meskipun saya AI, tapi saya didesain untuk bisa memahami perasaan manusia kok.\n\nApapun yang lagi kamu rasain, sharing aja disini. Sometimes we just need someone to listen, kan? 🤲'
+    ],
+    
+    motivasi: [
+      '💪 Hey, semangat ya! Ingat, setiap masalah pasti ada solusinya!\n\n🌟 **Yang perlu diingat:**\n• Kamu udah sampai sejauh ini, artinya kamu kuat!\n• Tantangan = kesempatan berkembang\n• Kegagalan = guru terbaik\n• Small steps today = big achievements tomorrow\n\n✨ Di DigiBooster, kami percaya: "Tidak ada mimpi yang terlalu besar, yang ada hanya usaha yang terlalu kecil"\n\nApa yang bisa saya bantu untuk wujudkan impian digital kamu? 🚀',
+      
+      '🔥 Jangan give up! Setiap orang sukses pasti pernah merasakan fase down seperti ini.\n\n💎 **Remember:**\n• Progress > Perfection\n• Consistency > Intensity\n• Growth > Comfort Zone\n\nMau curhat lebih dalam tentang apa yang bikin stress? Atau butuh diskusi strategi untuk project yang lagi stuck? 💪'
+    ],
+    
+    teknologi: [
+      'Wah, tech enthusiast nih! 🤓 Senang banget ngobrol soal teknologi!\n\n💻 **Tech stack yang kami kuasai:**\n• Frontend: React, Vue, Angular, Next.js\n• Backend: Node.js, Python, PHP, Laravel\n• Mobile: React Native, Flutter, Kotlin\n• Database: MySQL, PostgreSQL, MongoDB\n• Cloud: AWS, Google Cloud, Azure\n• AI/ML: TensorFlow, OpenAI API\n\n🔥 **Trend 2024 yang hot:**\n• AI integration everywhere\n• Progressive Web Apps\n• Serverless architecture\n• Voice interfaces\n\nAda teknologi spesifik yang mau dibahas? Atau lagi ada project yang butuh tech consultation? 🚀'
+    ]
+  };
 
   const welcomeMessage: Message = {
     id: 'welcome',
@@ -78,70 +104,156 @@ const ChatBot = () => {
     }
   }, [isOpen]);
 
+  // Enhanced keyword detection function
+  const detectKeywords = (message: string): string[] => {
+    const lowerMessage = message.toLowerCase();
+    const detectedKeywords: string[] = [];
+    
+    for (const [category, keywords] of Object.entries(keywordPatterns)) {
+      if (keywords.some(keyword => lowerMessage.includes(keyword.toLowerCase()))) {
+        detectedKeywords.push(category);
+      }
+    }
+    
+    return detectedKeywords;
+  };
+
+  // Enhanced response generation
   const getBotResponse = (userMessage: string): string => {
     const message = userMessage.toLowerCase();
+    const keywords = detectKeywords(userMessage);
     
-    // Respon untuk layanan DigiBooster
-    if (message.includes('layanan') || message.includes('service') || message.includes('jasa')) {
-      return botResponses.layanan;
-    } else if (message.includes('harga') || message.includes('price') || message.includes('biaya') || message.includes('tarif')) {
-      return botResponses.harga;
-    } else if (message.includes('pesan') || message.includes('order') || message.includes('beli') || message.includes('cara')) {
-      return botResponses.pemesanan;
-    } else if (message.includes('bayar') || message.includes('payment') || message.includes('dp') || message.includes('transfer')) {
-      return botResponses.pembayaran;
-    } else if (message.includes('kontak') || message.includes('hubungi') || message.includes('telepon') || message.includes('whatsapp')) {
-      return botResponses.kontak;
-    } else if (message.includes('konsultasi') || message.includes('gratis') || message.includes('tanya')) {
-      return botResponses.konsultasi;
-    } else if (message.includes('keunggulan') || message.includes('kelebihan') || message.includes('bagus') || message.includes('terbaik')) {
-      return botResponses.keunggulan;
+    // Update conversation context
+    setConversationContext(prev => [...prev.slice(-5), ...keywords]);
+    
+    // Specific service combinations
+    if (keywords.includes('layanan') && keywords.includes('website')) {
+      return detailedResponses.layanan_website;
+    }
+    if (keywords.includes('layanan') && keywords.includes('marketing')) {
+      return detailedResponses.layanan_marketing;
+    }
+    if (keywords.includes('layanan') && keywords.includes('design')) {
+      return detailedResponses.layanan_design;
+    }
+    if (keywords.includes('layanan') && keywords.includes('video')) {
+      return detailedResponses.layanan_video;
     }
     
-    // Respon untuk percakapan casual
-    else if (message.includes('curhat') || message.includes('cerita') || message.includes('masalah') || message.includes('bingung')) {
-      return botResponses.curhat;
-    } else if (message.includes('semangat') || message.includes('motivasi') || message.includes('down') || message.includes('sedih') || message.includes('stress')) {
-      return botResponses.motivasi;
-    } else if (message.includes('teknologi') || message.includes('programming') || message.includes('coding') || message.includes('developer')) {
-      return botResponses.teknologi;
+    // Detailed pricing questions
+    if (keywords.includes('harga') && (keywords.includes('website') || keywords.includes('mobile'))) {
+      return '💰 **Harga Website & Aplikasi:**\n\n• Landing Page: Rp 3.5M - 7M\n• Company Profile: Rp 5M - 12M\n• E-commerce: Rp 15M - 35M\n• Web Apps: Rp 20M - 50M\n• Mobile Apps: Rp 25M - 60M\n\n✨ Include hosting, domain, SSL, dan maintenance 6 bulan!\n\nMau konsultasi lebih detail tentang project spesifik kamu?';
+    }
+    if (keywords.includes('harga') && keywords.includes('marketing')) {
+      return '📊 **Harga Digital Marketing:**\n\n• Social Media Management: Rp 2.1M/bulan\n• Content Creation: Rp 2.5M/bulan\n• SEO Optimization: Rp 3M/bulan\n• Google Ads Management: Rp 3.5M + ad budget\n• Facebook/IG Ads: Rp 3M + ad budget\n\n📈 Include analytics report & strategy consultation!\n\nButuh package custom sesuai budget? Chat aja!';
     }
     
-    // Sapaan
-    else if (message.includes('halo') || message.includes('hai') || message.includes('hello') || message.includes('hi')) {
-      return 'Halo juga! 😊 Senang banget bisa ngobrol sama kamu! Ada yang bisa saya bantu hari ini? Atau mau ngobrol santai aja juga boleh kok! 🤗';
+    // Time-related questions
+    if (keywords.includes('waktu') || keywords.includes('lama')) {
+      return detailedResponses.waktu_pengerjaan;
     }
     
-    // Terima kasih
-    else if (message.includes('terima kasih') || message.includes('thanks') || message.includes('makasih')) {
-      return '🙏 Sama-sama! Senang banget bisa membantu! \n\nKalau ada pertanyaan lain atau mau ngobrol lagi, jangan ragu ya! Saya selalu di sini 24/7 buat kamu! ✨\n\nSemoga hari kamu menyenangkan! 🌟';
+    // Package/bundle questions
+    if (keywords.includes('paket') || message.includes('bundle')) {
+      return '📦 **Paket Bundling DigiBooster:**\n\n🌟 **Paket Startup (Rp 15M):**\n• Logo + Brand Identity\n• Landing Page responsive\n• Social media setup\n• Basic SEO\n\n🚀 **Paket Business (Rp 35M):**\n• Company profile website\n• E-commerce basic\n• Digital marketing 3 bulan\n• Video promosi\n\n💎 **Paket Enterprise (Custom):**\n• Full website + mobile app\n• Digital marketing 12 bulan\n• Brand identity complete\n• Video series\n\n💰 **Hemat hingga 40% dengan paket bundling!**';
     }
     
-    // Selesai/pamit
-    else if (message.includes('selesai') || message.includes('cukup') || message.includes('bye') || message.includes('sampai jumpa')) {
-      return '👋 Terima kasih sudah ngobrol dengan saya!\n\nSenang banget bisa membantu kamu hari ini! Jangan lupa, kalau butuh bantuan atau mau curhat lagi, saya selalu ada di sini ya! 🤗\n\n✨ Sampai jumpa lagi! Semoga project digital kamu sukses selalu! 🚀';
+    // Core service questions
+    if (keywords.includes('layanan') && !keywords.includes('website') && !keywords.includes('marketing')) {
+      return '🏢 **Layanan Lengkap DigiBooster Indonesia:**\n\n🌐 **Website & Aplikasi** (Rp 3.5M - 60M)\n• Landing Page, Company Profile\n• E-commerce, Web Apps, Mobile Apps\n\n📱 **Digital Marketing** (Rp 2.1M - 4.2M/bulan)\n• Social Media, SEO, Google Ads\n• Content Marketing, Analytics\n\n🎨 **Branding & Design** (Rp 1.4M - 15M)\n• Logo, Brand Identity, UI/UX\n• Print Design, Packaging\n\n🎬 **Video & Animation** (Rp 2M - 15M)\n• Video Promosi, Motion Graphics\n• Animasi 2D, Live Streaming\n\n✨ **One-stop digital solution untuk semua kebutuhan bisnis Anda!**';
     }
     
-    // Random chat
-    else if (message.includes('apa kabar') || message.includes('gimana') || message.includes('bagaimana')) {
-      return 'Kabar saya baik banget! 😄 Selalu semangat buat bantu orang-orang keren kayak kamu!\n\nGimana kabar kamu? Hari ini ada project menarik yang dikerjain? Atau lagi ada yang bikin pusing? Cerita dong! 😊';
-    } else if (message.includes('kamu siapa') || message.includes('kenalan') || message.includes('perkenalkan')) {
-      return 'Perkenalkan, saya Digi BOT! 🤖\n\nSaya adalah asisten virtual dari DigiBooster Indonesia yang didesain untuk:\n• Membantu customer service 24/7\n• Ngobrol santai & jadi teman curhat\n• Memberikan info lengkap tentang layanan digital\n• Motivasi & support untuk project kamu!\n\nSaya suka banget ngobrol dan selalu siap membantu! Gimana, mau jadi teman? 😊';
+    if (keywords.includes('harga') && !message.includes('website') && !message.includes('marketing')) {
+      return detailedResponses.harga_detail;
     }
     
-    // Default response untuk hal random
-    else {
-      const randomResponses = [
-        `Wah menarik banget nih yang kamu bilang! 😊\n\nSebagai AI, saya selalu excited buat belajar hal baru dari obrolan kita. Mau cerita lebih detail ga? Atau ada hal lain yang pengen didiskusikan?\n\n💡 Btw, kalau kamu lagi ada project digital, jangan lupa DigiBooster siap bantu ya!`,
-        
-        `Seru juga nih topiknya! 🤔\n\nSaya suka banget diajak ngobrol hal-hal baru kayak gini. Bikin saya jadi lebih pinter! Hehe 😄\n\n🚀 Oh ya, kalau ada yang bisa saya bantu terkait layanan digital atau mau konsultasi project, langsung aja ya!`,
-        
-        `Interesting! 🧠 Sebagai Digi BOT, saya appreciate banget sama orang yang suka ngobrol topik beragam kayak kamu!\n\nAda perspektif lain yang mau kamu share? Atau mau ganti topik juga boleh kok! 😊`,
-      ];
+    if (keywords.includes('pemesanan') || keywords.includes('cara')) {
+      return detailedResponses.pemesanan_detail;
+    }
+    
+    if (keywords.includes('pembayaran')) {
+      return '💳 **Sistem Pembayaran DigiBooster:**\n\n**Metode Pembayaran:**\n• Transfer Bank (SeaBank, BCA, Mandiri)\n• E-wallet (Dana, GoPay, OVO)\n• QRIS (scan & pay)\n\n**Skema Pembayaran:**\n• DP 40% saat konfirmasi order\n• Pelunasan 60% saat project selesai\n• Bisa dicicil untuk project >Rp 20M\n\n**Benefit:**\n• Invoice resmi & bukti transfer\n• Garansi uang kembali jika tidak puas\n• No hidden cost, transparan 100%\n\n🔒 **Semua transaksi aman & terpercaya!**';
+    }
+    
+    if (keywords.includes('kontak')) {
+      return '📞 **Hubungi DigiBooster:**\n\n**Customer Service 24/7:**\n• WhatsApp: +62 857-6819-2419\n• Email: hello.digibooster@gmail.com\n• Telepon: +62 857-6819-2419\n\n**Sosial Media:**\n• Instagram: @official.digibooster\n• LinkedIn: DigiBooster Indonesia\n• Facebook: DigiBooster Official\n\n**Alamat Kantor:**\n• Jl. Digital No. 123, Jakarta Selatan\n• Buka: Senin-Jumat 09:00-18:00\n\n⚡ **Tim kami siap membantu kapan saja!**';
+    }
+    
+    if (keywords.includes('konsultasi')) {
+      return '🤝 **Konsultasi Gratis DigiBooster:**\n\n**Yang Bisa Dikonsultasikan:**\n• Strategi digital marketing\n• Pemilihan platform website\n• Budget planning & timeline\n• Technical requirements\n• Market analysis & competitor\n\n**Cara Konsultasi:**\n• WhatsApp: +62 857-6819-2419\n• Video call via Zoom/Google Meet\n• Datang langsung ke kantor\n• Chat di sini juga bisa! 😊\n\n**Kapan:**\n• 24/7 via chat/WhatsApp\n• Video call: jam kerja\n• Konsultasi on-site: by appointment\n\n💡 **Free consultation, no obligation!**';
+    }
+    
+    if (keywords.includes('keunggulan')) {
+      return '⭐ **Keunggulan DigiBooster:**\n\n🏆 **Pengalaman & Kredibilitas**\n• 5+ tahun di industri digital\n• 500+ project sukses\n• Tim 20+ expert bersertifikat\n• Client dari startup hingga korporat\n\n🎯 **Layanan Komprehensif**\n• One-stop digital solution\n• End-to-end project management\n• Integration dengan sistem existing\n• Custom development capability\n\n💎 **Kualitas Premium**\n• Modern design trends\n• Latest technology stack\n• SEO & mobile optimized\n• Security best practices\n\n⚡ **Service Excellence**\n• Response time <2 jam\n• Unlimited revisi (dalam scope)\n• 6-12 bulan maintenance\n• 24/7 technical support\n\n💰 **Value for Money**\n• Competitive pricing\n• Transparent quotation\n• No hidden fees\n• Flexible payment terms';
+    }
+    
+    // Casual conversation
+    if (keywords.includes('curhat')) {
+      return casualResponses.curhat[Math.floor(Math.random() * casualResponses.curhat.length)];
+    }
+    
+    if (keywords.includes('motivasi')) {
+      return casualResponses.motivasi[Math.floor(Math.random() * casualResponses.motivasi.length)];
+    }
+    
+    if (keywords.includes('teknologi')) {
+      return casualResponses.teknologi[0];
+    }
+    
+    // Greetings
+    if (keywords.includes('sapaan')) {
+      const timeGreeting = new Date().getHours() < 12 ? 'pagi' : new Date().getHours() < 17 ? 'siang' : 'malam';
+      return `Halo juga! Selamat ${timeGreeting}! 😊\n\nSenang banget bisa ngobrol sama kamu! Saya Digi BOT dari DigiBooster Indonesia, siap membantu kapan aja!\n\nAda yang bisa saya bantu hari ini? Mau tanya tentang layanan digital, curhat, atau ngobrol santai aja juga boleh! 🤗`;
+    }
+    
+    // Thank you
+    if (keywords.includes('terima_kasih')) {
+      return '🙏 Sama-sama! Senang banget bisa membantu!\n\nKalau ada pertanyaan lain atau mau ngobrol lagi, jangan ragu ya! Saya selalu di sini 24/7 buat kamu! ✨\n\nSemoga project digital kamu sukses selalu! 🌟';
+    }
+    
+    // Goodbye
+    if (keywords.includes('pamit')) {
+      return '👋 Terima kasih sudah ngobrol dengan saya!\n\nSenang banget bisa membantu kamu hari ini! Jangan lupa, kalau butuh bantuan atau mau curhat lagi, saya selalu ada di sini ya! 🤗\n\n✨ Sampai jumpa lagi! Semoga semua project digital kamu sukses! 🚀\n\n📞 **Ingat:** Konsultasi gratis via WhatsApp +62 857-6819-2419';
+    }
+    
+    // General questions about capabilities
+    if (message.includes('apa kabar') || message.includes('gimana')) {
+      return 'Kabar saya baik banget! 😄 Always ready to help amazing people like you!\n\nGimana kabar kamu? Lagi ada project digital yang dikerjain? Atau ada yang bikin curious tentang layanan DigiBooster?\n\nCerita dong, apa yang lagi menarik perhatian kamu hari ini? 😊';
+    }
+    
+    if (message.includes('kamu siapa') || message.includes('kenalan')) {
+      return 'Perkenalkan, saya Digi BOT! 🤖\n\nSaya asisten virtual dari DigiBooster Indonesia yang didesain khusus untuk:\n• Customer service 24/7 ⏰\n• Konsultasi digital gratis 💡\n• Teman ngobrol & curhat 💭\n• Info lengkap layanan digital 📋\n\nSaya suka banget ngobrol dan belajar dari setiap conversation! Personality saya dibuat friendly, helpful, dan always positive! 😊\n\nMau jadi teman? Let\'s chat about anything! 🤗';
+    }
+    
+    // Context-aware responses based on conversation history
+    if (conversationContext.includes('harga') && message.includes('mahal')) {
+      return '💰 Understand banget concern tentang budget!\n\nDi DigiBooster, kami punya solusi untuk berbagai budget:\n\n🎯 **Budget Terbatas?**\n• Paket basic dengan fitur essential\n• Payment plan yang flexible\n• Konsultasi gratis untuk optimize budget\n\n💡 **Tips hemat:**\n• Mulai dari MVP (minimum viable product)\n• Pilih paket bundling (hemat 40%)\n• Manfaatkan promo seasonal\n\nMau diskusi budget range yang kamu punya? Kita bisa carikan solusi terbaik! 😊';
+    }
+    
+    // Smart contextual responses
+    if (message.includes('bingung') || message.includes('tidak tahu')) {
+      return '🤔 Wajar kok kalau bingung! Digital landscape memang complex.\n\nMau saya bantu breakdown step by step?\n\n1️⃣ **Tentukan tujuan utama** - Mau increase sales? Brand awareness? Customer engagement?\n\n2️⃣ **Set budget range** - Biar bisa recommend solusi yang tepat\n\n3️⃣ **Timeline target** - Kapan pengen go-live?\n\n4️⃣ **Target audience** - Siapa customer yang mau di-reach?\n\nYuk cerita spesific situation kamu, nanti saya kasih roadmap yang clear! 🗺️';
+    }
+    
+    // Default intelligent response
+    const intelligentDefaults = [
+      `Menarik sekali yang kamu sampaikan! 🤔\n\nSebagai AI yang specialized di digital solutions, saya selalu excited untuk explore topik baru seperti ini. Bisa elaborate lebih detail?\n\n💡 **Btw**, kalau ini related ke digital project atau business challenge, mungkin DigiBooster bisa help! Want to discuss more? 😊`,
       
-      return randomResponses[Math.floor(Math.random() * randomResponses.length)];
-    }
+      `Interesting perspective! 🧠\n\nSaya appreciate banget orang yang berpikir out of the box seperti kamu. This kind of thinking is exactly what we need in digital innovation!\n\n🚀 **Speaking of innovation**, ada project atau ide digital yang lagi kamu develop? Would love to hear about it!`,
+      
+      `That's a great point! 👏\n\nSaya suka banget diskusi seperti ini - it helps me understand different viewpoints and learn new things!\n\n💭 **Curious**, apakah ini berkaitan dengan something yang lagi kamu kerjakan? Atau pure intellectual curiosity? Either way, I'm here to chat! 😄`
+    ];
+    
+    return intelligentDefaults[Math.floor(Math.random() * intelligentDefaults.length)];
   };
+
+  const followUpQuestions = [
+    "Ada pertanyaan lain yang bisa saya bantu?",
+    "Mau discuss lebih detail tentang project kamu?", 
+    "Butuh info lebih lanjut tentang layanan lain?",
+    "Pengen konsultasi gratis via WhatsApp?",
+    "Ada yang masih penasaran?"
+  ];
 
   const sendMessage = async () => {
     if (!inputMessage.trim()) return;
