@@ -1,3 +1,4 @@
+
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { AuthProvider } from './contexts/AuthContext';
@@ -17,11 +18,11 @@ const queryClient = new QueryClient();
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AuthProvider>
-        <ThemeProvider>
-          <LanguageProvider>
-            <HomeContentProvider>
-              <Router>
+      <ThemeProvider>
+        <LanguageProvider>
+          <HomeContentProvider>
+            <Router>
+              <AuthProvider>
                 <div className="flex flex-col min-h-screen bg-black text-white">
                   <Navbar />
                   <main className="flex-1">
@@ -45,11 +46,11 @@ function App() {
                   <ChatBot />
                   <Toaster />
                 </div>
-              </Router>
-            </HomeContentProvider>
-          </LanguageProvider>
-        </ThemeProvider>
-      </AuthProvider>
+              </AuthProvider>
+            </Router>
+          </HomeContentProvider>
+        </LanguageProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
