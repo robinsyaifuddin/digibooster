@@ -12,6 +12,7 @@ import ChatBot from './components/chatbot/ChatBot';
 import './App.css';
 import { Beranda, JasaDigital, Portofolio, Blog, Kelas, ClassDetail, Tentang, NotFound, Login, Register, PortfolioDetail, BlogDetail } from './pages';
 import OrderForm from './pages/OrderForm';
+import PelatihanDigital from './pages/PelatihanDigital';
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ function App() {
                       <Route path="/blog" element={<Blog />} />
                       <Route path="/kelas" element={<Kelas />} />
                       <Route path="/kelas/:classId" element={<ClassDetail />} />
+                      <Route path="/pelatihan-digital" element={<PelatihanDigital />} />
                       <Route path="/tentang" element={<Tentang />} />
                       <Route path="/login" element={<Login />} />
                       <Route path="/register" element={<Register />} />

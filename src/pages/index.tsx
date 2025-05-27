@@ -11,4 +11,4 @@ export { default as Login } from './Login';
 export { default as Register } from './Register';
 export { default as PortfolioDetail } from './PortfolioDetail';
 export { default as BlogDetail } from './BlogDetail';
-
+export { default as PelatihanDigital } from './PelatihanDigital';
