@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import './App.css';
@@ -22,6 +23,7 @@ import Kelas from './pages/Kelas';
 import ClassDetail from './pages/ClassDetail';
 import OrderForm from './pages/OrderForm';
 import ServiceDetailPage from './pages/ServiceDetailPage';
+import ChatBot from './components/chatbot/ChatBot';
 
 // Theme context for light/dark mode
 import { ThemeProvider } from './contexts/ThemeContext';
@@ -56,6 +58,7 @@ const AppLayout = ({ children }: { children: React.ReactNode }) => {
         <PageTransition>{children}</PageTransition>
       </main>
       {!isDashboardPage && <Footer />}
+      {!isDashboardPage && <ChatBot />}
       <Toaster />
     </div>
   );
