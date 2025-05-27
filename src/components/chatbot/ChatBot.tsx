@@ -26,26 +26,46 @@ const ChatBot = () => {
     "Bagaimana cara memesan layanan digital marketing?",
     "Apakah ada paket bundling untuk layanan?",
     "Berapa lama proses pembuatan aplikasi mobile?",
-    "Bagaimana sistem pembayaran di DigiBooster?"
+    "Bagaimana sistem pembayaran di DigiBooster?",
+    "Bisakah saya konsultasi gratis dulu?",
+    "Apa keunggulan DigiBooster dibanding yang lain?"
   ];
 
   const botResponses: { [key: string]: string } = {
-    'layanan': 'DigiBooster menyediakan 4 kategori layanan utama:\n\n🌐 Website & Aplikasi (Landing Page, Company Profile, E-commerce, Web Apps, Mobile Apps)\n\n📱 Digital Marketing (Social Media Management, Content Marketing, SEO, Google Ads, Facebook Ads)\n\n🎨 Branding & Design (Logo Design, Brand Identity, UI/UX Design, Print Design, Packaging Design)\n\n🎬 Video & Animation (Video Promosi, Motion Graphics, Animasi 2D, Video Editing, Live Streaming)',
+    'layanan': 'DigiBooster menyediakan 4 kategori layanan utama:\n\n🌐 **Website & Aplikasi**\n• Landing Page\n• Company Profile\n• E-commerce\n• Web Apps\n• Mobile Apps\n\n📱 **Digital Marketing**\n• Social Media Management\n• Content Marketing\n• SEO\n• Google Ads\n• Facebook Ads\n\n🎨 **Branding & Design**\n• Logo Design\n• Brand Identity\n• UI/UX Design\n• Print Design\n• Packaging Design\n\n🎬 **Video & Animation**\n• Video Promosi\n• Motion Graphics\n• Animasi 2D\n• Video Editing\n• Live Streaming',
     
-    'harga': 'Berikut range harga layanan kami:\n\n💻 Website & Aplikasi: Rp 3.5M - 35M\n📱 Digital Marketing: Rp 2.1M - 4.2M\n🎨 Branding & Design: Rp 1.4M - 4.2M\n🎬 Video & Animation: Rp 1.4M - 5.6M\n\nSemua harga sudah termasuk konsultasi gratis dan revisi. Untuk detail lebih lanjut, silakan hubungi tim kami!',
+    'harga': 'Berikut range harga layanan kami:\n\n💻 **Website & Aplikasi:** Rp 3.5M - 35M\n📱 **Digital Marketing:** Rp 2.1M - 4.2M\n🎨 **Branding & Design:** Rp 1.4M - 4.2M\n🎬 **Video & Animation:** Rp 1.4M - 5.6M\n\n✨ Semua harga sudah termasuk konsultasi gratis dan revisi. Untuk detail lebih lanjut, silakan hubungi tim kami!',
     
-    'pemesanan': 'Cara memesan layanan DigiBooster sangat mudah:\n\n1️⃣ Pilih layanan yang diinginkan di halaman Jasa Digital\n2️⃣ Isi form pemesanan dengan lengkap\n3️⃣ Bayar DP 40% dari total harga\n4️⃣ Tim kami akan menghubungi Anda untuk konsultasi\n5️⃣ Proses pengerjaan dimulai\n\nAnda juga bisa langsung konsultasi via WhatsApp di +62 857-6819-2419',
+    'pemesanan': 'Cara memesan layanan DigiBooster sangat mudah:\n\n1️⃣ Pilih layanan yang diinginkan di halaman Jasa Digital\n2️⃣ Isi form pemesanan dengan lengkap\n3️⃣ Bayar DP 40% dari total harga\n4️⃣ Tim kami akan menghubungi Anda untuk konsultasi\n5️⃣ Proses pengerjaan dimulai\n\n📞 Anda juga bisa langsung konsultasi via WhatsApp di +62 857-6819-2419',
     
-    'pembayaran': 'Sistem pembayaran di DigiBooster:\n\n💳 Metode: Transfer Bank (SeaBank), Dana, QRIS\n💰 DP: 40% dari total harga\n💰 Pelunasan: 60% saat project selesai\n📋 Bukti: Invoice otomatis dan bukti transfer\n\nSemua transaksi aman dan terpercaya!',
+    'pembayaran': 'Sistem pembayaran di DigiBooster:\n\n💳 **Metode:** Transfer Bank (SeaBank), Dana, QRIS\n💰 **DP:** 40% dari total harga\n💰 **Pelunasan:** 60% saat project selesai\n📋 **Bukti:** Invoice otomatis dan bukti transfer\n\n🔒 Semua transaksi aman dan terpercaya!',
     
-    'kontak': 'Hubungi DigiBooster:\n\n📞 Telepon: +62 857-6819-2419\n📧 Email: hello.digibooster@gmail.com\n🌐 Website: digibooster.web.id\n📱 Instagram: @official.digibooster\n\nTim customer service kami siap membantu 24/7!',
+    'kontak': 'Hubungi DigiBooster:\n\n📞 **Telepon:** +62 857-6819-2419\n📧 **Email:** hello.digibooster@gmail.com\n🌐 **Website:** digibooster.web.id\n📱 **Instagram:** @official.digibooster\n\n⏰ Tim customer service kami siap membantu setiap saat!',
     
-    'default': 'Terima kasih atas pertanyaan Anda! 😊\n\nSaya adalah Digi BOT, asisten virtual DigiBooster Indonesia yang siap membantu Anda 24/7. Untuk pertanyaan yang lebih spesifik atau konsultasi mendalam, silakan hubungi tim ahli kami di:\n\n📱 WhatsApp: +62 857-6819-2419\n📧 Email: hello.digibooster@gmail.com\n\nApakah ada hal lain yang ingin Anda tanyakan? 🚀'
+    'konsultasi': 'Tentu saja! 😊 Konsultasi gratis adalah salah satu keunggulan DigiBooster.\n\n✅ **Yang bisa dikonsultasikan:**\n• Strategi digital marketing\n• Desain website yang cocok\n• Pilihan paket layanan\n• Timeline pengerjaan\n• Budget yang sesuai\n\n📞 **Cara konsultasi:**\n• WhatsApp: +62 857-6819-2419\n• Email: hello.digibooster@gmail.com\n• Atau chat langsung dengan saya di sini!\n\nJangan ragu untuk bertanya apapun ya! 🚀',
+
+    'keunggulan': 'Keunggulan DigiBooster yang membedakan kami:\n\n⭐ **Pengalaman & Kredibilitas**\n• Tim berpengalaman 5+ tahun\n• Sudah menangani 500+ project\n• Klien dari berbagai industri\n\n🎯 **Layanan Komprehensif**\n• One-stop digital solution\n• Terintegrasi semua kebutuhan digital\n• Konsultasi gratis tanpa batas\n\n💎 **Kualitas Premium**\n• Desain modern & profesional\n• Teknologi terkini\n• After-sales service terjamin\n\n⚡ **Pelayanan Terbaik**\n• Respon cepat 24/7\n• Revisi unlimited\n• Garansi kepuasan\n\nMakanya banyak klien yang balik lagi ke kami! 😎',
+
+    'curhat': 'Wah, saya senang kalau kamu mau curhat! 😊\n\nSebagai Digi BOT, saya siap mendengarkan keluh kesah kamu. Meskipun saya AI, tapi saya didesain untuk bisa memahami perasaan manusia kok.\n\n💭 **Mau curhat tentang apa?**\n• Masalah pekerjaan?\n• Kebingungan memilih layanan digital?\n• Stress karena project?\n• Atau hal lain yang mengganggु pikiran?\n\nSaya akan berusaha memberikan perspektif yang membantu. Cerita aja, saya dengarkan dengan baik! 🤗',
+
+    'motivasi': 'Semangat! 💪 Setiap masalah pasti ada solusinya kok!\n\n🌟 **Ingat ya:**\n• Setiap tantangan adalah kesempatan untuk berkembang\n• Kamu sudah sampai sejauh ini, artinya kamu kuat!\n• Jangan takut gagal, karena kegagalan adalah guru terbaik\n• Satu langkah kecil hari ini, akan jadi pencapaian besar besok\n\n✨ **Di DigiBooster, kami percaya:**\n"Tidak ada mimpi yang terlalu besar, yang ada hanya usaha yang terlalu kecil"\n\nApapun project digital yang kamu impikan, kami siap bantu wujudkan! Yuk konsultasi gratis dulu! 🚀',
+
+    'teknologi': 'Wah, senang banget ngobrol soal teknologi! 🤓\n\n💻 **Teknologi yang kami kuasai:**\n• **Frontend:** React, Vue.js, Angular, Next.js\n• **Backend:** Node.js, Python, PHP, Laravel\n• **Mobile:** React Native, Flutter, Kotlin\n• **Database:** MySQL, PostgreSQL, MongoDB\n• **Cloud:** AWS, Google Cloud, Azure\n• **AI/ML:** TensorFlow, OpenAI API\n\n🔥 **Trend teknologi 2024:**\n• AI integration di semua platform\n• Progressive Web Apps (PWA)\n• Serverless architecture\n• Voice user interface\n\nAda teknologi spesifik yang mau kamu bahas? Atau mau tau implementasinya untuk bisnis kamu? 🚀',
+
+    'default': 'Halo! 😊 Terima kasih sudah chat dengan saya!\n\nSaya Digi BOT, asisten virtual DigiBooster Indonesia yang siap membantu setiap saat! 🤖✨\n\nSaya bisa diajak ngobrol tentang apapun kok:\n• Layanan DigiBooster\n• Konsultasi digital\n• Curhat & motivasi\n• Teknologi terkini\n• Atau hal random lainnya!\n\nAda yang bisa saya bantu hari ini? 🚀'
   };
+
+  const followUpQuestions = [
+    "Apakah ada hal lain yang ingin ditanyakan?",
+    "Ada pertanyaan lain tentang layanan kami?", 
+    "Mau konsultasi lebih detail tentang project kamu?",
+    "Butuh info lebih lanjut tentang yang lain?",
+    "Masih ada yang mau didiskusikan?"
+  ];
 
   const welcomeMessage: Message = {
     id: 'welcome',
-    text: '👋 Halo! Selamat datang di DigiBooster Indonesia!\n\nSaya Digi BOT, asisten virtual Anda yang siap membantu 24/7! 🤖✨\n\nSaya dapat membantu Anda dengan informasi tentang:\n• Layanan digital kami\n• Harga dan paket\n• Cara pemesanan\n• Dan pertanyaan lainnya!\n\nAda yang bisa saya bantu hari ini? 😊',
+    text: '👋 Halo! Selamat datang di DigiBooster Indonesia!\n\nSaya Digi BOT, asisten virtual yang siap membantu setiap saat! 🤖✨\n\nSaya bisa diajak ngobrol tentang apapun:\n• Layanan digital kami 💻\n• Konsultasi & curhat 💭\n• Teknologi terkini 🚀\n• Atau hal random lainnya! 😄\n\nAda yang bisa saya bantu hari ini? 😊',
     sender: 'bot',
     timestamp: new Date()
   };
@@ -61,6 +81,7 @@ const ChatBot = () => {
   const getBotResponse = (userMessage: string): string => {
     const message = userMessage.toLowerCase();
     
+    // Respon untuk layanan DigiBooster
     if (message.includes('layanan') || message.includes('service') || message.includes('jasa')) {
       return botResponses.layanan;
     } else if (message.includes('harga') || message.includes('price') || message.includes('biaya') || message.includes('tarif')) {
@@ -71,10 +92,54 @@ const ChatBot = () => {
       return botResponses.pembayaran;
     } else if (message.includes('kontak') || message.includes('hubungi') || message.includes('telepon') || message.includes('whatsapp')) {
       return botResponses.kontak;
-    } else if (message.includes('terima kasih') || message.includes('thanks') || message.includes('selesai') || message.includes('cukup')) {
-      return '🙏 Terima kasih telah menghubungi DigiBooster Indonesia!\n\nSemoga informasi yang saya berikan bermanfaat. Jika Anda memiliki pertanyaan lebih lanjut atau ingin konsultasi lebih mendalam, jangan ragu untuk menghubungi tim ahli kami!\n\n💬 Saya akan selalu di sini untuk membantu Anda 24/7. Sampai jumpa lagi! 🚀✨';
-    } else {
-      return botResponses.default;
+    } else if (message.includes('konsultasi') || message.includes('gratis') || message.includes('tanya')) {
+      return botResponses.konsultasi;
+    } else if (message.includes('keunggulan') || message.includes('kelebihan') || message.includes('bagus') || message.includes('terbaik')) {
+      return botResponses.keunggulan;
+    }
+    
+    // Respon untuk percakapan casual
+    else if (message.includes('curhat') || message.includes('cerita') || message.includes('masalah') || message.includes('bingung')) {
+      return botResponses.curhat;
+    } else if (message.includes('semangat') || message.includes('motivasi') || message.includes('down') || message.includes('sedih') || message.includes('stress')) {
+      return botResponses.motivasi;
+    } else if (message.includes('teknologi') || message.includes('programming') || message.includes('coding') || message.includes('developer')) {
+      return botResponses.teknologi;
+    }
+    
+    // Sapaan
+    else if (message.includes('halo') || message.includes('hai') || message.includes('hello') || message.includes('hi')) {
+      return 'Halo juga! 😊 Senang banget bisa ngobrol sama kamu! Ada yang bisa saya bantu hari ini? Atau mau ngobrol santai aja juga boleh kok! 🤗';
+    }
+    
+    // Terima kasih
+    else if (message.includes('terima kasih') || message.includes('thanks') || message.includes('makasih')) {
+      return '🙏 Sama-sama! Senang banget bisa membantu! \n\nKalau ada pertanyaan lain atau mau ngobrol lagi, jangan ragu ya! Saya selalu di sini 24/7 buat kamu! ✨\n\nSemoga hari kamu menyenangkan! 🌟';
+    }
+    
+    // Selesai/pamit
+    else if (message.includes('selesai') || message.includes('cukup') || message.includes('bye') || message.includes('sampai jumpa')) {
+      return '👋 Terima kasih sudah ngobrol dengan saya!\n\nSenang banget bisa membantu kamu hari ini! Jangan lupa, kalau butuh bantuan atau mau curhat lagi, saya selalu ada di sini ya! 🤗\n\n✨ Sampai jumpa lagi! Semoga project digital kamu sukses selalu! 🚀';
+    }
+    
+    // Random chat
+    else if (message.includes('apa kabar') || message.includes('gimana') || message.includes('bagaimana')) {
+      return 'Kabar saya baik banget! 😄 Selalu semangat buat bantu orang-orang keren kayak kamu!\n\nGimana kabar kamu? Hari ini ada project menarik yang dikerjain? Atau lagi ada yang bikin pusing? Cerita dong! 😊';
+    } else if (message.includes('kamu siapa') || message.includes('kenalan') || message.includes('perkenalkan')) {
+      return 'Perkenalkan, saya Digi BOT! 🤖\n\nSaya adalah asisten virtual dari DigiBooster Indonesia yang didesain untuk:\n• Membantu customer service 24/7\n• Ngobrol santai & jadi teman curhat\n• Memberikan info lengkap tentang layanan digital\n• Motivasi & support untuk project kamu!\n\nSaya suka banget ngobrol dan selalu siap membantu! Gimana, mau jadi teman? 😊';
+    }
+    
+    // Default response untuk hal random
+    else {
+      const randomResponses = [
+        `Wah menarik banget nih yang kamu bilang! 😊\n\nSebagai AI, saya selalu excited buat belajar hal baru dari obrolan kita. Mau cerita lebih detail ga? Atau ada hal lain yang pengen didiskusikan?\n\n💡 Btw, kalau kamu lagi ada project digital, jangan lupa DigiBooster siap bantu ya!`,
+        
+        `Seru juga nih topiknya! 🤔\n\nSaya suka banget diajak ngobrol hal-hal baru kayak gini. Bikin saya jadi lebih pinter! Hehe 😄\n\n🚀 Oh ya, kalau ada yang bisa saya bantu terkait layanan digital atau mau konsultasi project, langsung aja ya!`,
+        
+        `Interesting! 🧠 Sebagai Digi BOT, saya appreciate banget sama orang yang suka ngobrol topik beragam kayak kamu!\n\nAda perspektif lain yang mau kamu share? Atau mau ganti topik juga boleh kok! 😊`,
+      ];
+      
+      return randomResponses[Math.floor(Math.random() * randomResponses.length)];
     }
   };
 
@@ -104,6 +169,19 @@ const ChatBot = () => {
 
       setMessages(prev => [...prev, botMessage]);
       setIsTyping(false);
+
+      // Auto follow-up question after bot response
+      setTimeout(() => {
+        const followUp = followUpQuestions[Math.floor(Math.random() * followUpQuestions.length)];
+        const followUpMessage: Message = {
+          id: (Date.now() + 2).toString(),
+          text: followUp,
+          sender: 'bot',
+          timestamp: new Date()
+        };
+        setMessages(prev => [...prev, followUpMessage]);
+      }, 2000);
+
     }, 1000 + Math.random() * 1000);
   };
 
@@ -120,9 +198,9 @@ const ChatBot = () => {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            initial={{ opacity: 0, scale: 0.8, x: 50 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8, x: 50 }}
             transition={{ duration: 0.3, ease: "easeInOut" }}
             className="mb-4 w-80 sm:w-96"
           >
@@ -135,7 +213,7 @@ const ChatBot = () => {
                   </div>
                   <div>
                     <h3 className="font-semibold text-white">Digi BOT</h3>
-                    <p className="text-xs text-sky-100">Customer Service 24/7</p>
+                    <p className="text-xs text-sky-100">Siap membantu setiap saat</p>
                   </div>
                 </div>
                 <Button
@@ -208,12 +286,37 @@ const ChatBot = () => {
                   >
                     <p className="text-xs text-gray-400 mb-2">Contoh pertanyaan:</p>
                     <div className="space-y-2">
-                      {sampleQuestions.slice(0, 3).map((question, index) => (
+                      {sampleQuestions.slice(0, 4).map((question, index) => (
                         <motion.button
                           key={index}
                           initial={{ opacity: 0, x: -20 }}
                           animate={{ opacity: 1, x: 0 }}
                           transition={{ delay: 0.7 + index * 0.1 }}
+                          onClick={() => handleQuestionClick(question)}
+                          className="w-full text-left p-2 text-xs bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-gray-300 transition-colors"
+                        >
+                          {question}
+                        </motion.button>
+                      ))}
+                    </div>
+                  </motion.div>
+                )}
+
+                {/* Follow-up Questions */}
+                {messages.length > 2 && messages[messages.length - 1].sender === 'bot' && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mt-4"
+                  >
+                    <p className="text-xs text-gray-400 mb-2">Pertanyaan lainnya:</p>
+                    <div className="space-y-2">
+                      {sampleQuestions.slice(4, 6).map((question, index) => (
+                        <motion.button
+                          key={index}
+                          initial={{ opacity: 0, x: -20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ delay: index * 0.1 }}
                           onClick={() => handleQuestionClick(question)}
                           className="w-full text-left p-2 text-xs bg-gray-800 hover:bg-gray-700 border border-gray-700 rounded-lg text-gray-300 transition-colors"
                         >
@@ -250,15 +353,14 @@ const ChatBot = () => {
         )}
       </AnimatePresence>
 
-      {/* Floating Chat Button */}
+      {/* Floating Chat Button - Perfect Circle */}
       <motion.div
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
       >
         <Button
           onClick={toggleChat}
-          size="lg"
-          className="w-14 h-14 rounded-full bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+          className="w-16 h-16 rounded-full bg-gradient-to-r from-sky-500 to-sky-600 hover:from-sky-600 hover:to-sky-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 flex items-center justify-center p-0"
         >
           <AnimatePresence mode="wait">
             {isOpen ? (
