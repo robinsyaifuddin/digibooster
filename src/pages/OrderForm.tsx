@@ -143,155 +143,245 @@ const OrderForm = () => {
       const primaryColor = [14, 165, 233]; // Sky blue
       const orangeColor = [249, 115, 22]; // Orange
       const darkColor = [31, 41, 55]; // Dark gray
-      const lightGray = [245, 245, 245]; // Light gray
+      const lightGray = [248, 250, 252]; // Light gray
+      const mediumGray = [156, 163, 175]; // Medium gray
       
-      // Header with curved design inspiration
+      // Header with gradient-like effect
       pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-      pdf.rect(0, 0, 210, 45, 'F');
+      pdf.rect(0, 0, 210, 50, 'F');
       
-      // Company logo area (text-based since we don't upload images)
-      pdf.setFontSize(26);
+      // Add subtle overlay for depth
+      pdf.setFillColor(255, 255, 255);
+      pdf.setGState(pdf.GState({ opacity: 0.1 }));
+      pdf.rect(0, 35, 210, 15, 'F');
+      pdf.setGState(pdf.GState({ opacity: 1 }));
+      
+      // Company logo and branding
+      pdf.setFontSize(28);
       pdf.setFont('helvetica', 'bold');
       pdf.setTextColor(255, 255, 255);
-      pdf.text('DIGIBOOSTER', 20, 25);
+      pdf.text('DIGIBOOSTER', 20, 28);
       
-      pdf.setFontSize(11);
+      pdf.setFontSize(12);
       pdf.setFont('helvetica', 'normal');
-      pdf.text('Platform Layanan Jasa Digital Terbaik', 20, 35);
+      pdf.text('Platform Layanan Jasa Digital Terbaik Indonesia', 20, 38);
       
-      // Invoice title and info box with better spacing
+      pdf.setFontSize(10);
+      pdf.text('🌐 digibooster.web.id | 📱 @official.digibooster', 20, 45);
+      
+      // Invoice info box with modern design
       pdf.setFillColor(orangeColor[0], orangeColor[1], orangeColor[2]);
-      pdf.rect(135, 55, 70, 35, 'F');
+      pdf.roundedRect(130, 55, 75, 40, 3, 3, 'F');
       
-      pdf.setFontSize(20);
+      pdf.setFontSize(22);
       pdf.setFont('helvetica', 'bold');
       pdf.setTextColor(255, 255, 255);
-      pdf.text('INVOICE', 155, 68);
+      pdf.text('INVOICE', 150, 68);
       
       pdf.setFontSize(10);
       pdf.setFont('helvetica', 'normal');
-      pdf.text(`No: ${invoice.invoiceNumber}`, 138, 77);
-      pdf.text(`Tanggal: ${invoice.date}`, 138, 83);
-      pdf.text(`Jam: ${invoice.time}`, 138, 89);
+      pdf.text(`No: ${invoice.invoiceNumber}`, 133, 78);
+      pdf.text(`Tanggal: ${invoice.date}`, 133, 84);
+      pdf.text(`Jam: ${invoice.time}`, 133, 90);
       
-      // Customer Info Section with better spacing
+      // Customer Information Section
       pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
-      pdf.setFontSize(14);
+      pdf.setFontSize(16);
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Tagihan Kepada:', 20, 105);
+      pdf.text('TAGIHAN KEPADA:', 20, 110);
       
-      pdf.setFontSize(11);
-      pdf.setFont('helvetica', 'normal');
-      pdf.text(invoice.customer.name, 20, 118);
-      if (invoice.customer.company !== '-') {
-        pdf.text(invoice.customer.company, 20, 126);
-      }
-      pdf.text(`Email: ${invoice.customer.email}`, 20, 134);
-      pdf.text(`Telp: ${invoice.customer.phone}`, 20, 142);
-      
-      // Service Details Table Header with improved design
-      pdf.setFillColor(orangeColor[0], orangeColor[1], orangeColor[2]);
-      pdf.rect(20, 155, 170, 15, 'F');
-      
-      pdf.setFontSize(11);
-      pdf.setFont('helvetica', 'bold');
-      pdf.setTextColor(255, 255, 255);
-      pdf.text('Deskripsi', 25, 165);
-      pdf.text('Kategori', 85, 165);
-      pdf.text('Harga', 135, 165);
-      pdf.text('Qty', 170, 165);
-      
-      // Service Details Row with alternating background
+      // Customer info box
       pdf.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
-      pdf.rect(20, 170, 170, 12, 'F');
+      pdf.roundedRect(20, 115, 100, 35, 2, 2, 'F');
+      
+      pdf.setFontSize(12);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
+      pdf.text(invoice.customer.name, 25, 125);
+      
+      pdf.setFontSize(10);
+      pdf.setFont('helvetica', 'normal');
+      if (invoice.customer.company !== '-') {
+        pdf.text(invoice.customer.company, 25, 132);
+        pdf.text(`📧 ${invoice.customer.email}`, 25, 139);
+        pdf.text(`📱 ${invoice.customer.phone}`, 25, 146);
+      } else {
+        pdf.text(`📧 ${invoice.customer.email}`, 25, 132);
+        pdf.text(`📱 ${invoice.customer.phone}`, 25, 139);
+      }
+      
+      // Service Details Table with modern styling
+      const tableStartY = 165;
+      
+      // Table header
+      pdf.setFillColor(orangeColor[0], orangeColor[1], orangeColor[2]);
+      pdf.roundedRect(20, tableStartY, 170, 12, 2, 2, 'F');
+      
+      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setTextColor(255, 255, 255);
+      pdf.text('DESKRIPSI LAYANAN', 25, tableStartY + 8);
+      pdf.text('KATEGORI', 85, tableStartY + 8);
+      pdf.text('HARGA', 135, tableStartY + 8);
+      pdf.text('QTY', 170, tableStartY + 8);
+      
+      // Table content
+      pdf.setFillColor(255, 255, 255);
+      pdf.rect(20, tableStartY + 12, 170, 15, 'F');
+      pdf.setDrawColor(200, 200, 200);
+      pdf.rect(20, tableStartY + 12, 170, 15);
       
       pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
       pdf.setFont('helvetica', 'normal');
       pdf.setFontSize(10);
-      pdf.text(invoice.service.subcategory, 25, 178);
-      pdf.text(invoice.service.category, 85, 178);
-      pdf.text(invoice.service.price, 135, 178);
-      pdf.text('1', 175, 178);
       
-      // Add line separator
-      pdf.setDrawColor(200, 200, 200);
-      pdf.line(20, 185, 190, 185);
+      // Truncate long service names if needed
+      const maxServiceLength = 18;
+      const serviceText = invoice.service.subcategory.length > maxServiceLength 
+        ? invoice.service.subcategory.substring(0, maxServiceLength) + '...'
+        : invoice.service.subcategory;
       
-      // Calculation Section with improved spacing
-      const calculationY = 200;
-      pdf.setFont('helvetica', 'normal');
-      pdf.setFontSize(11);
+      pdf.text(serviceText, 25, tableStartY + 20);
+      pdf.text(invoice.service.category, 85, tableStartY + 20);
+      pdf.text(invoice.service.price, 135, tableStartY + 20);
+      pdf.text('1', 175, tableStartY + 20);
+      
+      // Calculation section with better spacing
+      const calcStartY = tableStartY + 40;
       
       // Subtotal
-      pdf.text('Subtotal', 135, calculationY);
-      pdf.text(invoice.service.price, 165, calculationY);
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(11);
+      pdf.text('Subtotal:', 125, calcStartY);
+      pdf.text(invoice.service.price, 165, calcStartY);
       
-      // DP calculation
-      pdf.text(`DP (${invoice.service.dpPercentage})`, 135, calculationY + 12);
-      pdf.text(invoice.service.dpAmount, 165, calculationY + 12);
+      // DP section with highlight
+      pdf.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
+      pdf.roundedRect(120, calcStartY + 8, 70, 12, 2, 2, 'F');
       
-      // Total section with better spacing and design
+      pdf.setFont('helvetica', 'bold');
+      pdf.setTextColor(orangeColor[0], orangeColor[1], orangeColor[2]);
+      pdf.text(`DP (${invoice.service.dpPercentage}):`, 125, calcStartY + 16);
+      pdf.text(invoice.service.dpAmount, 165, calcStartY + 16);
+      
+      // Total section with emphasis
       pdf.setFillColor(orangeColor[0], orangeColor[1], orangeColor[2]);
-      pdf.rect(125, calculationY + 20, 70, 18, 'F');
+      pdf.roundedRect(120, calcStartY + 25, 70, 18, 3, 3, 'F');
       
       pdf.setFont('helvetica', 'bold');
       pdf.setTextColor(255, 255, 255);
-      pdf.setFontSize(12);
-      pdf.text('Total Pembayaran', 130, calculationY + 30);
-      pdf.text(invoice.service.dpAmount, 165, calculationY + 35);
+      pdf.setFontSize(13);
+      pdf.text('TOTAL BAYAR:', 125, calcStartY + 33);
+      pdf.setFontSize(14);
+      pdf.text(invoice.service.dpAmount, 125, calcStartY + 40);
       
-      // Payment Information with better layout
+      // Payment Information Section
+      const paymentStartY = calcStartY + 55;
+      
       pdf.setTextColor(darkColor[0], darkColor[1], darkColor[2]);
       pdf.setFontSize(14);
       pdf.setFont('helvetica', 'bold');
-      pdf.text('Metode Pembayaran:', 20, calculationY + 55);
+      pdf.text('INFORMASI PEMBAYARAN', 20, paymentStartY);
+      
+      // Payment method box
+      pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      pdf.setGState(pdf.GState({ opacity: 0.1 }));
+      pdf.roundedRect(20, paymentStartY + 5, 170, 8, 2, 2, 'F');
+      pdf.setGState(pdf.GState({ opacity: 1 }));
       
       pdf.setFontSize(11);
       pdf.setFont('helvetica', 'normal');
-      pdf.text(`Metode: ${invoice.payment.method}`, 20, calculationY + 68);
-      pdf.text(`Status: ${invoice.payment.status}`, 20, calculationY + 76);
+      pdf.text(`Metode: ${invoice.payment.method}`, 25, paymentStartY + 11);
+      pdf.text(`Status: ${invoice.payment.status}`, 115, paymentStartY + 11);
       
-      // Payment Details based on method with better formatting
+      // Payment Details based on method
+      let detailsStartY = paymentStartY + 20;
+      
       if (selectedPaymentMethod === 'Dana') {
+        pdf.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
+        pdf.roundedRect(20, detailsStartY, 170, 25, 2, 2, 'F');
+        
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Detail Pembayaran:', 20, calculationY + 88);
+        pdf.setFontSize(12);
+        pdf.text('💳 DETAIL PEMBAYARAN DANA:', 25, detailsStartY + 8);
+        
         pdf.setFont('helvetica', 'normal');
-        pdf.text('Nama: Robin Syaifudin', 20, calculationY + 98);
-        pdf.text('No. Dana: 085768192419', 20, calculationY + 106);
+        pdf.setFontSize(10);
+        pdf.text('Nama: Robin Syaifudin', 25, detailsStartY + 16);
+        pdf.text('No. Dana: 085768192419', 25, detailsStartY + 22);
+        
+        detailsStartY += 30;
       } else if (selectedPaymentMethod === 'Transfer Bank') {
+        pdf.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
+        pdf.roundedRect(20, detailsStartY, 170, 30, 2, 2, 'F');
+        
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Detail Pembayaran:', 20, calculationY + 88);
+        pdf.setFontSize(12);
+        pdf.text('🏦 DETAIL PEMBAYARAN BANK:', 25, detailsStartY + 8);
+        
         pdf.setFont('helvetica', 'normal');
-        pdf.text('Bank: SeaBank', 20, calculationY + 98);
-        pdf.text('No. Rekening: 9011 2236 4979', 20, calculationY + 106);
-        pdf.text('Atas Nama: Robin Syaifuddin', 20, calculationY + 114);
+        pdf.setFontSize(10);
+        pdf.text('Bank: SeaBank', 25, detailsStartY + 16);
+        pdf.text('No. Rekening: 9011 2236 4979', 25, detailsStartY + 22);
+        pdf.text('Atas Nama: Robin Syaifuddin', 25, detailsStartY + 28);
+        
+        detailsStartY += 35;
+      } else if (selectedPaymentMethod === 'QRIS') {
+        pdf.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
+        pdf.roundedRect(20, detailsStartY, 170, 15, 2, 2, 'F');
+        
+        pdf.setFont('helvetica', 'bold');
+        pdf.setFontSize(12);
+        pdf.text('📱 PEMBAYARAN QRIS:', 25, detailsStartY + 8);
+        
+        pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(10);
+        pdf.text('Scan QR Code yang telah disediakan untuk pembayaran', 25, detailsStartY + 14);
+        
+        detailsStartY += 20;
       }
       
       // Message section if exists
-      if (formData.message) {
-        pdf.setFontSize(12);
+      if (formData.message && formData.message.trim()) {
         pdf.setFont('helvetica', 'bold');
-        pdf.text('Pesan:', 20, 250);
+        pdf.setFontSize(12);
+        pdf.text('💬 PESAN PELANGGAN:', 20, detailsStartY + 5);
         
-        pdf.setFontSize(10);
         pdf.setFont('helvetica', 'normal');
+        pdf.setFontSize(10);
         const splitMessage = pdf.splitTextToSize(formData.message, 170);
-        pdf.text(splitMessage, 20, 258);
+        pdf.text(splitMessage, 20, detailsStartY + 13);
+        
+        detailsStartY += 20 + (splitMessage.length * 4);
       }
       
-      // Footer with updated information and better spacing
-      pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
-      pdf.rect(0, 275, 210, 25, 'F');
+      // Terms and Conditions
+      pdf.setFillColor(lightGray[0], lightGray[1], lightGray[2]);
+      pdf.roundedRect(20, detailsStartY + 5, 170, 20, 2, 2, 'F');
       
-      pdf.setFontSize(11);
+      pdf.setFont('helvetica', 'bold');
+      pdf.setFontSize(10);
+      pdf.text('📋 SYARAT & KETENTUAN:', 25, detailsStartY + 13);
+      
+      pdf.setFont('helvetica', 'normal');
+      pdf.setFontSize(9);
+      pdf.text('• Pembayaran DP 40% untuk memulai project', 25, detailsStartY + 18);
+      pdf.text('• Sisa pembayaran 60% dilakukan setelah project selesai', 25, detailsStartY + 22);
+      
+      // Footer with contact information
+      const footerY = 270;
+      pdf.setFillColor(primaryColor[0], primaryColor[1], primaryColor[2]);
+      pdf.rect(0, footerY, 210, 27, 'F');
+      
+      pdf.setFontSize(12);
       pdf.setFont('helvetica', 'bold');
       pdf.setTextColor(255, 255, 255);
-      pdf.text('Terima kasih telah mempercayai DigiBooster!', 20, 285);
+      pdf.text('Terima kasih telah mempercayai DigiBooster Indonesia! 🚀', 20, footerY + 8);
       
-      pdf.setFontSize(9);
+      pdf.setFontSize(10);
       pdf.setFont('helvetica', 'normal');
-      pdf.text('Website: digibooster.web.id | Instagram: official.digibooster', 20, 292);
-      pdf.text('Telp: +62 857-6819-2419 | Email: hello.digibooster@gmail.com', 20, 297);
+      pdf.text('📧 hello.digibooster@gmail.com | 📱 +62 857-6819-2419', 20, footerY + 16);
+      pdf.text('🌐 digibooster.web.id | 📱 Instagram: @official.digibooster', 20, footerY + 22);
       
       // Convert to blob and resolve
       const blob = pdf.output('blob');
