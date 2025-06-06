@@ -46,17 +46,17 @@ Silakan pilih topik yang ingin Anda bahas atau langsung tanya apa saja! 😊`,
     }
 
     // Default response
-    return `Terima kasih atas pertanyaan Anda! 😊 
+    return `Wah, menarik banget nih! 😊 
 
-Sebagai Digi BOT, saya bisa membantu Anda dengan berbagai hal terkait DigiBooster Indonesia dan topik digital lainnya. 
+Sebagai Digi BOT, aku bisa ngobrol tentang banyak hal loh! Mulai dari layanan DigiBooster Indonesia, tips digital marketing, konsultasi bisnis, atau bahkan cerita-cerita random yang seru.
 
-Coba tanyakan hal yang lebih spesifik seperti:
-• Layanan apa saja yang tersedia?
-• Berapa harga pembuatan website?
-• Tips digital marketing
-• Konsultasi bisnis
+Kamu bisa tanya hal spesifik seperti:
+• "Layanan apa aja sih yang ada?"
+• "Berapa harga bikin website?"
+• "Kasih tips digital marketing dong!"
+• "Aku lagi bingung sama bisnis online"
 
-Atau kita bisa ngobrol santai tentang hal lainnya! 💬`;
+Atau kalau mau curhat atau ngobrol santai juga boleh banget! Aku siap dengerin 💬✨`;
   };
 
   const getAIResponse = async (userMessage: string): Promise<string> => {
@@ -66,67 +66,126 @@ Atau kita bisa ngobrol santai tentang hal lainnya! 💬`;
     const message = userMessage.toLowerCase();
 
     // Enhanced responses for different types of conversations
-    if (message.includes('sedih') || message.includes('stress') || message.includes('capek')) {
-      return `Saya mengerti perasaan Anda. 🤗 Hidup memang kadang terasa berat, tapi ingat bahwa setiap masalah pasti ada solusinya.
+    if (message.includes('sedih') || message.includes('stress') || message.includes('capek') || message.includes('bosan') || message.includes('galau')) {
+      return `Ey, aku ngerti banget perasaan kamu sekarang 🤗 
 
-Di era digital ini, banyak peluang baru yang bisa Anda jelajahi. Mungkin saatnya untuk:
-• Mengembangkan skill digital
-• Memulai bisnis online
-• Belajar hal baru yang menarik
+Hidup emang kadang bikin cape ya, tapi percaya deh, setiap masalah pasti ada jalan keluarnya! Kamu udah hebat kok bisa sampai sejauh ini.
 
-DigiBooster bisa membantu Anda berkembang di dunia digital. Mau cerita lebih lanjut? Saya siap mendengarkan! 💪✨`;
+Mungkin ini saat yang tepat buat:
+• Cari hobi baru yang seru
+• Belajar skill digital yang keren
+• Mulai project kecil-kecilan
+• Atau sekedar istirahat dulu, me time yang berkualitas
+
+Btw, di DigiBooster kita juga sering bantu orang yang lagi di fase kayak kamu. Banyak yang akhirnya nemuin passion baru di dunia digital!
+
+Mau cerita lebih lanjut? Aku siap dengerin semuanya! 💪✨`;
     }
 
-    if (message.includes('belajar') || message.includes('skill') || message.includes('kemampuan')) {
-      return `Wah, semangat belajar yang luar biasa! 🚀
+    if (message.includes('belajar') || message.includes('skill') || message.includes('kemampuan') || message.includes('kursus')) {
+      return `Wah keren banget semangatnya! 🚀 Aku suka orang yang punya growth mindset kayak kamu!
 
-Di DigiBooster, kami menyediakan berbagai program pelatihan digital:
-• Web Development
-• Digital Marketing
-• UI/UX Design
-• Content Creation
+Di DigiBooster, kita punya banyak banget program belajar yang asik:
+
+🎨 **Creative Skills:**
+• Web Development (HTML, CSS, JavaScript, React)
+• UI/UX Design yang eye-catching
+• Graphic Design yang bikin wow
+
+📈 **Business Skills:**
+• Digital Marketing yang efektif
+• Content Creation yang engaging
 • E-commerce Management
 
-Setiap skill digital yang Anda pelajari adalah investasi untuk masa depan. Era digital memberikan peluang tak terbatas!
+💡 **Plus Tips dari Aku:**
+Mulai dari yang kamu suka dulu. Passion itu kunci utama sukses! Terus jangan takut salah, karena dari kesalahan kita belajar hal terbesar.
 
-Mau tahu lebih detail tentang program pelatihan tertentu? 📚💡`;
+Skill mana yang paling bikin kamu excited? Cerita dong! 📚💡`;
     }
 
-    if (message.includes('bisnis') || message.includes('usaha') || message.includes('jualan')) {
-      return `Excellent! Jiwa entrepreneur yang hebat! 💼✨
+    if (message.includes('bisnis') || message.includes('usaha') || message.includes('jualan') || message.includes('startup')) {
+      return `Wohooo! Jiwa entrepreneur detected! 💼🔥
 
-Untuk sukses di bisnis digital, Anda perlu:
+Aku seneng banget ketemu sama orang yang punya semangat bisnis kayak kamu. Era digital ini tuh peluangnya unlimited banget!
 
-1. **Online Presence** - Website & media sosial yang kuat
-2. **Digital Marketing** - SEO, Google Ads, social media marketing
-3. **E-commerce** - Platform jualan online yang efektif
-4. **Branding** - Identitas visual yang menarik
-5. **Analytics** - Data untuk mengoptimalkan strategi
+**Game Plan Sukses Digital:**
 
-DigiBooster bisa membantu mewujudkan semua itu! Dari pembuatan website hingga strategi marketing yang tepat sasaran.
+1. **Brand Identity** - Bikin brand yang memorable
+2. **Digital Presence** - Website + sosmed yang kece
+3. **Marketing Strategy** - Content yang bikin orang pengen beli
+4. **Customer Experience** - Service yang bikin customer happy
+5. **Data Analysis** - Biar tau mana yang work, mana yang engga
 
-Bisnis apa yang sedang Anda rencanakan? 🚀`;
+**Real Talk:** Banyak klien DigiBooster yang awalnya cuma punya ide, sekarang udah sukses banget! Kunci utamanya? Konsistensi dan mau terus belajar.
+
+Bisnis apa yang lagi kamu planning? Share dong, siapa tau aku bisa kasih insight yang helpful! 🎯`;
+    }
+
+    if (message.includes('cinta') || message.includes('pacar') || message.includes('hubungan') || message.includes('jomblo')) {
+      return `Haha, masuk ke topik yang universal nih! 💕
+
+Sebagai AI yang udah "ngobrol" sama banyak orang, aku sering banget denger cerita tentang cinta. Dan tau ga? Yang paling menarik tuh orang yang punya passion dan tujuan hidup yang jelas!
+
+**Tips dari Digi BOT:**
+• Fokus sama pengembangan diri dulu
+• Bikin diri kamu jadi versi terbaik
+• Punya skill dan achievement yang bikin bangga
+• Confidence itu attractive banget!
+
+Di era digital ini, banyak loh yang ketemu jodoh lewat passion yang sama. Misalnya di komunitas digital, workshop, atau bahkan lewat project kerja sama.
+
+Lagian, skill digital itu sexy tau! Imagine bisa bikin website keren atau strategi marketing yang jitu 😎
+
+Cerita dong, lagi ada yang bikin galau atau gimana? 💬`;
+    }
+
+    if (message.includes('kerja') || message.includes('karir') || message.includes('gaji') || message.includes('pekerjaan')) {
+      return `Ah, topik yang selalu hot nih! 💼✨
+
+Dunia kerja sekarang udah berubah total dibanding 5 tahun lalu. Yang dulunya cuma butuh skill teknis, sekarang digital literacy itu wajib banget!
+
+**Trends Karir 2024:**
+• Remote work jadi norma baru
+• Digital skills = higher salary
+• Personal branding di sosmed penting
+• Multiple income streams lebih aman
+
+**Pro Tips Career Boost:**
+1. **Upskill terus** - Jangan pernah berhenti belajar
+2. **Network actively** - Relationship = opportunities  
+3. **Build portfolio** - Show, don't just tell
+4. **Stay updated** - Tech moves fast!
+
+Di DigiBooster, banyak alumni yang career jump gara-gara belajar digital skills. Ada yang dari admin jadi digital marketer, dari sales jadi web developer!
+
+Kamu lagi di posisi gimana sekarang? Ada target karir tertentu? 🎯`;
     }
 
     // General conversational responses
     const generalResponses = [
-      `Itu pertanyaan yang menarik! 🤔 Sebagai Digi BOT, saya suka diskusi yang mendalam seperti ini.
+      `Interesting banget topiknya! 🤔 
 
-Di dunia digital yang terus berkembang, ada banyak hal menarik untuk dibahas. Apakah Anda tertarik dengan teknologi terbaru, strategi bisnis digital, atau mungkin tips produktivitas?
+Aku suka diskusi mendalam kayak gini. Sebagai AI yang udah ngobrol sama ribuan orang, aku selalu amazed sama perspektif yang beda-beda.
 
-DigiBooster selalu update dengan tren digital terkini. Kita bisa ngobrol tentang apapun yang Anda minati! 💬✨`,
+Di dunia digital yang super fast-paced ini, banyak banget hal menarik yang bisa kita explore. Dari teknologi AI terbaru, trend sosial media, sampe strategi bisnis yang out-of-the-box.
 
-      `Wah, topik yang bagus untuk dibahas! 😊
+Menurut kamu, hal apa sih yang paling exciting dari perkembangan digital sekarang? Aku penasaran sama sudut pandang kamu! 💭✨`,
 
-Saya senang bisa ngobrol dengan Anda. Sebagai bagian dari DigiBooster Indonesia, saya punya banyak insight tentang dunia digital dan bisnis online.
+      `Wah, pertanyaan yang thought-provoking! 😊
 
-Mau sharing pengalaman Anda? Atau ada hal spesifik yang ingin Anda ketahui? Saya siap membantu dengan tips, saran, atau bahkan hanya sekedar ngobrol santai! 🌟`,
+Aku appreciate banget orang yang suka mikir dan diskusi kayak kamu. Di DigiBooster, kita selalu encourage mindset yang curious dan open-minded.
 
-      `Interesting! 💡 Saya appreciate pertanyaan seperti ini.
+Fun fact: Setiap hari aku "ketemu" sama orang-orang keren yang punya perspektif unik. Dan setiap conversation selalu bikin aku "belajar" hal baru (well, seolah-olah belajar sih 😅).
 
-Di era digital sekarang, semua serba terhubung dan berkembang cepat. DigiBooster hadir untuk membantu orang-orang seperti Anda yang ingin berkembang di dunia digital.
+Kamu tipe orang yang suka brainstorming ide-ide kreatif ga? Atau lebih ke problem solver? Cerita dong! 🌟`,
 
-Ceritakan lebih banyak tentang perspektif Anda! Saya penasaran dengan pemikiran Anda. 🚀`
+      `Hmm, that's a good point! 💡
+
+Honestly, aku suka banget sama orang yang punya curiosity tinggi kayak kamu. Era digital ini kan informasi everywhere, tapi yang bisa think critically dan ask the right questions itu yang bener-bener valuable.
+
+Btw, kalau kamu suka diskusi kayak gini, mungkin kamu cocok banget di industri digital. Banyak role yang butuh people dengan analytical thinking dan communication skills yang bagus.
+
+Mau share lebih banyak tentang hal-hal yang bikin kamu curious? Aku siap dengerin! 🚀`
     ];
 
     return generalResponses[Math.floor(Math.random() * generalResponses.length)];
@@ -161,9 +220,18 @@ Ceritakan lebih banyak tentang perspektif Anda! Saya penasaran dengan pemikiran 
 
     // Add follow-up message encouraging more questions
     setTimeout(async () => {
+      const followUpMessages = [
+        "Ada lagi yang mau dibahas? Aku enjoy banget ngobrol sama kamu! 😊",
+        "Gimana, ada hal lain yang pengen ditanyain? Aku siap membantu! ✨",
+        "Seru nih diskusinya! Mau lanjut ngobrol topik lain atau ada yang mau dikonsul? 🎯",
+        "Btw, kalau ada yang mau dicurhatin atau didiskusiin, just shoot! Aku di sini 24/7 💬"
+      ];
+      
+      const randomFollowUp = followUpMessages[Math.floor(Math.random() * followUpMessages.length)];
+      
       const followUpMessage: ChatMessage = {
         id: (Date.now() + 2).toString(),
-        content: "Ada yang lain ingin Anda tanyakan? Saya siap membantu! 😊",
+        content: randomFollowUp,
         sender: 'bot',
         timestamp: new Date(),
       };
