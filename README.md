@@ -295,6 +295,7 @@ const servicePrices = {
 ### Features
 - **Content Management**: Update real-time
 - **User Management**: Role-based access
+  **Demo Account** : Demo User [ pengguna@gmail | pengguna123 ] & Demo Admin : [ admin.digibooster@gmail.com | digibooster123 ]
 - **Analytics Dashboard**: Performance metrics
 - **Settings Panel**: Website configuration
 - **File Manager**: Asset management
