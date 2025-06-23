@@ -1,5 +1,5 @@
 
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useMemo } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Text, Box, Sphere, Torus, OrbitControls, Float } from '@react-three/drei';
 import { motion } from 'framer-motion';
@@ -31,15 +31,15 @@ const ServiceIcon = ({ position, color, type, onClick }: {
   const getGeometry = () => {
     switch (type) {
       case 'website':
-        return <Box args={[1, 1, 1]} />;
+        return <boxGeometry args={[1, 1, 1]} />;
       case 'design':
-        return <Sphere args={[0.7]} />;
+        return <sphereGeometry args={[0.7]} />;
       case 'marketing':
-        return <Torus args={[0.6, 0.3, 8, 16]} />;
+        return <torusGeometry args={[0.6, 0.3, 8, 16]} />;
       case 'photo':
-        return <Box args={[1.2, 0.8, 0.2]} />;
+        return <boxGeometry args={[1.2, 0.8, 0.2]} />;
       default:
-        return <Box args={[1, 1, 1]} />;
+        return <boxGeometry args={[1, 1, 1]} />;
     }
   };
 
@@ -81,6 +81,21 @@ const ServiceIcon = ({ position, color, type, onClick }: {
 const FloatingParticles = () => {
   const particlesRef = useRef<THREE.Points>(null);
   
+  const particleGeometry = useMemo(() => {
+    const geometry = new THREE.BufferGeometry();
+    const particleCount = 100;
+    const positions = new Float32Array(particleCount * 3);
+    
+    for (let i = 0; i < particleCount; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 20;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
+    }
+    
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    return geometry;
+  }, []);
+  
   useFrame((state) => {
     if (particlesRef.current) {
       particlesRef.current.rotation.y += 0.001;
@@ -88,25 +103,8 @@ const FloatingParticles = () => {
     }
   });
 
-  const particleCount = 100;
-  const positions = new Float32Array(particleCount * 3);
-  
-  for (let i = 0; i < particleCount; i++) {
-    positions[i * 3] = (Math.random() - 0.5) * 20;
-    positions[i * 3 + 1] = (Math.random() - 0.5) * 20;
-    positions[i * 3 + 2] = (Math.random() - 0.5) * 20;
-  }
-
   return (
-    <points ref={particlesRef}>
-      <bufferGeometry>
-        <bufferAttribute
-          attach="attributes-position"
-          count={particleCount}
-          array={positions}
-          itemSize={3}
-        />
-      </bufferGeometry>
+    <points ref={particlesRef} geometry={particleGeometry}>
       <pointsMaterial color="#03d5eb" size={0.05} sizeAttenuation transparent opacity={0.6} />
     </points>
   );
