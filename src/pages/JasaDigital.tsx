@@ -1,15 +1,13 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Star, Play, ChevronRight, ChevronLeft, Plus, Package, Target, CheckCircle, Calendar, Phone } from 'lucide-react';
+import { Star, Play, ChevronRight, ChevronLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { jasaDigitalData } from '@/data/jasaDigitalData';
 import ServiceSubcategories from '@/components/jasa-digital/ServiceSubcategories';
-import DigitalServices3D from '@/components/jasa-digital/DigitalServices3D';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const JasaDigital = () => {
-  const navigate = useNavigate();
-
   // Featured service data
   const featuredService = {
     title: "Website & Aplikasi",
@@ -20,14 +18,10 @@ const JasaDigital = () => {
     category: "Premium",
     slug: "website-dan-aplikasi"
   };
-
-  const handleServiceClick = (serviceSlug: string) => {
-    navigate(`/layanan/${serviceSlug}`);
-  };
   
   return (
     <div className="bg-black min-h-screen pt-16">
-      {/* Hero Section with 3D Animation */}
+      {/* Hero Section */}
       <section className="relative overflow-hidden py-12">
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-sky-900/30 z-0"></div>
         
@@ -80,151 +74,43 @@ const JasaDigital = () => {
             </div>
             
             <div className="w-full lg:w-1/2 relative">
-              {/* 3D Interactive Animation replacing the static featured image */}
-              <div className="relative aspect-[3/4] md:aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-black/80 to-sky-900/40">
-                <DigitalServices3D onServiceClick={handleServiceClick} />
+              {/* Main featured image */}
+              <div className="relative aspect-[3/4] md:aspect-square rounded-2xl overflow-hidden">
+                <img 
+                  src={featuredService.image} 
+                  alt="Digital Services" 
+                  className="w-full h-full object-cover"
+                />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent"></div>
                 
-                {/* Overlay information */}
-                <div className="absolute bottom-0 left-0 w-full p-6 z-20 bg-gradient-to-t from-black/80 to-transparent">
-                  <h3 className="text-xl font-bold mb-1 text-white">Interactive Digital Services</h3>
+                <div className="absolute bottom-0 left-0 w-full p-6">
+                  <h3 className="text-xl font-bold mb-1 text-white">{featuredService.title}</h3>
                   <div className="flex items-center text-sm text-gray-300">
                     <div className="flex items-center mr-3">
                       <Star size={14} className="text-yellow-400 fill-yellow-400 mr-1" />
-                      <span>4.9</span>
+                      <span>{featuredService.rating}</span>
                     </div>
-                    <span>3D Experience</span>
+                    <span>{featuredService.year}</span>
                     <span className="ml-2 px-2 py-0.5 bg-sky-500/20 rounded text-sky-400 text-xs">
-                      Interactive
+                      {featuredService.category}
                     </span>
                   </div>
                 </div>
+                
+                {/* Play button with link to detail page */}
+                <Link to={`/layanan/${featuredService.slug}`}>
+                  <motion.button 
+                    whileHover={{ scale: 1.1 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                              w-16 h-16 flex items-center justify-center rounded-full 
+                              bg-sky-500/80 text-white hover:bg-sky-600 transition-colors"
+                  >
+                    <Play size={24} className="ml-1" />
+                  </motion.button>
+                </Link>
               </div>
             </div>
-          </div>
-        </div>
-      </section>
-      
-      {/* Bundle UMKM & Lembaga Section */}
-      <section className="py-16 bg-gradient-to-b from-black to-gray-900/50">
-        <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <span className="text-sky-400 font-medium mb-2 inline-block">LAYANAN SPESIAL</span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-white">
-              Layanan Bundle UMKM & Lembaga
-            </h2>
-            <p className="text-gray-300 max-w-3xl mx-auto">
-              Paket digitalisasi lengkap khusus untuk UMKM, sekolah, organisasi, dan lembaga yang ingin memiliki identitas digital profesional
-            </p>
-          </div>
-
-          <div className="max-w-5xl mx-auto">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-gradient-to-br from-gray-900/80 to-black border border-sky-500/30 rounded-2xl p-8 md:p-12 relative overflow-hidden"
-            >
-              {/* Background decoration */}
-              <div className="absolute top-0 right-0 w-1/3 h-full bg-sky-500/10 rounded-full blur-3xl"></div>
-              
-              <div className="relative z-10">
-                <div className="flex items-center mb-6">
-                  <Package className="h-8 w-8 text-sky-400 mr-3" />
-                  <h3 className="text-2xl md:text-3xl font-bold text-white">
-                    📦 Paket Digitalisasi UMKM & Lembaga
-                  </h3>
-                </div>
-
-                <p className="text-gray-300 text-lg mb-8 leading-relaxed">
-                  Paket lengkap khusus untuk UMKM, sekolah, organisasi komunitas, yayasan, koperasi, dan lembaga lokal lainnya 
-                  agar memiliki identitas digital yang kuat dan mudah diakses pelanggan atau publik secara online.
-                </p>
-
-                <div className="grid md:grid-cols-2 gap-8 mb-8">
-                  {/* Target Pengguna */}
-                  <div className="bg-black/40 rounded-xl p-6">
-                    <div className="flex items-center mb-4">
-                      <Target className="h-6 w-6 text-sky-400 mr-2" />
-                      <h4 className="text-lg font-semibold text-white">🎯 Target Pengguna</h4>
-                    </div>
-                    <ul className="space-y-2 text-gray-300">
-                      <li className="flex items-start">
-                        <CheckCircle className="h-4 w-4 text-sky-400 mt-1 mr-2 flex-shrink-0" />
-                        UMKM baru yang belum punya website dan branding
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="h-4 w-4 text-sky-400 mt-1 mr-2 flex-shrink-0" />
-                        Sekolah kecil / lembaga pendidikan nonformal
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="h-4 w-4 text-sky-400 mt-1 mr-2 flex-shrink-0" />
-                        Yayasan, komunitas sosial, organisasi desa/RT/RW
-                      </li>
-                      <li className="flex items-start">
-                        <CheckCircle className="h-4 w-4 text-sky-400 mt-1 mr-2 flex-shrink-0" />
-                        Koperasi atau bisnis lokal
-                      </li>
-                    </ul>
-                  </div>
-
-                  {/* Harga */}
-                  <div className="bg-gradient-to-br from-sky-900/30 to-black/40 rounded-xl p-6">
-                    <h4 className="text-lg font-semibold text-white mb-4">💰 Harga Paket</h4>
-                    <div className="space-y-3">
-                      <div className="flex justify-between items-center">
-                        <span className="text-gray-400 line-through">Harga Asli:</span>
-                        <span className="text-gray-400 line-through">Rp 6.500.000</span>
-                      </div>
-                      <div className="flex justify-between items-center">
-                        <span className="text-white font-semibold">Harga Promo UMKM:</span>
-                        <span className="text-sky-400 font-bold text-2xl">Rp 4.500.000</span>
-                      </div>
-                      <div className="bg-green-500/20 text-green-400 text-center py-2 px-4 rounded-lg text-sm">
-                        💰 Hemat Rp 2.000.000
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Call to Action Buttons */}
-                <div className="flex flex-wrap gap-4 justify-center">
-                  <Button 
-                    asChild 
-                    size="lg" 
-                    className="bg-sky-500 hover:bg-sky-600 text-white px-8 py-3"
-                  >
-                    <Link to="/layanan/paket-digitalisasi-umkm-lembaga">
-                      <Package className="mr-2 h-5 w-5" />
-                      Lihat Detail
-                    </Link>
-                  </Button>
-
-                  <Button 
-                    asChild 
-                    size="lg" 
-                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-3"
-                  >
-                    <Link to="/order-form?service=Paket%20Digitalisasi%20UMKM%20%26%20Lembaga">
-                      <Calendar className="mr-2 h-5 w-5" />
-                      Pesan Sekarang
-                    </Link>
-                  </Button>
-
-                  <Button 
-                    asChild 
-                    size="lg" 
-                    variant="outline" 
-                    className="border-sky-500 text-sky-400 hover:bg-sky-500/20 px-8 py-3"
-                  >
-                    <Link to="/kontak?service=Paket%20Digitalisasi%20UMKM%20%26%20Lembaga">
-                      <Phone className="mr-2 h-5 w-5" />
-                      Konsultasi Gratis
-                    </Link>
-                  </Button>
-                </div>
-              </div>
-            </motion.div>
           </div>
         </div>
       </section>

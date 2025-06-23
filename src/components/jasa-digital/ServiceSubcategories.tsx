@@ -2,7 +2,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Phone, Calendar, Clock, TrendingUp, Star, DollarSign } from 'lucide-react';
+import { Phone, Calendar, Clock, TrendingUp } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { ServiceSubcategoryProps } from '@/data/jasaDigitalData';
 
@@ -39,21 +39,18 @@ Mohon informasi lebih lanjut mengenai layanan ini. Terima kasih!
   };
 
   return (
-    <section className="py-16 bg-gradient-to-b from-black to-gray-900">
+    <section className="py-16 bg-gradient-to-b from-gray-900 to-black">
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
-          <span className="text-sky-400 font-medium mb-2 inline-block">
-            KATEGORI LAYANAN
-          </span>
           <h2 className="text-2xl md:text-3xl font-bold mb-4 text-white">
-            {serviceName} - Pilihan Paket
+            Pilihan Layanan {serviceName}
           </h2>
-          <p className="text-gray-300 max-w-2xl mx-auto">
-            Pilih paket yang sesuai dengan kebutuhan dan budget Anda
+          <p className="text-gray-400 max-w-2xl mx-auto">
+            Pilih kategori layanan yang sesuai dengan kebutuhan Anda
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
           {subcategories.map((subcategory, index) => (
             <motion.div
               key={index.toString()}
@@ -61,70 +58,56 @@ Mohon informasi lebih lanjut mengenai layanan ini. Terima kasih!
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1, duration: 0.5 }}
               viewport={{ once: true }}
-              className="bg-gradient-to-b from-gray-900/80 to-black border border-gray-800 rounded-xl p-6 hover:border-sky-500/30 transition-all duration-300 group"
+              className="bg-gradient-to-b from-gray-900/40 to-black border border-gray-800 rounded-xl p-6 hover:border-sky-500/30 transition-all duration-300"
             >
-              <div className="flex items-center justify-between mb-4">
-                <h3 className="text-lg font-bold text-white group-hover:text-sky-400 transition-colors">
-                  {subcategory.title}
-                </h3>
-                <div className="flex items-center text-sm">
-                  <Star className="h-4 w-4 text-yellow-400 fill-yellow-400 mr-1" />
-                  <span className="text-white">4.8</span>
+              <div className="mb-6">
+                <h3 className="text-xl font-bold text-white mb-3">{subcategory.title}</h3>
+                <p className="text-gray-400 text-sm mb-4">{subcategory.description}</p>
+                
+                <div className="bg-sky-500/10 p-4 rounded-lg mb-4">
+                  <div className="flex items-center text-sky-400 text-sm font-medium mb-1">
+                    <TrendingUp className="h-4 w-4 mr-2" />
+                    Kisaran Harga
+                  </div>
+                  <div className="text-white text-lg font-bold">{subcategory.priceRange}</div>
+                </div>
+
+                <div className="mb-6">
+                  <h4 className="text-sm font-semibold text-white mb-3 flex items-center">
+                    <Clock className="h-4 w-4 mr-2 text-sky-400" />
+                    Fitur yang Tersedia
+                  </h4>
+                  <ul className="space-y-2">
+                    {subcategory.features.map((feature, idx) => (
+                      <li key={idx.toString()} className="text-gray-300 text-sm flex items-start">
+                        <span className="w-1 h-1 bg-sky-400 rounded-full mt-2 mr-2 flex-shrink-0"></span>
+                        {feature}
+                      </li>
+                    ))}
+                  </ul>
                 </div>
               </div>
 
-              <p className="text-gray-400 text-sm mb-4 line-clamp-3">
-                {subcategory.description}
-              </p>
-
-              <div className="flex items-center mb-4">
-                <DollarSign className="h-4 w-4 text-sky-400 mr-1" />
-                <span className="text-sky-400 font-semibold">
-                  {subcategory.priceRange}
-                </span>
-              </div>
-
-              <div className="flex items-center text-xs text-gray-500 mb-6">
-                <Clock className="h-3 w-3 mr-1" />
-                <span>Estimasi: {subcategory.estimatedTime || '1-2 minggu'}</span>
-              </div>
-
-              <div className="space-y-3">
-                <Button 
-                  onClick={() => handleOrder(subcategory)}
-                  className="w-full bg-sky-500 hover:bg-sky-600 text-white"
-                  size="sm"
-                >
-                  <Calendar className="mr-2 h-4 w-4" />
-                  Pesan Sekarang
-                </Button>
-
+              <div className="flex flex-col gap-3">
                 <Button 
                   onClick={() => handleConsultation(subcategory)}
-                  variant="outline" 
-                  className="w-full border-gray-700 text-white hover:bg-sky-500/20 hover:border-sky-500"
-                  size="sm"
+                  className="w-full bg-sky-500 hover:bg-sky-600 text-white"
                 >
                   <Phone className="mr-2 h-4 w-4" />
                   Konsultasi Gratis
                 </Button>
+                
+                <Button 
+                  onClick={() => handleOrder(subcategory)}
+                  variant="outline" 
+                  className="w-full border-gray-700 text-white hover:bg-sky-500/20 hover:border-sky-500"
+                >
+                  <Calendar className="mr-2 h-4 w-4" />
+                  Pesan Sekarang
+                </Button>
               </div>
             </motion.div>
           ))}
-        </div>
-
-        <div className="mt-12 text-center">
-          <p className="text-gray-400 mb-4">
-            Tidak menemukan paket yang sesuai? Hubungi kami untuk solusi custom
-          </p>
-          <Button 
-            onClick={() => navigate('/kontak?service=' + encodeURIComponent(serviceName))}
-            variant="outline" 
-            className="border-sky-500 text-sky-400 hover:bg-sky-500/20"
-          >
-            <TrendingUp className="mr-2 h-4 w-4" />
-            Konsultasi Custom
-          </Button>
         </div>
       </div>
     </section>
