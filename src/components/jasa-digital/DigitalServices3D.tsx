@@ -1,7 +1,7 @@
 
 import React, { useRef, useState } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { Text, Box, Sphere, Torus, OrbitControls, Float, MeshDistortMaterial } from '@react-three/drei';
+import { Text, Box, Sphere, Torus, OrbitControls, Float } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import * as THREE from 'three';
 
@@ -55,13 +55,12 @@ const ServiceIcon = ({ position, color, type, onClick }: {
         receiveShadow
       >
         {getGeometry()}
-        <MeshDistortMaterial
+        <meshStandardMaterial
           color={color}
-          attach="material"
-          distort={hovered ? 0.3 : 0.1}
-          speed={2}
           roughness={0.1}
           metalness={0.8}
+          emissive={hovered ? color : '#000000'}
+          emissiveIntensity={hovered ? 0.2 : 0}
         />
       </mesh>
       
@@ -159,7 +158,6 @@ const DigitalServices3DScene = ({ onServiceClick }: { onServiceClick: (service: 
           color="#03d5eb"
           anchorX="center"
           anchorY="middle"
-          font="/fonts/Inter-Bold.woff"
         >
           DIGITAL SERVICES
         </Text>
