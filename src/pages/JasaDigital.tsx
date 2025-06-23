@@ -4,9 +4,12 @@ import { Star, Play, ChevronRight, ChevronLeft, Plus, Package, Target, CheckCirc
 import { Button } from '@/components/ui/button';
 import { jasaDigitalData } from '@/data/jasaDigitalData';
 import ServiceSubcategories from '@/components/jasa-digital/ServiceSubcategories';
-import { Link } from 'react-router-dom';
+import DigitalServices3D from '@/components/jasa-digital/DigitalServices3D';
+import { Link, useNavigate } from 'react-router-dom';
 
 const JasaDigital = () => {
+  const navigate = useNavigate();
+
   // Featured service data
   const featuredService = {
     title: "Website & Aplikasi",
@@ -17,10 +20,14 @@ const JasaDigital = () => {
     category: "Premium",
     slug: "website-dan-aplikasi"
   };
+
+  const handleServiceClick = (serviceSlug: string) => {
+    navigate(`/layanan/${serviceSlug}`);
+  };
   
   return (
     <div className="bg-black min-h-screen pt-16">
-      {/* Hero Section */}
+      {/* Hero Section with 3D Animation */}
       <section className="relative overflow-hidden py-12">
         <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-sky-900/30 z-0"></div>
         
@@ -73,41 +80,24 @@ const JasaDigital = () => {
             </div>
             
             <div className="w-full lg:w-1/2 relative">
-              {/* Main featured image */}
-              <div className="relative aspect-[3/4] md:aspect-square rounded-2xl overflow-hidden">
-                <img 
-                  src={featuredService.image} 
-                  alt="Digital Services" 
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent"></div>
+              {/* 3D Interactive Animation replacing the static featured image */}
+              <div className="relative aspect-[3/4] md:aspect-square rounded-2xl overflow-hidden bg-gradient-to-br from-black/80 to-sky-900/40">
+                <DigitalServices3D onServiceClick={handleServiceClick} />
                 
-                <div className="absolute bottom-0 left-0 w-full p-6">
-                  <h3 className="text-xl font-bold mb-1 text-white">{featuredService.title}</h3>
+                {/* Overlay information */}
+                <div className="absolute bottom-0 left-0 w-full p-6 z-20 bg-gradient-to-t from-black/80 to-transparent">
+                  <h3 className="text-xl font-bold mb-1 text-white">Interactive Digital Services</h3>
                   <div className="flex items-center text-sm text-gray-300">
                     <div className="flex items-center mr-3">
                       <Star size={14} className="text-yellow-400 fill-yellow-400 mr-1" />
-                      <span>{featuredService.rating}</span>
+                      <span>4.9</span>
                     </div>
-                    <span>{featuredService.year}</span>
+                    <span>3D Experience</span>
                     <span className="ml-2 px-2 py-0.5 bg-sky-500/20 rounded text-sky-400 text-xs">
-                      {featuredService.category}
+                      Interactive
                     </span>
                   </div>
                 </div>
-                
-                {/* Play button with link to detail page */}
-                <Link to={`/layanan/${featuredService.slug}`}>
-                  <motion.button 
-                    whileHover={{ scale: 1.1 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 
-                              w-16 h-16 flex items-center justify-center rounded-full 
-                              bg-sky-500/80 text-white hover:bg-sky-600 transition-colors"
-                  >
-                    <Play size={24} className="ml-1" />
-                  </motion.button>
-                </Link>
               </div>
             </div>
           </div>
