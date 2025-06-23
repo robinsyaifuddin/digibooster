@@ -46,9 +46,9 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
         <LanguageProvider>
-          <AuthProvider>
-            <HomeContentProvider>
-              <Router>
+          <HomeContentProvider>
+            <Router>
+              <AuthProvider>
                 <div className="min-h-screen bg-background text-foreground">
                   <Navbar />
                   <main>
@@ -84,9 +84,9 @@ function App() {
                   <ChatBot />
                   <Toaster />
                 </div>
-              </Router>
-            </HomeContentProvider>
-          </AuthProvider>
+              </AuthProvider>
+            </Router>
+          </HomeContentProvider>
         </LanguageProvider>
       </ThemeProvider>
     </QueryClientProvider>
