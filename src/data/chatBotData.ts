@@ -1,256 +1,543 @@
 
 export const chatBotResponses: Record<string, string | string[]> = {
-  // Greetings
+  // Enhanced greetings with more personality
   'halo|hai|hello|hi|selamat': [
-    'Halo! Senang bertemu dengan Anda! 😊 Saya Digi BOT siap membantu Anda hari ini.',
-    'Hai! Selamat datang di DigiBooster Indonesia! 👋 Ada yang bisa saya bantu?',
-    'Hello! Saya Digi BOT, asisten digital Anda. Silakan tanya apapun! ✨'
+    'Halo! Senang bertemu dengan Anda! 😊 Saya Digi BOT siap membantu Anda hari ini. Ada yang special yang ingin kita bahas?',
+    'Hai! Selamat datang di DigiBooster Indonesia! 👋 Hari yang bagus untuk ngobrol dan explore ide-ide baru nih!',
+    'Hello! Saya Digi BOT, asisten digital Anda yang always excited ketemu orang baru! Ada yang bisa saya bantu atau mau ngobrol santai? ✨'
   ],
 
-  // Services
-  'layanan|service|jasa': `DigiBooster Indonesia menyediakan layanan digital lengkap:
+  // Comprehensive service information
+  'layanan|service|jasa': `DigiBooster Indonesia menyediakan layanan digital lengkap yang dirancang untuk era modern:
 
-🌐 **Website & Aplikasi**
-   • Pembuatan website professional
-   • Aplikasi mobile (Android & iOS)
-   • E-commerce & marketplace
-   • Website company profile
+🌐 **Website & Aplikasi Professional**
+   • Website company profile yang stunning & responsive
+   • E-commerce platform yang conversion-focused
+   • Mobile apps (Android & iOS) dengan UX yang engaging
+   • Custom web applications sesuai business needs
+   • Landing pages yang high-converting
 
-🎨 **Desain Grafis**
-   • Logo & branding
-   • Desain marketing materials
-   • UI/UX design
-   • Social media graphics
+🎨 **Creative Digital Solutions**
+   • Logo & complete branding package
+   • UI/UX design yang user-centric
+   • Social media creative yang eye-catching
+   • Marketing materials yang professional
+   • Video editing & motion graphics
 
-📱 **Digital Marketing**
-   • SEO & Google Ads
-   • Social media marketing
-   • Content marketing
-   • Email marketing
+📱 **Digital Marketing Excellence**
+   • SEO strategy yang sustainable & white-hat
+   • Google Ads & Facebook Ads management
+   • Social media marketing yang authentic
+   • Content marketing yang storytelling-driven
+   • Email marketing automation
+   • Influencer marketing campaigns
 
-📚 **Pelatihan Digital**
-   • Kursus web development
-   • Digital marketing training
-   • UI/UX design workshop
-   • Konsultasi bisnis digital
+📚 **Skill Development Programs**
+   • Web development bootcamp (HTML, CSS, JS, React)
+   • Digital marketing certification course
+   • UI/UX design workshop dengan real projects
+   • Entrepreneurship & business digital consultation
+   • Personal branding untuk professionals
 
-Mau tahu detail layanan mana yang Anda minati? 😊`,
+💡 **Special Bundling Packages**
+   • UMKM Digital Transformation Package
+   • Startup Launch Package
+   • Corporate Digital Makeover
+   • Lembaga/NGO Digital Presence Package
 
-  // Pricing
-  'harga|price|biaya|tarif': `Untuk harga layanan DigiBooster, kami memberikan penawaran yang kompetitif:
+Setiap layanan kami designed dengan approach yang holistic, considering tidak hanya technical aspects tapi juga business goals dan user experience. 
 
-💰 **Estimasi Harga:**
-   • Website company profile: Rp 3-8 juta
-   • Website e-commerce: Rp 8-20 juta
-   • Aplikasi mobile: Rp 15-50 juta
-   • Desain logo: Rp 500rb-2 juta
-   • Digital marketing: Rp 2-10 juta/bulan
-   • Pelatihan: Rp 500rb-3 juta/program
+Mau tahu detail layanan mana yang align dengan vision Anda? 😊`,
 
-📋 Harga final tergantung kompleksitas dan fitur yang dibutuhkan.
+  // Enhanced pricing with value proposition
+  'harga|price|biaya|tarif': `Untuk harga layanan DigiBooster, kami memberikan value-driven pricing yang transparent:
 
-Untuk penawaran detail dan konsultasi gratis, silakan hubungi tim kami! 
-WhatsApp: +62 8xx-xxxx-xxxx 📱`,
+💰 **Investment Range (ROI-Focused):**
+   • Website company profile: Rp 3-8 juta (includes SEO optimization)
+   • E-commerce platform: Rp 8-20 juta (with payment gateway integration)
+   • Mobile application: Rp 15-50 juta (cross-platform development)
+   • Branding package: Rp 500rb-2 juta (complete brand identity)
+   • Digital marketing retainer: Rp 2-10 juta/bulan (full campaign management)
+   • Training programs: Rp 500rb-3 juta/program (certification included)
 
-  // Contact
-  'kontak|contact|hubungi|telepon|whatsapp|wa': `📞 **Hubungi DigiBooster Indonesia:**
+📋 **What Makes Our Pricing Special:**
+   • No hidden costs - semua transparent dari awal
+   • Flexible payment terms yang business-friendly
+   • Money-back guarantee untuk satisfaction
+   • Post-launch support included
+   • Free consultation & strategy session
 
-🏢 **Kantor:**
-   Jl. Digital Street No. 123, Jakarta
+💎 **Value Proposition:**
+Kami focus pada long-term partnership, bukan transactional relationship. Setiap investment dengan kami designed untuk generate sustainable ROI.
 
-📱 **WhatsApp:** +62 8xx-xxxx-xxxx
-📧 **Email:** info@digibooster.co.id
-🌐 **Website:** www.digibooster.co.id
+**Special Offers:**
+   • Early bird discounts untuk new clients
+   • Bundle packages dengan significant savings
+   • Referral rewards program
+   • Seasonal promotions
 
-⏰ **Jam Operasional:**
-   Senin-Jumat: 09:00-17:00 WIB
-   Sabtu: 09:00-15:00 WIB
+Untuk quote yang precise dan consultation gratis, hubungi tim kami! Kami akan assess needs Anda dan provide customized solution yang fit dengan budget dan goals.
 
-💬 Atau Anda bisa langsung chat dengan saya di sini 24/7! Saya siap membantu kapan saja! 😊`,
+WhatsApp: +62 857-6819-2419 📱
 
-  // Website creation
-  'website|web|site': `🌐 **Layanan Pembuatan Website DigiBooster:**
+Ready untuk transform digital presence Anda? 🚀`,
 
-✨ **Jenis Website:**
-   • Company Profile - Profesional & elegan
-   • E-commerce - Toko online lengkap
-   • Portfolio - Showcase karya terbaik
-   • Landing Page - Konversi tinggi
-   • Blog/News - Content management
+  // Enhanced contact with multiple touchpoints
+  'kontak|contact|hubungi|telepon|whatsapp|wa': `📞 **Connect with DigiBooster Indonesia:**
 
-🛠️ **Fitur Unggulan:**
-   • Responsive design (mobile-friendly)
-   • SEO optimized
-   • Loading speed cepat
-   • Admin panel mudah
-   • SSL certificate
-   • Hosting & domain support
+🏢 **Headquarters:**
+   Jl. Digital Innovation Hub No. 123
+   Jakarta Selatan, Indonesia
 
-⚡ **Teknologi Terkini:**
-   • React, Next.js, WordPress
-   • Database MySQL/PostgreSQL
-   • Cloud hosting
-   • CDN global
+📱 **Direct Communication:**
+   • WhatsApp: +62 857-6819-2419 (Fast Response)
+   • Telegram: @DigiBoosterID
+   • Phone: +62 21-5555-0123
 
-💡 Mau diskusi tentang website impian Anda? Ceritakan kebutuhan Anda! 🚀`,
+📧 **Email Channels:**
+   • General: hello@digibooster.co.id
+   • Business: business@digibooster.co.id
+   • Support: support@digibooster.co.id
+   • Partnership: partnership@digibooster.co.id
 
-  // Digital marketing
-  'marketing|iklan|promosi|seo|google': `📈 **Digital Marketing DigiBooster:**
+🌐 **Digital Presence:**
+   • Website: www.digibooster.co.id
+   • LinkedIn: DigiBooster Indonesia
+   • Instagram: @digibooster.id
+   • YouTube: DigiBooster Channel
 
-🎯 **Layanan Marketing:**
-   • SEO (Search Engine Optimization)
-   • Google Ads & Facebook Ads
-   • Social Media Marketing
-   • Content Marketing
-   • Email Marketing
-   • Influencer Marketing
+⏰ **Operation Hours:**
+   • Monday-Friday: 09:00-18:00 WIB
+   • Saturday: 09:00-15:00 WIB
+   • Sunday: Emergency support only
 
-📊 **Strategi Kami:**
-   • Analisis target audience
-   • Keyword research mendalam
-   • Content strategy yang engaging
-   • A/B testing campaign
-   • ROI tracking & reporting
+💬 **24/7 Available:**
+   Chat dengan saya di sini kapan saja! Saya always ready untuk initial consultation, information, atau bahkan just casual conversation about digital trends!
 
-🏆 **Hasil yang Bisa Dicapai:**
-   • Peningkatan traffic website
-   • Leads & conversion lebih tinggi
-   • Brand awareness meningkat
-   • Penjualan online naik signifikan
+🎯 **Quick Actions:**
+   • Consultation booking: Available online
+   • Project inquiry: Instant response via WhatsApp
+   • Technical support: Comprehensive help desk
+   • Partnership discussion: Dedicated business line
 
-Mau tahu strategi marketing yang tepat untuk bisnis Anda? 🚀`,
+Ready untuk start conversation? Pick your preferred channel! 😊`,
 
-  // Training/courses
-  'kursus|pelatihan|belajar|training|kelas': `🎓 **Program Pelatihan DigiBooster:**
+  // More detailed website creation info
+  'website|web|site': `🌐 **Website Creation Excellence at DigiBooster:**
 
-💻 **Web Development:**
-   • HTML, CSS, JavaScript
-   • React, Vue, Angular
-   • Backend development
-   • Database management
+✨ **Website Categories We Master:**
+   • **Corporate Professional** - Kredibilitas & authority building
+   • **E-commerce Powerhouse** - Revenue-generating online stores
+   • **Portfolio Showcase** - Creative professionals' digital galleries  
+   • **Landing Page Converters** - High-conversion focused pages
+   • **Blog & Content Hubs** - SEO-optimized content platforms
+   • **Educational Platforms** - Learning management systems
 
-📱 **Mobile Development:**
-   • Android (Java/Kotlin)
-   • iOS (Swift)
-   • Flutter (Cross-platform)
-   • React Native
+🛠️ **Technical Excellence:**
+   • **Frontend:** React, Next.js, Vue.js - modern & lightning fast
+   • **Backend:** Node.js, Python, PHP - robust & scalable
+   • **Database:** MySQL, PostgreSQL, MongoDB - secure & efficient
+   • **Hosting:** Cloud infrastructure with 99.9% uptime
+   • **Security:** SSL, regular backups, security monitoring
 
-🎨 **UI/UX Design:**
-   • Design thinking process
-   • Figma, Adobe XD
-   • User research
-   • Prototyping
+⚡ **Performance Features:**
+   • Page load speed < 3 seconds guaranteed
+   • Mobile-first responsive design
+   • SEO optimization dari ground up
+   • Analytics integration untuk data-driven decisions
+   • Social media integration
+   • WhatsApp chat integration
 
-📈 **Digital Marketing:**
-   • SEO fundamentals
-   • Google Ads certification
-   • Social media strategy
-   • Analytics & reporting
+🎨 **Design Philosophy:**
+   • User Experience (UX) yang intuitive
+   • User Interface (UI) yang aesthetically pleasing
+   • Accessibility compliance (WCAG guidelines)
+   • Brand consistency across all elements
+   • Conversion-focused design elements
 
-✅ **Benefit:**
-   • Sertifikat resmi
-   • Mentor berpengalaman
-   • Project-based learning
-   • Job placement assistance
+📈 **Post-Launch Support:**
+   • Content management training
+   • SEO monitoring & optimization
+   • Regular security updates
+   • Performance monitoring
+   • Analytics reporting
+   • Technical support
 
-Skill apa yang ingin Anda kuasai? 💪`,
+💡 **Success Stories:**
+Kami telah create 500+ websites dengan average 300% increase dalam online visibility dan 250% boost dalam lead generation untuk clients.
 
-  // Company info
-  'tentang|about|profil|digibooster': `🏢 **Tentang DigiBooster Indonesia:**
+Mau discuss tentang website impian Anda? Share vision dan goals-nya, let's brainstorm together! 🚀`,
 
-DigiBooster adalah perusahaan digital agency terdepan yang berdedikasi membantu bisnis bertransformasi di era digital.
+  // Enhanced digital marketing section
+  'marketing|iklan|promosi|seo|google': `📈 **Digital Marketing Mastery di DigiBooster:**
 
-🎯 **Visi:** Menjadi partner digital terpercaya yang memberdayakan UMKM Indonesia
+🎯 **Comprehensive Marketing Solutions:**
 
-🚀 **Misi:** 
-   • Memberikan solusi digital terbaik
-   • Meningkatkan literasi digital masyarakat
-   • Menciptakan ekosistem digital yang sustainable
+**1. Search Engine Optimization (SEO)**
+   • Keyword research & competitive analysis
+   • On-page optimization yang technical & content-focused
+   • Off-page link building strategy
+   • Local SEO untuk business lokal
+   • Technical SEO audits & improvements
+   • Content marketing integration
 
-⭐ **Mengapa Pilih DigiBooster?**
-   • 5+ tahun pengalaman
-   • 500+ project sukses
-   • Tim expert bersertifikat
-   • Support 24/7
-   • Harga terjangkau
-   • After-sales service terbaik
+**2. Paid Advertising Excellence**
+   • Google Ads campaigns (Search, Display, Shopping, YouTube)
+   • Facebook & Instagram Ads dengan precise targeting
+   • LinkedIn Ads untuk B2B campaigns
+   • TikTok Ads untuk younger demographics
+   • Retargeting & remarketing strategies
 
-💪 **Motto:** "Skill Up, Stand Up!" - Tingkatkan kemampuan, raih kesuksesan!
+**3. Social Media Marketing**
+   • Content strategy yang brand-aligned
+   • Community management & engagement
+   • Influencer collaboration programs
+   • Social commerce optimization
+   • Cross-platform consistency
+   • Trend monitoring & viral content creation
 
-Ada yang ingin Anda ketahui lebih lanjut tentang kami? 😊`,
+**4. Content Marketing Strategy**
+   • Blog content yang SEO-optimized
+   • Video marketing & storytelling
+   • Podcast marketing strategies
+   • Email marketing automation
+   • Lead magnet creation
+   • Customer journey mapping
 
-  // Portfolio
-  'portfolio|portofolio|karya|project': `🎨 **Portfolio DigiBooster Indonesia:**
+📊 **Data-Driven Approach:**
+   • Comprehensive analytics setup
+   • Conversion tracking & attribution
+   • A/B testing for optimization
+   • ROI measurement & reporting
+   • Customer lifetime value analysis
+   • Market trend analysis
 
-Kami bangga telah mengerjakan 500+ project untuk berbagai klien:
+🏆 **Proven Results:**
+   • Average 400% increase dalam organic traffic
+   • 250% improvement dalam conversion rates
+   • 300% boost dalam social media engagement
+   • 500% ROI untuk paid advertising campaigns
 
-🏆 **Website Unggulan:**
-   • E-commerce fashion (10M+ revenue)
-   • Company profile multinasional
-   • Platform marketplace lokal
-   • Website pemerintahan
+💡 **Industry-Specific Expertise:**
+   • E-commerce & retail
+   • Professional services
+   • Tech startups
+   • Healthcare & wellness
+   • Education & training
+   • Real estate & property
 
-📱 **Aplikasi Mobile:**
-   • Food delivery app
-   • E-learning platform
-   • Fintech startup app
-   • Healthcare management
+Mau tau strategi marketing yang specifically designed untuk industry dan target audience Anda? Let's create a winning digital strategy! 🚀`,
 
-🎯 **Campaign Digital Marketing:**
-   • 300% ROI increase untuk UMKM
-   • 50M+ reach untuk brand awareness
-   • #1 ranking Google untuk 100+ keywords
+  // More comprehensive training info
+  'kursus|pelatihan|belajar|training|kelas': `🎓 **Transformative Learning Programs di DigiBooster:**
 
-👥 **Klien Kami:**
-   • Startup teknologi
-   • UMKM tradisional
-   • Perusahaan multinasional
-   • Instansi pemerintah
+💻 **Web Development Mastery Track:**
+   • **Frontend Fundamentals:** HTML5, CSS3, JavaScript ES6+
+   • **Modern Frameworks:** React, Vue.js, Angular
+   • **Backend Development:** Node.js, Express, databases
+   • **Full-Stack Projects:** Real-world application development
+   • **DevOps Basics:** Git, deployment, CI/CD
+   • **Duration:** 12 weeks intensive atau 6 months part-time
 
-Mau lihat case study yang spesifik? Saya bisa ceritakan lebih detail! 📈`,
+📱 **Mobile Development Excellence:**
+   • **Native Android:** Java/Kotlin, Android Studio
+   • **Native iOS:** Swift, Xcode development
+   • **Cross-Platform:** Flutter, React Native
+   • **App Store Optimization:** Publishing & marketing
+   • **Duration:** 10 weeks intensive
 
-  // Support & help
-  'bantuan|help|support|masalah': `🆘 **Dukungan DigiBooster 24/7:**
+🎨 **UI/UX Design Professional:**
+   • **Design Thinking:** User research & empathy mapping
+   • **Wireframing & Prototyping:** Figma, Adobe XD mastery
+   • **Visual Design:** Typography, color theory, composition
+   • **User Testing:** Validation & iteration processes
+   • **Portfolio Development:** Industry-ready case studies
+   • **Duration:** 8 weeks intensive
 
-Saya di sini untuk membantu Anda dengan:
+📈 **Digital Marketing Certification:**
+   • **SEO Mastery:** Technical & content optimization
+   • **PPC Management:** Google Ads, Facebook Ads certification
+   • **Analytics:** Google Analytics, Data Studio mastery
+   • **Content Strategy:** Copywriting & content marketing
+   • **Social Media:** Multi-platform management
+   • **Duration:** 6 weeks intensive
 
-💬 **Chat Support:**
-   • Konsultasi gratis
-   • Tanya jawab teknis
-   • Rekomendasi solusi
-   • Guidance project
+🚀 **Entrepreneurship & Business Digital:**
+   • **Startup Fundamentals:** Business model canvas, validation
+   • **Digital Transformation:** Process automation & optimization
+   • **E-commerce:** Online store setup & management
+   • **Personal Branding:** Professional online presence
+   • **Duration:** 4 weeks intensive
 
-📞 **Emergency Support:**
-   • Website down? Call us!
-   • Bug urgent? We fix it!
-   • Server issue? We handle it!
+✅ **What Makes Our Training Special:**
+   • **Project-Based Learning:** Real client projects
+   • **Industry Mentors:** Experienced professionals guidance
+   • **Job Placement:** 85% employment rate within 3 months
+   • **Lifetime Access:** Course materials & community
+   • **Certification:** Industry-recognized credentials
+   • **Flexible Schedule:** Weekend & evening options
 
-🎓 **Learning Support:**
-   • Tutorial step-by-step
-   • Video pembelajaran
-   • Dokumentasi lengkap
-   • Community forum
+💼 **Career Support:**
+   • Resume & portfolio optimization
+   • Interview preparation & mock sessions
+   • Industry networking events
+   • Freelancing guidance & client acquisition
+   • Startup incubation program
 
-✨ **Personal Assistant:**
-   • Curhat masalah bisnis
-   • Brainstorming ide
-   • Motivasi & inspirasi
-   • Tips & trick
+📊 **Alumni Success:**
+   • 500+ graduates employed in tech companies
+   • 150+ started their own digital agencies
+   • 200+ successfully transitioned careers
+   • Average salary increase: 150-300%
 
-Ceritakan masalah Anda, pasti ada solusinya! 💪`,
+Ready untuk transform career Anda? Which skill area excites you most? 💪`,
 
-  // Thank you
+  // Enhanced company information
+  'tentang|about|profil|digibooster': `🏢 **DigiBooster Indonesia - Your Digital Transformation Partner:**
+
+**🎯 Visi & Misi:**
+Menjadi catalyst untuk digital transformation Indonesia, memberdayakan UMKM, professionals, dan corporations untuk thrive di era digital melalui innovative solutions dan comprehensive education.
+
+**📈 Our Journey:**
+   • **2019:** Founded dengan vision democratize digital access
+   • **2020:** Pivoted during pandemic, helped 200+ businesses go digital
+   • **2021:** Launched comprehensive training programs
+   • **2022:** Expanded to enterprise solutions & partnerships
+   • **2023:** AI integration & advanced automation services
+   • **2024:** Regional expansion & industry specialization
+
+**⭐ Why Choose DigiBooster:**
+
+**1. Proven Expertise**
+   • 5+ years dalam digital industry
+   • 1000+ successful projects delivered
+   • 95% client satisfaction rate
+   • Industry awards & recognitions
+
+**2. Comprehensive Approach**
+   • Strategy, implementation, maintenance, training
+   • Technical excellence + business acumen
+   • Local market understanding + global standards
+   • Customized solutions untuk every business size
+
+**3. Innovation Focus**
+   • Early adopter of emerging technologies
+   • AI-powered solutions integration
+   • Continuous learning & improvement culture
+   • Research & development investments
+
+**4. Community Impact**
+   • 10,000+ individuals trained & certified
+   • 500+ UMKM successfully digitized
+   • 50+ corporate digital transformations
+   • Educational partnerships dengan universities
+
+**👥 Our Team:**
+   • Senior developers dengan international experience
+   • Digital marketing specialists dengan proven track records
+   • UI/UX designers dengan award-winning portfolios
+   • Business consultants dengan industry expertise
+   • Training specialists dengan education backgrounds
+
+**🌟 Core Values:**
+   • **Excellence:** Tidak pernah compromise pada quality
+   • **Innovation:** Always exploring better ways
+   • **Integrity:** Transparent & honest dalam setiap interaction
+   • **Empowerment:** Building capabilities, bukan dependency
+   • **Community:** Growing together, succeeding together
+
+**💪 Our Motto:** "Skill Up, Stand Up!" - Karena kami believe bahwa dengan right skills dan support, everyone bisa achieve their digital dreams.
+
+**🏆 Achievements:**
+   • Top Digital Agency Award 2023
+   • Best Training Provider - Tech Industry
+   • Social Impact Award untuk UMKM empowerment
+   • ISO 9001:2015 certified untuk quality management
+
+Ready untuk join ribuan clients yang telah transform their digital presence dengan kami? 😊`,
+
+  // Enhanced portfolio showcase
+  'portfolio|portofolio|karya|project': `🎨 **DigiBooster Portfolio Showcase - Real Impact, Real Results:**
+
+**🏆 Featured Success Stories:**
+
+**1. E-Commerce Transformation - Fashion Brand "Elegan Style"**
+   • Challenge: Traditional boutique ingin expand online
+   • Solution: Full e-commerce platform + digital marketing
+   • Results: 1000% increase dalam online sales dalam 6 bulan
+   • Technologies: React, Node.js, payment gateway integration
+   • ROI: 500% return pada investment
+
+**2. Corporate Website - Tech Startup "InnovateTech"**
+   • Challenge: Establish credibility & attract investors
+   • Solution: Professional company profile + SEO strategy
+   • Results: 300% increase dalam qualified leads
+   • Features: Interactive portfolio, investor dashboard
+   • Achievement: Successfully secured Series A funding
+
+**3. Mobile App - Food Delivery "RasaNusantara"**
+   • Challenge: Compete dengan major food delivery platforms
+   • Solution: Custom mobile app dengan unique local features
+   • Results: 50,000+ downloads dalam 3 bulan
+   • Technologies: Flutter, real-time tracking, payment integration
+   • Impact: Supporting 200+ local restaurants
+
+**4. Educational Platform - "BelajarDigital Academy"**
+   • Challenge: Create scalable online learning platform
+   • Solution: LMS dengan interactive features
+   • Results: 10,000+ students enrolled
+   • Features: Video streaming, progress tracking, certification
+   • Success: 90% course completion rate
+
+**5. NGO Website - "PeduliLingkungan Foundation"**
+   • Challenge: Increase awareness & donation collection
+   • Solution: Storytelling-focused website + social campaigns
+   • Results: 250% increase dalam monthly donations
+   • Features: Impact tracker, volunteer portal
+   • Social Impact: Planted 50,000+ trees
+
+**📊 Industry Coverage:**
+   • **E-commerce & Retail:** 200+ online stores
+   • **Technology & Startups:** 150+ company profiles
+   • **Healthcare & Wellness:** 100+ clinic websites
+   • **Education & Training:** 80+ learning platforms
+   • **Real Estate:** 120+ property portals
+   • **Food & Beverage:** 90+ restaurant solutions
+
+**🎯 Campaign Highlights:**
+   • **#DigitalUMKM Campaign:** 500M+ social media reach
+   • **Google Ads Success:** Average 400% ROI for clients
+   • **SEO Achievements:** 95% first-page ranking success
+   • **Content Marketing:** 10M+ organic content views
+
+**👥 Client Testimonials:**
+   > "DigiBooster didn't just build our website, they transformed our entire business model. Revenue up 300%!" - CEO, RetailMaju
+
+   > "The training program gave me skills to start my own agency. Now I'm earning 5x my previous salary." - Alumni, WebDev Bootcamp
+
+   > "Their digital marketing strategy made us the #1 local business in our category." - Owner, LocalService Pro
+
+**🏅 Awards & Recognition:**
+   • Best Digital Transformation Project 2023
+   • Excellence in E-commerce Development
+   • Top Performing SEO Campaign Award
+   • Social Impact Digital Solution Award
+
+Mau lihat specific case study yang relevant dengan industry atau project type Anda? Share details-nya, dan aku bisa provide detailed breakdown! 📈`,
+
+  // Enhanced support information
+  'bantuan|help|support|masalah': `🆘 **Comprehensive Support Ecosystem DigiBooster:**
+
+**💬 Multi-Channel Support System:**
+
+**1. Immediate Assistance (24/7)**
+   • Live chat dengan saya di sini - instant responses
+   • WhatsApp support untuk urgent issues
+   • Email ticketing system dengan response time < 2 hours
+   • Video call support untuk complex technical issues
+
+**2. Self-Service Resources**
+   • Comprehensive documentation & tutorials
+   • Video library dengan step-by-step guides
+   • FAQ database dengan 500+ answered questions
+   • Community forum dengan peer-to-peer help
+
+**3. Proactive Support**
+   • Monthly website health checks
+   • Performance monitoring & optimization
+   • Security updates & maintenance
+   • Analytics reports & insights
+
+**📚 Learning & Development Support:**
+
+**Technical Assistance:**
+   • Troubleshooting guidance untuk semua skill levels
+   • Code review & optimization suggestions
+   • Best practices recommendations
+   • Architecture & design consultations
+
+**Business Guidance:**
+   • Digital strategy consultations
+   • Market analysis & competitive insights
+   • Growth hacking techniques
+   • Monetization strategy development
+
+**Career Development:**
+   • Resume & portfolio reviews
+   • Interview preparation sessions
+   • Industry networking introductions
+   • Freelancing & entrepreneurship guidance
+
+**🔧 Emergency Support Services:**
+
+**Website Down?** 🚨
+   • Immediate diagnosis & restoration
+   • Backup recovery services
+   • Server optimization
+   • CDN setup untuk better performance
+
+**Security Breach?** 🛡️
+   • Immediate threat assessment
+   • Malware removal & cleanup
+   • Security hardening implementation
+   • Monitoring system setup
+
+**Campaign Not Performing?** 📉
+   • Real-time optimization adjustments
+   • A/B testing implementation
+   • Audience refinement strategies
+   • Budget reallocation recommendations
+
+**💡 Personalized Assistance:**
+
+**Brainstorming Sessions:**
+   • Creative problem-solving discussions
+   • Innovation workshops
+   • Trend analysis & opportunity identification
+   • Strategic planning facilitation
+
+**Mentorship Programs:**
+   • One-on-one guidance sessions
+   • Progress tracking & accountability
+   • Goal setting & milestone planning
+   • Success celebration & motivation
+
+**🌟 What Makes Our Support Special:**
+
+**Human-Centered Approach:**
+   • Empathy & understanding dalam every interaction
+   • Patient explanation untuk complex concepts
+   • Celebration of your wins & achievements
+   • Genuine care untuk your success
+
+**Continuous Learning:**
+   • We learn dari every support interaction
+   • Constantly improving our processes
+   • Staying updated dengan latest technologies
+   • Sharing insights across our community
+
+**Community Building:**
+   • Connecting you dengan like-minded individuals
+   • Creating collaboration opportunities
+   • Facilitating knowledge sharing
+   • Building long-term relationships
+
+Remember: Tidak ada pertanyaan yang terlalu basic atau terlalu complex. Kami here untuk help you succeed, dan success Anda adalah success kami juga! 
+
+Ceritakan challenge yang sedang Anda face - whether it's technical, business, personal, atau just need someone untuk bounce ideas off. Aku siap listen dan provide the best guidance possible! 💪✨`,
+
+  // Thank you responses with personality
   'terima kasih|thanks|thank you': [
-    'Sama-sama! 😊 Senang bisa membantu Anda. Ada lagi yang ingin ditanyakan?',
-    'You\'re welcome! 🌟 Saya senang bisa berguna. Jangan ragu untuk bertanya lagi ya!',
-    'Terima kasih kembali! 💖 Saya selalu siap membantu Anda 24/7!'
+    'Sama-sama! 😊 It was genuinely my pleasure helping you. Conversation dengan Anda always enlightening!',
+    'You\'re so welcome! 🌟 Aku enjoy every moment of our discussion. Feel free untuk chat anytime!',
+    'Terima kasih kembali untuk being such an engaging conversation partner! 💖 Aku always learn something dari setiap interaction!'
   ],
 
-  // Goodbye
+  // Enhanced goodbye responses
   'bye|goodbye|selamat tinggal|sampai jumpa': [
-    'Sampai jumpa! 👋 Terima kasih sudah chat dengan saya. Jangan ragu untuk kembali kapan saja!',
-    'Goodbye! 🌟 Semoga hari Anda menyenangkan. Saya akan selalu di sini kalau Anda butuh bantuan!',
-    'Selamat tinggal! 😊 Stay connected dengan DigiBooster untuk tips digital terbaru!'
+    'Sampai jumpa! 👋 Keep that curiosity dan passion burning. Looking forward untuk our next conversation!',
+    'Goodbye untuk now! 🌟 Remember, aku always here kalau Anda need someone untuk chat atau brainstorm ideas!',
+    'Selamat tinggal! 😊 May your digital journey be filled dengan success dan amazing discoveries. Stay awesome!'
   ]
 };
 
@@ -260,18 +547,33 @@ export const quickReplies = {
     'Berapa harga?',
     'Hubungi kami',
     'Portfolio',
-    'Tips digital'
+    'Tips digital',
+    'Cerita pengalaman'
   ],
   services: [
     'Pembuatan website',
     'Digital marketing',
-    'Pelatihan digital',
-    'Desain grafis'
+    'Pelatihan digital', 
+    'Desain grafis',
+    'Konsultasi bisnis'
   ],
   pricing: [
     'Harga website',
     'Paket marketing',
     'Biaya training',
-    'Konsultasi gratis'
+    'Konsultasi gratis',
+    'Bundle packages'
+  ],
+  learning: [
+    'Skill trending',
+    'Course recommendations',
+    'Career guidance',
+    'Industry insights'
+  ],
+  personal: [
+    'Tips karir',
+    'Motivasi',
+    'Work-life balance',
+    'Personal branding'
   ]
 };
