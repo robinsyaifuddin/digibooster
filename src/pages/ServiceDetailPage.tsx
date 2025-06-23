@@ -1,9 +1,8 @@
-
 import React from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
-import { jasaDigitalServices } from '@/data/jasaDigitalData';
+import { jasaDigitalData } from '@/data/jasaDigitalData';
 import { Star, Play, Phone, Mail, Calendar, Check, Info, DollarSign } from 'lucide-react';
 import ServiceSubcategories from '@/components/jasa-digital/ServiceSubcategories';
 
@@ -11,16 +10,29 @@ const ServiceDetailPage = () => {
   const { slug } = useParams<{ slug: string }>();
   const navigate = useNavigate();
   
-  // Find the service by slug
-  const service = jasaDigitalServices.find(service => service.slug === slug);
+  // Find the service by slug - convert title to slug format for matching
+  const service = jasaDigitalData.find(service => 
+    service.title.toLowerCase().replace(/\s+/g, '-') === slug
+  );
   
   // If service not found, redirect to services page
   if (!service) {
     React.useEffect(() => {
-      navigate('/jasa-digital');
+      navigate('/program/jasa-digital');
     }, [navigate]);
     return null;
   }
+
+  // Create service image based on service title
+  const getServiceImage = (title: string) => {
+    const imageMap: { [key: string]: string } = {
+      'Website & Aplikasi': 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+      'Desain Grafis': 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+      'Digital Marketing': 'https://images.unsplash.com/photo-1533750516457-a7f992034fec?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
+      'Foto & Videografi': 'https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80'
+    };
+    return imageMap[title] || 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80';
+  };
 
   return (
     <div className="bg-black min-h-screen pt-16 pb-16">
@@ -32,7 +44,7 @@ const ServiceDetailPage = () => {
         <div className="absolute top-0 right-0 w-1/2 h-full">
           <div className="relative h-full w-full">
             <img 
-              src={service.image} 
+              src={getServiceImage(service.title)} 
               alt={service.title} 
               className="object-cover h-full w-full opacity-70"
             />
@@ -43,7 +55,7 @@ const ServiceDetailPage = () => {
         <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-2xl">
             <span className="text-sky-400 font-medium mb-2 inline-block">
-              {service.category?.toUpperCase()}
+              LAYANAN DIGITAL
             </span>
             
             <h1 className="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 text-white">
@@ -137,85 +149,8 @@ const ServiceDetailPage = () => {
         </div>
       </section>
       
-      {/* Pricing Section */}
-      {service.packages && service.packages.length > 0 && (
-        <section className="py-16 bg-black">
-          <div className="container mx-auto px-4">
-            <div className="text-center mb-12">
-              <h2 className="text-2xl md:text-3xl font-bold mb-3 text-white">
-                Pilihan Paket Layanan
-              </h2>
-              <p className="text-gray-400 max-w-2xl mx-auto">
-                Pilih paket layanan yang sesuai dengan kebutuhan dan anggaran Anda
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
-              {service.packages.map((category, index) => (
-                <motion.div
-                  key={index.toString()}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  transition={{ delay: index * 0.1, duration: 0.5 }}
-                  viewport={{ once: true }}
-                  className={`bg-gradient-to-b ${
-                    category.recommended 
-                      ? "from-sky-900/40 to-black border-sky-500/50" 
-                      : "from-gray-900/40 to-black border-gray-800"
-                  } p-6 rounded-xl border relative h-full flex flex-col`}
-                >
-                  {category.recommended && (
-                    <span className="absolute -top-3 left-1/2 transform -translate-x-1/2 bg-sky-500 text-white text-xs py-1 px-3 rounded-full">
-                      Rekomendasi
-                    </span>
-                  )}
-                  
-                  <h3 className="text-xl font-bold text-white mb-2">{category.name}</h3>
-                  <p className="text-gray-400 text-sm mb-4">{category.description}</p>
-                  
-                  <div className="bg-sky-500/10 p-4 rounded-lg mb-5">
-                    <div className="text-sky-400 text-sm font-medium mb-1">Kisaran Harga</div>
-                    <div className="text-white text-xl font-bold">{category.priceRange}</div>
-                  </div>
-                  
-                  <div className="flex-grow">
-                    <h4 className="text-sm font-semibold text-white mb-3 flex items-center">
-                      <Info className="h-4 w-4 mr-2 text-sky-400" />
-                      Fitur yang Tersedia
-                    </h4>
-                    
-                    <ul className="space-y-2 mb-6">
-                      {category.features.map((feature, idx) => (
-                        <li key={idx.toString()} className="flex items-start">
-                          <Check className="h-4 w-4 text-sky-400 mr-2 mt-0.5" />
-                          <span className="text-gray-300 text-sm">{feature}</span>
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                  
-                  <div className="mt-auto pt-4">
-                    <Button 
-                      className={`w-full ${
-                        category.recommended 
-                          ? "bg-sky-500 hover:bg-sky-600" 
-                          : "bg-gray-800 hover:bg-gray-700"
-                      } text-white`}
-                      onClick={() => navigate('/order-form?service=' + encodeURIComponent(service.title) + '&package=' + category.name)}
-                    >
-                      <DollarSign className="mr-2 h-4 w-4" />
-                      Pilih Paket
-                    </Button>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-      
       {/* Related Services */}
-      {jasaDigitalServices.filter(s => s.slug !== slug).length > 0 && (
+      {jasaDigitalData.filter(s => s.title !== service.title).length > 0 && (
         <section className="py-16 bg-gradient-to-b from-gray-900 to-black">
           <div className="container mx-auto px-4">
             <h2 className="text-2xl md:text-3xl font-bold mb-8 text-white">
@@ -223,7 +158,7 @@ const ServiceDetailPage = () => {
             </h2>
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {jasaDigitalServices.filter(s => s.slug !== slug).slice(0, 3).map((relatedService, index) => (
+              {jasaDigitalData.filter(s => s.title !== service.title).slice(0, 3).map((relatedService, index) => (
                 <motion.div
                   key={index.toString()}
                   initial={{ opacity: 0, y: 20 }}
@@ -231,11 +166,11 @@ const ServiceDetailPage = () => {
                   transition={{ delay: index * 0.1, duration: 0.5 }}
                   viewport={{ once: true }}
                   className="bg-gradient-to-b from-gray-900/40 to-black border border-gray-800 rounded-xl overflow-hidden group cursor-pointer"
-                  onClick={() => navigate(`/layanan/${relatedService.slug}`)}
+                  onClick={() => navigate(`/layanan/${relatedService.title.toLowerCase().replace(/\s+/g, '-')}`)}
                 >
                   <div className="aspect-[16/9] overflow-hidden">
                     <img 
-                      src={relatedService.image} 
+                      src={getServiceImage(relatedService.title)} 
                       alt={relatedService.title} 
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                     />
@@ -250,7 +185,7 @@ const ServiceDetailPage = () => {
                     </p>
                     <div className="flex justify-between items-center">
                       <span className="text-xs bg-sky-500/20 text-sky-400 py-1 px-2 rounded">
-                        {relatedService.category}
+                        Premium
                       </span>
                       <Button 
                         size="sm" 

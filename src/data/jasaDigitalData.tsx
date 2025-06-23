@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { 
   Globe, 
@@ -25,7 +24,7 @@ import {
   Play,
   Clapperboard,
   Edit,
-  Drone
+  Plane
 } from 'lucide-react';
 
 export interface ServiceSubcategoryProps {
@@ -657,7 +656,7 @@ export const jasaDigitalData: ServiceCategoryProps[] = [
         priceRange: "Rp 250.000",
         originalPrice: "Rp 500.000",
         promoPrice: "Rp 250.000",
-        icon: <Drone className="h-5 w-5 text-sky-400" />
+        icon: <Plane className="h-5 w-5 text-sky-400" />
       },
       {
         title: "Video Editing",
@@ -679,6 +678,9 @@ export const jasaDigitalData: ServiceCategoryProps[] = [
     ]
   }
 ];
+
+// Export alias for backward compatibility
+export const jasaDigitalServices = jasaDigitalData;
 
 // Service pricing data for order form
 export const servicePrices: { [key: string]: { [key: string]: number } } = {

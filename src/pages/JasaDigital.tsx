@@ -3,7 +3,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Star, Play, ChevronRight, ChevronLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { jasaDigitalServices } from '@/data/jasaDigitalData';
+import { jasaDigitalData } from '@/data/jasaDigitalData';
 import ServiceSubcategories from '@/components/jasa-digital/ServiceSubcategories';
 import { Link } from 'react-router-dom';
 
@@ -139,10 +139,10 @@ const JasaDigital = () => {
           
           {/* Services Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-2 gap-6">
-            {jasaDigitalServices.map((service, index) => (
+            {jasaDigitalData.map((service, index) => (
               <motion.div
                 key={index.toString()}
-                id={service.slug}
+                id={service.title.toLowerCase().replace(/\s+/g, '-')}
                 whileHover={{ y: -5 }}
                 className="filmbox-card"
                 initial={{ opacity: 0, y: 20 }}
@@ -152,7 +152,7 @@ const JasaDigital = () => {
               >
                 <div className="aspect-video overflow-hidden">
                   <img 
-                    src={service.image} 
+                    src={`https://images.unsplash.com/photo-${1460925895917 + index}?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80`}
                     alt={service.title} 
                     className="w-full h-full object-cover filmbox-image"
                   />
@@ -171,14 +171,14 @@ const JasaDigital = () => {
                       <Star size={12} className="text-yellow-400 fill-yellow-400 mr-1" />
                       <span className="mr-2">4.8</span>
                       <span className="bg-sky-500/20 text-sky-400 text-xs px-2 py-0.5 rounded">
-                        {service.category}
+                        Premium
                       </span>
                     </div>
                     
                     <p className="text-gray-400 text-sm line-clamp-2 mb-3">{service.description}</p>
                     
                     <Button asChild size="sm" className="text-sm bg-sky-500 hover:bg-sky-600 text-white px-3 py-1 rounded-full">
-                      <Link to={`/layanan/${service.slug}`}>
+                      <Link to={`/layanan/${service.title.toLowerCase().replace(/\s+/g, '-')}`}>
                         Lihat Detail
                       </Link>
                     </Button>
@@ -191,7 +191,7 @@ const JasaDigital = () => {
       </section>
 
       {/* Service Details Sections - Display subcategories for each service */}
-      {jasaDigitalServices.map((service, index) => (
+      {jasaDigitalData.map((service, index) => (
         service.subcategories && (
           <ServiceSubcategories
             key={`subcategories-${index}`}
