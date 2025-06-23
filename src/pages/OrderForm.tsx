@@ -30,35 +30,48 @@ const OrderForm = () => {
     service: ''
   });
 
-  // Service price mapping with 40% markup
-  const servicePrices: { [key: string]: { [key: string]: number } } = {
+  // Import the new service prices from data file
+  const servicePrices = {
     'Website & Aplikasi': {
-      'Landing Page': 3500000, // Base: 2.5M, +40% = 3.5M
-      'Company Profile': 7000000, // Base: 5M, +40% = 7M
-      'E-commerce': 14000000, // Base: 10M, +40% = 14M
-      'Web Aplikasi': 21000000, // Base: 15M, +40% = 21M
-      'Mobile Apps': 35000000 // Base: 25M, +40% = 35M
+      'Website Landing Page': 250000,
+      'Website Profil': 500000,
+      'Website E-Commerce': 1500000,
+      'Website Portal / Blog': 1500000,
+      'Website Lembaga': 1500000,
+      'Website Dashboard': 2500000,
+      'Aplikasi Mobile': 4500000,
+      'Sistem Informasi': 3000000,
+      'Maintenance Website': 500000
+    },
+    'Desain Grafis': {
+      'Logo & Brand Identity': 250000,
+      'Company Profile': 250000,
+      'Brosur / Flyer Promosi': 150000,
+      'Desain Kemasan Produk': 100000,
+      'Konten Sosial Media': 250000,
+      'Banner Digital': 150000,
+      'Desain UI/UX': 200000,
+      'Undangan Digital': 150000
     },
     'Digital Marketing': {
-      'Social Media Management': 2100000, // Base: 1.5M, +40% = 2.1M
-      'Content Marketing': 2800000, // Base: 2M, +40% = 2.8M
-      'SEO Optimization': 4200000, // Base: 3M, +40% = 4.2M
-      'Google Ads': 3500000, // Base: 2.5M, +40% = 3.5M
-      'Facebook Ads': 2800000 // Base: 2M, +40% = 2.8M
+      'Manajemen Iklan Digital': 750000,
+      'Layanan SEO': 250000,
+      'Konten Sosial Media': 500000,
+      'Email Marketing': 400000,
+      'Copywriting': 150000,
+      'Strategi Branding Digital': 250000,
+      'Optimasi Marketplace': 500000
     },
-    'Branding & Design': {
-      'Logo Design': 1400000, // Base: 1M, +40% = 1.4M
-      'Brand Identity': 2800000, // Base: 2M, +40% = 2.8M
-      'UI/UX Design': 4200000, // Base: 3M, +40% = 4.2M
-      'Print Design': 2100000, // Base: 1.5M, +40% = 2.1M
-      'Packaging Design': 3500000 // Base: 2.5M, +40% = 3.5M
-    },
-    'Video & Animation': {
-      'Video Promosi': 2800000, // Base: 2M, +40% = 2.8M
-      'Motion Graphics': 4200000, // Base: 3M, +40% = 4.2M
-      'Animasi 2D': 5600000, // Base: 4M, +40% = 5.6M
-      'Video Editing': 2100000, // Base: 1.5M, +40% = 2.1M
-      'Live Streaming': 1400000 // Base: 1M, +40% = 1.4M
+    'Foto & Videografi': {
+      'Foto Produk': 500000,
+      'Foto Event': 300000,
+      'Video Profil Perusahaan': 400000,
+      'Video Promosi Produk': 500000,
+      'Video Event': 500000,
+      'Video Tutorial': 450000,
+      'Iklan Digital': 250000,
+      'Drone Footage': 250000,
+      'Video Editing': 400000
     }
   };
 

@@ -1,568 +1,726 @@
 
 import React from 'react';
 import { 
-  Code, 
-  PenTool, 
-  Megaphone, 
-  Camera,
-  Monitor,
-  User,
-  Building,
-  Shield,
-  Heart,
-  Palette,
+  Globe, 
+  Smartphone, 
+  Palette, 
+  TrendingUp, 
+  Camera, 
+  Video,
+  Code,
+  Database,
+  ShoppingCart,
+  FileText,
   Users,
-  Play,
-  Edit,
-  Brush,
-  Share2,
-  Target,
+  BarChart3,
+  Wrench,
+  Briefcase,
+  Image,
   Mail,
-  MessageCircle,
-  FileText
+  Search,
+  Share2,
+  PenTool,
+  Target,
+  Store,
+  Play,
+  Clapperboard,
+  Edit,
+  Drone
 } from 'lucide-react';
 
 export interface ServiceSubcategoryProps {
-  id: string;
   title: string;
   description: string;
-  icon: React.ReactNode;
   features: string[];
   priceRange: string;
-  duration: string;
-  popular?: boolean;
+  originalPrice: string;
+  promoPrice: string;
+  facilities: string[];
+  icon: React.ReactNode;
 }
 
-export interface ServiceProps {
+export interface ServiceCategoryProps {
   icon: React.ReactNode;
   title: string;
   description: string;
   items: string[];
-  slug?: string;
-  image?: string;
-  category?: string;
-  packages?: ServicePackageProps[];
-  subcategories?: ServiceSubcategoryProps[];
+  subcategories: ServiceSubcategoryProps[];
 }
 
-export interface ServicePackageProps {
-  name: string;
-  description: string;
-  priceRange: string;
-  features: string[];
-  recommended?: boolean;
-}
-
-export const jasaDigitalServices: ServiceProps[] = [
+export const jasaDigitalData: ServiceCategoryProps[] = [
   {
-    icon: <Code className="h-6 w-6 text-sky-500" />,
-    title: 'Website & Aplikasi',
-    description: 'Solusi digital profesional untuk kebutuhan website dan aplikasi bisnis Anda dengan teknologi terkini.',
+    icon: <Globe className="h-6 w-6 text-sky-400" />,
+    title: "Website & Aplikasi",
+    description: "Solusi digital komprehensif untuk transformasi bisnis Anda ke era digital",
     items: [
-      'Website Bisnis & Landing Page',
-      'E-commerce & Toko Online',
-      'Aplikasi Web & Mobile (Android/iOS)',
-      'Sistem Informasi & Database',
-      'Integrasi API',
-      'Website Maintenance'
+      "Website Landing Page",
+      "Website Profil", 
+      "Website E-Commerce",
+      "Website Portal / Blog",
+      "Website Lembaga",
+      "Website Dashboard",
+      "Aplikasi Mobile",
+      "Sistem Informasi",
+      "Maintenance Website"
     ],
-    slug: 'website-dan-aplikasi',
-    image: 'https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Development',
     subcategories: [
       {
-        id: 'landing-page',
-        title: 'Landing Page',
-        description: 'Website satu halaman yang dirancang khusus untuk konversi dan penjualan produk atau layanan Anda.',
-        icon: <Monitor className="h-5 w-5 text-sky-500" />,
+        title: "Website Landing Page",
+        description: "Tingkatkan daya tarik promosi produk atau jasa Anda melalui satu halaman profesional yang responsif dan menarik!",
         features: [
-          'Design responsif dan modern',
-          'Optimasi untuk konversi',
-          'Form capture leads',
-          'Integrasi analytics',
-          'Loading speed optimal'
+          "Desain responsif untuk semua device",
+          "1 halaman utama yang optimal",
+          "Optimasi SEO dasar",
+          "Domain dan hosting included",
+          "Contact form terintegrasi",
+          "Loading speed yang cepat"
         ],
-        priceRange: 'Rp 2.500.000 - Rp 5.000.000',
-        duration: '5-7 hari kerja'
+        facilities: ["Desain responsif", "1 halaman utama", "optimasi SEO", "domain dan hosting"],
+        priceRange: "Rp 250.000",
+        originalPrice: "Rp 750.000",
+        promoPrice: "Rp 250.000",
+        icon: <Globe className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'personal-corporate',
-        title: 'Website Pribadi/Lembaga',
-        description: 'Website profesional untuk personal branding atau profil lembaga dengan fitur lengkap.',
-        icon: <User className="h-5 w-5 text-sky-500" />,
+        title: "Website Profil",
+        description: "Bangun citra profesional untuk bisnis atau personal branding Anda dengan website informatif.",
         features: [
-          'Halaman profil lengkap',
-          'Portfolio/galeri',
-          'Blog dan artikel',
-          'Kontak dan lokasi',
-          'SEO friendly'
+          "4-6 halaman profesional",
+          "CMS (Content Management System)",
+          "Galeri foto interaktif", 
+          "Fitur blog terintegrasi",
+          "SEO optimization",
+          "Mobile responsive design"
         ],
-        priceRange: 'Rp 3.000.000 - Rp 8.000.000',
-        duration: '7-10 hari kerja',
-        popular: true
+        facilities: ["4–6 halaman", "CMS (Content Management System)", "galeri foto", "fitur blog"],
+        priceRange: "Rp 500.000",
+        originalPrice: "Rp 1.000.000",
+        promoPrice: "Rp 500.000",
+        icon: <FileText className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'admin-panel',
-        title: 'Website Panel Admin',
-        description: 'Sistem manajemen konten dengan dashboard admin untuk mengelola website dan data bisnis.',
-        icon: <Shield className="h-5 w-5 text-sky-500" />,
+        title: "Website E-Commerce",
+        description: "Miliki toko online lengkap untuk menjual produk Anda dengan sistem yang aman dan mudah.",
         features: [
-          'Dashboard admin lengkap',
-          'Manajemen user dan role',
-          'CRUD data sistem',
-          'Laporan dan analytics',
-          'Keamanan berlapis'
+          "Katalog produk lengkap",
+          "Payment gateway terintegrasi",
+          "Admin panel untuk pengelolaan",
+          "Sistem inventory management",
+          "Customer management",
+          "Laporan penjualan"
         ],
-        priceRange: 'Rp 8.000.000 - Rp 15.000.000',
-        duration: '14-21 hari kerja'
+        facilities: ["Katalog produk", "payment gateway", "admin panel untuk pengelolaan"],
+        priceRange: "Rp 1.500.000",
+        originalPrice: "Rp 2.000.000", 
+        promoPrice: "Rp 1.500.000",
+        icon: <ShoppingCart className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'wedding-invitation',
-        title: 'Website Undangan',
-        description: 'Website undangan digital yang elegan untuk pernikahan atau acara spesial lainnya.',
-        icon: <Heart className="h-5 w-5 text-sky-500" />,
+        title: "Website Portal / Blog",
+        description: "Sajikan konten berita, artikel, atau opini dalam sistem portal yang dinamis dan SEO-friendly.",
         features: [
-          'Design tema romantis',
-          'Countdown timer acara',
-          'RSVP dan konfirmasi tamu',
-          'Galeri foto couple',
-          'Musik background'
+          "Manajemen artikel lengkap",
+          "Struktur SEO optimal",
+          "Kategori dan tag system",
+          "Comment system",
+          "Author management",
+          "Social media integration"
         ],
-        priceRange: 'Rp 1.500.000 - Rp 3.500.000',
-        duration: '3-5 hari kerja'
+        facilities: ["Manajemen artikel", "struktur SEO optimal"],
+        priceRange: "Rp 1.500.000",
+        originalPrice: "Rp 2.000.000",
+        promoPrice: "Rp 1.500.000", 
+        icon: <FileText className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'custom-website',
-        title: 'Website Custom',
-        description: 'Solusi website khusus sesuai kebutuhan spesifik bisnis Anda dengan fitur unik.',
-        icon: <Building className="h-5 w-5 text-sky-500" />,
+        title: "Website Lembaga",
+        description: "Ciptakan website resmi untuk sekolah, organisasi, atau komunitas Anda.",
         features: [
-          'Analisis kebutuhan mendalam',
-          'Fitur custom sesuai bisnis',
-          'Integrasi sistem existing',
-          'Scalable architecture',
-          'Support dan maintenance'
+          "Halaman profil lengkap",
+          "Sistem berita dan pengumuman",
+          "Galeri kegiatan",
+          "Struktur organisasi",
+          "Download center",
+          "Event calendar"
         ],
-        priceRange: 'Rp 12.000.000 - Rp 50.000.000',
-        duration: '21-60 hari kerja'
-      }
-    ],
-    packages: [
-      {
-        name: "Basic Website",
-        description: "Ideal untuk bisnis kecil dan UMKM",
-        priceRange: "Rp 1.500.000 - Rp 3.000.000",
-        features: [
-          "5 Halaman Website",
-          "Responsive Design",
-          "Basic SEO",
-          "Form Kontak",
-          "Integrasi Media Sosial"
-        ]
+        facilities: ["Halaman profil", "berita", "galeri kegiatan", "struktur organisasi"],
+        priceRange: "Rp 1.500.000",
+        originalPrice: "Rp 2.000.000",
+        promoPrice: "Rp 1.500.000",
+        icon: <Users className="h-5 w-5 text-sky-400" />
       },
       {
-        name: "Professional Website",
-        description: "Solusi lengkap untuk bisnis menengah",
-        priceRange: "Rp 3.500.000 - Rp 8.000.000",
+        title: "Website Dashboard",
+        description: "Kelola data internal bisnis Anda dengan panel admin yang lengkap dan efisien.",
         features: [
-          "10-15 Halaman Website",
-          "Responsive Design",
-          "Advanced SEO",
-          "CMS Admin Panel",
-          "Integrasi Pembayaran",
-          "Hosting 1 Tahun"
+          "Sistem login multi-level",
+          "Visualisasi grafik real-time",
+          "Fitur export data",
+          "User management",
+          "Report generator",
+          "Data analytics"
         ],
-        recommended: true
+        facilities: ["Sistem login", "visualisasi grafik", "fitur export data"],
+        priceRange: "Rp 2.500.000",
+        originalPrice: "Rp 3.000.000",
+        promoPrice: "Rp 2.500.000",
+        icon: <BarChart3 className="h-5 w-5 text-sky-400" />
       },
       {
-        name: "E-Commerce Solution",
-        description: "Platform online shop komprehensif",
-        priceRange: "Rp 8.500.000 - Rp 15.000.000",
+        title: "Aplikasi Mobile", 
+        description: "Bangun aplikasi Android/iOS untuk pengalaman pengguna yang lebih dekat dan modern.",
         features: [
-          "Website E-commerce Lengkap",
-          "Katalog Produk Unlimited",
-          "Sistem Keranjang & Checkout",
-          "Integrasi Multiple Payment",
-          "Dashboard Admin",
-          "Laporan Penjualan",
-          "Maintenance 6 Bulan"
-        ]
+          "Fitur login dan registrasi",
+          "Integrasi API lengkap",
+          "Publikasi ke Play Store/App Store",
+          "Push notification",
+          "Offline capability",
+          "User analytics"
+        ],
+        facilities: ["Fitur login", "integrasi API", "publikasi ke Play Store/App Store"],
+        priceRange: "Rp 4.500.000",
+        originalPrice: "Rp 5.000.000",
+        promoPrice: "Rp 4.500.000",
+        icon: <Smartphone className="h-5 w-5 text-sky-400" />
+      },
+      {
+        title: "Sistem Informasi",
+        description: "Solusi digital untuk mengelola bisnis Anda secara terintegrasi dan efisien (CRM, POS, ERP).",
+        features: [
+          "Sistem custom sesuai kebutuhan",
+          "Laporan lengkap dan detail",
+          "Sesi training penggunaan",
+          "Database management",
+          "Multi-user access",
+          "Data backup otomatis"
+        ],
+        facilities: ["Sistem custom sesuai kebutuhan", "laporan lengkap", "sesi training penggunaan"],
+        priceRange: "Rp 3.000.000",
+        originalPrice: "Rp 3.500.000",
+        promoPrice: "Rp 3.000.000",
+        icon: <Database className="h-5 w-5 text-sky-400" />
+      },
+      {
+        title: "Maintenance Website",
+        description: "Jaga performa dan keamanan website Anda setiap bulan dengan layanan perawatan rutin.",
+        features: [
+          "Backup data otomatis",
+          "Update sistem berkala",
+          "Audit performa bulanan",
+          "Security monitoring",
+          "Bug fixing",
+          "Performance optimization"
+        ],
+        facilities: ["Backup data", "update sistem", "audit performa"],
+        priceRange: "Rp 500.000/bulan",
+        originalPrice: "Rp 1.000.000/bulan",
+        promoPrice: "Rp 500.000/bulan",
+        icon: <Wrench className="h-5 w-5 text-sky-400" />
       }
     ]
   },
   {
-    icon: <PenTool className="h-6 w-6 text-sky-500" />,
-    title: 'Desain Grafis',
-    description: 'Layanan desain visual profesional untuk meningkatkan identitas brand dan visual marketing Anda.',
+    icon: <Palette className="h-6 w-6 text-sky-400" />,
+    title: "Desain Grafis",
+    description: "Layanan desain profesional untuk membangun identitas visual brand Anda",
     items: [
-      'Logo & Brand Identity',
-      'UI/UX Design',
-      'Desain Media Sosial',
-      'Desain Kemasan Produk',
-      'Infografis & Presentasi',
-      'Desain Marketing Materials'
+      "Logo & Brand Identity",
+      "Company Profile",
+      "Brosur / Flyer Promosi", 
+      "Desain Kemasan Produk",
+      "Konten Sosial Media",
+      "Banner Digital",
+      "Desain UI/UX",
+      "Undangan Digital"
     ],
-    slug: 'desain-grafis',
-    image: 'https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Design',
     subcategories: [
       {
-        id: 'rebrand-logo',
-        title: 'Rebrand/Pembuatan Logo',
-        description: 'Pembuatan atau refresh logo brand Anda dengan konsep yang modern dan memorable.',
-        icon: <Palette className="h-5 w-5 text-sky-500" />,
+        title: "Logo & Brand Identity",
+        description: "Bangun identitas brand Anda yang kuat dan profesional sejak awal.",
         features: [
-          '3-5 konsep logo berbeda',
-          'Unlimited revisi',
-          'File vector dan raster',
-          'Brand guidelines',
-          'Hak cipta penuh'
+          "3 konsep desain berbeda",
+          "File logo final HD/Vector",
+          "Panduan brand (brand guideline)",
+          "Logo variations",
+          "Color palette",
+          "Typography guidelines"
         ],
-        priceRange: 'Rp 1.500.000 - Rp 5.000.000',
-        duration: '7-10 hari kerja',
-        popular: true
+        facilities: ["3 konsep desain", "file logo final (HD)", "panduan brand (brand guideline)"],
+        priceRange: "Rp 250.000",
+        originalPrice: "Rp 500.000",
+        promoPrice: "Rp 250.000",
+        icon: <PenTool className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'poster-design',
-        title: 'Desain Poster',
-        description: 'Desain poster menarik untuk promosi, event, atau keperluan marketing lainnya.',
-        icon: <FileText className="h-5 w-5 text-sky-500" />,
+        title: "Company Profile",
+        description: "Tampilkan profil bisnis Anda dalam bentuk digital maupun cetak yang informatif dan menarik.",
         features: [
-          'Konsep kreatif original',
-          'High resolution print ready',
-          'Format digital dan print',
-          '3x revisi gratis',
-          'Template variations'
+          "6-12 halaman profesional",
+          "Copywriting dasar included",
+          "Layout modern dan menarik",
+          "Print-ready files",
+          "Digital version",
+          "Revisi unlimited"
         ],
-        priceRange: 'Rp 500.000 - Rp 2.000.000',
-        duration: '3-5 hari kerja'
+        facilities: ["6–12 halaman", "copywriting dasar"],
+        priceRange: "Rp 250.000",
+        originalPrice: "Rp 500.000",
+        promoPrice: "Rp 250.000",
+        icon: <Briefcase className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'ui-ux-design',
-        title: 'UI/UX Design',
-        description: 'Desain antarmuka dan pengalaman pengguna yang intuitif untuk aplikasi dan website.',
-        icon: <Monitor className="h-5 w-5 text-sky-500" />,
+        title: "Brosur / Flyer Promosi",
+        description: "Sampaikan pesan promosi secara visual dan efektif untuk berbagai media.",
         features: [
-          'User research dan analisis',
-          'Wireframe dan prototype',
-          'Visual design modern',
-          'Responsive design',
-          'Usability testing'
+          "2 desain versi cetak & digital",
+          "Siap produksi (print-ready)",
+          "High resolution files",
+          "Multiple format output",
+          "Color variations",
+          "Quick turnaround"
         ],
-        priceRange: 'Rp 5.000.000 - Rp 20.000.000',
-        duration: '14-30 hari kerja'
-      }
-    ],
-    packages: [
-      {
-        name: "Logo Design",
-        description: "Desain logo profesional untuk brand Anda",
-        priceRange: "Rp 750.000 - Rp 2.500.000",
-        features: [
-          "3 Konsep Logo",
-          "3x Revisi",
-          "File Source (AI/PSD)",
-          "File Format (PNG/JPG/PDF)",
-          "Brand Guidelines Simple"
-        ]
+        facilities: ["2 desain versi cetak & digital", "siap produksi"],
+        priceRange: "Rp 150.000",
+        originalPrice: "Rp 300.000",
+        promoPrice: "Rp 150.000",
+        icon: <FileText className="h-5 w-5 text-sky-400" />
       },
       {
-        name: "Brand Identity Package",
-        description: "Paket lengkap identitas visual brand",
-        priceRange: "Rp 3.000.000 - Rp 7.500.000",
+        title: "Desain Kemasan Produk",
+        description: "Desain kemasan menarik yang meningkatkan nilai jual produk Anda.",
         features: [
-          "Logo Design",
-          "Business Card Design",
-          "Letterhead & Envelope",
-          "Brand Guidelines",
-          "Social Media Templates",
-          "5x Revisi"
+          "1 desain kemasan custom",
+          "Mockup 3D realistic",
+          "Print-ready files",
+          "Multiple angles view",
+          "Color variations",
+          "Technical specifications"
         ],
-        recommended: true
+        facilities: ["1 desain kemasan + mockup 3D"],
+        priceRange: "Rp 100.000",
+        originalPrice: "Rp 200.000",
+        promoPrice: "Rp 100.000",
+        icon: <Image className="h-5 w-5 text-sky-400" />
       },
       {
-        name: "Marketing Material Design",
-        description: "Desain material marketing untuk berbagai kebutuhan",
-        priceRange: "Rp 500.000 - Rp 2.000.000 (per item)",
+        title: "Konten Sosial Media",
+        description: "Bangun branding IG/FB Anda dengan konten desain profesional dan siap posting.",
         features: [
-          "Brosur/Flyer Design",
-          "Banner/Poster Design",
-          "Social Media Content",
-          "Packaging Design",
-          "Infografis",
-          "3x Revisi per Item"
-        ]
+          "10 desain konten editable",
+          "Template yang reusable",
+          "Brand consistency",
+          "Multiple platform sizes",
+          "Engagement-focused design",
+          "Trend-based aesthetics"
+        ],
+        facilities: ["10 desain konten editable"],
+        priceRange: "Rp 250.000",
+        originalPrice: "Rp 500.000", 
+        promoPrice: "Rp 250.000",
+        icon: <Share2 className="h-5 w-5 text-sky-400" />
+      },
+      {
+        title: "Banner Digital",
+        description: "Promosikan bisnis Anda melalui banner digital dengan berbagai ukuran.",
+        features: [
+          "3 ukuran banner standar",
+          "Opsi animasi menarik",
+          "Web-optimized files",
+          "Multiple format output",
+          "Call-to-action focused",
+          "Brand compliance"
+        ],
+        facilities: ["3 ukuran banner", "opsi animasi"],
+        priceRange: "Rp 150.000",
+        originalPrice: "Rp 300.000",
+        promoPrice: "Rp 150.000",
+        icon: <Image className="h-5 w-5 text-sky-400" />
+      },
+      {
+        title: "Desain UI/UX",
+        description: "Desain antarmuka website/aplikasi yang elegan dan user-friendly.",
+        features: [
+          "Wireframe professional",
+          "Mockup desain lengkap",
+          "Tampilan responsif",
+          "User experience optimization",
+          "Interactive prototypes",
+          "Design system"
+        ],
+        facilities: ["Wireframe", "mockup desain", "tampilan responsif"],
+        priceRange: "Rp 200.000",
+        originalPrice: "Rp 400.000",
+        promoPrice: "Rp 200.000",
+        icon: <Code className="h-5 w-5 text-sky-400" />
+      },
+      {
+        title: "Undangan Digital",
+        description: "Buat momen spesial lebih berkesan dengan undangan digital yang cantik dan interaktif.",
+        features: [
+          "1 desain undangan custom",
+          "Versi digital & siap cetak",
+          "Interactive elements",
+          "Animation effects",
+          "Multiple format output", 
+          "RSVP integration"
+        ],
+        facilities: ["1 desain undangan versi digital & siap cetak"],
+        priceRange: "Rp 150.000",
+        originalPrice: "Rp 300.000",
+        promoPrice: "Rp 150.000",
+        icon: <Mail className="h-5 w-5 text-sky-400" />
       }
     ]
   },
   {
-    icon: <Megaphone className="h-6 w-6 text-sky-500" />,
-    title: 'Digital Marketing',
-    description: 'Strategi pemasaran digital komprehensif untuk meningkatkan brand awareness dan penjualan.',
+    icon: <TrendingUp className="h-6 w-6 text-sky-400" />,
+    title: "Digital Marketing",
+    description: "Strategi pemasaran digital untuk meningkatkan visibility dan engagement brand Anda",
     items: [
-      'Social Media Marketing',
-      'Search Engine Optimization (SEO)',
-      'Google Ads & Meta Ads',
-      'Email Marketing',
-      'Content Marketing',
-      'Influencer Marketing'
+      "Manajemen Iklan Digital",
+      "Layanan SEO",
+      "Konten Sosial Media",
+      "Email Marketing",
+      "Copywriting",
+      "Strategi Branding Digital",
+      "Optimasi Marketplace"
     ],
-    slug: 'digital-marketing',
-    image: 'https://images.unsplash.com/photo-1533750516457-a7f992034fec?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Marketing',
     subcategories: [
       {
-        id: 'social-media-management',
-        title: 'Manajemen Media Sosial',
-        description: 'Pengelolaan media sosial profesional untuk meningkatkan engagement dan brand awareness.',
-        icon: <Share2 className="h-5 w-5 text-sky-500" />,
+        title: "Manajemen Iklan Digital",
+        description: "Jangkau audiens potensial melalui iklan yang terarah dan terukur.",
         features: [
-          'Content planning & strategy',
-          'Posting schedule optimization',
-          'Community management',
-          'Analytics & reporting',
-          'Hashtag research'
+          "Setup kampanye profesional",
+          "Optimasi iklan berkelanjutan",
+          "Laporan performa detail",
+          "Audience targeting",
+          "Budget optimization",
+          "A/B testing"
         ],
-        priceRange: 'Rp 2.500.000 - Rp 8.000.000/bulan',
-        duration: 'Bulanan',
-        popular: true
+        facilities: ["Setup kampanye", "optimasi iklan", "laporan performa"],
+        priceRange: "Rp 750.000",
+        originalPrice: "Rp 1.500.000",
+        promoPrice: "Rp 750.000",
+        icon: <Target className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'ads-management',
-        title: 'Pembuatan Iklan Ads',
-        description: 'Kampanye iklan berbayar di Google, Facebook, Instagram untuk target audience yang tepat.',
-        icon: <Target className="h-5 w-5 text-sky-500" />,
+        title: "Layanan SEO",
+        description: "Naikkan peringkat website Anda di Google dengan strategi SEO yang menyeluruh.",
         features: [
-          'Campaign strategy & setup',
-          'Audience targeting',
-          'Ad creative design',
-          'Budget optimization',
-          'Performance monitoring'
+          "Audit teknis mendalam",
+          "Riset keyword komprehensif",
+          "5 artikel SEO-friendly",
+          "On-page optimization",
+          "Technical SEO",
+          "Monthly reporting"
         ],
-        priceRange: 'Rp 3.000.000 - Rp 12.000.000/bulan',
-        duration: 'Bulanan'
+        facilities: ["Audit teknis", "riset keyword", "5 artikel SEO-friendly"],
+        priceRange: "Rp 250.000",
+        originalPrice: "Rp 5.000.000",
+        promoPrice: "Rp 250.000",
+        icon: <Search className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'email-marketing',
-        title: 'Email Marketing',
-        description: 'Kampanye email marketing untuk nurturing leads dan meningkatkan customer retention.',
-        icon: <Mail className="h-5 w-5 text-sky-500" />,
+        title: "Konten Sosial Media",
+        description: "Posting rutin dan konsisten untuk membangun engagement.",
         features: [
-          'Email template design',
-          'List segmentation',
-          'Automated sequences',
-          'A/B testing',
-          'Performance analytics'
+          "20 desain konten menarik",
+          "Caption yang engaging",
+          "Content calendar",
+          "Hashtag research",
+          "Trend analysis",
+          "Performance tracking"
         ],
-        priceRange: 'Rp 1.500.000 - Rp 5.000.000/bulan',
-        duration: 'Bulanan'
+        facilities: ["20 desain + caption menarik"],
+        priceRange: "Rp 500.000",
+        originalPrice: "Rp 1.000.000",
+        promoPrice: "Rp 500.000",
+        icon: <Share2 className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'wa-blaster',
-        title: 'WA Blaster',
-        description: 'Sistem broadcast WhatsApp untuk marketing dan komunikasi massal dengan customer.',
-        icon: <MessageCircle className="h-5 w-5 text-sky-500" />,
+        title: "Email Marketing",
+        description: "Kampanye email profesional untuk menjangkau pelanggan secara langsung.",
         features: [
-          'Multi-device broadcasting',
-          'Contact management',
-          'Message scheduling',
-          'Auto-reply setup',
-          'Delivery reports'
+          "Template email profesional",
+          "Copywriting promosi menarik",
+          "Email automation",
+          "Segmentation strategy",
+          "Performance analytics",
+          "A/B testing"
         ],
-        priceRange: 'Rp 2.000.000 - Rp 6.000.000/bulan',
-        duration: 'Bulanan'
+        facilities: ["Template email", "penulisan copywriting promosi"],
+        priceRange: "Rp 400.000",
+        originalPrice: "Rp 800.000",
+        promoPrice: "Rp 400.000",
+        icon: <Mail className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'content-writing',
-        title: 'Copy/Content Writing',
-        description: 'Pembuatan konten dan copywriting yang persuasif untuk berbagai platform marketing.',
-        icon: <Edit className="h-5 w-5 text-sky-500" />,
+        title: "Copywriting",
+        description: "Tingkatkan nilai jual produk/jasa Anda melalui kata-kata yang menggugah.",
         features: [
-          'SEO-optimized content',
-          'Sales copy & landing page',
-          'Social media captions',
-          'Blog articles',
-          'Product descriptions'
+          "Penulisan untuk 3 halaman",
+          "Copywriting untuk 5 produk",
+          "Sales-focused content",
+          "SEO optimization",
+          "Brand voice consistency",
+          "Call-to-action optimization"
         ],
-        priceRange: 'Rp 500.000 - Rp 2.500.000/konten',
-        duration: '3-7 hari kerja'
-      }
-    ],
-    packages: [
-      {
-        name: "Social Media Management",
-        description: "Pengelolaan media sosial untuk bisnis Anda",
-        priceRange: "Rp 2.000.000 - Rp 5.000.000 /bulan",
-        features: [
-          "Pengelolaan 2 Platform",
-          "12 Konten per Bulan",
-          "Content Planning",
-          "Caption Writing",
-          "Basic Analytics Report"
-        ]
+        facilities: ["Penulisan untuk 3 halaman atau 5 produk"],
+        priceRange: "Rp 150.000",
+        originalPrice: "Rp 300.000",
+        promoPrice: "Rp 150.000",
+        icon: <PenTool className="h-5 w-5 text-sky-400" />
       },
       {
-        name: "Digital Marketing Campaign",
-        description: "Kampanye iklan digital multi-platform",
-        priceRange: "Rp 5.000.000 - Rp 15.000.000 /bulan",
+        title: "Strategi Branding Digital",
+        description: "Tentukan arah brand Anda dengan analisis mendalam dan positioning yang tepat.",
         features: [
-          "Social Media Ads",
-          "Google Ads",
-          "Landing Page Design",
-          "Targeting Audience",
-          "Performance Analytics",
-          "Monthly Report"
+          "Riset brand komprehensif",
+          "Pemetaan digital landscape",
+          "Strategi branding terintegrasi",
+          "Competitor analysis",
+          "Brand positioning",
+          "Digital roadmap"
         ],
-        recommended: true
+        facilities: ["Riset brand", "pemetaan digital", "strategi branding"],
+        priceRange: "Rp 250.000",
+        originalPrice: "Rp 500.000",
+        promoPrice: "Rp 250.000",
+        icon: <TrendingUp className="h-5 w-5 text-sky-400" />
       },
       {
-        name: "SEO Package",
-        description: "Optimasi mesin pencari untuk website Anda",
-        priceRange: "Rp 3.500.000 - Rp 8.000.000 /bulan",
+        title: "Optimasi Marketplace",
+        description: "Naikkan performa toko online Anda di berbagai platform marketplace.",
         features: [
-          "Website Audit",
-          "Keyword Research",
-          "On-page SEO",
-          "Content Optimization",
-          "Backlink Building",
-          "Monthly Reporting"
-        ]
+          "Upload produk profesional",
+          "Desain banner toko menarik",
+          "Optimasi SEO produk",
+          "Product photography guide",
+          "Pricing strategy",
+          "Performance monitoring"
+        ],
+        facilities: ["Upload produk", "desain banner toko", "optimasi SEO produk"],
+        priceRange: "Rp 500.000",
+        originalPrice: "Rp 1.000.000",
+        promoPrice: "Rp 500.000",
+        icon: <Store className="h-5 w-5 text-sky-400" />
       }
     ]
   },
   {
-    icon: <Camera className="h-6 w-6 text-sky-500" />,
-    title: 'Foto dan Videografi',
-    description: 'Layanan visual profesional untuk kebutuhan konten marketing dan branding Anda.',
+    icon: <Camera className="h-6 w-6 text-sky-400" />,
+    title: "Foto & Videografi",
+    description: "Layanan fotografi dan videografi profesional untuk berbagai kebutuhan bisnis dan event",
     items: [
-      'Product Photography',
-      'Corporate Videography',
-      'Video Editing & Animation',
-      'Motion Graphics',
-      'Social Media Video',
-      'Company Profile Video'
+      "Foto Produk",
+      "Foto Event",
+      "Video Profil Perusahaan",
+      "Video Promosi Produk",
+      "Video Event",
+      "Video Tutorial",
+      "Iklan Digital",
+      "Drone Footage",
+      "Video Editing"
     ],
-    slug: 'foto-dan-videografi',
-    image: 'https://images.unsplash.com/photo-1535016120720-40c646be5580?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80',
-    category: 'Video',
     subcategories: [
       {
-        id: 'personal-photography',
-        title: 'Fotografer Pribadi',
-        description: 'Layanan fotografi personal untuk berbagai kebutuhan seperti portrait, prewedding, dan acara pribadi.',
-        icon: <Users className="h-5 w-5 text-sky-500" />,
+        title: "Foto Produk",
+        description: "Foto katalog produk yang jernih dan menarik untuk meningkatkan daya tarik penjualan.",
         features: [
-          'Portrait photography',
-          'Prewedding & engagement',
-          'Family & lifestyle',
-          'Professional headshots',
-          'Event documentation'
+          "10 foto produk berkualitas tinggi",
+          "Editing dasar professional",
+          "Multiple angles",
+          "Product styling",
+          "Background options",
+          "High resolution output"
         ],
-        priceRange: 'Rp 1.500.000 - Rp 8.000.000/sesi',
-        duration: '4-8 jam sesi',
-        popular: true
+        facilities: ["10 foto produk + editing dasar"],
+        priceRange: "Rp 500.000",
+        originalPrice: "Rp 1.000.000",
+        promoPrice: "Rp 500.000",
+        icon: <Camera className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'product-photography',
-        title: 'Foto Produk',
-        description: 'Fotografi produk profesional untuk e-commerce, katalog, dan kebutuhan marketing.',
-        icon: <Camera className="h-5 w-5 text-sky-500" />,
+        title: "Foto Event",
+        description: "Abadikan momen spesial seperti wisuda, pernikahan, gathering secara profesional.",
         features: [
-          'White background clean',
-          'Lifestyle product shots',
-          'Multiple angles',
-          'High resolution',
-          'Basic retouching'
+          "1 jam pemotretan intensif",
+          "50-100 foto terbaik",
+          "Professional editing",
+          "Digital gallery",
+          "High resolution files",
+          "Quick delivery"
         ],
-        priceRange: 'Rp 150.000 - Rp 500.000/produk',
-        duration: '1-2 hari kerja'
+        facilities: ["1 jam pemotretan", "50–100 foto"],
+        priceRange: "Rp 300.000",
+        originalPrice: "Rp 600.000",
+        promoPrice: "Rp 300.000",
+        icon: <Camera className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'cinematic-video',
-        title: 'Video Sinematik',
-        description: 'Produksi video sinematik berkualitas tinggi untuk company profile, wedding, dan event.',
-        icon: <Play className="h-5 w-5 text-sky-500" />,
+        title: "Video Profil Perusahaan",
+        description: "Bangun citra brand dengan video cinematic yang powerful dan berkesan.",
         features: [
-          'Cinematic storytelling',
-          '4K video quality',
-          'Professional equipment',
-          'Color grading',
-          'Background music'
+          "Professional shooting",
+          "Voice over berkualitas",
+          "Editing cinematic style",
+          "Background music",
+          "Color grading",
+          "Multiple format output"
         ],
-        priceRange: 'Rp 5.000.000 - Rp 25.000.000/project',
-        duration: '7-14 hari kerja'
+        facilities: ["Shooting", "voice over", "editing cinematic"],
+        priceRange: "Rp 400.000",
+        originalPrice: "Rp 800.000",
+        promoPrice: "Rp 400.000",
+        icon: <Video className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'photo-editing',
-        title: 'Editing Foto',
-        description: 'Layanan editing dan retouching foto profesional untuk berbagai kebutuhan.',
-        icon: <Brush className="h-5 w-5 text-sky-500" />,
+        title: "Video Promosi Produk", 
+        description: "Tingkatkan penjualan lewat video promosi produk yang menarik.",
         features: [
-          'Color correction',
-          'Skin retouching',
-          'Background removal',
-          'Object manipulation',
-          'Creative effects'
+          "Professional shooting setup",
+          "Editing ringan berkualitas",
+          "Product showcase",
+          "Call-to-action integration",
+          "Multiple platform formats",
+          "Quick turnaround"
         ],
-        priceRange: 'Rp 50.000 - Rp 300.000/foto',
-        duration: '1-3 hari kerja'
+        facilities: ["Shooting + editing ringan"],
+        priceRange: "Rp 500.000",
+        originalPrice: "Rp 1.000.000",
+        promoPrice: "Rp 500.000",
+        icon: <Play className="h-5 w-5 text-sky-400" />
       },
       {
-        id: 'video-editing',
-        title: 'Editing Video',
-        description: 'Editing video profesional dengan motion graphics dan effects untuk konten yang menarik.',
-        icon: <Edit className="h-5 w-5 text-sky-500" />,
+        title: "Video Event",
+        description: "Highlight acara Anda dalam bentuk video sinematik profesional.",
         features: [
-          'Professional video editing',
-          'Motion graphics',
-          'Sound design',
-          'Color correction',
-          'Multiple format export'
+          "1 hari peliputan lengkap",
+          "Video highlight menarik",
+          "Multiple camera angles",
+          "Professional editing",
+          "Background music",
+          "Social media ready"
         ],
-        priceRange: 'Rp 500.000 - Rp 3.000.000/project',
-        duration: '3-7 hari kerja'
-      }
-    ],
-    packages: [
-      {
-        name: "Product Photography",
-        description: "Foto produk profesional untuk katalog dan e-commerce",
-        priceRange: "Rp 100.000 - Rp 500.000 /produk",
-        features: [
-          "White Background",
-          "3 Angle per Produk",
-          "Basic Retouching",
-          "High Resolution",
-          "Format Digital"
-        ]
+        facilities: ["1 hari peliputan + video highlight"],
+        priceRange: "Rp 500.000",
+        originalPrice: "Rp 1.000.000",
+        promoPrice: "Rp 500.000",
+        icon: <Clapperboard className="h-5 w-5 text-sky-400" />
       },
       {
-        name: "Company Profile Video",
-        description: "Video profil perusahaan profesional",
-        priceRange: "Rp 5.000.000 - Rp 15.000.000",
+        title: "Video Tutorial",
+        description: "Buat konten video edukasi berdurasi hingga 5 menit lengkap dengan subtitle.",
         features: [
-          "Durasi 2-3 Menit",
-          "Script Writing",
-          "Full HD Quality",
-          "Professional Voiceover",
-          "Background Music",
-          "2x Revisi"
+          "Durasi maksimal 5 menit",
+          "Penambahan subtitle",
+          "Screen recording",
+          "Voice over clear",
+          "Step-by-step guidance",
+          "Educational format"
         ],
-        recommended: true
+        facilities: ["Durasi 5 menit", "penambahan subtitle"],
+        priceRange: "Rp 450.000",
+        originalPrice: "Rp 900.000",
+        promoPrice: "Rp 450.000",
+        icon: <Play className="h-5 w-5 text-sky-400" />
       },
       {
-        name: "Social Media Video Package",
-        description: "Paket video untuk konten media sosial",
-        priceRange: "Rp 3.000.000 - Rp 8.000.000 /bulan",
+        title: "Iklan Digital",
+        description: "Kuasai media sosial dengan video storytelling berdurasi 1 menit (Reels/TikTok Ads).",
         features: [
-          "4 Video per Bulan",
-          "Durasi 30-60 detik",
-          "Script Writing",
-          "Motion Graphics",
-          "Format Custom (Story, Post, Reels)",
-          "1x Revisi per Video"
-        ]
+          "Konsep storytelling menarik",
+          "Video berdurasi 1 menit",
+          "Vertical format optimization",
+          "Trend-based content",
+          "Engaging hooks",
+          "Call-to-action integration"
+        ],
+        facilities: ["Konsep storytelling", "video 1 menit"],
+        priceRange: "Rp 250.000",
+        originalPrice: "Rp 500.000",
+        promoPrice: "Rp 250.000",
+        icon: <TrendingUp className="h-5 w-5 text-sky-400" />
+      },
+      {
+        title: "Drone Footage",
+        description: "Ambil gambar spektakuler dari udara untuk properti, event, atau promosi.",
+        features: [
+          "10 foto aerial berkualitas",
+          "1 video drone cinematic",
+          "4K resolution",
+          "Multiple angles",
+          "Professional piloting",
+          "Weather consideration"
+        ],
+        facilities: ["10 foto + 1 video drone"],
+        priceRange: "Rp 250.000",
+        originalPrice: "Rp 500.000",
+        promoPrice: "Rp 250.000",
+        icon: <Drone className="h-5 w-5 text-sky-400" />
+      },
+      {
+        title: "Video Editing",
+        description: "Perindah footage Anda dengan editing profesional dan animasi modern (Motion Graphic).",
+        features: [
+          "Durasi maksimal 3 menit",
+          "Motion graphic dinamis",
+          "Color correction",
+          "Audio enhancement",
+          "Transition effects",
+          "Professional output"
+        ],
+        facilities: ["Durasi 3 menit", "motion graphic dinamis"],
+        priceRange: "Rp 400.000",
+        originalPrice: "Rp 800.000",
+        promoPrice: "Rp 400.000",
+        icon: <Edit className="h-5 w-5 text-sky-400" />
       }
     ]
   }
 ];
+
+// Service pricing data for order form
+export const servicePrices: { [key: string]: { [key: string]: number } } = {
+  'Website & Aplikasi': {
+    'Website Landing Page': 250000,
+    'Website Profil': 500000,
+    'Website E-Commerce': 1500000,
+    'Website Portal / Blog': 1500000,
+    'Website Lembaga': 1500000,
+    'Website Dashboard': 2500000,
+    'Aplikasi Mobile': 4500000,
+    'Sistem Informasi': 3000000,
+    'Maintenance Website': 500000
+  },
+  'Desain Grafis': {
+    'Logo & Brand Identity': 250000,
+    'Company Profile': 250000,
+    'Brosur / Flyer Promosi': 150000,
+    'Desain Kemasan Produk': 100000,
+    'Konten Sosial Media': 250000,
+    'Banner Digital': 150000,
+    'Desain UI/UX': 200000,
+    'Undangan Digital': 150000
+  },
+  'Digital Marketing': {
+    'Manajemen Iklan Digital': 750000,
+    'Layanan SEO': 250000,
+    'Konten Sosial Media': 500000,
+    'Email Marketing': 400000,
+    'Copywriting': 150000,
+    'Strategi Branding Digital': 250000,
+    'Optimasi Marketplace': 500000
+  },
+  'Foto & Videografi': {
+    'Foto Produk': 500000,
+    'Foto Event': 300000,
+    'Video Profil Perusahaan': 400000,
+    'Video Promosi Produk': 500000,
+    'Video Event': 500000,
+    'Video Tutorial': 450000,
+    'Iklan Digital': 250000,
+    'Drone Footage': 250000,
+    'Video Editing': 400000
+  }
+};
