@@ -4,7 +4,6 @@ import { motion } from 'framer-motion';
 import { Star, Play, ChevronRight, ChevronLeft, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { jasaDigitalData } from '@/data/jasaDigitalData';
-import ServiceSubcategories from '@/components/jasa-digital/ServiceSubcategories';
 import { Link } from 'react-router-dom';
 
 const JasaDigital = () => {
@@ -189,17 +188,6 @@ const JasaDigital = () => {
           </div>
         </div>
       </section>
-
-      {/* Service Details Sections - Display subcategories for each service */}
-      {jasaDigitalData.map((service, index) => (
-        service.subcategories && (
-          <ServiceSubcategories
-            key={`subcategories-${index}`}
-            subcategories={service.subcategories}
-            serviceName={service.title}
-          />
-        )
-      ))}
       
       {/* Benefits Section */}
       <section className="py-16 bg-black/80">
